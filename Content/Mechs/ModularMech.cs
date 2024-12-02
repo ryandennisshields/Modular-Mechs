@@ -40,13 +40,13 @@ namespace MechMod.Content.Mechs
         public override void SetStaticDefaults()
         {
             // Misc
-            MountData.fallDamage = 0; // Fall damage multiplier.
+            MountData.fallDamage = 0;
             MountData.heightBoost = 20; // Height between the mount and the ground (player's hitbox position)
-            MountData.constantJump = true; // Allows you to hold the jump button down.
-            MountData.blockExtraJumps = true; // Determines whether or not you can use a double jump (like cloud in a bottle) while in the mount.
-            MountData.buff = ModContent.BuffType<MechBuff>(); // The ID number of the buff assigned to the mount.
+            MountData.constantJump = true;
+            MountData.blockExtraJumps = true;
+            MountData.buff = ModContent.BuffType<MechBuff>();
             // Effects
-            MountData.spawnDust = DustID.Smoke; // The ID of the dust spawned when mounted or dismounted.
+            MountData.spawnDust = DustID.Smoke;
             // Frame data and player offsets
             MountData.totalFrames = 4; // Amount of animation frames for the mount
             MountData.playerYOffsets = Enumerable.Repeat(20, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code
