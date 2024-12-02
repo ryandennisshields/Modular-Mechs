@@ -1,0 +1,23 @@
+
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\tModLoader.targets" />
+  <PropertyGroup>
+    <AssemblyName>MechMod</AssemblyName>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Content\Buffs\MechBuff.png" />
+    <None Remove="Content\Buffs\MechDebuff.png" />
+    <None Remove="Content\Items\MechArms\BaseArms.png" />
+    <None Remove="Content\Items\MechBench\MechBench.png" />
+    <None Remove="Content\Items\MechBodies\BaseBody.png" />
+    <None Remove="Content\Items\MechBoosters\BaseBooster.png" />
+    <None Remove="Content\Items\MechHeads\BaseHead.png" />
+    <None Remove="Content\Items\MechLegs\BaseLegs.png" />
+    <None Remove="Content\Items\MechWeapons\BaseGun.png" />
+    <None Remove="Content\Items\MechSpawner.png" />
+    <None Remove="Content\Items\MechWeapons\BaseSword.png" />
+    <None Remove="Content\Mechs\ModularMech_Back.png" />
+    <None Remove="Content\Mechs\ModularMech_Front.png" />
+  </ItemGroup>
+</Project>

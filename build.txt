@@ -1,0 +1,3 @@
+displayName = Mechs and Mecha
+author = Clem Prime
+version = 0.1

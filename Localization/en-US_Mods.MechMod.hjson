@@ -1,0 +1,68 @@
+Items: {
+	MechSpawner: {
+		DisplayName: Mech Spawner
+		Tooltip:
+			'''
+			Enter your Mech
+			While inside your Mech, Set Bonuses, Buffs, and Summons are disabled
+			Use a Mech Bench to Equip Parts
+			Head, Body, Arms and Legs must be Equipped to use your Mech!
+			'''
+	}
+
+	BaseHead: {
+		DisplayName: Base Head
+		Tooltip: ""
+	}
+
+	BaseBody: {
+		DisplayName: Base Body
+		Tooltip: ""
+	}
+
+	BaseArms: {
+		DisplayName: Base Arms
+		Tooltip: ""
+	}
+
+	BaseLegs: {
+		DisplayName: Base Legs
+		Tooltip: test
+	}
+
+	BaseBooster: {
+		DisplayName: Base Booster
+		Tooltip: ""
+	}
+
+	MechBench: {
+		DisplayName: Mech Bench
+		Tooltip: Equip and Unequip Parts to your Mech
+	}
+
+	BaseGun: {
+		DisplayName: Base Gun
+		Tooltip: ""
+	}
+
+	BaseSword: {
+		DisplayName: Base Sword
+		Tooltip: ""
+	}
+}
+
+Buffs: {
+	MechBuff: {
+		Description: You're inside your Mech!
+		DisplayName: In Mech
+	}
+
+	MechDebuff: {
+		Description:
+			'''
+			The Mech drains your energy to return. Until it's ready, you'll have to survive.
+			Damage and maximum life are reduced
+			'''
+		DisplayName: Mech Unavailable
+	}
+}
