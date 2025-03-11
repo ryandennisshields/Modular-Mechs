@@ -50,13 +50,11 @@ namespace MechMod.Content.Mechs
             // Frame data and player offsets
             MountData.totalFrames = 4; // Amount of animation frames for the mount
             MountData.playerYOffsets = Enumerable.Repeat(20, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code
-            MountData.xOffset = 13;
-            MountData.yOffset = -12;
-            MountData.playerHeadOffset = 22;
             MountData.bodyFrame = 3;
             // Standing
-            MountData.standingFrameCount = 4;
-            MountData.standingFrameDelay = 12;
+            // All set to 0 as there is no standing animation
+            MountData.standingFrameCount = 0;
+            MountData.standingFrameDelay = 0;
             MountData.standingFrameStart = 0;
             // Running
             MountData.runningFrameCount = 4;
@@ -71,8 +69,9 @@ namespace MechMod.Content.Mechs
             MountData.inAirFrameDelay = 12;
             MountData.inAirFrameStart = 0;
             // Idle
-            MountData.idleFrameCount = 4;
-            MountData.idleFrameDelay = 12;
+            // All set to 0 as there is no idle animation
+            MountData.idleFrameCount = 0;
+            MountData.idleFrameDelay = 0;
             MountData.idleFrameStart = 0;
             MountData.idleFrameLoop = true;
             // Swim
@@ -82,7 +81,7 @@ namespace MechMod.Content.Mechs
 
             if (!Main.dedServ)
             {
-                MountData.textureWidth = MountData.backTexture.Width() + 20;
+                MountData.textureWidth = MountData.backTexture.Width();
                 MountData.textureHeight = MountData.backTexture.Height();
             }
 
@@ -106,23 +105,21 @@ namespace MechMod.Content.Mechs
         public override void SetMount(Player player, ref bool skipDust)
         {
             var modPlayer = player.GetModPlayer<MechModPlayer>();
-            
+
             // Hide the Player
             player.opacityForAnimation = 0;
             // Make the Player's hitbox slightly larger
             player.width = 26;
 
             // Apply visuals to the Mech
-            for (int i = 0; i < MechMod.boosterIndex; i++)
-            {
-                if (!modPlayer.equippedParts[i].IsAir)
-                {
-                    headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}").Value;
-                    bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}").Value;
-                    armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}").Value;
-                    legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}").Value;
-                }
-            }
+            if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
+                headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}").Value;
+            if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
+                bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}").Value;
+            if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
+                armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}").Value;
+            if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
+                legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}TestAnim").Value;
 
             // Apply Part Stats
             ApplyPartStats(modPlayer, modPlayer.equippedParts[MechMod.headIndex], modPlayer.equippedParts[MechMod.bodyIndex], modPlayer.equippedParts[MechMod.armsIndex], modPlayer.equippedParts[MechMod.legsIndex], modPlayer.equippedParts[MechMod.boosterIndex]);
@@ -166,32 +163,22 @@ namespace MechMod.Content.Mechs
             }
         }
 
-        private void UpdatePartTextures(Player player)
-        {
-            var modPlayer = player.GetModPlayer<MechModPlayer>();
-
-            // Change the texture based on the equipped parts
-            headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}").Value;
-            bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}").Value;
-            armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}").Value;
-            legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}").Value;
-        }
-
         public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)
         {
             if (drawType == 0)
             {
                 // Draw body first
-                playerDrawData.Add(new DrawData(bodyTexture, drawPosition + new Vector2(drawPlayer.direction, 0), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(bodyTexture, drawPosition + new Vector2(drawPlayer.direction, -30), frame, drawColor, rotation, drawOrigin, 0.75f, spriteEffects));
 
                 // Draw head
-                playerDrawData.Add(new DrawData(headTexture, drawPosition + new Vector2(drawPlayer.direction, 0), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(headTexture, drawPosition + new Vector2(drawPlayer.direction, -50), frame, drawColor, rotation, drawOrigin, 0.5f, spriteEffects));
 
                 // Draw arms
-                playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(drawPlayer.direction, 0), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(30 * drawPlayer.direction, -20), frame, drawColor, rotation, drawOrigin, 0.25f, spriteEffects));
+                playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(-30 * drawPlayer.direction, -20), frame, drawColor, rotation, drawOrigin, 0.25f, spriteEffects));
 
                 // Draw legs
-                playerDrawData.Add(new DrawData(legsTexture, drawPosition + new Vector2(drawPlayer.direction, 0), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(legsTexture, drawPosition + new Vector2(drawPlayer.direction, 20), frame, drawColor, rotation, drawOrigin, 0.5f, spriteEffects));
             }
             return false;
         }
