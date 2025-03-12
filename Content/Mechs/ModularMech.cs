@@ -119,7 +119,7 @@ namespace MechMod.Content.Mechs
             if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
                 armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}").Value;
             if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
-                legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}TestAnim").Value;
+                legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}").Value;
 
             // Apply Part Stats
             ApplyPartStats(modPlayer, modPlayer.equippedParts[MechMod.headIndex], modPlayer.equippedParts[MechMod.bodyIndex], modPlayer.equippedParts[MechMod.armsIndex], modPlayer.equippedParts[MechMod.legsIndex], modPlayer.equippedParts[MechMod.boosterIndex]);
@@ -167,18 +167,20 @@ namespace MechMod.Content.Mechs
         {
             if (drawType == 0)
             {
-                // Draw body first
-                playerDrawData.Add(new DrawData(bodyTexture, drawPosition + new Vector2(drawPlayer.direction, -30), frame, drawColor, rotation, drawOrigin, 0.75f, spriteEffects));
-
-                // Draw head
-                playerDrawData.Add(new DrawData(headTexture, drawPosition + new Vector2(drawPlayer.direction, -50), frame, drawColor, rotation, drawOrigin, 0.5f, spriteEffects));
-
-                // Draw arms
-                playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(30 * drawPlayer.direction, -20), frame, drawColor, rotation, drawOrigin, 0.25f, spriteEffects));
-                playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(-30 * drawPlayer.direction, -20), frame, drawColor, rotation, drawOrigin, 0.25f, spriteEffects));
+                // Draw left arm first
+                playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(24 * drawPlayer.direction, -32), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw legs
-                playerDrawData.Add(new DrawData(legsTexture, drawPosition + new Vector2(drawPlayer.direction, 20), frame, drawColor, rotation, drawOrigin, 0.5f, spriteEffects));
+                playerDrawData.Add(new DrawData(legsTexture, drawPosition + new Vector2(drawPlayer.direction, 13), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+
+                // Draw body
+                playerDrawData.Add(new DrawData(bodyTexture, drawPosition + new Vector2(drawPlayer.direction, -32), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                
+                // Draw head
+                playerDrawData.Add(new DrawData(headTexture, drawPosition + new Vector2(drawPlayer.direction, -71), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+
+                // Draw right arm last
+                playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(-22 * drawPlayer.direction, -32), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
             }
             return false;
         }
