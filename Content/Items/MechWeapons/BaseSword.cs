@@ -25,13 +25,15 @@ namespace MechMod.Content.Items.MechWeapons
 
         private int timer;
 
+        public Weapons.UseType useType => Weapons.UseType.Swing;
+
         public void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
         {
             int projectileType = ProjectileID.SwordBeam;
 
             Weapons.damageClass = DamageClass.Melee;
 
-            int damage = Weapons.DamageCalc(12, player);
+        int damage = Weapons.DamageCalc(12, player);
             Weapons.CritChanceCalc(4, player);
             int attackSpeed = Weapons.AttackSpeedCalc(20, player);
             float knockback = Weapons.KnockbackCalc(4, player);

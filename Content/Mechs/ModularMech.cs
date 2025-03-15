@@ -9,6 +9,7 @@ using MechMod.Content.Items.MechLegs;
 using MechMod.Content.Items.MechWeapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using rail;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace MechMod.Content.Mechs
     public interface IMechWeapon
     {
         void UseAbility(Player player, Vector2 mousePosition, bool toggleOn);
+        Weapons.UseType useType { get; }
     }
 
     public class ModularMech : ModMount
@@ -48,9 +50,8 @@ namespace MechMod.Content.Mechs
             // Effects
             MountData.spawnDust = DustID.Smoke;
             // Frame data and player offsets
-            MountData.totalFrames = 4; // Amount of animation frames for the mount
+            MountData.totalFrames = 4;
             MountData.playerYOffsets = Enumerable.Repeat(20, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code
-            MountData.bodyFrame = 3;
             // Standing
             // All set to 0 as there is no standing animation
             MountData.standingFrameCount = 0;
@@ -61,13 +62,13 @@ namespace MechMod.Content.Mechs
             MountData.runningFrameDelay = 12;
             MountData.runningFrameStart = 0;
             // Flying
-            MountData.flyingFrameCount = 0;
-            MountData.flyingFrameDelay = 0;
-            MountData.flyingFrameStart = 0;
+            MountData.flyingFrameCount = 1;
+            MountData.flyingFrameDelay = 12;
+            MountData.flyingFrameStart = 4;
             // In-air
             MountData.inAirFrameCount = 1;
             MountData.inAirFrameDelay = 12;
-            MountData.inAirFrameStart = 0;
+            MountData.inAirFrameStart = 5;
             // Idle
             // All set to 0 as there is no idle animation
             MountData.idleFrameCount = 0;
@@ -112,14 +113,23 @@ namespace MechMod.Content.Mechs
             player.width = 26;
 
             // Apply visuals to the Mech
+            //if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
+            //    headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}").Value;
+            //if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
+            //    bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}").Value;
+            //if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
+            //    armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}").Value;
+            //if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
+            //    legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}").Value;
+
             if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
-                headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}").Value;
+                headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/TestHeadAnim").Value;
             if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
-                bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}").Value;
+                bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/TestBodyAnim").Value;
             if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
-                armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}").Value;
+                armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/TestArmsAnim").Value;
             if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
-                legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}").Value;
+                legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/TestLegsAnim").Value;
 
             // Apply Part Stats
             ApplyPartStats(modPlayer, modPlayer.equippedParts[MechMod.headIndex], modPlayer.equippedParts[MechMod.bodyIndex], modPlayer.equippedParts[MechMod.armsIndex], modPlayer.equippedParts[MechMod.legsIndex], modPlayer.equippedParts[MechMod.boosterIndex]);
@@ -192,6 +202,9 @@ namespace MechMod.Content.Mechs
             if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon)
             {
                 weapon.UseAbility(player, mousePosition, toggleOn);
+                if (weapon.useType == Weapons.UseType.Swing)
+                {
+                }
             }
             else
             {

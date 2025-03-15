@@ -15,7 +15,18 @@ namespace MechMod.Content.Items.MechWeapons
 
         // These functions allow easy grabbing of Damage, Critical Chance, Attack Speed and Knockback bonuses for when the Mech parts change them (or for Upgrades)
 
+        // DamageClass sets the type of damage the weapon does, which is used to calculate what bonuses the weapon recieves
+        // e.g. Melee weapons will recieve bonuses from Melee Damage, Ranged weapons will recieve bonuses from Ranged Damage, etc.
         public static DamageClass damageClass;
+
+        // UseType sets the kind of action the Mech executes to use the weapon
+        // e.g. Swing weapons will swing the weapon (for something like a sword), Point weapons will point the weapon (for something like a gun)
+        public enum UseType
+        {
+            Swing,
+            Point
+        }
+        public static UseType useType;
 
         public static float partDamageBonus;
         public static float partCritChanceBonus;

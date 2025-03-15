@@ -26,6 +26,8 @@ namespace MechMod.Content.Items.MechWeapons
 
         private int timer;
 
+        public Weapons.UseType useType => Weapons.UseType.Point;
+
         public void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
         {
             int projectileType = ProjectileID.Bullet;

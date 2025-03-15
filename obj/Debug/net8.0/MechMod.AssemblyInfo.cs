@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MechMod")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9000c6f9cd119dd43752f9c72b6952d106939dd9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9e3bc0a0640514dea0b669eae141e8a720cc77b8")]
 [assembly: System.Reflection.AssemblyProductAttribute("MechMod")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MechMod")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
