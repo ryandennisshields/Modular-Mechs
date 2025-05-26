@@ -24,8 +24,8 @@ namespace MechMod.Content.Items.MechWeapons
             Item.rare = 3; // The rarity of the item.
         }
 
-        private int timer;
-
+        public float timer { get; set; } = 0f;
+        public float attackRate { get; set; } = 0f;
         public Weapons.UseType useType => Weapons.UseType.Point;
 
         public void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
@@ -36,7 +36,7 @@ namespace MechMod.Content.Items.MechWeapons
 
             int damage = Weapons.DamageCalc(12, player);
             Weapons.CritChanceCalc(4, player);
-            int attackSpeed = Weapons.AttackSpeedCalc(20, player);
+            attackRate = Weapons.AttackSpeedCalc(20, player);
             float knockback = Weapons.KnockbackCalc(4, player);
             float projSpeed = 10;
 
@@ -46,13 +46,13 @@ namespace MechMod.Content.Items.MechWeapons
             direction.Normalize();
             Vector2 velocity = direction * projSpeed;
 
-            if (player.whoAmI == Main.myPlayer && Main.mouseLeft && timer >= attackSpeed)
+            if (player.whoAmI == Main.myPlayer && Main.mouseLeft && timer >= attackRate)
             {
                 int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter, velocity, projectileType, damage, knockback, owner);
                 timer = 0;
             }
 
-            if (timer < attackSpeed)
+            if (timer < attackRate)
                 timer++;
         }
     }

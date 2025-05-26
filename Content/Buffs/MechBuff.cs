@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MechMod.Content.Mechs;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace MechMod.Content.Buffs
 
         public override void Update(Player player, ref int buffIndex)
         {
-            // Any additional effects while the buff is active
+            // Disable item use
             player.controlUseItem = false;
         }
     }

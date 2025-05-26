@@ -10,6 +10,7 @@ using Terraria.ID;
 using MechMod.Content.Items.MechWeapons;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using MechMod.Content.Projectiles;
 
 namespace MechMod.Content.Items.MechWeapons
 {
@@ -23,7 +24,8 @@ namespace MechMod.Content.Items.MechWeapons
             Item.rare = 2; // The rarity of the item.
         }
 
-        private int timer;
+        public float timer { get; set; } = 0f;
+        public float attackRate { get; set; } = 0f;
 
         public Weapons.UseType useType => Weapons.UseType.Swing;
 
@@ -33,9 +35,9 @@ namespace MechMod.Content.Items.MechWeapons
 
             Weapons.damageClass = DamageClass.Melee;
 
-        int damage = Weapons.DamageCalc(12, player);
+            int damage = Weapons.DamageCalc(12, player);
             Weapons.CritChanceCalc(4, player);
-            int attackSpeed = Weapons.AttackSpeedCalc(20, player);
+            attackRate = Weapons.AttackSpeedCalc(20, player);
             float knockback = Weapons.KnockbackCalc(4, player);
             float projSpeed = 10;
 
@@ -45,13 +47,12 @@ namespace MechMod.Content.Items.MechWeapons
             direction.Normalize();
             Vector2 velocity = direction * projSpeed;
 
-            if (player.whoAmI == Main.myPlayer && Main.mouseLeft && timer >= attackSpeed)
+            if (player.whoAmI == Main.myPlayer && Main.mouseLeft && timer >= attackRate)
             {
-                int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter, velocity, projectileType, damage, knockback, owner);
+                Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter, velocity, projectileType, damage, knockback, owner);
                 timer = 0;
-            }
-
-            if (timer < attackSpeed)
+             }
+            if (timer < attackRate)
                 timer++;
         }
     }

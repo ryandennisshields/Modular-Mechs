@@ -28,6 +28,9 @@ namespace MechMod.Content.Items.MechWeapons
         }
         public static UseType useType;
 
+        public static float timer; // Timer for weapon attack rate
+        public static float attackRate; // Attack rate for the weapon, used to determine how fast the weapon can be used
+
         public static float partDamageBonus;
         public static float partCritChanceBonus;
         public static float partAttackSpeedBonus;

@@ -7,6 +7,7 @@ using MechMod.Content.Items.MechBoosters;
 using MechMod.Content.Items.MechHeads;
 using MechMod.Content.Items.MechLegs;
 using MechMod.Content.Items.MechWeapons;
+using MechMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -35,6 +36,9 @@ namespace MechMod.Content.Mechs
     {
         void UseAbility(Player player, Vector2 mousePosition, bool toggleOn);
         Weapons.UseType useType { get; }
+
+        public float timer { get; set; }
+        public float attackRate { get; set; }
     }
 
     public class ModularMech : ModMount
@@ -173,6 +177,8 @@ namespace MechMod.Content.Mechs
             }
         }
 
+        public float armScale = 1f; // This is used to hide the arm during weapon use animations
+
         public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)
         {
             if (drawType == 0)
@@ -190,7 +196,7 @@ namespace MechMod.Content.Mechs
                 playerDrawData.Add(new DrawData(headTexture, drawPosition + new Vector2(drawPlayer.direction, -71), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw right arm last
-                playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(-22 * drawPlayer.direction, -32), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(-22 * drawPlayer.direction, -32), frame, drawColor, rotation, drawOrigin, armScale, spriteEffects));
             }
             return false;
         }
@@ -201,10 +207,17 @@ namespace MechMod.Content.Mechs
 
             if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon)
             {
-                weapon.UseAbility(player, mousePosition, toggleOn);
-                if (weapon.useType == Weapons.UseType.Swing)
+                if (player.whoAmI == Main.myPlayer && Main.mouseLeft && weapon.timer >= weapon.attackRate)
                 {
+                    mousePosition = Main.MouseWorld;
+                    Vector2 direction = mousePosition - player.Center;
+                    direction.Normalize();
+                    Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter, direction, ModContent.ProjectileType<MechPoint>(), 0, 0, player.whoAmI);
+                    armScale = 0f;
                 }
+                else
+                    armScale = 1f;
+                weapon.UseAbility(player, mousePosition, toggleOn);
             }
             else
             {
