@@ -16,7 +16,6 @@
     <None Remove="Content\Items\MechLegs\BaseLegs.png" />
     <None Remove="Content\Items\MechWeapons\BaseGun.png" />
     <None Remove="Content\Items\MechSpawner.png" />
-    <None Remove="Content\Items\MechWeapons\BaseSword.png" />
     <None Remove="Content\Mechs\ModularMech_Back.png" />
     <None Remove="Content\Mechs\ModularMech_Front.png" />
   </ItemGroup>
