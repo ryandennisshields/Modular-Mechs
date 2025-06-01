@@ -52,6 +52,7 @@ namespace MechMod
                 { "BaseLegs", new MechPart(ModContent.ItemType<BaseLegs>(), "Legs")},
                 { "BaseBooster", new MechPart(ModContent.ItemType<BaseBooster>(), "Booster")},
                 { "BaseGun", new MechPart(ModContent.ItemType<BaseGun>(), "Weapon")},
+                { "BaseSword", new MechPart(ModContent.ItemType<BaseSword>(), "Weapon")}
             };
         }
 

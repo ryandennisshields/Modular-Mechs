@@ -41,12 +41,13 @@ namespace MechMod.Content.Items.MechWeapons
             float projSpeed = 10;
 
             int owner = player.whoAmI;
-            Vector2 direction = Main.MouseWorld - Main.LocalPlayer.MountedCenter;
+            Vector2 direction = (Main.MouseWorld - Main.LocalPlayer.MountedCenter) - new Vector2(0, -42); // new Vector2 corrects the offset to still make it go towards the cursor
+            direction.Normalize(); // Normalize the direction vector to ensure it has a length of 1
             Vector2 velocity = direction * projSpeed;
 
             if (player.whoAmI == Main.myPlayer && Main.mouseLeft && timer >= attackRate)
             {
-                int projID = Projectile.NewProjectile(new EntitySource_Parent(player), Main.LocalPlayer.MountedCenter, velocity, projectileType, damage, knockback, owner);
+                int projID = Projectile.NewProjectile(new EntitySource_Parent(player), Main.LocalPlayer.MountedCenter + new Vector2(0, -42), velocity, projectileType, damage, knockback, owner);
                 timer = 0;
             }
 

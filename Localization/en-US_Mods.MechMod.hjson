@@ -67,4 +67,7 @@ Buffs: {
 	}
 }
 
-Projectiles.MechPoint.DisplayName: Mech Point
+Projectiles: {
+	MechPoint.DisplayName: Mech Point
+	BaseSwordSwing.DisplayName: Base Sword Swing
+}

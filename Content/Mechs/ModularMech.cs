@@ -8,7 +8,6 @@ using MechMod.Content.Items.MechBoosters;
 using MechMod.Content.Items.MechHeads;
 using MechMod.Content.Items.MechLegs;
 using MechMod.Content.Items.MechWeapons;
-using MechMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -170,6 +169,8 @@ namespace MechMod.Content.Mechs
         private Vector2 weaponOrigin = Vector2.Zero; // Used so a different origin can be set for rotation (used for the swing use type)
         private float weaponScale = 1f; // Used so the weapon can be hidden when needed
 
+        public float swingProgress = -1f; // Used specifically so swing animation can be tied to arm movement
+
         public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)
         {
             // Apply visuals to the Mech
@@ -198,7 +199,7 @@ namespace MechMod.Content.Mechs
                 weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{modPlayer.equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}").Value;
 
             //armPosition = new Vector2(-22 * drawPlayer.direction, -32);
-            weaponPosition = new Vector2(-5, -44); // -5 = offset from player center as base value is a bit too far to the right, -44 = y offset to match arm position
+            weaponPosition = new Vector2(3 * drawPlayer.direction, -44); // 3 = offset from player center as base value is a bit too far to the right, -44 = y offset to match arm position
             weaponOrigin = new Vector2(weaponTexture.Width / 2 - 26, weaponTexture.Height / 2); // width = getting the middle point of the weapon sprite combined with an offset to make it point outwards more from the mech body, height = middle point of sprite (offsetting this does weird stuff)
             SpriteEffects weaponSpriteEffects = drawPlayer.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically; // Flip the weapon sprite based on the player's direction
 
@@ -290,7 +291,7 @@ namespace MechMod.Content.Mechs
             // animation time can be added to the IMechWeapon interface, so that each weapon can have its own animation time, or it can be set to a default value in the ModularMech class
             // For Point weapons, animation time basically dictates how long the arm stays in the pointing position, while for Swing weapons, it dictates how long the arm takes to swing down (which technically also controls the speed of the swing)
 
-            // Swing weapons create a projectile then that projectile is modified with Main.projectiles
+            // Swing weapons create a projectile then that projectile is modified with Main.projectiles (to change position actively)
 
             float angle = (Main.MouseWorld - Main.LocalPlayer.MountedCenter).ToRotation(); // Get the angle between the mouse position and the player mounted center
             int direction = Main.MouseWorld.X > Main.LocalPlayer.MountedCenter.X ? 1 : -1; // Determine the direction based on the mouse position relative to the player
@@ -317,14 +318,23 @@ namespace MechMod.Content.Mechs
                     {
                         armFrame = 7; // Pointing angled down
                     }
-                    else
-                        armFrame = -1;
-                    // Pointing animation logic here
-                    // For example, set the arm to point towards the mouse position
+                    //else
+                        //armFrame = -1;
                     break;
                 case Weapons.UseType.Swing:
-                    // Swinging animation logic here
-                    // For example, set the arm to swing in a downward arc
+                    if (swingProgress < 1f / 3f)
+                    {
+                        Main.NewText("run up");
+                        armFrame = 10; // Up
+                    }
+                    else if (swingProgress < 2f / 3f)
+                    {
+                        armFrame = 9; // Angled up
+                    }
+                    else
+                    {
+                        armFrame = 8; // Horizontal
+                    }
                     break;
                 default:
                     armFrame = -1;
