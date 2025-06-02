@@ -39,7 +39,7 @@ namespace MechMod.Content.Items.MechWeapons
 
             int damage = Weapons.DamageCalc(12, player);
             Weapons.CritChanceCalc(4, player);
-            attackRate = Weapons.AttackSpeedCalc(20, player);
+            attackRate = Weapons.AttackSpeedCalc(100, player);
             float knockback = Weapons.KnockbackCalc(4, player);
 
             int owner = player.whoAmI;
@@ -47,6 +47,7 @@ namespace MechMod.Content.Items.MechWeapons
             if (player.whoAmI == Main.myPlayer && Main.mouseLeft && timer >= attackRate)
             {
                 int projID = Projectile.NewProjectile(new EntitySource_Parent(player), Main.LocalPlayer.MountedCenter, new Vector2(0,0), projectileType, damage, knockback, owner);
+                player.GetModPlayer<MechModPlayer>().animationTime = 30;
                 timer = 0;
             }
 
@@ -66,7 +67,7 @@ namespace MechMod.Content.Items.MechWeapons
             Projectile.height = 80;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = (int)SwingDuration; // (Can be used for animation speed)
+            Projectile.timeLeft = (int)SwingDuration;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.ownerHitCheck = true;
@@ -80,16 +81,24 @@ namespace MechMod.Content.Items.MechWeapons
 
             float progress = 1f - (Projectile.timeLeft / SwingDuration);
 
-            if (player.mount.Active && player.mount.Type == ModContent.MountType<ModularMech>())
-            {
-                ModularMech mech = (ModularMech)player.mount._mountSpecificData;
-                if (mech != null)
-                {
-                    mech.swingProgress = progress;
-                }
-            }
+            //player.GetModPlayer<MechModPlayer>().animationTime = MathHelper.Lerp(3, 0, progress);
+            //Main.NewText(player.GetModPlayer<MechModPlayer>().animationTime);
 
-            // Set the swing arc (from -45 to +45 degrees, for example)
+            //if (progress <= 0.33)
+            //{
+            //    player.GetModPlayer<MechModPlayer>().animationTime = 3;
+            //}
+            //else if (progress <= 0.66)
+            //{
+            //    player.GetModPlayer<MechModPlayer>().animationTime = 2;
+            //}
+            //else
+            //{
+            //    player.GetModPlayer<MechModPlayer>().animationTime = 1;
+            //}
+            //Main.NewText(progress);
+
+            // Set the swing arc (from -45 to +45 degrees+, for example)
             float startAngle = -1.5f * player.direction;
             float endAngle = 1.5f * player.direction;
             float angle = MathHelper.Lerp(startAngle, endAngle, progress);
@@ -109,8 +118,8 @@ namespace MechMod.Content.Items.MechWeapons
             Projectile.rotation = angle + (player.direction == 1 ? 0f : MathHelper.Pi);
 
             // Make sure the projectile follows the player's direction
-            Projectile.direction = player.direction;
-            Projectile.spriteDirection = player.direction;
+            //Projectile.direction = player.direction;
+            //Projectile.spriteDirection = player.direction;
 
             // Optional: kill the projectile if the player can't use items
             //if (!player.channel || player.noItems || player.CCed)
@@ -143,17 +152,6 @@ namespace MechMod.Content.Items.MechWeapons
                 0
             );
             return false; // We handled drawing
-        }
-
-        public override void Kill(int timeLeft)
-        {
-            Player player = Main.player[Projectile.owner];
-            if (player.mount.Active && player.mount.Type == ModContent.MountType<ModularMech>())
-            {
-                ModularMech mech = (ModularMech)player.mount._mountSpecificData;
-                if (mech != null)
-                    mech.swingProgress = -1f;
-            }
         }
     }
 }

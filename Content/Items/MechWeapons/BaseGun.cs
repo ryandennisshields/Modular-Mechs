@@ -11,6 +11,7 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Runtime.CompilerServices;
+using MechMod.Common.Players;
 
 namespace MechMod.Content.Items.MechWeapons
 {
@@ -48,6 +49,7 @@ namespace MechMod.Content.Items.MechWeapons
             if (player.whoAmI == Main.myPlayer && Main.mouseLeft && timer >= attackRate)
             {
                 int projID = Projectile.NewProjectile(new EntitySource_Parent(player), Main.LocalPlayer.MountedCenter + new Vector2(0, -42), velocity, projectileType, damage, knockback, owner);
+                player.GetModPlayer<MechModPlayer>().animationTime = 20;
                 timer = 0;
             }
 

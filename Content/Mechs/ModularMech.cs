@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Net.Mail;
+using System.Runtime.CompilerServices;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -169,8 +170,6 @@ namespace MechMod.Content.Mechs
         private Vector2 weaponOrigin = Vector2.Zero; // Used so a different origin can be set for rotation (used for the swing use type)
         private float weaponScale = 1f; // Used so the weapon can be hidden when needed
 
-        public float swingProgress = -1f; // Used specifically so swing animation can be tied to arm movement
-
         public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)
         {
             // Apply visuals to the Mech
@@ -230,8 +229,38 @@ namespace MechMod.Content.Mechs
                 // Draw right arm last
                 playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(-22 * drawPlayer.direction, -46), setArmFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
             }
+
+            //if (modPlayer.animationTime > 0)
+            //{
+            //if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon)
+            //{
+            //    if (drawPlayer.whoAmI == Main.myPlayer && weapon.timer >= weapon.attackRate && modPlayer.animationTime >= 0 && animateOnce)
+            //    {
+            //        WeaponUseAnimation(wegipon.useType);
+            //    }
+            //    else if (modPlayer.animationTime <= 0)
+            //    {
+            //        animateOnce = true;
+            //    }
+            //}
+                //if (modPlayer.animationTime > 2)
+                //{
+                //    armFrame = 10;
+                //}
+                //else if (modPlayer.animationTime > 1 && modPlayer.animationTime <= 2)
+                //{
+                //    armFrame = 9;
+                //}
+                //else if (modPlayer.animationTime > 0 && modPlayer.animationTime <= 1)
+                //{
+                //    armFrame = 8;
+                //}
+            //}
+
             return false;
         }
+
+        private bool animateOnce = true;
 
         public override void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
         {
@@ -246,14 +275,11 @@ namespace MechMod.Content.Mechs
                     else
                         Main.LocalPlayer.direction = -1;
                 }
-                if (player.whoAmI == Main.myPlayer && Main.mouseLeft && weapon.timer >= weapon.attackRate)
+                if (player.whoAmI == Main.myPlayer && Main.mouseLeft && weapon.timer >= weapon.attackRate) // Only if player is holding left mouse and weapon is ready to attack
                 {
                     WeaponUseAnimation(weapon.useType);
                 }
-                //
-                // THIS SHOULD ALSO NOT ACTIVATE IF THE ANIMATION TIME IS STILL ACTIVE
-                //
-                else if (player.whoAmI == Main.myPlayer && !Main.mouseLeft) // Only if the player has let go of left mouse
+                else if (player.whoAmI == Main.myPlayer && !Main.mouseLeft && modPlayer.animationTime <= 0) // Only if the player has let go of left mouse
                 {
                     armFrame = -1; // Reset the arm frame to default
                     weaponScale = 0f; // Hide the weapon when not in use
@@ -293,48 +319,54 @@ namespace MechMod.Content.Mechs
 
             // Swing weapons create a projectile then that projectile is modified with Main.projectiles (to change position actively)
 
-            float angle = (Main.MouseWorld - Main.LocalPlayer.MountedCenter).ToRotation(); // Get the angle between the mouse position and the player mounted center
-            int direction = Main.MouseWorld.X > Main.LocalPlayer.MountedCenter.X ? 1 : -1; // Determine the direction based on the mouse position relative to the player
-            float angleDeg = MathHelper.ToDegrees(angle); // Convert the angle to degrees for easier calculations
+
+            var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
             switch (useType)
             {
                 case Weapons.UseType.Point:
-                    weaponRotation = angle; // Set the weapon rotation to the angle between the mouse and the player
-                    weaponScale = 1f; // Set the weapon scale to 1 so it is visible when pointing
-                    // Check if the mouse is at different angles relative to the player (so if mouse is pointing up, the arm will point up, if mouse is pointing down, the arm will point down, etc.)
-                    if (angleDeg >= -135 && angleDeg <= -45)
-                    {
-                        armFrame = 9; // Pointing angled up
-                    }
-                    else if (angleDeg >= -45 && angleDeg <= 45)
-                    {
-                        armFrame = 8; // Pointing horizontal right
-                    }
-                    else if (angleDeg <= -135 || angleDeg >= 135)
-                    {
-                        armFrame = 8; // Pointing horizontal left
-                    }
-                    else if (angleDeg <= 135 && angleDeg >= 45)
-                    {
-                        armFrame = 7; // Pointing angled down
-                    }
-                    //else
-                        //armFrame = -1;
+                    //if (animateOnce)
+                    //{
+                        //animateOnce = false;
+                        float angle = (Main.MouseWorld - Main.LocalPlayer.MountedCenter).ToRotation(); // Get the angle between the mouse position and the player mounted center
+                        int direction = Main.MouseWorld.X > Main.LocalPlayer.MountedCenter.X ? 1 : -1; // Determine the direction based on the mouse position relative to the player
+                        float angleDeg = MathHelper.ToDegrees(angle); // Convert the angle to degrees for easier calculations
+                        weaponRotation = angle; // Set the weapon rotation to the angle between the mouse and the player
+                        weaponScale = 1f; // Set the weapon scale to 1 so it is visible when pointing
+                                          // Check if the mouse is at different angles relative to the player (so if mouse is pointing up, the arm will point up, if mouse is pointing down, the arm will point down, etc.)
+                        if (angleDeg >= -135 && angleDeg <= -45)
+                        {
+                            armFrame = 9; // Pointing angled up
+                        }
+                        else if (angleDeg >= -45 && angleDeg <= 45)
+                        {
+                            armFrame = 8; // Pointing horizontal right
+                        }
+                        else if (angleDeg <= -135 || angleDeg >= 135)
+                        {
+                            armFrame = 8; // Pointing horizontal left
+                        }
+                        else if (angleDeg <= 135 && angleDeg >= 45)
+                        {
+                            armFrame = 7; // Pointing angled down
+                        }
+                    //}
                     break;
                 case Weapons.UseType.Swing:
-                    if (swingProgress < 1f / 3f)
-                    {
-                        Main.NewText("run up");
-                        armFrame = 10; // Up
-                    }
-                    else if (swingProgress < 2f / 3f)
-                    {
-                        armFrame = 9; // Angled up
-                    }
-                    else
-                    {
-                        armFrame = 8; // Horizontal
-                    }
+                    //if (modPlayer.animationTime > 2)
+                    //{
+                    //    armFrame = 10;
+                    //}
+                    //else if (modPlayer.animationTime > 1 && modPlayer.animationTime <= 2)
+                    //{
+                    //    armFrame = 9;
+                    //}
+                    //else if (modPlayer.animationTime > 0 && modPlayer.animationTime <= 1)
+                    //{
+                    //    armFrame = 8;
+                    //}
+                    //float progress = 1f - (modPlayer.animationTime / 30); // Calculate the progress of the swing animation based on the animation time
+                    //armFrame = (int)MathHelper.Lerp(10, 8, progress); // Lerp between the arm frames for the swing animation (10 = Up, 9 = Angled Up, 8 = Horizontal)
+                    //Main.NewText(progress);
                     break;
                 default:
                     armFrame = -1;

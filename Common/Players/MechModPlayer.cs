@@ -29,6 +29,9 @@ namespace MechMod.Common.Players
         public int upgradeLevel;
         public float upgradeDamageBonus;
 
+        public float animationTime; // Used for animation logic behind mech weapon usage
+                                    // (For example, for swinging, it changes how fast the weapon swings and how the arm moves with it, and for pointing it changes how long the arm and weapon remain out)
+
         public override void Initialize()
         {
             equippedParts = new Item[6];
@@ -175,6 +178,9 @@ namespace MechMod.Common.Players
                 disableMounts = true;
                 CanUseItem(mechSpawnerItem.Item);
             }
+
+            if (animationTime > 0)
+                animationTime--;
         }
 
         public override bool CanUseItem(Item item)
