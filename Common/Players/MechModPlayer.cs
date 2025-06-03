@@ -18,6 +18,7 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.Utilities.Terraria.Utilities;
 
 namespace MechMod.Common.Players
 {
@@ -31,6 +32,8 @@ namespace MechMod.Common.Players
 
         public float animationTime; // Used for animation logic behind mech weapon usage
                                     // (For example, for swinging, it changes how fast the weapon swings and how the arm moves with it, and for pointing it changes how long the arm and weapon remain out)
+        public float animationProgress;
+        public int lastUseDirection;
 
         public override void Initialize()
         {
@@ -156,6 +159,9 @@ namespace MechMod.Common.Players
                 drawInfo.drawPlayer.legs = 0;
 
                 drawInfo.drawPlayer.invis = true;
+
+                if (lastUseDirection != 0)
+                    drawInfo.drawPlayer.direction = lastUseDirection;
             }
         }
 

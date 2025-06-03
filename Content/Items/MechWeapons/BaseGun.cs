@@ -49,12 +49,8 @@ namespace MechMod.Content.Items.MechWeapons
             if (player.whoAmI == Main.myPlayer && Main.mouseLeft && timer >= attackRate)
             {
                 int projID = Projectile.NewProjectile(new EntitySource_Parent(player), Main.LocalPlayer.MountedCenter + new Vector2(0, -42), velocity, projectileType, damage, knockback, owner);
-                player.GetModPlayer<MechModPlayer>().animationTime = 20;
-                timer = 0;
+                player.GetModPlayer<MechModPlayer>().animationTime = 50;
             }
-
-            if (timer < attackRate)
-                timer++;
         }
     }
 }
