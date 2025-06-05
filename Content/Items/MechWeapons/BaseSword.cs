@@ -35,7 +35,7 @@ namespace MechMod.Content.Items.MechWeapons
 
         public void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
         {
-            int projectileType = ModContent.ProjectileType<BaseSwordSwing>();
+            int projectileType = ModContent.ProjectileType<BaseSwordProj>();
 
             Weapons.damageClass = DamageClass.Melee;
 
@@ -49,24 +49,24 @@ namespace MechMod.Content.Items.MechWeapons
             if (player.whoAmI == Main.myPlayer && Main.mouseLeft && timer >= attackRate)
             {
                 int projID = Projectile.NewProjectile(new EntitySource_Parent(player), Main.LocalPlayer.MountedCenter, new Vector2(0,0), projectileType, damage, knockback, owner);
-                if (Main.projectile.IndexInRange(projID) && Main.projectile[projID].ModProjectile is BaseSwordSwing swing)
+                if (Main.projectile.IndexInRange(projID) && Main.projectile[projID].ModProjectile is BaseSwordProj proj)
                 {
-                    swing.swingDuration = attackRate;
+                    proj.swingDuration = attackRate;
                     Main.projectile[projID].timeLeft = (int)attackRate; // Ensure timeLeft matches
                 }
             }
         }
     }
 
-    public class BaseSwordSwing : ModProjectile
+    public class BaseSwordProj : ModProjectile
     {
         //private const float SwingArc = 2.5f;
         public float swingDuration;
 
         public override void SetDefaults()
         {
-            Projectile.width = 10;
-            Projectile.height = 80;
+            Projectile.width = 50;
+            Projectile.height = 50;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             //Projectile.timeLeft = (int)swingDuration;
@@ -82,6 +82,7 @@ namespace MechMod.Content.Items.MechWeapons
             Player player = Main.player[Projectile.owner];
             MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
 
+            modPlayer.animationTime = Projectile.timeLeft;
             float progress = 1f - (Projectile.timeLeft / swingDuration);
 
             //player.GetModPlayer<MechModPlayer>().animationTime = MathHelper.Lerp(3, 0, progress);
@@ -111,7 +112,7 @@ namespace MechMod.Content.Items.MechWeapons
             float angle = MathHelper.Lerp(startAngle, endAngle, progress);
 
             // Set the distance from the player (how far the sword is held out)
-            float distance = 60f; // Adjust to match your sprite's blade length
+            float distance = 60f * modPlayer.lastUseDirection; // Adjust to match your sprite's blade length
 
             // Offset for the swing's origin (raise/lower as needed)
             Vector2 swingOriginOffset = new Vector2(-10, -40);
@@ -125,12 +126,15 @@ namespace MechMod.Content.Items.MechWeapons
             Projectile.rotation = angle + (modPlayer.lastUseDirection == 1 ? 0f : MathHelper.Pi);
 
             // Make sure the projectile follows the player's direction
-            //Projectile.direction = player.direction;
-            //Projectile.spriteDirection = player.direction;
+            Projectile.direction = modPlayer.lastUseDirection;
+            Projectile.spriteDirection = modPlayer.lastUseDirection;
 
+            if (!player.mount.Active)
+                Projectile.Kill();
             // Optional: kill the projectile if the player can't use items
             //if (!player.channel || player.noItems || player.CCed)
             //    Projectile.Kill();
+
         }
 
         public override void OnKill(int timeLeft)
@@ -152,7 +156,7 @@ namespace MechMod.Content.Items.MechWeapons
 
             // Set the origin to the base of the sword (e.g., middle of the left edge if the blade points right)
             // -60 is distance
-            Vector2 swordOrigin = new Vector2(texture.Width / 2f - 60f, texture.Height); // Adjust as needed for your sprite
+            Vector2 swordOrigin = new Vector2(texture.Width / 2f - 60f, texture.Height / 2f); // Adjust as needed for your sprite
 
             Main.EntitySpriteDraw(
                 texture,
@@ -161,8 +165,8 @@ namespace MechMod.Content.Items.MechWeapons
                 lightColor,
                 Projectile.rotation,
                 swordOrigin,
-                Projectile.scale,
-                Projectile.spriteDirection == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None,
+                0,
+                SpriteEffects.None,
                 0
             );
             return false; // We handled drawing

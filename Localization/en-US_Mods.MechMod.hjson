@@ -70,4 +70,5 @@ Buffs: {
 Projectiles: {
 	MechPoint.DisplayName: Mech Point
 	BaseSwordSwing.DisplayName: Base Sword Swing
+	BaseSwordProj.DisplayName: Base Sword Proj
 }
