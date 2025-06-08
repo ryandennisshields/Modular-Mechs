@@ -185,7 +185,7 @@ namespace MechMod.Content.Mechs
                 {
                     animateOnce = false; // Reset the animation once the weapon is ready to attack again
                 }
-                if (player.whoAmI == Main.myPlayer && !Main.mouseLeft && modPlayer.animationTime <= 0 || modPlayer.animationProgress <= 0)
+                if (player.whoAmI == Main.myPlayer && !Main.mouseLeft && modPlayer.animationTime <= 0 && modPlayer.animationProgress <= 0)
                 {
                     armFrame = -1; // Reset the arm frame to default
                     weaponScale = 0f; // Hide the weapon when not in use
@@ -239,8 +239,6 @@ namespace MechMod.Content.Mechs
                 weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{modPlayer.equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}").Value;
 
             //armPosition = new Vector2(-22 * drawPlayer.direction, -32);
-            weaponPosition = new Vector2(3 * drawPlayer.direction, -44); // 3 = offset from player center as base value is a bit too far to the right, -44 = y offset to match arm position
-            weaponOrigin = new Vector2(weaponTexture.Width / 2 - 26, weaponTexture.Height / 2); // width = getting the middle point of the weapon sprite combined with an offset to make it point outwards more from the mech body, height = middle point of sprite (offsetting this does weird stuff)
 
             Rectangle setArmFrame = frame; // Get the default frame logic as a new rectangle
             if (armFrame >= 0) // If the arm frame is manually set,
@@ -366,6 +364,8 @@ namespace MechMod.Content.Mechs
                     animateOnce = true;
                     if (Main.mouseLeft)
                     {
+                        weaponPosition = new Vector2(3 * modPlayer.lastUseDirection, -44); // 3 = offset from player center as base value is a bit too far to the right, -44 = y offset to match arm position
+                        weaponOrigin = new Vector2(weaponTexture.Width / 2 - 26, weaponTexture.Height / 2); // width = getting the middle point of the weapon sprite combined with an offset to make it point outwards more from the mech body, height = middle point of sprite (offsetting this does weird stuff)
                         weaponSpriteEffects = modPlayer.lastUseDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically; // Flip the weapon sprite based on the player's direction
                         float anglee = (Main.MouseWorld - Main.LocalPlayer.MountedCenter).ToRotation(); // Get the angle between the mouse position and the player mounted center
                         float angleDeg = MathHelper.ToDegrees(anglee); // Convert the angle to degrees for easier calculations
@@ -393,7 +393,7 @@ namespace MechMod.Content.Mechs
                 case Weapons.UseType.Swing:
 
                     weaponScale = 1f;
-                    float progress = 1f - (modPlayer.animationTime / weapon.attackRate);
+                    float progress = 1f - (modPlayer.animationProgress / weapon.attackRate);
                     weaponSpriteEffects = modPlayer.lastUseDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically; // Flip the weapon sprite based on the player's direction
                     //player.GetModPlayer<MechModPlayer>().animationTime = MathHelper.Lerp(3, 0, progress);
                     //Main.NewText(player.GetModPlayer<MechModPlayer>().animationTime);
@@ -401,36 +401,33 @@ namespace MechMod.Content.Mechs
                     if (progress <= 0.25)
                     {
                         armFrame = 10;
+                        //modPlayer.animationProgress = 4;
                     }
                     else if (progress <= 0.5)
                     {
                         armFrame = 9;
+                        //modPlayer.animationProgress = 3;
                     }
                     else if (progress <= 0.75)
                     {
                         armFrame = 8;
+                       //modPlayer.animationProgress = 2;
                     }
                     else
                     {
                         armFrame = 7;
+                        //modPlayer.animationProgress = 1;
                     }
                     //Main.NewText(progress);
 
                     // Set the swing arc (from -45 to +45 degrees+, for example)
-                    float startAngle = -1.5f * modPlayer.lastUseDirection;
-                    float endAngle = 1.5f * modPlayer.lastUseDirection;
+                    float startAngle = -MathHelper.PiOver2 * modPlayer.lastUseDirection;
+                    float endAngle = MathHelper.PiOver2 * modPlayer.lastUseDirection;
                     float angle = MathHelper.Lerp(startAngle, endAngle, progress);
 
-                    // Set the distance from the player (how far the sword is held out)
-                    float distance = 60f * modPlayer.lastUseDirection; // Adjust to match your sprite's blade length
+                    weaponPosition = new Vector2(-10 * modPlayer.lastUseDirection, -50);
 
-                    // Offset for the swing's origin (raise/lower as needed)
-                    Vector2 swingOriginOffset = new Vector2(-10, -40);
-
-                    // Calculate the position of the sword's tip
-                    Vector2 swingOrigin = player.MountedCenter + swingOriginOffset;
-                    Vector2 offset = angle.ToRotationVector2() * distance;
-                    weaponPosition = swingOrigin + offset;
+                    weaponOrigin = new Vector2(weaponTexture.Width / 2 - 70, weaponTexture.Height / 2 + 40 * modPlayer.lastUseDirection);
 
                     // Set rotation for drawing
                     weaponRotation = angle + (modPlayer.lastUseDirection == 1 ? 0f : MathHelper.Pi);

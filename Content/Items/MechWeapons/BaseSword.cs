@@ -41,7 +41,7 @@ namespace MechMod.Content.Items.MechWeapons
 
             int damage = Weapons.DamageCalc(12, player);
             Weapons.CritChanceCalc(4, player);
-            attackRate = Weapons.AttackSpeedCalc(100, player);
+            attackRate = Weapons.AttackSpeedCalc(50, player);
             float knockback = Weapons.KnockbackCalc(4, player);
 
             int owner = player.whoAmI;
@@ -65,8 +65,8 @@ namespace MechMod.Content.Items.MechWeapons
 
         public override void SetDefaults()
         {
-            Projectile.width = 50;
-            Projectile.height = 50;
+            Projectile.width = 90;
+            Projectile.height = 90;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             //Projectile.timeLeft = (int)swingDuration;
@@ -82,52 +82,52 @@ namespace MechMod.Content.Items.MechWeapons
             Player player = Main.player[Projectile.owner];
             MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
 
-            modPlayer.animationTime = Projectile.timeLeft;
+            modPlayer.animationProgress = Projectile.timeLeft;
             float progress = 1f - (Projectile.timeLeft / swingDuration);
 
             //player.GetModPlayer<MechModPlayer>().animationTime = MathHelper.Lerp(3, 0, progress);
             //Main.NewText(player.GetModPlayer<MechModPlayer>().animationTime);
 
-            if (progress <= 0.25)
+            Vector2 position = new Vector2(0,0);
+
+            if (progress <= 0.33)
             {
-                modPlayer.animationProgress = 4;
+                position = new Vector2(-20 * modPlayer.lastUseDirection, -130); // Adjust this to match the initial position of the sword
             }
-            else if (progress <= 0.5)
+            else if (progress <= 0.66)
             {
-                modPlayer.animationProgress = 3;
-            }
-            else if (progress <= 0.75)
-            {
-                modPlayer.animationProgress = 2;
+                position = new Vector2(70 * modPlayer.lastUseDirection, -90); // Adjust this to match the mid-swing position of the sword
             }
             else
             {
-                modPlayer.animationProgress = 1;
+                position = new Vector2(70 * modPlayer.lastUseDirection, 0); // Adjust this to match the final position of the sword
             }
+
+            Projectile.Center = player.Center + position;
             //Main.NewText(progress);
 
             // Set the swing arc (from -45 to +45 degrees+, for example)
-            float startAngle = -1.5f * modPlayer.lastUseDirection;
-            float endAngle = 1.5f * modPlayer.lastUseDirection;
-            float angle = MathHelper.Lerp(startAngle, endAngle, progress);
+            //float startAngle = -MathHelper.Pi * modPlayer.lastUseDirection;
+            //float endAngle = MathHelper.PiOver2 * modPlayer.lastUseDirection;
+            //float angle = MathHelper.Lerp(startAngle, endAngle, progress);
 
-            // Set the distance from the player (how far the sword is held out)
-            float distance = 60f * modPlayer.lastUseDirection; // Adjust to match your sprite's blade length
+            ////Set the distance from the player(how far the sword is held out)
+            //float distance = 60f * modPlayer.lastUseDirection; // Adjust to match your sprite's blade length
 
-            // Offset for the swing's origin (raise/lower as needed)
-            Vector2 swingOriginOffset = new Vector2(-10, -40);
+            //// Offset for the swing's origin (raise/lower as needed)
+            //Vector2 swingOriginOffset = new Vector2(40 * modPlayer.lastUseDirection, -70);
 
-            // Calculate the position of the sword's tip
-            Vector2 swingOrigin = player.MountedCenter + swingOriginOffset;
-            Vector2 offset = angle.ToRotationVector2() * distance;
-            Projectile.Center = swingOrigin + offset;
+            //// Calculate the position of the sword's tip
+            //Vector2 swingOrigin = player.MountedCenter + swingOriginOffset;
+            //Vector2 offset = angle.ToRotationVector2() * distance;
+            //Projectile.Center = swingOrigin + offset;
 
-            // Set rotation for drawing
-            Projectile.rotation = angle + (modPlayer.lastUseDirection == 1 ? 0f : MathHelper.Pi);
+            //// Set rotation for drawing
+            //Projectile.rotation = angle + (modPlayer.lastUseDirection == 1 ? 0f : MathHelper.PiOver2);
 
             // Make sure the projectile follows the player's direction
-            Projectile.direction = modPlayer.lastUseDirection;
-            Projectile.spriteDirection = modPlayer.lastUseDirection;
+            //Projectile.direction = modPlayer.lastUseDirection;
+            //Projectile.spriteDirection = modPlayer.lastUseDirection;
 
             if (!player.mount.Active)
                 Projectile.Kill();
@@ -151,25 +151,38 @@ namespace MechMod.Content.Items.MechWeapons
             // Use the mech's center as the origin for rotation
             // The projectile's position is already set to player.MountedCenter + offset in AI
             // So, draw at player.MountedCenter, with the origin at the base of the sword sprite (e.g., handle)
-            Player player = Main.player[Projectile.owner];
-            Vector2 mechCenter = player.MountedCenter - Main.screenPosition;
+            //Player player = Main.player[Projectile.owner];
+            //MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
+            //Vector2 mechCenter = player.MountedCenter - Main.screenPosition;
 
             // Set the origin to the base of the sword (e.g., middle of the left edge if the blade points right)
             // -60 is distance
-            Vector2 swordOrigin = new Vector2(texture.Width / 2f - 60f, texture.Height / 2f); // Adjust as needed for your sprite
+            //Vector2 swordOrigin = new Vector2(texture.Width / 2f - 70f, texture.Height / 2f + 40 * modPlayer.lastUseDirection); // Adjust as needed for your sprite
 
             Main.EntitySpriteDraw(
                 texture,
-                mechCenter + new Vector2(-10, -40), // -40 to make it higher offset
+                Projectile.Center, //+ new Vector2(-10 * modPlayer.lastUseDirection, -50), // -40 to make it higher offset
                 null,
                 lightColor,
                 Projectile.rotation,
-                swordOrigin,
+                new Vector2(0,0),
                 0,
                 SpriteEffects.None,
                 0
             );
             return false; // We handled drawing
+        }
+
+        private HashSet<int> hitNPCs = new HashSet<int>(); // Track the NPCs that have been hit
+
+        public override bool? CanHitNPC(NPC target)
+        {
+            return !hitNPCs.Contains(target.whoAmI); // Allow hitting the NPC if it hasn't been hit yet
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            hitNPCs.Add(target.whoAmI); // Mark the NPC as hit (prevents one NPC from being hit multiple times in one swing)
         }
     }
 }
