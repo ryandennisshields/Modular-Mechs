@@ -30,10 +30,10 @@ namespace MechMod.Common.Players
         public int upgradeLevel;
         public float upgradeDamageBonus;
 
-        public float animationTime; // Used for animation logic behind mech weapon usage
-                                    // (For example, for swinging, it changes how fast the weapon swings and how the arm moves with it, and for pointing it changes how long the arm and weapon remain out)
-        public float animationProgress;
-        public int lastUseDirection;
+        public float animationTimer; // Timer for mech weapon animation logic (constantly ticks down)
+        public int animationProgress; // Progress for mech weapon animation logic (needs to be manually incremented and decremented)
+
+        public int lastUseDirection; // Stores the last weapon use direction
 
         public override void Initialize()
         {
@@ -63,16 +63,28 @@ namespace MechMod.Common.Players
         {
             if (tag.ContainsKey("equippedHead"))
                 equippedParts[MechMod.headIndex] = ItemIO.Load(tag.GetCompound("equippedHead"));
+            else
+                equippedParts[MechMod.headIndex] = new Item();
             if (tag.ContainsKey("equippedBody"))
                 equippedParts[MechMod.bodyIndex] = ItemIO.Load(tag.GetCompound("equippedBody"));
+            else
+                equippedParts[MechMod.bodyIndex] = new Item();
             if (tag.ContainsKey("equippedArms"))
                 equippedParts[MechMod.armsIndex] = ItemIO.Load(tag.GetCompound("equippedArms"));
+            else
+                equippedParts[MechMod.armsIndex] = new Item();
             if (tag.ContainsKey("equippedLegs"))
                 equippedParts[MechMod.legsIndex] = ItemIO.Load(tag.GetCompound("equippedLegs"));
+            else
+                equippedParts[MechMod.legsIndex] = new Item();
             if (tag.ContainsKey("equippedBooster"))
                 equippedParts[MechMod.boosterIndex] = ItemIO.Load(tag.GetCompound("equippedBooster"));
+            else
+                equippedParts[MechMod.boosterIndex] = new Item();
             if (tag.ContainsKey("equippedWeapon"))
                 equippedParts[MechMod.weaponIndex] = ItemIO.Load(tag.GetCompound("equippedWeapon"));
+            else
+                equippedParts[MechMod.weaponIndex] = new Item();
             if (tag.ContainsKey("upgradeLevel"))
                 upgradeLevel = tag.GetInt("upgradeLevel");
             if (tag.ContainsKey("upgradeDamageBonus"))
@@ -161,7 +173,7 @@ namespace MechMod.Common.Players
                 drawInfo.drawPlayer.invis = true;
 
                 if (lastUseDirection != 0)
-                    drawInfo.drawPlayer.direction = lastUseDirection;
+                    drawInfo.drawPlayer.direction = lastUseDirection; // Force player's direction to be the last use direction
             }
         }
 
@@ -185,8 +197,8 @@ namespace MechMod.Common.Players
                 CanUseItem(mechSpawnerItem.Item);
             }
 
-            if (animationTime > 0)
-                animationTime--;
+            if (animationTimer > 0)
+                animationTimer--;
         }
 
         public override bool CanUseItem(Item item)

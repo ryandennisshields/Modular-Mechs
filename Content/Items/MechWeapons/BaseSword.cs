@@ -42,17 +42,19 @@ namespace MechMod.Content.Items.MechWeapons
             int damage = Weapons.DamageCalc(12, player);
             Weapons.CritChanceCalc(4, player);
             attackRate = Weapons.AttackSpeedCalc(50, player);
-            float knockback = Weapons.KnockbackCalc(4, player);
+            float knockback = Weapons.KnockbackCalc(30, player);
 
             int owner = player.whoAmI;
 
-            if (player.whoAmI == Main.myPlayer && Main.mouseLeft && timer >= attackRate)
+            if (player.whoAmI == Main.myPlayer)
             {
                 int projID = Projectile.NewProjectile(new EntitySource_Parent(player), Main.LocalPlayer.MountedCenter, new Vector2(0,0), projectileType, damage, knockback, owner);
                 if (Main.projectile.IndexInRange(projID) && Main.projectile[projID].ModProjectile is BaseSwordProj proj)
                 {
-                    proj.swingDuration = attackRate;
-                    Main.projectile[projID].timeLeft = (int)attackRate; // Ensure timeLeft matches
+                    // Allow the swing speed to be modified by attack rate
+                    proj.swingDuration = attackRate; // Fixed number
+                    Main.projectile[projID].timeLeft = (int)attackRate; // Decreases each tick
+                    
                 }
             }
         }
@@ -60,8 +62,12 @@ namespace MechMod.Content.Items.MechWeapons
 
     public class BaseSwordProj : ModProjectile
     {
-        //private const float SwingArc = 2.5f;
-        public float swingDuration;
+        Player player;
+        MechModPlayer modPlayer;
+
+        public float swingDuration = 0f;
+
+        public override string Texture => "Terraria/Images/MagicPixel"; // Texture is not needed, visuals are handled in ModularMech code
 
         public override void SetDefaults()
         {
@@ -69,99 +75,42 @@ namespace MechMod.Content.Items.MechWeapons
             Projectile.height = 90;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
-            //Projectile.timeLeft = (int)swingDuration;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.ownerHitCheck = true;
-
-            AIType = ProjectileID.Bullet;
         }
 
         public override void AI()
         {
-            Player player = Main.player[Projectile.owner];
-            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
+            player = Main.player[Projectile.owner];
+            modPlayer = player.GetModPlayer<MechModPlayer>();
 
-            modPlayer.animationProgress = Projectile.timeLeft;
-            float progress = 1f - (Projectile.timeLeft / swingDuration);
+            modPlayer.animationProgress = Projectile.timeLeft; // Set the animation progress to the time left of the projectile
+            float progress = 1f - (Projectile.timeLeft / swingDuration); // Progress goes from 1 to 0 as the projectile time decreases
 
-            //player.GetModPlayer<MechModPlayer>().animationTime = MathHelper.Lerp(3, 0, progress);
-            //Main.NewText(player.GetModPlayer<MechModPlayer>().animationTime);
-
+            // Change the position of the hitbox as it goes through the swing
             Vector2 position = new Vector2(0,0);
 
             if (progress <= 0.33)
-            {
-                position = new Vector2(-20 * modPlayer.lastUseDirection, -130); // Adjust this to match the initial position of the sword
-            }
+                position = new Vector2(-30 * modPlayer.lastUseDirection, -130);
             else if (progress <= 0.66)
-            {
-                position = new Vector2(70 * modPlayer.lastUseDirection, -90); // Adjust this to match the mid-swing position of the sword
-            }
+                position = new Vector2(70 * modPlayer.lastUseDirection, -100);
             else
-            {
-                position = new Vector2(70 * modPlayer.lastUseDirection, 0); // Adjust this to match the final position of the sword
-            }
+                position = new Vector2(70 * modPlayer.lastUseDirection, 0);
 
             Projectile.Center = player.Center + position;
-            //Main.NewText(progress);
-
-            // Set the swing arc (from -45 to +45 degrees+, for example)
-            //float startAngle = -MathHelper.Pi * modPlayer.lastUseDirection;
-            //float endAngle = MathHelper.PiOver2 * modPlayer.lastUseDirection;
-            //float angle = MathHelper.Lerp(startAngle, endAngle, progress);
-
-            ////Set the distance from the player(how far the sword is held out)
-            //float distance = 60f * modPlayer.lastUseDirection; // Adjust to match your sprite's blade length
-
-            //// Offset for the swing's origin (raise/lower as needed)
-            //Vector2 swingOriginOffset = new Vector2(40 * modPlayer.lastUseDirection, -70);
-
-            //// Calculate the position of the sword's tip
-            //Vector2 swingOrigin = player.MountedCenter + swingOriginOffset;
-            //Vector2 offset = angle.ToRotationVector2() * distance;
-            //Projectile.Center = swingOrigin + offset;
-
-            //// Set rotation for drawing
-            //Projectile.rotation = angle + (modPlayer.lastUseDirection == 1 ? 0f : MathHelper.PiOver2);
-
-            // Make sure the projectile follows the player's direction
-            //Projectile.direction = modPlayer.lastUseDirection;
-            //Projectile.spriteDirection = modPlayer.lastUseDirection;
 
             if (!player.mount.Active)
                 Projectile.Kill();
-            // Optional: kill the projectile if the player can't use items
-            //if (!player.channel || player.noItems || player.CCed)
-            //    Projectile.Kill();
-
         }
-
-        public override void OnKill(int timeLeft)
-        {
-            Player player = Main.player[Projectile.owner];
-            player.GetModPlayer<MechModPlayer>().animationProgress = 0;
-        }
-
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-
-            // Use the mech's center as the origin for rotation
-            // The projectile's position is already set to player.MountedCenter + offset in AI
-            // So, draw at player.MountedCenter, with the origin at the base of the sword sprite (e.g., handle)
-            //Player player = Main.player[Projectile.owner];
-            //MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
-            //Vector2 mechCenter = player.MountedCenter - Main.screenPosition;
-
-            // Set the origin to the base of the sword (e.g., middle of the left edge if the blade points right)
-            // -60 is distance
-            //Vector2 swordOrigin = new Vector2(texture.Width / 2f - 70f, texture.Height / 2f + 40 * modPlayer.lastUseDirection); // Adjust as needed for your sprite
+            Texture2D texture = TextureAssets.MagicPixel.Value; // Texture is not needed, visuals are handled in ModularMech code
 
             Main.EntitySpriteDraw(
                 texture,
-                Projectile.Center, //+ new Vector2(-10 * modPlayer.lastUseDirection, -50), // -40 to make it higher offset
+                Projectile.Center,
                 null,
                 lightColor,
                 Projectile.rotation,
@@ -170,7 +119,7 @@ namespace MechMod.Content.Items.MechWeapons
                 SpriteEffects.None,
                 0
             );
-            return false; // We handled drawing
+            return false;
         }
 
         private HashSet<int> hitNPCs = new HashSet<int>(); // Track the NPCs that have been hit
@@ -183,6 +132,15 @@ namespace MechMod.Content.Items.MechWeapons
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             hitNPCs.Add(target.whoAmI); // Mark the NPC as hit (prevents one NPC from being hit multiple times in one swing)
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            modifiers.HitDirectionOverride = modPlayer.lastUseDirection; // Set the hit direction based on the player's last use direction
+        }
+        public override void OnKill(int timeLeft)
+        {
+            modPlayer.animationProgress = 0; // Reset the animation progress
         }
     }
 }
