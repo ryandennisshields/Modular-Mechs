@@ -21,7 +21,7 @@ namespace MechMod.Content.Items.MechBodies
 
         public void ApplyStats(ModularMech mech)
         {
-            mech.lifeBonus += 75;
+            mech.lifeBonus += 75; // 75 health bonus
         }
     }
 }

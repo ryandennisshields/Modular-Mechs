@@ -21,15 +21,17 @@ namespace MechMod.Content.Items.MechLegs
 
         public void ApplyStats(ModularMech mech)
         {
+            // Ground stats
             mech.MountData.acceleration = 0.1f;
             mech.MountData.runSpeed = 4f;
             mech.MountData.swimSpeed = 4f;
             mech.MountData.dashSpeed = 6f;
 
+            // Jumping stats
             mech.MountData.jumpHeight = 10;
             mech.MountData.jumpSpeed = 8f;
 
-            mech.lifeBonus += 75;
+            mech.lifeBonus += 75; // 75 health bonus
         }
     }
 }

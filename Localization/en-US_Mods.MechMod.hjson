@@ -12,27 +12,54 @@ Items: {
 
 	BaseHead: {
 		DisplayName: Base Head
-		Tooltip: ""
+		Tooltip:
+			'''
+			Head Part
+			[c/30FFFF:+25 Health]
+			[c/30FFFF:+10% Damage]
+			'''
 	}
 
 	BaseBody: {
 		DisplayName: Base Body
-		Tooltip: ""
+		Tooltip:
+			'''
+			Body Part
+			[c/30FFFF:+75 Health]
+			'''
 	}
 
 	BaseArms: {
 		DisplayName: Base Arms
-		Tooltip: ""
+		Tooltip:
+			'''
+			Arms Part
+			[c/30FFFF:+20% Damage]
+			'''
 	}
 
 	BaseLegs: {
 		DisplayName: Base Legs
-		Tooltip: test
+		Tooltip:
+			'''
+			Legs Part
+			Ground Stats
+			[c/30FFFF:Medium Acceleration]
+			[c/30FFFF:Medium Speed]
+			Jumping Stats
+			[c/30FFFF:Medium Jump Height]
+			[c/30FFFF:Medium Jump Speed]
+			'''
 	}
 
 	BaseBooster: {
 		DisplayName: Base Booster
-		Tooltip: ""
+		Tooltip:
+			'''
+			Booster Part
+			Enables Flight
+			[c/30FFFF:1s Flight Time]
+			'''
 	}
 
 	MechBench: {

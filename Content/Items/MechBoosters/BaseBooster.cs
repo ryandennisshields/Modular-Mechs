@@ -25,16 +25,10 @@ namespace MechMod.Content.Items.MechBoosters
         {
             var player = Main.LocalPlayer;
 
-            mech.MountData.flightTimeMax = 60;
-            mech.MountData.fatigueMax = 60;
+            mech.MountData.flightTimeMax = 60; // 1 second of flight time
             mech.MountData.usesHover = false;
 
             player.GetModPlayer<DashPlayer>().ableToDash = false;
-            player.GetModPlayer<DashPlayer>().dashCoolDown = 50;
-            player.GetModPlayer<DashPlayer>().dashDuration = 35;
-            player.GetModPlayer<DashPlayer>().dashVelo = 10f;
-
-            mech.lifeBonus += 75;
         }
     }
 }

@@ -22,9 +22,9 @@ namespace MechMod.Content.Items.MechHeads
 
         public void ApplyStats(ModularMech mech)
         {
-            mech.lifeBonus += 25;
+            mech.lifeBonus += 25; // 25 health bonus
 
-            Weapons.partDamageBonus += 0.10f;
+            Weapons.partDamageBonus += 0.10f; // 10% damage bonus
         }
     }
 }

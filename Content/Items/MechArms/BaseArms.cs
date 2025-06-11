@@ -22,8 +22,7 @@ namespace MechMod.Content.Items.MechArms
 
         public void ApplyStats(ModularMech mech)
         {
-            Weapons.partDamageBonus += 0.20f;
-            Weapons.partAttackSpeedBonus += 1f;
+            Weapons.partDamageBonus += 0.20f; // 20% damage bonus
         }
     }
 }

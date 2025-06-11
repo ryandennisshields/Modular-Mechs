@@ -41,7 +41,7 @@ namespace MechMod.Common.UI
             {
                 if (IsMouseHovering && slotPartType == "Booster")
                 {
-                    UICommon.TooltipMouseText("Not Equipping a Booster buffs Mech life by 200");
+                    UICommon.TooltipMouseText("Empty\n[c/30FFFF:+200 Health]");
                 }
             }
         }

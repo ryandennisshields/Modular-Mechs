@@ -204,31 +204,20 @@ namespace MechMod.Content.Mechs
         {
 
             // Apply visuals to the Mech
-            //if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
-            //    headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}").Value;
-            //if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
-            //    bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}").Value;
-            //if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
-            //    armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}").Value;
-            //if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
-            //    legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}").Value;
-            //if (!modPlayer.equippedParts[MechMod.weaponIndex].IsAir)
-            //    weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{modPlayer.equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}").Value;
-
-            // Apply visuals to the Mech (TEMPORARY TO MANUALLY SET TEXTURES FOR TESTING)
             var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
             if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
-                headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/TestHeadAnim").Value;
+                headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
             if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
-                bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/TestBodyAnim").Value;
+                bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
             if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
-                armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/TestArmsAnim").Value;
+                armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}Visual").Value;
             if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
-                legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/TestLegsAnim").Value;
+                legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}Visual").Value;
+
             if (!modPlayer.equippedParts[MechMod.weaponIndex].IsAir)
                 weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{modPlayer.equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}").Value;
             else
-                weaponTexture = null;
+                weaponTexture = null; // If no weapon is equipped, set the weapon texture to null
 
                 Rectangle setArmFrame = frame; // Get the default frame logic as a new rectangle
             if (armFrame >= 0) // If the arm frame is manually set,
@@ -240,7 +229,7 @@ namespace MechMod.Content.Mechs
             if (drawType == 0)
             {
                 // Draw left arm first
-                playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(24 * drawPlayer.direction, -46), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(22 * drawPlayer.direction, -55), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw legs
                 playerDrawData.Add(new DrawData(legsTexture, drawPosition + new Vector2(drawPlayer.direction, 13), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
@@ -256,7 +245,7 @@ namespace MechMod.Content.Mechs
                 playerDrawData.Add(new DrawData(weaponTexture, drawPosition + weaponPosition, null, drawColor, weaponRotation, weaponOrigin, weaponScale, weaponSpriteEffects));
 
                 // Draw right arm last
-                playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(-22 * drawPlayer.direction, -46), setArmFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(-22 * drawPlayer.direction, -55), setArmFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
             }  
 
             return false;
@@ -392,7 +381,6 @@ namespace MechMod.Content.Mechs
                 // Unique as a player can go without a Booster, but the other parts are required
 
                 MountData.flightTimeMax = 0;
-                MountData.fatigueMax = 0;
                 MountData.usesHover = false;
 
                 Player player = Main.LocalPlayer;
