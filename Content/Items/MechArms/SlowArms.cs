@@ -1,11 +1,13 @@
-﻿using MechMod.Content.Mechs;
+﻿using MechMod.Content.Items.MechWeapons;
+using MechMod.Content.Mechs;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace MechMod.Content.Items.MechBodies
+namespace MechMod.Content.Items.MechArms
 {
-    internal class BaseBody : ModItem, IMechParts
+    internal class SlowArms : ModItem, IMechParts
     {
+        public override string Texture => "MechMod/Content/Items/MechArms/BaseArms";
         public override void SetDefaults()
         {
             Item.width = 20; // The width of the item's hitbox in pixels.
@@ -16,7 +18,9 @@ namespace MechMod.Content.Items.MechBodies
 
         public void ApplyStats(ModularMech mech)
         {
-            mech.lifeBonus += 100; // 100 health bonus
+            Weapons.partDamageBonus += 0.3f; // 30% damage bonus
+            Weapons.partAttackSpeedBonus -= 0.1f; // 10% slower attack speed
+            Weapons.partCritChanceBonus -= 0.1f; // 10% less critical chance
         }
     }
 }

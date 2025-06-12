@@ -1,10 +1,5 @@
 ﻿using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mechs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -22,8 +17,7 @@ namespace MechMod.Content.Items.MechHeads
 
         public void ApplyStats(ModularMech mech)
         {
-            mech.lifeBonus += 25; // 25 health bonus
-
+            mech.lifeBonus += 50; // 50 health bonus
             Weapons.partDamageBonus += 0.10f; // 10% damage bonus
         }
     }

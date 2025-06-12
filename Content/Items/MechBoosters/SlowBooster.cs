@@ -6,8 +6,9 @@ using static MechMod.Content.Mechs.ModularMech;
 
 namespace MechMod.Content.Items.MechBoosters
 {
-    internal class BaseBooster : ModItem, IMechParts
+    internal class SlowBooster : ModItem, IMechParts
     {
+        public override string Texture => "MechMod/Content/Items/MechBoosters/BaseBooster";
         public override void SetDefaults()
         {
             Item.width = 20; // The width of the item's hitbox in pixels.
@@ -20,13 +21,14 @@ namespace MechMod.Content.Items.MechBoosters
         {
             var player = Main.LocalPlayer;
 
-            mech.MountData.flightTimeMax = 60; // 1 second of flight time
+            mech.MountData.flightTimeMax = 0;
             mech.MountData.usesHover = false;
 
-            player.GetModPlayer<DashPlayer>().ableToDash = false;
-            player.GetModPlayer<DashPlayer>().dashVelo = 0f;
-            player.GetModPlayer<DashPlayer>().dashCoolDown = 0;
-            player.GetModPlayer<DashPlayer>().dashDuration = 0;
+            // Allow dashing
+            player.GetModPlayer<DashPlayer>().ableToDash = true;
+            player.GetModPlayer<DashPlayer>().dashVelo = 8f;
+            player.GetModPlayer<DashPlayer>().dashCoolDown = 60; // 1 second of cooldown
+            player.GetModPlayer<DashPlayer>().dashDuration = 30; // 0.5 seconds of dash duration
         }
     }
 }

@@ -1,9 +1,5 @@
-﻿using MechMod.Content.Mechs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MechMod.Content.Items.MechWeapons;
+using MechMod.Content.Mechs;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -21,17 +17,16 @@ namespace MechMod.Content.Items.MechLegs
 
         public void ApplyStats(ModularMech mech)
         {
+            mech.lifeBonus += 50; // 50 health bonus
+
             // Ground stats
             mech.MountData.acceleration = 0.1f;
             mech.MountData.runSpeed = 4f;
             mech.MountData.swimSpeed = 4f;
-            mech.MountData.dashSpeed = 6f;
 
             // Jumping stats
             mech.MountData.jumpHeight = 10;
             mech.MountData.jumpSpeed = 8f;
-
-            mech.lifeBonus += 75; // 75 health bonus
         }
     }
 }

@@ -10,12 +10,23 @@ Items: {
 			'''
 	}
 
+	MechBench: {
+		DisplayName: Mech Bench
+		Tooltip: Equip and Unequip Parts to your Mech
+	}
+
+	// Grey = Descriptive
+	// White = Middle
+	// Blue = Increase or High
+	// Red = Decrease or Low
+	
+	
 	BaseHead: {
 		DisplayName: Base Head
 		Tooltip:
 			'''
 			Head Part
-			[c/30FFFF:+25 Health]
+			[c/30FFFF:+50 Health]
 			[c/30FFFF:+10% Damage]
 			'''
 	}
@@ -25,7 +36,7 @@ Items: {
 		Tooltip:
 			'''
 			Body Part
-			[c/30FFFF:+75 Health]
+			[c/30FFFF:+100 Health]
 			'''
 	}
 
@@ -43,12 +54,13 @@ Items: {
 		Tooltip:
 			'''
 			Legs Part
-			Ground Stats
-			[c/30FFFF:Medium Acceleration]
-			[c/30FFFF:Medium Speed]
-			Jumping Stats
-			[c/30FFFF:Medium Jump Height]
-			[c/30FFFF:Medium Jump Speed]
+			[c/30FFFF:+50 Health]
+			[c/969696:Ground Stats]
+			Medium Acceleration
+			Medium Speed
+			[c/969696:Jumping Stats]
+			Medium Jump Height
+			Medium Jump Speed
 			'''
 	}
 
@@ -62,9 +74,61 @@ Items: {
 			'''
 	}
 
-	MechBench: {
-		DisplayName: Mech Bench
-		Tooltip: Equip and Unequip Parts to your Mech
+	SlowHead: {
+		DisplayName: Slow Head
+		Tooltip:
+			'''
+			Head Part
+			[c/30FFFF:2x Armour]
+			'''
+	}
+
+	SlowBody: {
+		DisplayName: Slow Body
+		Tooltip:
+			'''
+			Body Part
+			[c/30FFFF:+150 Health]
+			[c/FF3030:-10% Damage]
+			'''
+	}
+
+	SlowArms: {
+		DisplayName: Slow Arms
+		Tooltip:
+			'''
+			Arms Part
+			[c/30FFFF:+30% Damage]
+			[c/FF3030:-10% Attack Speed]
+			[c/FF3030:-10% Crit Chance]
+			'''
+	}
+
+	SlowLegs: {
+		DisplayName: Slow Legs
+		Tooltip:
+			'''
+			Legs Part
+			[c/30FFFF:+100 Health]
+			[c/969696:Ground Stats]
+			Medium Acceleration
+			[c/FF3030:Low Speed]
+			[c/969696:Jumping Stats]
+			[c/FF3030:Low Jump Height]
+			[c/FF3030:Low Jump Speed]
+			'''
+	}
+
+	SlowBooster: {
+		DisplayName: Slow Booster
+		Tooltip:
+			'''
+			Booster Part
+			[c/969696:Enables Dashing]
+			Medium Dash Speed
+			Medium Dash Distance
+			Medium Dash Cooldown
+			'''
 	}
 
 	BaseGun: {

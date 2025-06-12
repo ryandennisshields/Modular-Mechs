@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
+﻿using Terraria.ModLoader;
 using Terraria;
 using MechMod.Content.Mechs;
-using MechMod.Content.Items.MechWeapons;
 using Terraria.ID;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using System.Runtime.CompilerServices;
 using MechMod.Common.Players;
 
 namespace MechMod.Content.Items.MechWeapons

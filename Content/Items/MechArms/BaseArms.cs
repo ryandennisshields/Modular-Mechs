@@ -1,10 +1,5 @@
 ﻿using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mechs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -22,7 +17,7 @@ namespace MechMod.Content.Items.MechArms
 
         public void ApplyStats(ModularMech mech)
         {
-            Weapons.partDamageBonus += 0.20f; // 20% damage bonus
+            Weapons.partDamageBonus += 0.2f; // 20% damage bonus
         }
     }
 }

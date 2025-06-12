@@ -51,6 +51,17 @@ namespace MechMod
                 { "BaseArms", new MechPart(ModContent.ItemType<BaseArms>(), "Arms")},
                 { "BaseLegs", new MechPart(ModContent.ItemType<BaseLegs>(), "Legs")},
                 { "BaseBooster", new MechPart(ModContent.ItemType<BaseBooster>(), "Booster")},
+                { "SlowHead", new MechPart(ModContent.ItemType<SlowHead>(), "Head")},
+                { "SlowBody", new MechPart(ModContent.ItemType<SlowBody>(), "Body")},
+                { "SlowArms", new MechPart(ModContent.ItemType<SlowArms>(), "Arms")},
+                { "SlowLegs", new MechPart(ModContent.ItemType<SlowLegs>(), "Legs")},
+                { "SlowBooster", new MechPart(ModContent.ItemType<SlowBooster>(), "Booster")},
+                //{ "FastHead", new MechPart(ModContent.ItemType<FastHead>(), "Head")},
+                //{ "FastBody", new MechPart(ModContent.ItemType<FastBody>(), "Body")},
+                //{ "FastArms", new MechPart(ModContent.ItemType<FastArms>(), "Arms")},
+                //{ "FastLegs", new MechPart(ModContent.ItemType<FastLegs>(), "Legs")},
+                //{ "FastBooster", new MechPart(ModContent.ItemType<FastBooster>(), "Booster")},
+
                 { "BaseGun", new MechPart(ModContent.ItemType<BaseGun>(), "Weapon")},
                 { "BaseSword", new MechPart(ModContent.ItemType<BaseSword>(), "Weapon")}
             };
