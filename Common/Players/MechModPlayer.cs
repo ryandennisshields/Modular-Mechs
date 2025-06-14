@@ -38,6 +38,8 @@ namespace MechMod.Common.Players
         public override void Initialize()
         {
             equippedParts = new Item[6];
+            for (int i = 0; i < equippedParts.Length; i++)
+                equippedParts[i] = new Item();
             upgradeLevel = 0;
             upgradeDamageBonus = 0;
         }
@@ -46,16 +48,28 @@ namespace MechMod.Common.Players
         {
             if (!equippedParts[MechMod.headIndex].IsAir)
                 tag["equippedHead"] = ItemIO.Save(equippedParts[MechMod.headIndex]);
+            else
+                equippedParts[MechMod.headIndex] = new Item();
             if (!equippedParts[MechMod.bodyIndex].IsAir)
                 tag["equippedBody"] = ItemIO.Save(equippedParts[MechMod.bodyIndex]);
+            else
+                equippedParts[MechMod.bodyIndex] = new Item();
             if (!equippedParts[MechMod.armsIndex].IsAir)
                 tag["equippedArms"] = ItemIO.Save(equippedParts[MechMod.armsIndex]);
+            else
+                equippedParts[MechMod.armsIndex] = new Item();
             if (!equippedParts[MechMod.legsIndex].IsAir)
                 tag["equippedLegs"] = ItemIO.Save(equippedParts[MechMod.legsIndex]);
+            else
+                equippedParts[MechMod.legsIndex] = new Item();
             if (!equippedParts[MechMod.boosterIndex].IsAir)
                 tag["equippedBooster"] = ItemIO.Save(equippedParts[MechMod.boosterIndex]);
+            else
+                equippedParts[MechMod.boosterIndex] = new Item();
             if (!equippedParts[MechMod.weaponIndex].IsAir)
                 tag["equippedWeapon"] = ItemIO.Save(equippedParts[MechMod.weaponIndex]);
+            else
+                equippedParts[MechMod.weaponIndex] = new Item();
             tag["upgradeLevel"] = upgradeLevel;
             tag["upgradeDamageBonus"] = upgradeDamageBonus;
         }

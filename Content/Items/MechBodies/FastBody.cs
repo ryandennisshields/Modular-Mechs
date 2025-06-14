@@ -3,11 +3,11 @@ using MechMod.Content.Mechs;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace MechMod.Content.Items.MechLegs
+namespace MechMod.Content.Items.MechBodies
 {
-    public class SlowLegs : ModItem, IMechParts
+    internal class FastBody : ModItem, IMechParts
     {
-        public override string Texture => "MechMod/Content/Items/MechLegs/BaseLegs";
+        public override string Texture => "MechMod/Content/Items/MechBodies/BaseBody";
         public override void SetDefaults()
         {
             Item.width = 20; // The width of the item's hitbox in pixels.
@@ -18,16 +18,10 @@ namespace MechMod.Content.Items.MechLegs
 
         public void ApplyStats(ModularMech mech)
         {
-            mech.lifeBonus += 100; // 100 health bonus
-
-            // Ground stats
-            mech.MountData.acceleration = 0.1f;
-            mech.MountData.runSpeed = 3f;
-            mech.MountData.swimSpeed = 3f;
-
-            // Jumping stats
-            mech.MountData.jumpHeight = 7;
-            mech.MountData.jumpSpeed = 4f;
+            mech.lifeBonus += 50; // 50 health bonus
+            mech.MountData.acceleration *= 1.2f; // 20% faster acceleration
+            mech.MountData.runSpeed *= 1.2f; // 20% faster run speed
+            mech.MountData.swimSpeed *= 1.2f; // 20% faster swim speed
         }
     }
 }

@@ -20,6 +20,8 @@ namespace MechMod.Content.Items.MechWeapons
 
         public float timer { get; set; } = 0f;
         public float attackRate { get; set; } = 0f;
+        public bool canUse { get; set; } = true;
+
         public Weapons.UseType useType => Weapons.UseType.Point;
 
         public void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)

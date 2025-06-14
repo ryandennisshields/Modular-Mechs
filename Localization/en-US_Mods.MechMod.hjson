@@ -15,11 +15,14 @@ Items: {
 		Tooltip: Equip and Unequip Parts to your Mech
 	}
 
+	// Mech Parts
+	
 	// Grey = Descriptive
 	// White = Middle
 	// Blue = Increase or High
 	// Red = Decrease or Low
 	
+	// Base Parts
 	
 	BaseHead: {
 		DisplayName: Base Head
@@ -69,11 +72,13 @@ Items: {
 		Tooltip:
 			'''
 			Booster Part
-			Enables Flight
-			[c/30FFFF:1s Flight Time]
+			[c/969696:Enables Flight]
+			1s Flight Time
 			'''
 	}
 
+	// Slow Parts
+	
 	SlowHead: {
 		DisplayName: Slow Head
 		Tooltip:
@@ -100,7 +105,7 @@ Items: {
 			Arms Part
 			[c/30FFFF:+30% Damage]
 			[c/FF3030:-10% Attack Speed]
-			[c/FF3030:-10% Crit Chance]
+			[c/FF3030:-10% Critical Chance]
 			'''
 	}
 
@@ -124,6 +129,7 @@ Items: {
 		Tooltip:
 			'''
 			Booster Part
+			[c/30FFFF:+50 Health]
 			[c/969696:Enables Dashing]
 			Medium Dash Speed
 			Medium Dash Distance
@@ -131,6 +137,70 @@ Items: {
 			'''
 	}
 
+	// Fast Parts
+	
+	FastHead: {
+		DisplayName: Fast Head
+		Tooltip:
+			'''
+			Head Part
+			[c/30FFFF:2x Critical Chance]
+			'''
+	}
+
+	FastBody: {
+		DisplayName: Fast Body
+		Tooltip:
+			'''
+			Body Part
+			[c/30FFFF:+50 Health]
+			[c/30FFFF:+20% Acceleration]
+			[c/30FFFF:+20% Speed]
+			'''
+	}
+
+	FastArms: {
+		DisplayName: Fast Arms
+		Tooltip:
+			'''
+			Arms Part
+			[c/30FFFF:+20% Damage]
+			[c/30FFFF:+10% Critical Chance]
+			[c/FF3030:-25 Health]
+			'''
+	}
+
+	FastLegs: {
+		DisplayName: Fast Legs
+		Tooltip:
+			'''
+			Legs Part
+			[c/30FFFF:+25 Health]
+			[c/969696:Ground Stats]
+			[c/30FFFF:High Acceleration]
+			[c/30FFFF:High Speed]
+			[c/969696:Jumping Stats]
+			Medium Jump Height
+			[c/30FFFF:High Jump Speed]
+			'''
+	}
+
+	FastBooster: {
+		DisplayName: Fast Booster
+		Tooltip:
+			'''
+			Booster Part
+			[c/FF3030:-50 Health]
+			[c/969696:Enables Flight and Dashing]
+			1s Flight Time
+			Medium Dash Speed
+			Medium Dash Distance
+			Medium Dash Cooldown
+			'''
+	}
+
+	// Weapons
+	
 	BaseGun: {
 		DisplayName: Base Gun
 		Tooltip: ""
@@ -138,6 +208,11 @@ Items: {
 
 	BaseSword: {
 		DisplayName: Base Sword
+		Tooltip: ""
+	}
+
+	LaserGun: {
+		DisplayName: Laser Gun
 		Tooltip: ""
 	}
 }
@@ -158,8 +233,5 @@ Buffs: {
 	}
 }
 
-Projectiles: {
-	MechPoint.DisplayName: Mech Point
-	BaseSwordSwing.DisplayName: Base Sword Swing
-	BaseSwordProj.DisplayName: Base Sword Proj
-}
+Projectiles.BaseSwordProj.DisplayName: Base Sword Proj
+Keybinds.MechDash.DisplayName: Mech Dash

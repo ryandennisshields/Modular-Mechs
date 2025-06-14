@@ -335,7 +335,6 @@ namespace MechMod.Common.UI
 
             if (modPlayer.upgradeLevel < upgradeRequiredMaterial.Length)
             {
-
                 // Get the current upgrade materials
                 int[] currentMaterials = upgradeRequiredMaterial[modPlayer.upgradeLevel];
 
@@ -347,20 +346,16 @@ namespace MechMod.Common.UI
                 {
                     int materialID = currentMaterials[i];
 
-                    // Append material name to the text
+                    // Add material name to the requirement text
                     requirementText += Lang.GetItemNameValue(materialID);
 
-                    // If this is not the last material, append " or "
+                    // If there is multiple upgrade materials for one upgrade, add "or" between them
                     if (i < currentMaterials.Length - 1)
                     {
                         requirementText += "\nor ";
                     }
-
-                    // Optionally: Add image icons for the materials here if using an image-based UI system
-                    // You can add hover-over tooltips by displaying item details when the player hovers over the resource icons.
                 }
 
-                // Set this text to a UI element that displays the upgrade requirements
                 upgradeCostText.SetText(requirementText);
             }
             else

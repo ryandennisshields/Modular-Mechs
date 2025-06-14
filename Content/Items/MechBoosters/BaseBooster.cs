@@ -20,6 +20,8 @@ namespace MechMod.Content.Items.MechBoosters
         {
             var player = Main.LocalPlayer;
 
+            mech.lifeBonus = 0;
+
             mech.MountData.flightTimeMax = 60; // 1 second of flight time
             mech.MountData.usesHover = false;
 

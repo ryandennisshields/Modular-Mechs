@@ -6,7 +6,7 @@ using static MechMod.Content.Mechs.ModularMech;
 
 namespace MechMod.Content.Items.MechBoosters
 {
-    internal class SlowBooster : ModItem, IMechParts
+    internal class FastBooster : ModItem, IMechParts
     {
         public override string Texture => "MechMod/Content/Items/MechBoosters/BaseBooster";
         public override void SetDefaults()
@@ -21,9 +21,9 @@ namespace MechMod.Content.Items.MechBoosters
         {
             var player = Main.LocalPlayer;
 
-            mech.lifeBonus += 50; // 50 health bonus
+            mech.lifeBonus -= 50; // 50 health penalty
 
-            mech.MountData.flightTimeMax = 0;
+            mech.MountData.flightTimeMax = 60; // 1 second of flight time
             mech.MountData.usesHover = false;
 
             // Allow dashing

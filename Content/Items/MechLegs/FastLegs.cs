@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace MechMod.Content.Items.MechLegs
 {
-    public class SlowLegs : ModItem, IMechParts
+    public class FastLegs : ModItem, IMechParts
     {
         public override string Texture => "MechMod/Content/Items/MechLegs/BaseLegs";
         public override void SetDefaults()
@@ -18,16 +18,16 @@ namespace MechMod.Content.Items.MechLegs
 
         public void ApplyStats(ModularMech mech)
         {
-            mech.lifeBonus += 100; // 100 health bonus
+            mech.lifeBonus += 25; // 25 health bonus
 
             // Ground stats
-            mech.MountData.acceleration = 0.1f;
-            mech.MountData.runSpeed = 3f;
-            mech.MountData.swimSpeed = 3f;
+            mech.MountData.acceleration = 0.2f;
+            mech.MountData.runSpeed = 6f;
+            mech.MountData.swimSpeed = 6f;
 
             // Jumping stats
-            mech.MountData.jumpHeight = 7;
-            mech.MountData.jumpSpeed = 4f;
+            mech.MountData.jumpHeight = 10;
+            mech.MountData.jumpSpeed = 12f;
         }
     }
 }

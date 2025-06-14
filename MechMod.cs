@@ -42,29 +42,45 @@ namespace MechMod
         public static int boosterIndex = 4;
         public static int weaponIndex = 5;
 
+        public static ModKeybind MechDashKeybind;
+
         public override void Load()
         {
             MechParts = new Dictionary<string, MechPart>
             {
+                // Mech Parts
+                // Base Parts
                 { "BaseHead", new MechPart(ModContent.ItemType<BaseHead>(), "Head")},
                 { "BaseBody", new MechPart(ModContent.ItemType<BaseBody>(), "Body")},
                 { "BaseArms", new MechPart(ModContent.ItemType<BaseArms>(), "Arms")},
                 { "BaseLegs", new MechPart(ModContent.ItemType<BaseLegs>(), "Legs")},
                 { "BaseBooster", new MechPart(ModContent.ItemType<BaseBooster>(), "Booster")},
+                // Slow Parts
                 { "SlowHead", new MechPart(ModContent.ItemType<SlowHead>(), "Head")},
                 { "SlowBody", new MechPart(ModContent.ItemType<SlowBody>(), "Body")},
                 { "SlowArms", new MechPart(ModContent.ItemType<SlowArms>(), "Arms")},
                 { "SlowLegs", new MechPart(ModContent.ItemType<SlowLegs>(), "Legs")},
                 { "SlowBooster", new MechPart(ModContent.ItemType<SlowBooster>(), "Booster")},
-                //{ "FastHead", new MechPart(ModContent.ItemType<FastHead>(), "Head")},
-                //{ "FastBody", new MechPart(ModContent.ItemType<FastBody>(), "Body")},
-                //{ "FastArms", new MechPart(ModContent.ItemType<FastArms>(), "Arms")},
-                //{ "FastLegs", new MechPart(ModContent.ItemType<FastLegs>(), "Legs")},
-                //{ "FastBooster", new MechPart(ModContent.ItemType<FastBooster>(), "Booster")},
+                // Fast Parts
+                { "FastHead", new MechPart(ModContent.ItemType<FastHead>(), "Head")},
+                { "FastBody", new MechPart(ModContent.ItemType<FastBody>(), "Body")},
+                { "FastArms", new MechPart(ModContent.ItemType<FastArms>(), "Arms")},
+                { "FastLegs", new MechPart(ModContent.ItemType<FastLegs>(), "Legs")},
+                { "FastBooster", new MechPart(ModContent.ItemType<FastBooster>(), "Booster")},
 
+                // Weapons
                 { "BaseGun", new MechPart(ModContent.ItemType<BaseGun>(), "Weapon")},
-                { "BaseSword", new MechPart(ModContent.ItemType<BaseSword>(), "Weapon")}
+                { "BaseSword", new MechPart(ModContent.ItemType<BaseSword>(), "Weapon")},
+                { "LaserGun", new MechPart(ModContent.ItemType<LaserGun>(), "Weapon")}
             };
+
+            MechDashKeybind = KeybindLoader.RegisterKeybind(this, "MechDash", "V");
+        }
+
+        public override void Unload()
+        {
+            MechParts = null;
+            MechDashKeybind = null;
         }
 
         public class EquipCommand : ModCommand

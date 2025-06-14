@@ -42,6 +42,7 @@ namespace MechMod.Content.Mechs
 
         public float timer { get; set; }
         public float attackRate { get; set; }
+        public bool canUse { get; set; }
     }
 
     public class ModularMech : ModMount
@@ -163,24 +164,27 @@ namespace MechMod.Content.Mechs
 
             if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon)
             {
-                if (modPlayer.animationTimer > 0 || modPlayer.animationProgress > 0) // Only run animations if timer or progress is active
+                if (weapon.canUse)
                 {
-                    if (weapon.useType == Weapons.UseType.Swing) // Constantly update animation
+                    if (modPlayer.animationTimer > 0 || modPlayer.animationProgress > 0) // Only run animations if timer or progress is active
                     {
-                        WeaponUseAnimation(Weapons.UseType.Swing, weapon);
-                    }
-                    else if (weapon.useType == Weapons.UseType.Point) // Only animate for one frame
-                    {
-                        if (!animateOnce)
+                        if (weapon.useType == Weapons.UseType.Swing) // Constantly update animation
                         {
-                            WeaponUseAnimation(Weapons.UseType.Point, weapon);
-                            animateOnce = true;
+                            WeaponUseAnimation(Weapons.UseType.Swing, weapon);
+                        }
+                        else if (weapon.useType == Weapons.UseType.Point) // Only animate for one frame
+                        {
+                            if (!animateOnce)
+                            {
+                                WeaponUseAnimation(Weapons.UseType.Point, weapon);
+                                animateOnce = true;
+                            }
                         }
                     }
-                }
-                if (weapon.timer >= weapon.attackRate)
-                {
-                    animateOnce = false; // Reset the animate once bool when the weapon is ready to attack again
+                    if (weapon.timer >= weapon.attackRate)
+                    {
+                        animateOnce = false; // Reset the animate once bool when the weapon is ready to attack again
+                    }
                 }
                 if (!Main.mouseLeft && modPlayer.animationTimer <= 0 && modPlayer.animationProgress <= 0)
                 {
@@ -276,14 +280,16 @@ namespace MechMod.Content.Mechs
             {
                 if (player.whoAmI == Main.myPlayer && Main.mouseLeft && weapon.timer >= weapon.attackRate) // Attack when ready
                 {
-                    if (Main.MouseWorld.X > Main.LocalPlayer.MountedCenter.X)
-                        Main.LocalPlayer.direction = 1;
-                    else
-                        Main.LocalPlayer.direction = -1;
-                    modPlayer.lastUseDirection = Main.LocalPlayer.direction;
-
                     weapon.UseAbility(player, mousePosition, toggleOn);
-                    weapon.timer = 0;
+                    if (weapon.canUse)
+                    {
+                        if (Main.MouseWorld.X > Main.LocalPlayer.MountedCenter.X)
+                            Main.LocalPlayer.direction = 1;
+                        else
+                            Main.LocalPlayer.direction = -1;
+                        modPlayer.lastUseDirection = Main.LocalPlayer.direction;
+                        weapon.timer = 0;
+                    }
                 }
 
                 if (weapon.timer < weapon.attackRate)
@@ -376,9 +382,6 @@ namespace MechMod.Content.Mechs
 
         public void ApplyPartStats(MechModPlayer modPlayer, Item equippedHead, Item equippedBody, Item equippedArms, Item equippedLegs, Item equippedBooster)
         {
-            if (!equippedHead.IsAir)
-                if (modPlayer.equippedParts[MechMod.headIndex].ModItem is IMechParts head)
-                    head.ApplyStats(this);
             if (!equippedBody.IsAir)
                 if (modPlayer.equippedParts[MechMod.bodyIndex].ModItem is IMechParts body)
                     body.ApplyStats(this);
@@ -408,6 +411,10 @@ namespace MechMod.Content.Mechs
 
                 lifeBonus += 200;
             }
+            // Apply head stats last as it can have multiplicative effects
+            if (!equippedHead.IsAir)
+                if (modPlayer.equippedParts[MechMod.headIndex].ModItem is IMechParts head)
+                    head.ApplyStats(this);
         }
 
         public class DashPlayer : ModPlayer
@@ -419,52 +426,25 @@ namespace MechMod.Content.Mechs
 
             public float dashVelo;
 
-            private const int dashRight = 0;
-            private const int dashLeft = 1;
-
-            private int dashDir = -1;
-
             private int dashDelay = 0;
             private int dashTimer = 0; // CAN BE USED LATER FOR EFFECTS MID-DASH (See ExampleMod's Shield Accessory)
-
-            public override void ResetEffects()
-            {
-                if (ableToDash && Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>())
-                {
-                    if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[dashRight] < 15)
-                    {
-                        dashDir = dashRight;
-                    }
-                    else if (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[dashLeft] < 15)
-                    {
-                        dashDir = dashLeft;
-                    }
-                    else
-                    {
-                        dashDir = -1;
-                    }
-                }
-            }
 
             public override void PreUpdateMovement()
             {
                 if (ableToDash && Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>())
                 {
-                    if (dashDir != -1 && dashDelay == 0)
+                    if (MechMod.MechDashKeybind.JustPressed && dashDelay == 0)
                     {
-                        Vector2 newVelo = Player.velocity;
+                        int dashDir = 0;
+                        if (Player.controlRight)
+                            dashDir = 1;
+                        else if (Player.controlLeft)
+                            dashDir = -1;
+                        else
+                            dashDir = Player.direction;
 
-                        switch (dashDir)
-                        {
-                            case dashLeft when Player.velocity.X > -dashVelo:
-                            case dashRight when Player.velocity.X < dashVelo:
-                                {
-                                    float dashDirection = dashDir == dashRight ? 1 : -1;
-                                    newVelo.X = dashDirection * dashVelo;
-                                    break;
-                                }
-                            default: return;
-                        }
+                        Vector2 newVelo = Player.velocity;
+                        newVelo.X = dashDir * dashVelo;
 
                         dashDelay = dashCoolDown;
                         dashTimer = dashDuration;
