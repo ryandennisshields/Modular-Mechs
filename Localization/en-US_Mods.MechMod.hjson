@@ -215,6 +215,16 @@ Items: {
 		DisplayName: Laser Gun
 		Tooltip: ""
 	}
+
+	Spikes: {
+		DisplayName: Spikes
+		Tooltip: ""
+	}
+
+	MissileLauncher: {
+		DisplayName: Missile Launcher
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -233,5 +243,12 @@ Buffs: {
 	}
 }
 
-Projectiles.BaseSwordProj.DisplayName: Base Sword Proj
-Keybinds.MechDash.DisplayName: Mech Dash
+Projectiles: {
+	BaseSwordProj.DisplayName: Base Sword Proj
+	MissileProjectile.DisplayName: Missile Projectile
+}
+
+Keybinds: {
+	MechDash.DisplayName: Mech Dash
+	MechActivateModule.DisplayName: Mech Activate Module
+}

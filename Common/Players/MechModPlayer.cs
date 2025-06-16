@@ -37,7 +37,7 @@ namespace MechMod.Common.Players
 
         public override void Initialize()
         {
-            equippedParts = new Item[6];
+            equippedParts = new Item[9];
             for (int i = 0; i < equippedParts.Length; i++)
                 equippedParts[i] = new Item();
             upgradeLevel = 0;
@@ -70,6 +70,19 @@ namespace MechMod.Common.Players
                 tag["equippedWeapon"] = ItemIO.Save(equippedParts[MechMod.weaponIndex]);
             else
                 equippedParts[MechMod.weaponIndex] = new Item();
+            if (!equippedParts[MechMod.pasModule1Index].IsAir)
+                tag["equippedPassiveModule1"] = ItemIO.Save(equippedParts[MechMod.pasModule1Index]);
+            else
+                equippedParts[MechMod.pasModule1Index] = new Item();
+            if (!equippedParts[MechMod.pasModule2Index].IsAir)
+                tag["equippedPassiveModule2"] = ItemIO.Save(equippedParts[MechMod.pasModule2Index]);
+            else
+                equippedParts[MechMod.pasModule2Index] = new Item();
+            if (!equippedParts[MechMod.actModuleIndex].IsAir)
+                tag["equippedActiveModule"] = ItemIO.Save(equippedParts[MechMod.actModuleIndex]);
+            else
+                equippedParts[MechMod.actModuleIndex] = new Item();
+
             tag["upgradeLevel"] = upgradeLevel;
             tag["upgradeDamageBonus"] = upgradeDamageBonus;
         }
@@ -99,6 +112,19 @@ namespace MechMod.Common.Players
                 equippedParts[MechMod.weaponIndex] = ItemIO.Load(tag.GetCompound("equippedWeapon"));
             else
                 equippedParts[MechMod.weaponIndex] = new Item();
+            if (tag.ContainsKey("equippedPassiveModule1"))
+                equippedParts[MechMod.pasModule1Index] = ItemIO.Load(tag.GetCompound("equippedPassiveModule1"));
+            else
+                equippedParts[MechMod.pasModule1Index] = new Item();
+            if (tag.ContainsKey("equippedPassiveModule2"))
+                equippedParts[MechMod.pasModule2Index] = ItemIO.Load(tag.GetCompound("equippedPassiveModule2"));
+            else
+                equippedParts[MechMod.pasModule2Index] = new Item();
+            if (tag.ContainsKey("equippedActiveModule"))
+                equippedParts[MechMod.actModuleIndex] = ItemIO.Load(tag.GetCompound("equippedActiveModule"));
+            else
+                equippedParts[MechMod.actModuleIndex] = new Item();
+
             if (tag.ContainsKey("upgradeLevel"))
                 upgradeLevel = tag.GetInt("upgradeLevel");
             if (tag.ContainsKey("upgradeDamageBonus"))
@@ -147,6 +173,7 @@ namespace MechMod.Common.Players
             // Debuffs
             // Removed to make the Mech more realistic and disabling effects that dismount the Player
             // General
+            Player.noKnockback = true;
             Player.poisoned = false;
             Player.bleed = false;
             Player.silence = false;

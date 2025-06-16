@@ -7,6 +7,8 @@ using MechMod.Content.Items.MechBoosters;
 using MechMod.Content.Items.MechHeads;
 using MechMod.Content.Items.MechLegs;
 using MechMod.Content.Items.MechWeapons;
+using MechMod.Content.Items.MechModules.Passive;
+using MechMod.Content.Items.MechModules.Active;
 using MechMod.Content.Mechs;
 using Microsoft.Xna.Framework;
 using System;
@@ -41,8 +43,12 @@ namespace MechMod
         public static int legsIndex = 3;
         public static int boosterIndex = 4;
         public static int weaponIndex = 5;
+        public static int pasModule1Index = 6;
+        public static int pasModule2Index = 7;
+        public static int actModuleIndex = 8;
 
         public static ModKeybind MechDashKeybind;
+        public static ModKeybind MechActivateModule;
 
         public override void Load()
         {
@@ -50,31 +56,39 @@ namespace MechMod
             {
                 // Mech Parts
                 // Base Parts
-                { "BaseHead", new MechPart(ModContent.ItemType<BaseHead>(), "Head")},
-                { "BaseBody", new MechPart(ModContent.ItemType<BaseBody>(), "Body")},
-                { "BaseArms", new MechPart(ModContent.ItemType<BaseArms>(), "Arms")},
-                { "BaseLegs", new MechPart(ModContent.ItemType<BaseLegs>(), "Legs")},
-                { "BaseBooster", new MechPart(ModContent.ItemType<BaseBooster>(), "Booster")},
+                { "basehead", new MechPart(ModContent.ItemType<BaseHead>(), "Head")},
+                { "basebody", new MechPart(ModContent.ItemType<BaseBody>(), "Body")},
+                { "basearms", new MechPart(ModContent.ItemType<BaseArms>(), "Arms")},
+                { "baselegs", new MechPart(ModContent.ItemType<BaseLegs>(), "Legs")},
+                { "basebooster", new MechPart(ModContent.ItemType<BaseBooster>(), "Booster")},
                 // Slow Parts
-                { "SlowHead", new MechPart(ModContent.ItemType<SlowHead>(), "Head")},
-                { "SlowBody", new MechPart(ModContent.ItemType<SlowBody>(), "Body")},
-                { "SlowArms", new MechPart(ModContent.ItemType<SlowArms>(), "Arms")},
-                { "SlowLegs", new MechPart(ModContent.ItemType<SlowLegs>(), "Legs")},
-                { "SlowBooster", new MechPart(ModContent.ItemType<SlowBooster>(), "Booster")},
+                { "slowhead", new MechPart(ModContent.ItemType<SlowHead>(), "Head")},
+                { "slowbody", new MechPart(ModContent.ItemType<SlowBody>(), "Body")},
+                { "slowarms", new MechPart(ModContent.ItemType<SlowArms>(), "Arms")},
+                { "slowlegs", new MechPart(ModContent.ItemType<SlowLegs>(), "Legs")},
+                { "slowbooster", new MechPart(ModContent.ItemType<SlowBooster>(), "Booster")},
                 // Fast Parts
-                { "FastHead", new MechPart(ModContent.ItemType<FastHead>(), "Head")},
-                { "FastBody", new MechPart(ModContent.ItemType<FastBody>(), "Body")},
-                { "FastArms", new MechPart(ModContent.ItemType<FastArms>(), "Arms")},
-                { "FastLegs", new MechPart(ModContent.ItemType<FastLegs>(), "Legs")},
-                { "FastBooster", new MechPart(ModContent.ItemType<FastBooster>(), "Booster")},
+                { "fasthead", new MechPart(ModContent.ItemType<FastHead>(), "Head")},
+                { "fastbody", new MechPart(ModContent.ItemType<FastBody>(), "Body")},
+                { "fastarms", new MechPart(ModContent.ItemType<FastArms>(), "Arms")},
+                { "fastlegs", new MechPart(ModContent.ItemType<FastLegs>(), "Legs")},
+                { "fastbooster", new MechPart(ModContent.ItemType<FastBooster>(), "Booster")},
 
                 // Weapons
-                { "BaseGun", new MechPart(ModContent.ItemType<BaseGun>(), "Weapon")},
-                { "BaseSword", new MechPart(ModContent.ItemType<BaseSword>(), "Weapon")},
-                { "LaserGun", new MechPart(ModContent.ItemType<LaserGun>(), "Weapon")}
+                { "basegun", new MechPart(ModContent.ItemType<BaseGun>(), "Weapon")},
+                { "sasesword", new MechPart(ModContent.ItemType<BaseSword>(), "Weapon")},
+                { "lasergun", new MechPart(ModContent.ItemType<LaserGun>(), "Weapon")},
+
+                // Modules
+                // Passive
+                { "spikes", new MechPart(ModContent.ItemType<Spikes>(), "Passive Module")},
+                // Active
+                { "missilelauncher", new MechPart(ModContent.ItemType<MissileLauncher>(), "Active Module")},
             };
 
             MechDashKeybind = KeybindLoader.RegisterKeybind(this, "MechDash", "V");
+
+            MechActivateModule = KeybindLoader.RegisterKeybind(this, "MechActivateModule", "C");
         }
 
         public override void Unload()
@@ -101,7 +115,7 @@ namespace MechMod
                     return;
                 }
 
-                string partName = args[0];
+                string partName = args[0].ToLowerInvariant();
                 Player player = caller.Player;
                 MechModPlayer mechPlayer = player.GetModPlayer<MechModPlayer>();
 
@@ -129,6 +143,17 @@ namespace MechMod
                             break;
                         case "Weapon":
                             mechPlayer.equippedParts[MechMod.weaponIndex] = item;
+                            break;
+                        case "Passive Module":
+                            if (mechPlayer.equippedParts[MechMod.pasModule1Index].IsAir)
+                                mechPlayer.equippedParts[MechMod.pasModule1Index] = item;
+                            else if (mechPlayer.equippedParts[MechMod.pasModule2Index].IsAir)
+                                mechPlayer.equippedParts[MechMod.pasModule2Index] = item;
+                            else
+                                caller.Reply("Both passive module slots are occupied. Please unequip a module (Passive Module 1 or Passive Module 2) first.");
+                            break;
+                        case "Active Module":
+                            mechPlayer.equippedParts[MechMod.actModuleIndex] = item;
                             break;
                     }
                     caller.Reply($"Equipped {partName} to the mech.");
@@ -187,6 +212,18 @@ namespace MechMod
                     case "Weapon":
                         mechPlayer.equippedParts[MechMod.weaponIndex].TurnToAir();
                         caller.Reply($"Unequipped Weapon from the mech.");
+                        break;
+                    case "Passive Module 1":
+                        mechPlayer.equippedParts[MechMod.pasModule1Index].TurnToAir();
+                        caller.Reply($"Unequipped Passive Module 1 from the mech.");
+                        break;
+                    case "Passive Module 2":
+                        mechPlayer.equippedParts[MechMod.pasModule2Index].TurnToAir();
+                        caller.Reply($"Unequipped Passive Module 2 from the mech.");
+                        break;
+                    case "Active Module":
+                        mechPlayer.equippedParts[MechMod.actModuleIndex].TurnToAir();
+                        caller.Reply($"Unequipped Active Module from the mech.");
                         break;
                     default:
                         caller.Reply($"Slot {partslotName} not recognized.");
