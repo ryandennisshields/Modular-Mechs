@@ -82,6 +82,8 @@ namespace MechMod
                 // Modules
                 // Passive
                 { "spikes", new MechPart(ModContent.ItemType<Spikes>(), "Passive Module")},
+                { "nucleareject", new MechPart(ModContent.ItemType<NuclearEject>(), "Passive Module")},
+                { "hover", new MechPart(ModContent.ItemType<Hover>(), "Passive Module")},
                 // Active
                 { "missilelauncher", new MechPart(ModContent.ItemType<MissileLauncher>(), "Active Module")},
             };
@@ -189,39 +191,39 @@ namespace MechMod
 
                 switch (partslotName)
                 {
-                    case "Head":
+                    case "head":
                         mechPlayer.equippedParts[MechMod.headIndex].TurnToAir();
                         caller.Reply($"Unequipped Head from the mech.");
                         break;
-                    case "Body":
+                    case "body":
                         mechPlayer.equippedParts[MechMod.bodyIndex].TurnToAir();
                         caller.Reply($"Unequipped Body from the mech.");
                         break;
-                    case "Arms":
+                    case "arms":
                         mechPlayer.equippedParts[MechMod.armsIndex].TurnToAir();
                         caller.Reply($"Unequipped Arms from the mech.");
                         break;
-                    case "Legs":
+                    case "legs":
                         mechPlayer.equippedParts[MechMod.legsIndex].TurnToAir();
                         caller.Reply($"Unequipped Legs from the mech.");
                         break;
-                    case "Booster":
+                    case "booster":
                         mechPlayer.equippedParts[MechMod.boosterIndex].TurnToAir();
                         caller.Reply($"Unequipped Booster from the mech.");
                         break;
-                    case "Weapon":
+                    case "weapon":
                         mechPlayer.equippedParts[MechMod.weaponIndex].TurnToAir();
                         caller.Reply($"Unequipped Weapon from the mech.");
                         break;
-                    case "Passive Module 1":
+                    case "passivemodule1":
                         mechPlayer.equippedParts[MechMod.pasModule1Index].TurnToAir();
                         caller.Reply($"Unequipped Passive Module 1 from the mech.");
                         break;
-                    case "Passive Module 2":
+                    case "passivemodule2":
                         mechPlayer.equippedParts[MechMod.pasModule2Index].TurnToAir();
                         caller.Reply($"Unequipped Passive Module 2 from the mech.");
                         break;
-                    case "Active Module":
+                    case "activemodule":
                         mechPlayer.equippedParts[MechMod.actModuleIndex].TurnToAir();
                         caller.Reply($"Unequipped Active Module from the mech.");
                         break;

@@ -34,10 +34,10 @@ namespace MechMod.Content.Items.MechModules.Active
         private int delayTimer;
         private int fireDelay = 5; // Delay between missile launches in frames (0.5 seconds)
 
-        private int missileDamage = 50; // Damage dealt by the missile
-        private float missileKnockback = 10f; // Knockback applied by the missile
-        private int missileCount = 5; // Number of missiles to fire
-        private int missileType = ModContent.ProjectileType<MissileProjectile>(); // Type of the missile projectile
+        private int missileDamage = 50;
+        private float missileKnockback = 10f;
+        private int missileCount = 5;
+        private int missileType = ModContent.ProjectileType<MissileProjectile>();
 
         public void ModuleEffect(ModularMech mech, Player player)
         {
@@ -84,6 +84,7 @@ namespace MechMod.Content.Items.MechModules.Active
         public override string Texture => "Terraria/Images/Projectile_350";
 
         private float speed = 10f; // Speed of the missile
+        private float rotateSpeed = 0.2f; // Rotation speed of the missile
         private float detectRadius = 1000f; // Detection radius of missile
         public override void SetStaticDefaults()
         {
@@ -104,9 +105,8 @@ namespace MechMod.Content.Items.MechModules.Active
         {
             float offset = -10f; // How far behind the missile to spawn the dust
             Vector2 behind = Projectile.Center - Vector2.UnitY.RotatedBy(Projectile.rotation) * offset;
-            // Torch dust
+            // Trail dust
             Dust.NewDust(behind - new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, default, 1f);
-            // Smoke dust
             Dust.NewDust(behind - new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 0.5f);
 
             NPC target = FindNearestNPC();
@@ -120,7 +120,8 @@ namespace MechMod.Content.Items.MechModules.Active
                 {
                     Vector2 direction = target.Center - Projectile.Center;
                     direction.Normalize();
-                    Projectile.velocity = direction * speed; // Adjust speed as needed
+                    Projectile.velocity.X = MathHelper.SmoothStep(Projectile.velocity.X, direction.X * speed, rotateSpeed); // Smoothly adjust the X velocity
+                    Projectile.velocity.Y = MathHelper.SmoothStep(Projectile.velocity.Y, direction.Y * speed, rotateSpeed); // Smoothly adjust the Y velocity
                     Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; // Rotate to face the target
                 }
                 else

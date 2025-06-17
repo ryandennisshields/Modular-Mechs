@@ -225,6 +225,21 @@ Items: {
 		DisplayName: Missile Launcher
 		Tooltip: ""
 	}
+
+	NuclearEject: {
+		DisplayName: Nuclear Eject
+		Tooltip: ""
+	}
+
+	Hover: {
+		DisplayName: Hover
+		Tooltip: ""
+	}
+
+	FlightSpecialisation: {
+		DisplayName: Flight Specialisation
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -246,6 +261,7 @@ Buffs: {
 Projectiles: {
 	BaseSwordProj.DisplayName: Base Sword Proj
 	MissileProjectile.DisplayName: Missile Projectile
+	NuclearEjectProjectile.DisplayName: Nuclear Eject Projectile
 }
 
 Keybinds: {

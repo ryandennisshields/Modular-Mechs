@@ -22,8 +22,7 @@ namespace MechMod.Content.Items.MechBoosters
 
             mech.lifeBonus = 0;
 
-            mech.MountData.flightTimeMax = 60; // 1 second of flight time
-            mech.MountData.usesHover = false;
+            mech.MountData.flightTimeMax = 45; // 0.75 seconds of flight time
 
             player.GetModPlayer<DashPlayer>().ableToDash = false;
             player.GetModPlayer<DashPlayer>().dashVelo = 0f;

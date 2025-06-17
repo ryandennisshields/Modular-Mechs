@@ -67,6 +67,8 @@ namespace MechMod.Content.Mechs
 
     public class ModularMech : ModMount
     {
+        public bool allowDown;
+
         public override void SetStaticDefaults()
         {
             // Misc
@@ -122,6 +124,9 @@ namespace MechMod.Content.Mechs
             MountData.jumpSpeed = 0f;
 
             MountData.dashSpeed = 0f;
+
+            MountData.flightTimeMax = 0;
+            allowDown = false;
         }
 
         public int lifeBonus;
@@ -151,18 +156,13 @@ namespace MechMod.Content.Mechs
             }
         }
 
+        public int mechDebuffDuration; // Duration that the player can't resummon the mech and is debuffed for
+        public int launchForce; // Force applied to the player when dismounting the mech
+
         public override void Dismount(Player player, ref bool skipDust)
         {
-            // Debuff the Player
-            int mechDebuff = ModContent.BuffType<MechDebuff>();
-            //Should be set to 3600 ticks
-            player.AddBuff(mechDebuff, 60);
-
-            // Make Player visible
-            player.opacityForAnimation = 1;
-
-            // Reset stat values
-            lifeBonus = 0;
+            mechDebuffDuration = 60;
+            launchForce = -10;
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
             {
                 if (part.ModItem is IMechModule mechModule)
@@ -173,21 +173,54 @@ namespace MechMod.Content.Mechs
                     }
                 }
             }
+            // Debuff the Player
+            int mechDebuff = ModContent.BuffType<MechDebuff>();
+            //Should be set to 3600 ticks
+            player.AddBuff(mechDebuff, mechDebuffDuration);
+            player.opacityForAnimation = 1; // Make Player visible
+            player.velocity.Y = launchForce; // Launch the Player upwards
+
+            // Reset stat values
+            lifeBonus = 0;
+            armourBonus = 0;
         }
 
         private bool animateOnce = false;
+
+        // Seperate variables for the mount's jump and run speeds for ground and flight states
+        public float groundJumpSpeed = 0f;
+        public float groundHorizontalSpeed = 0f;
+        public float flightJumpSpeed = 0f;
+        public float flightHorizontalSpeed = 0f;
 
         public override void UpdateEffects(Player player)
         {
             var modPlayer = player.GetModPlayer<MechModPlayer>();
 
-            if (player.mount.Type == ModContent.MountType<ModularMech>())
+            // Disable player's ability to hover while flying
+            if (player.mount._frameState == Mount.FrameFlying && !allowDown)
             {
-                // These are here to make sure the Player does not recieve buffs like set bonus buffs
-                player.head = 0;
-                player.body = 0;
-                player.legs = 0;
+                player.controlDown = false;
             }
+
+            // Set the mount's jump and run speeds based on if the mount is flying or not
+            if (player.mount._frameState == Mount.FrameFlying)
+            {
+                MountData.jumpSpeed = flightJumpSpeed;
+                MountData.runSpeed = flightHorizontalSpeed;
+                MountData.swimSpeed = flightHorizontalSpeed;
+            }
+            else
+            {
+                MountData.jumpSpeed = groundJumpSpeed;
+                MountData.runSpeed = groundHorizontalSpeed;
+                MountData.swimSpeed = groundHorizontalSpeed;
+            }
+
+            // These are here to make sure the Player does not recieve buffs like set bonus buffs
+            player.head = 0;
+            player.body = 0;
+            player.legs = 0;
 
             // Grant life bonus
             player.statLifeMax2 += lifeBonus;

@@ -35,8 +35,6 @@ namespace MechMod.Content.Items.MechWeapons
             attackRate = Weapons.AttackSpeedCalc(20, player);
             float knockback = Weapons.KnockbackCalc(4, player);
 
-            int owner = player.whoAmI;
-
             float projSpeed = 10;
             int holdTime = 50; // Amount of time player holds out the weapon after ceasing to fire
             Vector2 offset = new Vector2(0, -42); // Offset to adjust the projectile's spawn position relative to the mech's center
@@ -47,7 +45,7 @@ namespace MechMod.Content.Items.MechWeapons
 
             if (player.whoAmI == Main.myPlayer)
             {
-                int projID = Projectile.NewProjectile(new EntitySource_Parent(player), Main.LocalPlayer.MountedCenter + offset, velocity, projectileType, damage, knockback, owner);
+                int projID = Projectile.NewProjectile(new EntitySource_Parent(player), Main.LocalPlayer.MountedCenter + offset, velocity, projectileType, damage, knockback, player.whoAmI);
                 player.GetModPlayer<MechModPlayer>().animationTimer = holdTime;
             }
         }

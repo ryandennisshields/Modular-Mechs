@@ -23,8 +23,9 @@ namespace MechMod.Content.Items.MechBoosters
 
             mech.lifeBonus -= 50; // 50 health penalty
 
-            mech.MountData.flightTimeMax = 60; // 1 second of flight time
-            mech.MountData.usesHover = false;
+            mech.MountData.flightTimeMax = 45; // 0.75 seconds of flight time
+            mech.flightHorizontalSpeed = 1f;
+            mech.flightJumpSpeed = 1f;
 
             // Allow dashing
             player.GetModPlayer<DashPlayer>().ableToDash = true;

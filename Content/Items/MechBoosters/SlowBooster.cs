@@ -24,7 +24,6 @@ namespace MechMod.Content.Items.MechBoosters
             mech.lifeBonus += 50; // 50 health bonus
 
             mech.MountData.flightTimeMax = 0;
-            mech.MountData.usesHover = false;
 
             // Allow dashing
             player.GetModPlayer<DashPlayer>().ableToDash = true;
