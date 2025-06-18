@@ -28,8 +28,8 @@ namespace MechMod.Content.Items.MechBoosters
             // Allow dashing
             player.GetModPlayer<DashPlayer>().ableToDash = true;
             player.GetModPlayer<DashPlayer>().dashVelo = 10f;
-            player.GetModPlayer<DashPlayer>().dashCoolDown = 60; // 1 second of cooldown
-            player.GetModPlayer<DashPlayer>().dashDuration = 30; // 0.5 seconds of dash duration
+            player.GetModPlayer<DashPlayer>().dashCoolDown = 90; // 1.5 seconds of cooldown
+            player.GetModPlayer<DashPlayer>().dashDuration = 60; // 1 second of dash duration
         }
     }
 }

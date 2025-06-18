@@ -17,10 +17,10 @@ Items: {
 
 	// Mech Parts
 	
-	// Grey = Descriptive
-	// White = Middle
-	// Blue = Increase or High
-	// Red = Decrease or Low
+	// Grey (969696) = Descriptive
+	// White (FFFFFF) = Middle
+	// Blue (3030FF) = Increase or High
+	// Red (FF3030) = Decrease or Low
 	
 	// Base Parts
 	
@@ -29,8 +29,8 @@ Items: {
 		Tooltip:
 			'''
 			Head Part
-			[c/30FFFF:+50 Health]
-			[c/30FFFF:+10% Damage]
+			[c/3030FF:+50 Health]
+			[c/3030FF:+10% Damage]
 			'''
 	}
 
@@ -39,7 +39,7 @@ Items: {
 		Tooltip:
 			'''
 			Body Part
-			[c/30FFFF:+100 Health]
+			[c/3030FF:+100 Health]
 			'''
 	}
 
@@ -48,7 +48,7 @@ Items: {
 		Tooltip:
 			'''
 			Arms Part
-			[c/30FFFF:+20% Damage]
+			[c/3030FF:+20% Damage]
 			'''
 	}
 
@@ -57,7 +57,7 @@ Items: {
 		Tooltip:
 			'''
 			Legs Part
-			[c/30FFFF:+50 Health]
+			[c/3030FF:+50 Health]
 			[c/969696:Ground Stats]
 			Medium Acceleration
 			Medium Speed
@@ -73,7 +73,9 @@ Items: {
 			'''
 			Booster Part
 			[c/969696:Enables Flight]
-			1s Flight Time
+			2.5s Flight Time
+			Medium Horizontal Speed
+			Medium Vertical Speed
 			'''
 	}
 
@@ -84,7 +86,7 @@ Items: {
 		Tooltip:
 			'''
 			Head Part
-			[c/30FFFF:2x Armour]
+			[c/3030FF:2x Armour]
 			'''
 	}
 
@@ -93,7 +95,7 @@ Items: {
 		Tooltip:
 			'''
 			Body Part
-			[c/30FFFF:+150 Health]
+			[c/3030FF:+150 Health]
 			[c/FF3030:-10% Damage]
 			'''
 	}
@@ -103,7 +105,7 @@ Items: {
 		Tooltip:
 			'''
 			Arms Part
-			[c/30FFFF:+30% Damage]
+			[c/3030FF:+30% Damage]
 			[c/FF3030:-10% Attack Speed]
 			[c/FF3030:-10% Critical Chance]
 			'''
@@ -114,7 +116,7 @@ Items: {
 		Tooltip:
 			'''
 			Legs Part
-			[c/30FFFF:+100 Health]
+			[c/3030FF:+100 Health]
 			[c/969696:Ground Stats]
 			Medium Acceleration
 			[c/FF3030:Low Speed]
@@ -129,10 +131,10 @@ Items: {
 		Tooltip:
 			'''
 			Booster Part
-			[c/30FFFF:+50 Health]
+			[c/3030FF:+50 Health]
 			[c/969696:Enables Dashing]
 			Medium Dash Speed
-			Medium Dash Distance
+			[c/3030FF: High Dash Distance]
 			Medium Dash Cooldown
 			'''
 	}
@@ -144,7 +146,7 @@ Items: {
 		Tooltip:
 			'''
 			Head Part
-			[c/30FFFF:2x Critical Chance]
+			[c/3030FF:2x Critical Chance]
 			'''
 	}
 
@@ -153,9 +155,9 @@ Items: {
 		Tooltip:
 			'''
 			Body Part
-			[c/30FFFF:+50 Health]
-			[c/30FFFF:+20% Acceleration]
-			[c/30FFFF:+20% Speed]
+			[c/3030FF:+50 Health]
+			[c/3030FF:+20% Acceleration]
+			[c/3030FF:+20% Speed]
 			'''
 	}
 
@@ -164,8 +166,8 @@ Items: {
 		Tooltip:
 			'''
 			Arms Part
-			[c/30FFFF:+20% Damage]
-			[c/30FFFF:+10% Critical Chance]
+			[c/3030FF:+20% Damage]
+			[c/3030FF:+10% Critical Chance]
 			[c/FF3030:-25 Health]
 			'''
 	}
@@ -175,13 +177,13 @@ Items: {
 		Tooltip:
 			'''
 			Legs Part
-			[c/30FFFF:+25 Health]
+			[c/3030FF:+25 Health]
 			[c/969696:Ground Stats]
-			[c/30FFFF:High Acceleration]
-			[c/30FFFF:High Speed]
+			[c/3030FF:High Acceleration]
+			[c/3030FF:High Speed]
 			[c/969696:Jumping Stats]
 			Medium Jump Height
-			[c/30FFFF:High Jump Speed]
+			[c/3030FF:High Jump Speed]
 			'''
 	}
 
@@ -192,7 +194,9 @@ Items: {
 			Booster Part
 			[c/FF3030:-50 Health]
 			[c/969696:Enables Flight and Dashing]
-			1s Flight Time
+			[c/FF3030:1.75s Flight Time]
+			[c/3030FF:Fast Horizontal Speed]
+			[c/3030FF:Fast Vertical Speed]
 			Medium Dash Speed
 			Medium Dash Distance
 			Medium Dash Cooldown
@@ -216,29 +220,82 @@ Items: {
 		Tooltip: ""
 	}
 
+	// Modules
+	// Passive
+	
+	// Cyan (30FFFF) = On Mount
+	// Purple (FF30FF) = On Dismount
+	// Yellow (FFFF30) = Persistent
+	
 	Spikes: {
 		DisplayName: Spikes
-		Tooltip: ""
-	}
-
-	MissileLauncher: {
-		DisplayName: Missile Launcher
-		Tooltip: ""
+		Tooltip:
+			'''
+			Module
+			[c/FFFF30:Passive]
+			Gives the Mech contact damage, damaging and knocking back enemies that touch it
+			'''
 	}
 
 	NuclearEject: {
 		DisplayName: Nuclear Eject
-		Tooltip: ""
+		Tooltip:
+			'''
+			Module
+			[c/FF30FF:Passive]
+			When you leave your Mech manually or automatically, your Mech will explode, dealing damage in a large area
+			Increases the duration of Mech Fatigue
+			'''
 	}
 
 	Hover: {
 		DisplayName: Hover
-		Tooltip: ""
+		Tooltip:
+			'''
+			Module
+			[c/FFFF30:Passive]
+			Allows the Mech to hover with Boosters while mid-flight
+			Hovering boosts damage
+			'''
 	}
 
-	FlightSpecialisation: {
-		DisplayName: Flight Specialisation
-		Tooltip: ""
+	Brace: {
+		DisplayName: Brace
+		Tooltip:
+			'''
+			Module
+			[c/FFFF30:Passive]
+			If using a Ranged Weapon, you can scope/zoom out
+			Scoping/Zooming out increases damage, but reduces movement speed
+			'''
+	}
+
+	// Active
+	
+	// Red (FF3030) = Offensive
+	// Blue (3030FF) = Defensive
+	// Green (30FF30) = Utility
+	
+	MissileLauncher: {
+		DisplayName: Missile Launcher
+		Tooltip:
+			'''
+			Module
+			[c/FF3030:Active]
+			Fires a barrage of missiles that fly upwards before homing in on the nearest enemy to them
+			30s Cooldown
+			'''
+	}
+
+	Repair: {
+		DisplayName: Repair
+		Tooltip:
+			'''
+			Module
+			[c/3030FF:Active]
+			Repairs your Mech, restoring half of your health
+			60s Cooldown
+			'''
 	}
 }
 
@@ -251,10 +308,10 @@ Buffs: {
 	MechDebuff: {
 		Description:
 			'''
-			The Mech drains your energy to return. Until it's ready, you'll have to survive.
+			The Mech drains your energy to return. Until it's ready, you'll have to survive
 			Damage and maximum life are reduced
 			'''
-		DisplayName: Mech Unavailable
+		DisplayName: Mech Fatigue
 	}
 }
 

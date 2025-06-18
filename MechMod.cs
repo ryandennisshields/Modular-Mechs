@@ -84,8 +84,10 @@ namespace MechMod
                 { "spikes", new MechPart(ModContent.ItemType<Spikes>(), "Passive Module")},
                 { "nucleareject", new MechPart(ModContent.ItemType<NuclearEject>(), "Passive Module")},
                 { "hover", new MechPart(ModContent.ItemType<Hover>(), "Passive Module")},
+                { "brace", new MechPart(ModContent.ItemType<Brace>(), "Passive Module")},
                 // Active
                 { "missilelauncher", new MechPart(ModContent.ItemType<MissileLauncher>(), "Active Module")},
+                { "repair", new MechPart(ModContent.ItemType<Repair>(), "Active Module")},
             };
 
             MechDashKeybind = KeybindLoader.RegisterKeybind(this, "MechDash", "V");

@@ -18,6 +18,8 @@ namespace MechMod.Content.Items.MechWeapons
             Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = 10000; // The value of the item in copper coins.
             Item.rare = 3; // The rarity of the item.
+
+            Weapons.damageClass = DamageClass.Melee;
         }
 
         public float timer { get; set; } = 0f;
@@ -29,8 +31,6 @@ namespace MechMod.Content.Items.MechWeapons
         public void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
         {
             int projectileType = ModContent.ProjectileType<BaseSwordProj>();
-
-            Weapons.damageClass = DamageClass.Melee;
 
             int damage = Weapons.DamageCalc(12, player);
             Weapons.CritChanceCalc(4, player);

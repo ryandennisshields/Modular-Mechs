@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using static MechMod.Content.Mechs.IMechModule;
 using Terraria.DataStructures;
 using Terraria.ID;
+using MechMod.Content.Items.MechWeapons;
 
 namespace MechMod.Content.Items.MechModules.Passive
 {
@@ -22,7 +23,7 @@ namespace MechMod.Content.Items.MechModules.Passive
         public ModuleType moduleType => ModuleType.OnDismount; // Dismount effect
 
         private int explosionDamage = 100;
-        private float explosionKnockback = 20f;
+        private int explosionKnockback = 30;
         private int explosionType = ModContent.ProjectileType<NuclearEjectProjectile>();
 
         public void ModuleEffect(ModularMech mech, Player player)
@@ -34,8 +35,8 @@ namespace MechMod.Content.Items.MechModules.Passive
                     player.MountedCenter,
                     Vector2.Zero,
                     explosionType,
-                    explosionDamage,
-                    explosionKnockback,
+                    Weapons.DamageCalc(explosionDamage, player),
+                    Weapons.KnockbackCalc(explosionKnockback, player),
                     player.whoAmI
                     );
             }

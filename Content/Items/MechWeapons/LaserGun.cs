@@ -17,6 +17,8 @@ namespace MechMod.Content.Items.MechWeapons
             Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = 10000; // The value of the item in copper coins.
             Item.rare = 3; // The rarity of the item.
+
+            Weapons.damageClass = DamageClass.Magic;
         }
 
         public float timer { get; set; } = 0f;
@@ -33,8 +35,6 @@ namespace MechMod.Content.Items.MechWeapons
                 canUse = true;
 
                 int projectileType = ProjectileID.LaserMachinegunLaser;
-
-                Weapons.damageClass = DamageClass.Magic;
 
                 int damage = Weapons.DamageCalc(12, player);
                 Weapons.CritChanceCalc(4, player);

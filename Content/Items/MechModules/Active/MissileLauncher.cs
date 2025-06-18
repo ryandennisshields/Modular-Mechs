@@ -8,6 +8,7 @@ using static MechMod.Content.Mechs.IMechModule;
 using Terraria.ID;
 using Terraria.DataStructures;
 using System.Runtime.CompilerServices;
+using MechMod.Content.Items.MechWeapons;
 
 namespace MechMod.Content.Items.MechModules.Active
 {
@@ -35,7 +36,7 @@ namespace MechMod.Content.Items.MechModules.Active
         private int fireDelay = 5; // Delay between missile launches in frames (0.5 seconds)
 
         private int missileDamage = 50;
-        private float missileKnockback = 10f;
+        private int missileKnockback = 10;
         private int missileCount = 5;
         private int missileType = ModContent.ProjectileType<MissileProjectile>();
 
@@ -57,8 +58,8 @@ namespace MechMod.Content.Items.MechModules.Active
                         player.MountedCenter + new Vector2(0, -40),
                         Vector2.Zero,
                         missileType,
-                        missileDamage,
-                        missileKnockback,
+                        Weapons.DamageCalc(missileDamage, player),
+                        Weapons.KnockbackCalc(missileKnockback, player),
                         player.whoAmI
                     ); // Create a missile
                     missilesFired++; /// Increment the missile counter

@@ -21,12 +21,11 @@ namespace MechMod.Content.Items.MechLegs
 
             // Ground stats
             mech.MountData.acceleration = 0.1f;
-            mech.MountData.runSpeed = 4f;
-            mech.MountData.swimSpeed = 4f;
+            mech.groundHorizontalSpeed = 4f;
 
             // Jumping stats
             mech.MountData.jumpHeight = 10;
-            mech.MountData.jumpSpeed = 8f;
+            mech.groundJumpSpeed = 8f;
         }
     }
 }

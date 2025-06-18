@@ -1,4 +1,5 @@
-﻿using MechMod.Content.Mechs;
+﻿using MechMod.Content.Items.MechWeapons;
+using MechMod.Content.Mechs;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -21,7 +22,7 @@ namespace MechMod.Content.Items.MechModules.Passive
         public ModuleType moduleType => ModuleType.Persistent; // Persistent effect
 
         private int contactDamage = 10; // Damage dealt on contact with enemies
-        private float contactKnockback = 20f; // Knockback applied on contact
+        private int contactKnockback = 20; // Knockback applied on contact
         //private Rectangle hitbox; // Hitbox for spikes
 
         private Dictionary<int, int> damageCooldown = new Dictionary<int, int>(); // Cooldown for each NPC
@@ -33,8 +34,8 @@ namespace MechMod.Content.Items.MechModules.Passive
                 NPC npc = Main.npc[i];
                 NPC.HitInfo hitInfo = new NPC.HitInfo
                 {
-                    Damage = contactDamage,
-                    Knockback = contactKnockback,
+                    Damage = Weapons.DamageCalc(contactDamage, player),
+                    Knockback = Weapons.KnockbackCalc(contactKnockback, player),
                     HitDirection = npc.Center.X < player.Center.X ? -1 : 1, // Determine hit direction based on NPC position relative to player
                 };
                 if (!damageCooldown.TryGetValue(npc.whoAmI, out int cooldown) && npc.active && !npc.friendly && !npc.dontTakeDamage && npc.Hitbox.Intersects(player.getRect()))
