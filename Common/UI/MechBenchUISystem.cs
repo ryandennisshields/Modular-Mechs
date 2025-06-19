@@ -56,8 +56,8 @@ namespace MechMod.Common.UI
 
         internal void ShowMyUI()
         {
-            MechBenchInterface?.SetState(MechBenchUI);
             MechBenchUI.OnPlayerUse();
+            MechBenchInterface?.SetState(MechBenchUI);
         }
 
         internal void HideMyUI()

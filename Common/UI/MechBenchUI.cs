@@ -9,11 +9,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MechMod.Common.UI
 {
@@ -35,17 +37,20 @@ namespace MechMod.Common.UI
             base.OnInitialize();
 
             mainPanel = new UIPanel();
-            slots = new PartSlot[6];
-            slotNames = new UIText[6];
+            slots = new PartSlot[9];
+            slotNames = new UIText[9];
 
             slots =
             [
-            new PartSlot("Head"),
-            new PartSlot("Body"),
-            new PartSlot("Arms"),
-            new PartSlot("Legs"),
-            new PartSlot("Booster"),
-            new PartSlot("Weapon")
+            new PartSlot("head"),
+            new PartSlot("body"),
+            new PartSlot("arms"),
+            new PartSlot("legs"),
+            new PartSlot("booster"),
+            new PartSlot("weapon"),
+            new PartSlot("passivemodule1"),
+            new PartSlot("passivemodule2"),
+            new PartSlot("activemodule")
             ];
 
             slotNames =
@@ -55,68 +60,114 @@ namespace MechMod.Common.UI
             new UIText("Arms"),
             new UIText("Legs"),
             new UIText("Booster"),
-            new UIText("Weapon")
+            new UIText("Weapon"),
+            new UIText("Modules"),
+            new UIText("Passive"),
+            new UIText("Active")
             ];
 
             mainPanel.Left.Set(600f, 0f);
             mainPanel.Top.Set(200f, 0f);
             mainPanel.Width.Set(300f, 0f);
-            mainPanel.Height.Set(300f, 0f);
+            mainPanel.Height.Set(350f, 0f);
             mainPanel.OnLeftMouseDown += DragStart;
             mainPanel.OnLeftMouseUp += DragEnd;
             Append(mainPanel);
 
-            UIPanel button = new UIPanel();   // 1
+            UIPanel button = new UIPanel();
             button.Width.Set(25, 0);
             button.Height.Set(25, 0);
             button.HAlign = 1f;
-            button.OnLeftClick += OnButtonClick;  // 3
+            button.OnLeftClick += OnButtonClick;
             mainPanel.Append(button);
 
             // Head, Body, Arms and Legs Slots
-            for (int i = 0; i < slots.Length - 2; i++)
+            for (int i = 0; i < 4; i++)
             {
                 slots[i].Width.Set(32.5f, 0);
                 slots[i].Height.Set(32.5f, 0);
-                slots[i].Left.Set(50, 0);
-                slots[i].Top.Set(40 + (i * 40), 0);
+                slots[i].HAlign = 0.25f;
+                slots[i].Top.Set(30 + (i * 40), 0);
                 slots[i].OnLeftClick += slots[i].EquipPart;
                 mainPanel.Append(slots[i]);
 
                 slotNames[i].Width.Set(50, 0);
                 slotNames[i].Height.Set(25, 0);
-                slotNames[i].Left.Set(-5, 0);
-                slotNames[i].Top.Set(47.5f + (i * 40), 0);
+                slotNames[i].HAlign = 0.025f;
+                slotNames[i].Top.Set(37.5f + (i * 40), 0);
                 mainPanel.Append(slotNames[i]);
             }
 
             // Booster Slot
             slots[4].Width.Set(32.5f, 0);
             slots[4].Height.Set(32.5f, 0);
-            slots[4].Left.Set(50, 0);
-            slots[4].Top.Set(225, 0);
+            slots[4].HAlign = 0.25f;
+            slots[4].Top.Set(215, 0);
             slots[4].OnLeftClick += slots[4].EquipPart;
             mainPanel.Append(slots[4]);
 
             slotNames[4].Width.Set(50, 0);
             slotNames[4].Height.Set(25, 0);
-            slotNames[4].Left.Set(33, 0);
-            slotNames[4].Top.Set(200f, 0);
+            slotNames[4].HAlign = 0.205f;
+            slotNames[4].Top.Set(195, 0);
             mainPanel.Append(slotNames[4]);
 
             // Weapon Slot
             slots[5].Width.Set(32.5f, 0);
             slots[5].Height.Set(32.5f, 0);
-            slots[5].Left.Set(185, 0);
-            slots[5].Top.Set(225, 0);
+            slots[5].HAlign = 0.75f;
+            slots[5].Top.Set(215, 0);
             slots[5].OnLeftClick += slots[5].EquipPart;
             mainPanel.Append(slots[5]);
 
             slotNames[5].Width.Set(50, 0);
             slotNames[5].Height.Set(25, 0);
-            slotNames[5].Left.Set(169, 0);
-            slotNames[5].Top.Set(200f, 0);
+            slotNames[5].HAlign = 0.7725f;
+            slotNames[5].Top.Set(195, 0);
             mainPanel.Append(slotNames[5]);
+
+            // Passive Module Slots
+            for (int i = 6; i < 8; i++)
+            {
+                slots[i].Width.Set(32.5f, 0);
+                slots[i].Height.Set(32.5f, 0);
+                slots[i].HAlign = 0.175f + (i - 6) * 0.15f;
+                slots[i].Top.Set(290, 0);
+                slots[i].OnLeftClick += slots[i].EquipPart;
+                mainPanel.Append(slots[i]);
+            }
+
+            // Active Module Slot
+            slots[8].Width.Set(32.5f, 0);
+            slots[8].Height.Set(32.5f, 0);
+            slots[8].HAlign = 0.75f;
+            slots[8].Top.Set(290, 0);
+            slots[8].OnLeftClick += slots[8].EquipPart;
+            mainPanel.Append(slots[8]);
+
+            // Module Text
+            slotNames[6].Width.Set(50, 0);
+            slotNames[6].Height.Set(25, 0);
+            slotNames[6].HAlign = 0.5f;
+            slotNames[6].Top.Set(250, 0);
+            mainPanel.Append(slotNames[6]);
+
+            slotNames[7].Width.Set(50, 0);
+            slotNames[7].Height.Set(25, 0);
+            slotNames[7].HAlign = 0.215f;
+            slotNames[7].Top.Set(270, 0);
+            mainPanel.Append(slotNames[7]);
+
+            slotNames[8].Width.Set(50, 0);
+            slotNames[8].Height.Set(25, 0);
+            slotNames[8].HAlign = 0.76f;
+            slotNames[8].Top.Set(270, 0);
+            mainPanel.Append(slotNames[8]);
+
+            for (int i = 0; i < slots.Length; i++)
+            {
+                slots[i].OnLeftClick += OnPartSlotInteract; 
+            }
 
             playerLoaded = false;
 
@@ -124,21 +175,21 @@ namespace MechMod.Common.UI
             upgradeText.Width.Set(50, 0);
             upgradeText.Height.Set(25, 0);
             upgradeText.Left.Set(105, 0);
-            upgradeText.Top.Set(50, 0);
+            upgradeText.Top.Set(40, 0);
             mainPanel.Append(upgradeText);
 
             upgradeCostText = new UIText("");
             upgradeCostText.Width.Set(150, 0);
             upgradeCostText.Height.Set(25, 0);
             upgradeCostText.Left.Set(105, 0);
-            upgradeCostText.Top.Set(90, 0);
+            upgradeCostText.Top.Set(80, 0);
             mainPanel.Append(upgradeCostText);
 
             upgradeButton = new UIText("Confirm");
             upgradeButton.Width.Set(25, 0);
             upgradeButton.Height.Set(25, 0);
             upgradeButton.Left.Set(105, 0);
-            upgradeButton.Top.Set(150, 0);
+            upgradeButton.Top.Set(140, 0);
             upgradeButton.OnLeftClick += OnUpgradeButtonClick;
             mainPanel.Append(upgradeButton);
 
@@ -146,7 +197,7 @@ namespace MechMod.Common.UI
             playerLevel.Width.Set(25, 0);
             playerLevel.Height.Set(25, 0);
             playerLevel.Left.Set(105, 0);
-            playerLevel.Top.Set(170, 0);
+            playerLevel.Top.Set(160, 0);
             mainPanel.Append(playerLevel);
 
             //Dev Button
@@ -154,14 +205,47 @@ namespace MechMod.Common.UI
             resetButton.Width.Set(25, 0);
             resetButton.Height.Set(25, 0);
             resetButton.Left.Set(225, 0);
-            resetButton.Top.Set(150, 0);
+            resetButton.Top.Set(140, 0);
             resetButton.OnLeftClick += OnResetButtonClick;
             mainPanel.Append(resetButton);
+        }
+
+        public void OnPlayerUse()
+        {
+            var player = Main.LocalPlayer;
+            var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
+
+            player.mount.Dismount(player);
+
+            modPlayer.disableMounts = true;
+            for (int i = 0; i < slots.Length; i++)
+            {
+                if (!modPlayer.equippedParts[i].IsAir)
+                {
+                    slots[i].item = modPlayer.equippedParts[i];
+                }
+            }
+
+            UpdateUpgradeRequirements();
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            //var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
+
+            //for (int i = 0; i < slots.Length; i++)
+            //{
+            //    if (slots[i].item.IsAir)
+            //    {
+            //        modPlayer.equippedParts[i].TurnToAir();
+            //    }
+            //    else
+            //    {
+            //        modPlayer.equippedParts[i] = slots[i].item;
+            //    }
+            //}
 
             if (ContainsPoint(Main.MouseScreen))
                 Main.LocalPlayer.mouseInterface = true;
@@ -184,6 +268,23 @@ namespace MechMod.Common.UI
             ModContent.GetInstance<MechBenchUISystem>().HideMyUI();
         }
 
+        private void OnPartSlotInteract(UIMouseEvent evt, UIElement listeningElement)
+        {
+            var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
+
+            for (int i = 0; i < slots.Length; i++)
+            {
+                if (slots[i].item.IsAir)
+                {
+                    modPlayer.equippedParts[i].TurnToAir();
+                }
+                else
+                {
+                    modPlayer.equippedParts[i] = slots[i].item;
+                }
+            }
+        }
+
         private Vector2 offset;
         private bool dragging;
 
@@ -204,23 +305,6 @@ namespace MechMod.Common.UI
             Recalculate();
         }
 
-        public void OnPlayerUse()
-        {
-            var player = Main.LocalPlayer;
-            var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
-
-            player.mount.Dismount(player);
-            for (int i = 0; i < slots.Length; i++)
-            {
-                if (!modPlayer.equippedParts[i].IsAir)
-                {
-                    slots[i].item = modPlayer.equippedParts[i];
-                }
-            }
-
-            UpdateUpgradeRequirements();
-        }
-
         public override void OnDeactivate()
         {
             base.OnDeactivate();
@@ -229,18 +313,19 @@ namespace MechMod.Common.UI
             var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
 
             player.mount.Dismount(player);
-            for (int i = 0; i < slots.Length; i++)
-            {
-                if (slots[i].item.IsAir)
-                {
-                    modPlayer.equippedParts[i].TurnToAir();
-                }
-                else
-                {
-                    modPlayer.equippedParts[i] = slots[i].item;
-                }
 
-            }
+            modPlayer.disableMounts = false;
+            //for (int i = 0; i < slots.Length; i++)
+            //{
+            //    if (slots[i].item.IsAir)
+            //    {
+            //        modPlayer.equippedParts[i].TurnToAir();
+            //    }
+            //    else
+            //    {
+            //        modPlayer.equippedParts[i] = slots[i].item;
+            //    }
+            //}
         }
 
         private int[][] upgradeRequiredMaterial =

@@ -70,18 +70,18 @@ namespace MechMod.Common.Players
                 tag["equippedWeapon"] = ItemIO.Save(equippedParts[MechMod.weaponIndex]);
             else
                 equippedParts[MechMod.weaponIndex] = new Item();
-            if (!equippedParts[MechMod.pasModule1Index].IsAir)
-                tag["equippedPassiveModule1"] = ItemIO.Save(equippedParts[MechMod.pasModule1Index]);
+            if (!equippedParts[MechMod.passivemodule1Index].IsAir)
+                tag["equippedPassiveModule1"] = ItemIO.Save(equippedParts[MechMod.passivemodule1Index]);
             else
-                equippedParts[MechMod.pasModule1Index] = new Item();
-            if (!equippedParts[MechMod.pasModule2Index].IsAir)
-                tag["equippedPassiveModule2"] = ItemIO.Save(equippedParts[MechMod.pasModule2Index]);
+                equippedParts[MechMod.passivemodule1Index] = new Item();
+            if (!equippedParts[MechMod.passivemodule2Index].IsAir)
+                tag["equippedPassiveModule2"] = ItemIO.Save(equippedParts[MechMod.passivemodule2Index]);
             else
-                equippedParts[MechMod.pasModule2Index] = new Item();
-            if (!equippedParts[MechMod.actModuleIndex].IsAir)
-                tag["equippedActiveModule"] = ItemIO.Save(equippedParts[MechMod.actModuleIndex]);
+                equippedParts[MechMod.passivemodule2Index] = new Item();
+            if (!equippedParts[MechMod.activemoduleIndex].IsAir)
+                tag["equippedActiveModule"] = ItemIO.Save(equippedParts[MechMod.activemoduleIndex]);
             else
-                equippedParts[MechMod.actModuleIndex] = new Item();
+                equippedParts[MechMod.activemoduleIndex] = new Item();
 
             tag["upgradeLevel"] = upgradeLevel;
             tag["upgradeDamageBonus"] = upgradeDamageBonus;
@@ -113,17 +113,17 @@ namespace MechMod.Common.Players
             else
                 equippedParts[MechMod.weaponIndex] = new Item();
             if (tag.ContainsKey("equippedPassiveModule1"))
-                equippedParts[MechMod.pasModule1Index] = ItemIO.Load(tag.GetCompound("equippedPassiveModule1"));
+                equippedParts[MechMod.passivemodule1Index] = ItemIO.Load(tag.GetCompound("equippedPassiveModule1"));
             else
-                equippedParts[MechMod.pasModule1Index] = new Item();
+                equippedParts[MechMod.passivemodule1Index] = new Item();
             if (tag.ContainsKey("equippedPassiveModule2"))
-                equippedParts[MechMod.pasModule2Index] = ItemIO.Load(tag.GetCompound("equippedPassiveModule2"));
+                equippedParts[MechMod.passivemodule2Index] = ItemIO.Load(tag.GetCompound("equippedPassiveModule2"));
             else
-                equippedParts[MechMod.pasModule2Index] = new Item();
+                equippedParts[MechMod.passivemodule2Index] = new Item();
             if (tag.ContainsKey("equippedActiveModule"))
-                equippedParts[MechMod.actModuleIndex] = ItemIO.Load(tag.GetCompound("equippedActiveModule"));
+                equippedParts[MechMod.activemoduleIndex] = ItemIO.Load(tag.GetCompound("equippedActiveModule"));
             else
-                equippedParts[MechMod.actModuleIndex] = new Item();
+                equippedParts[MechMod.activemoduleIndex] = new Item();
 
             if (tag.ContainsKey("upgradeLevel"))
                 upgradeLevel = tag.GetInt("upgradeLevel");

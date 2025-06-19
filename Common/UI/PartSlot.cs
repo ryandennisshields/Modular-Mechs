@@ -39,7 +39,7 @@ namespace MechMod.Common.UI
             }
             else
             {
-                if (IsMouseHovering && slotPartType == "Booster")
+                if (IsMouseHovering && slotPartType == "booster")
                 {
                     UICommon.TooltipMouseText("Empty\n[c/30FFFF:+200 Health]");
                 }
@@ -48,12 +48,16 @@ namespace MechMod.Common.UI
 
         private bool isMechPart(Item item)
         {
+            // Check if the part type matches the required part type for the slot
             foreach (var mechPart in MechMod.MechParts.Values)
             {
                 if (mechPart.ItemType == item.type)
                 {
-                    // Check if the part type matches the required part type for the slot
-                    return mechPart.PartType == slotPartType;
+                    // Logic for handling passive modules
+                    if (mechPart.PartType == "passivemodule" && slotPartType == "passivemodule1" || slotPartType == "passivemodule2")
+                        return true;
+                    else
+                        return mechPart.PartType == slotPartType;
                 }
             }
             return false;
@@ -61,6 +65,8 @@ namespace MechMod.Common.UI
 
         public void EquipPart(UIMouseEvent evt, UIElement listeningElement)
         {
+            var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
+
             if (Main.mouseItem.IsAir && item.IsAir)
             {
                 return;
@@ -70,10 +76,20 @@ namespace MechMod.Common.UI
                 // If the slot has an item and the mouse is empty, pick up the item
                 Main.mouseItem = item.Clone();
                 item.TurnToAir();
+                return;
             }
-            else if (isMechPart(Main.mouseItem))
+            if (isMechPart(Main.mouseItem))
             {
-                if (!Main.mouseItem.IsAir && item.IsAir)
+                if (
+                    (slotPartType == "passivemodule1" || slotPartType == "passivemodule2") &&
+                    (modPlayer.equippedParts[MechMod.passivemodule1Index].type == Main.mouseItem.type ||
+                     modPlayer.equippedParts[MechMod.passivemodule2Index].type == Main.mouseItem.type)
+                )
+                {
+                    Main.NewText("You already have this passive module equipped!", Color.Red);
+                    return;
+                }
+                else if (!Main.mouseItem.IsAir && item.IsAir)
                 {
                     // If the slot is empty and the mouse has an item, place the item
                     item = Main.mouseItem.Clone();
