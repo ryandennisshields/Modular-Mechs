@@ -110,12 +110,6 @@ namespace MechMod.Content.Mechs
             MountData.swimFrameDelay = MountData.inAirFrameDelay;
             MountData.swimFrameStart= MountData.inAirFrameStart;
 
-            if (!Main.dedServ)
-            {
-                MountData.textureWidth = MountData.backTexture.Width();
-                MountData.textureHeight = MountData.backTexture.Height();
-            }
-
             MountData.acceleration = 0f;
             MountData.runSpeed = 0f;
             MountData.swimSpeed = 0f;
@@ -127,6 +121,12 @@ namespace MechMod.Content.Mechs
 
             MountData.flightTimeMax = 0;
             allowDown = false;
+
+            if (!Main.dedServ)
+            {
+                MountData.textureWidth = MountData.backTexture.Width();
+                MountData.textureHeight = MountData.backTexture.Height();
+            }
         }
 
         public int lifeBonus;
@@ -293,48 +293,49 @@ namespace MechMod.Content.Mechs
 
         public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)
         {
-
-            // Apply visuals to the Mech
-            //var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
-            //if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
-            //    headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
-            //if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
-            //    bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
-            //if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
-            //    armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}Visual").Value;
-            //if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
-            //    legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}Visual").Value;
-
-            // Apply visuals to the Mech (TEMPORARY)
-            var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
-            if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
             grantedLifeBonus = false;
             armourBonus = 0;
             Weapons.partDamageBonus = 0;
             Weapons.partAttackSpeedBonus = 0;
 
-                headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/BaseHeadVisual").Value;
-            if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
-                bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/BaseBodyVisual").Value;
-            if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
-                armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsVisual").Value;
-            if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
-                legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsVisual").Value;
-
-            if (!modPlayer.equippedParts[MechMod.weaponIndex].IsAir)
-                weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{modPlayer.equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}").Value;
-            else
-                weaponTexture = null; // If no weapon is equipped, set the weapon texture to null
-
-            Rectangle setArmFrame = frame; // Get the default frame logic as a new rectangle
-            if (armFrame >= 0) // If the arm frame is manually set,
-            {
-                int frameHeight = armsTexture.Height / armAnimationFrames; // Calculate the height of each frame based on the total height of the texture and the number of frames
-                setArmFrame = new Rectangle(0, armFrame * frameHeight, armsTexture.Width, frameHeight); // Change the set arm frame to a new rectangle based on the arm frame and the height of each frame
-            }
-
             if (drawType == 0)
             {
+
+                // Apply visuals to the Mech
+                //var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
+                //if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
+                //    headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
+                //if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
+                //    bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
+                //if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
+                //    armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}Visual").Value;
+                //if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
+                //    legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}Visual").Value;
+
+                // Apply visuals to the Mech (TEMPORARY)
+                var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
+                if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
+                    headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/BaseHeadVisual").Value;
+                if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
+                    bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/BaseBodyVisual").Value;
+                if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
+                    armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsVisual").Value;
+                if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
+                    legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsVisual").Value;
+
+                if (!modPlayer.equippedParts[MechMod.weaponIndex].IsAir)
+                    weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{modPlayer.equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}").Value;
+                else
+                    weaponTexture = null; // If no weapon is equipped, set the weapon texture to null
+
+                Rectangle setArmFrame = frame; // Get the default frame logic as a new rectangle
+                if (armFrame >= 0) // If the arm frame is manually set,
+                {
+                    int frameHeight = armsTexture.Height / armAnimationFrames; // Calculate the height of each frame based on the total height of the texture and the number of frames
+                    setArmFrame = new Rectangle(0, armFrame * frameHeight, armsTexture.Width, frameHeight); // Change the set arm frame to a new rectangle based on the arm frame and the height of each frame
+                }
+
+
                 // Draw left arm first
                 playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(22 * drawPlayer.direction, -50), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 

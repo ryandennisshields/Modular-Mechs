@@ -4,9 +4,11 @@ using MechMod.Content.Items.MechSpawner;
 using MechMod.Content.Mechs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using Steamworks;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -86,6 +88,7 @@ namespace MechMod.Common.Players
             tag["upgradeLevel"] = upgradeLevel;
             tag["upgradeDamageBonus"] = upgradeDamageBonus;
         }
+
         public override void LoadData(TagCompound tag)
         {
             if (tag.ContainsKey("equippedHead"))
@@ -130,6 +133,50 @@ namespace MechMod.Common.Players
             if (tag.ContainsKey("upgradeDamageBonus"))
                 upgradeDamageBonus = tag.GetFloat("upgradeDamageBonus");
         }
+
+        //public override void CopyClientState(ModPlayer targetCopy)
+        //{
+        //    var clone = (MechModPlayer)targetCopy;
+        //    for (int i = 0; i < equippedParts.Length; i++)
+        //    {
+        //        if (clone.equippedParts[i] == null)
+        //            clone.equippedParts[i] = new Item();
+        //        equippedParts[i].CopyNetStateTo(clone.equippedParts[i]);
+        //    }
+        //}
+
+        //public override void SendClientChanges(ModPlayer clientPlayer)
+        //{
+        //    var clone = (MechModPlayer)clientPlayer;
+        //    for (int i = 0; i < equippedParts.Length; i++)
+        //    {
+        //        if (clone.equippedParts[i].type != equippedParts[i].type)
+        //        {
+        //            ModPacket packet = Mod.GetPacket();
+        //            packet.Write((byte)Player.whoAmI);
+        //            packet.Write((byte)i);
+        //            packet.Write(equippedParts[i].type);
+        //            packet.Send();
+        //        }
+        //    }
+        //}
+
+        //public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+        //{
+        //    ModPacket packet = Mod.GetPacket();
+        //    packet.Write((byte)Player.whoAmI);
+        //    for (int i = 0; i < equippedParts.Length; i++)
+        //        packet.Write(equippedParts[i].type);
+        //    packet.Send(toWho, fromWho);
+        //}
+
+        //public void RecievePlayerSync(BinaryReader reader)
+        //{
+        //    for (int i = 0; i < equippedParts.Length; i++)
+        //    {
+        //        equippedParts[i].SetDefaults(reader.ReadInt32());
+        //    }
+        //}
 
         public override void ResetEffects()
         {

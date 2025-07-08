@@ -14,17 +14,15 @@ namespace MechMod.Content.Buffs
     {
         public override void SetStaticDefaults()
         {
-            //DisplayName.SetDefault("Mech Power");
-            //Description.SetDefault("You are controlling a mech!");
-            Main.buffNoSave[Type] = true;
             Main.buffNoTimeDisplay[Type] = true;
-            Main.debuff[Type] = false;
+            Main.buffNoSave[Type] = true;
         }
 
         public override void Update(Player player, ref int buffIndex)
         {
-            // Disable item use
-            player.controlUseItem = false;
+            player.mount.SetMount(ModContent.MountType<ModularMech>(), player);
+            player.buffTime[buffIndex] = 10;
+            player.controlUseItem = false; // Disable item use
         }
     }
 }

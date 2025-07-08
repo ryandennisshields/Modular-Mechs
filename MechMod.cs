@@ -18,6 +18,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 using static MechMod.Common.Players.MechModPlayer;
+using System.IO;
 
 namespace MechMod
 {
@@ -100,6 +101,18 @@ namespace MechMod
             MechParts = null;
             MechDashKeybind = null;
         }
+
+        //public override void HandlePacket(BinaryReader reader, int whoAmI)
+        //{
+        //    byte playerNumber = reader.ReadByte();
+        //    MechModPlayer mechPlayer = Main.player[playerNumber].GetModPlayer<MechModPlayer>();
+        //    mechPlayer.RecievePlayerSync(reader);
+
+        //    if (Main.netMode == NetmodeID.Server)
+        //    {
+        //        mechPlayer.SyncPlayer(-1, whoAmI, false);
+        //    }
+        //}
 
         public class EquipCommand : ModCommand
         {
@@ -232,6 +245,62 @@ namespace MechMod
                     default:
                         caller.Reply($"Slot {partslotName} not recognized.");
                         break;
+                }
+            }
+        }
+
+        public class DebugMountStateCommand : ModCommand
+        {
+            public override CommandType Type => CommandType.Chat;
+            public override string Command => "debugMounts";
+            public override string Description => "Outputs all players' mount state and textures.";
+
+            public override void Action(CommandCaller caller, string input, string[] args)
+            {
+                foreach (Player p in Main.player)
+                {
+                    if (p != null && p.active)
+                    {
+                        string msg = $"Player {p.whoAmI} ({p.name}): Mount.Active={p.mount.Active}, Mount.Type={p.mount.Type}";
+                        Main.NewText(msg, Color.Yellow);
+
+                        if (p.mount.Active)
+                        {
+                            var mountData = p.mount._data;
+                            string textureInfo = mountData != null
+                                ? $"BackTexture={(mountData.backTexture != null ? mountData.backTexture.ToString() : "null")}, " +
+                                  $"FrontTexture={(mountData.frontTexture != null ? mountData.frontTexture.ToString() : "null")}"
+                                : "MountData is null";
+                            Main.NewText($"    {textureInfo}", Color.LightGreen);
+                        }
+
+                        var modPlayer = p.GetModPlayer<MechModPlayer>();
+                        string texturePath = "none";
+                        if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
+                        {
+                            // This should match your draw logic
+                            texturePath = $"Content/Items/MechHeads/BaseHeadVisual";
+                        }
+                        Main.NewText($"Player {p.whoAmI} ({p.name}): headTexture path = {texturePath}", Color.Orange);
+                    }
+                }
+            }
+        }
+
+        public class ForceMountCommand : ModCommand
+        {
+            public override CommandType Type => CommandType.Chat;
+            public override string Command => "forceMounts";
+            public override string Description => "Force Mech Mount.";
+
+            public override void Action(CommandCaller caller, string input, string[] args)
+            {
+                foreach (Player p in Main.player)
+                {
+                    if (p != null && p.active)
+                    {
+                        p.mount.SetMount(ModContent.MountType<ModularMech>(), p);
+                    }
                 }
             }
         }
