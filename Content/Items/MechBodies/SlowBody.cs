@@ -16,7 +16,7 @@ namespace MechMod.Content.Items.MechBodies
             Item.rare = 2; // The rarity of the item.
         }
 
-        public void ApplyStats(ModularMech mech)
+        public void ApplyStats(Player player, ModularMech mech)
         {
             mech.lifeBonus += 150; // 150 health bonus
             Weapons.partDamageBonus -= 0.1f; // 10% damage reduction

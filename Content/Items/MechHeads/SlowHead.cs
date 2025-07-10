@@ -16,9 +16,8 @@ namespace MechMod.Content.Items.MechHeads
             Item.rare = 2; // The rarity of the item.
         }
 
-        public void ApplyStats(ModularMech mech)
+        public void ApplyStats(Player player, ModularMech mech)
         {
-            var player = Main.LocalPlayer;
             mech.armourBonus = player.statDefense; // Double the armour
         }
     }

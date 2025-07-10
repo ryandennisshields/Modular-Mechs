@@ -102,17 +102,56 @@ namespace MechMod
             MechDashKeybind = null;
         }
 
-        //public override void HandlePacket(BinaryReader reader, int whoAmI)
-        //{
-        //    byte playerNumber = reader.ReadByte();
-        //    MechModPlayer mechPlayer = Main.player[playerNumber].GetModPlayer<MechModPlayer>();
-        //    mechPlayer.RecievePlayerSync(reader);
+        internal enum MessageType : byte
+        {
+            EquippedPartsAndLevelSync,
+            WeaponAnimationSync
+        }
 
-        //    if (Main.netMode == NetmodeID.Server)
-        //    {
-        //        mechPlayer.SyncPlayer(-1, whoAmI, false);
-        //    }
-        //}
+        public override void HandlePacket(BinaryReader reader, int whoAmI)
+        {
+            MessageType msgType = (MessageType)reader.ReadByte();
+
+            byte playerNumber = reader.ReadByte();
+            MechModPlayer modPlayer = Main.player[playerNumber].GetModPlayer<MechModPlayer>();
+
+            switch (msgType)
+            {
+                case MessageType.EquippedPartsAndLevelSync:
+                    //byte playerNumber = reader.ReadByte();
+                    //MechModPlayer modPlayer = Main.player[playerNumber].GetModPlayer<MechModPlayer>();
+                    modPlayer.RecievePlayerSync(reader);
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        modPlayer.SyncPlayer(-1, whoAmI, false);
+                    }
+                    break;
+                //case MessageType.WeaponAnimationSync:
+                //    int armFrame = reader.ReadInt32();
+                //    float animationTimer = reader.ReadSingle();
+                //    int animationProgress = reader.ReadInt32();
+                //    int lastUseDirection = reader.ReadInt32();
+
+                //    modPlayer.armFrame = armFrame;
+                //    modPlayer.animationTimer = animationTimer;
+                //    modPlayer.animationProgress = animationProgress;
+                //    modPlayer.lastUseDirection = lastUseDirection;
+
+                //    if (Main.netMode == NetmodeID.Server)
+                //    {
+                //        ModPacket packet = GetPacket();
+                //        packet.Write((byte)MessageType.WeaponAnimationSync);
+                //        packet.Write((byte)playerNumber);
+                //        packet.Write(armFrame);
+                //        packet.Write(animationTimer);
+                //        packet.Write(animationProgress);
+                //        packet.Write(lastUseDirection);
+                //        packet.Send(-1, playerNumber);
+                //    }
+                //    break;
+            }
+        }
 
         public class EquipCommand : ModCommand
         {

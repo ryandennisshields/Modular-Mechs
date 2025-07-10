@@ -39,15 +39,15 @@ namespace MechMod.Content.Items.MechWeapons
             int holdTime = 50; // Amount of time player holds out the weapon after ceasing to fire
             Vector2 offset = new Vector2(0, -42); // Offset to adjust the projectile's spawn position relative to the mech's center
 
-            Vector2 direction = (Main.MouseWorld - Main.LocalPlayer.MountedCenter) - offset; // new Vector2 corrects the offset to still make it go towards the cursor
+            Vector2 direction = (Main.MouseWorld - player.MountedCenter) - offset; // new Vector2 corrects the offset to still make it go towards the cursor
             direction.Normalize(); // Normalize the direction vector to ensure it has a length of 1
             Vector2 velocity = direction * projSpeed;
 
-            if (player.whoAmI == Main.myPlayer)
-            {
-                int projID = Projectile.NewProjectile(new EntitySource_Parent(player), Main.LocalPlayer.MountedCenter + offset, velocity, projectileType, damage, knockback, player.whoAmI);
+            //if (player.whoAmI == Main.myPlayer)
+            //{
+                int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter + offset, velocity, projectileType, damage, knockback, player.whoAmI);
                 player.GetModPlayer<MechModPlayer>().animationTimer = holdTime;
-            }
+            //}
         }
     }
 }

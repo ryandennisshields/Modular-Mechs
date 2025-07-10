@@ -33,7 +33,7 @@ namespace MechMod.Content.Mechs
 {
     public interface IMechParts
     {
-        void ApplyStats(ModularMech mech);
+        void ApplyStats(Player player, ModularMech mech);
     }
     public interface IMechWeapon
     {
@@ -142,7 +142,7 @@ namespace MechMod.Content.Mechs
             player.opacityForAnimation = 0;
 
             // Apply Part Stats
-            ApplyPartStats(modPlayer, modPlayer.equippedParts[MechMod.headIndex], modPlayer.equippedParts[MechMod.bodyIndex], modPlayer.equippedParts[MechMod.armsIndex], modPlayer.equippedParts[MechMod.legsIndex], modPlayer.equippedParts[MechMod.boosterIndex]);
+            ApplyPartStats(player, modPlayer.equippedParts[MechMod.headIndex], modPlayer.equippedParts[MechMod.bodyIndex], modPlayer.equippedParts[MechMod.armsIndex], modPlayer.equippedParts[MechMod.legsIndex], modPlayer.equippedParts[MechMod.boosterIndex]);
 
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
             {
@@ -240,13 +240,13 @@ namespace MechMod.Content.Mechs
                     {
                         if (weapon.useType == Weapons.UseType.Swing) // Constantly update animation
                         {
-                            WeaponUseAnimation(Weapons.UseType.Swing, weapon);
+                            WeaponUseAnimation(player, Weapons.UseType.Swing, weapon);
                         }
                         else if (weapon.useType == Weapons.UseType.Point) // Only animate for one frame
                         {
                             if (!animateOnce)
                             {
-                                WeaponUseAnimation(Weapons.UseType.Point, weapon);
+                                WeaponUseAnimation(player, Weapons.UseType.Point, weapon);
                                 animateOnce = true;
                             }
                         }
@@ -258,11 +258,24 @@ namespace MechMod.Content.Mechs
                 }
                 if (!Main.mouseLeft && modPlayer.animationTimer <= 0 && modPlayer.animationProgress <= 0)
                 {
-                    armFrame = -1; // Reset the arm frame to default
-                    weaponScale = 0f; // Hide the weapon when not in use
+                    modPlayer.armFrame = -1; // Reset the arm frame to default
+                    modPlayer.weaponScale = 0f; // Hide the weapon when not in use
                     modPlayer.lastUseDirection = 0; // Reset last use direction
                 }
             }
+
+            // Sync animations between clients
+            //if (Main.netMode == NetmodeID.MultiplayerClient)
+            //{
+            //    ModPacket packet = Mod.GetPacket();
+            //    packet.Write((byte)MechMod.MessageType.WeaponAnimationSync);
+            //    packet.Write((byte)player.whoAmI);
+            //    packet.Write(modPlayer.armFrame);
+            //    packet.Write(modPlayer.animationTimer);
+            //    packet.Write(modPlayer.animationProgress);
+            //    packet.Write(modPlayer.lastUseDirection);
+            //    packet.Send();
+            //}
 
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
             {
@@ -282,46 +295,46 @@ namespace MechMod.Content.Mechs
         private Texture2D legsTexture;
         private Texture2D weaponTexture; // Used so the equipped weapon can be drawn while in use
 
-        private int armFrame = -1; // Used for controlling the current arm frame
-        private int armAnimationFrames = 11; // Total number of frames that the arm texture has (to include the many arm rotations/positions for weapon animation)
+        //private int armFrame = -1; // Used for controlling the current arm frame
+        //private int armAnimationFrames = 11; // Total number of frames that the arm texture has (to include the many arm rotations/positions for weapon animation)
 
-        private Vector2 weaponPosition = Vector2.Zero; // Used for positioning the weapon when it is drawn
-        private float weaponRotation = 0f; // Used for rotating the weapon when it is drawn
-        private Vector2 weaponOrigin = Vector2.Zero; // Used so a different origin can be set for rotation
-        private float weaponScale = 1f; // Used so the weapon can be hidden when needed
-        private SpriteEffects weaponSpriteEffects = SpriteEffects.None; // Used so the weapon's sprite can be flipped when needed
+        //private Vector2 weaponPosition = Vector2.Zero; // Used for positioning the weapon when it is drawn
+        //private float weaponRotation = 0f; // Used for rotating the weapon when it is drawn
+        //private Vector2 weaponOrigin = Vector2.Zero; // Used so a different origin can be set for rotation
+        //private float weaponScale = 1f; // Used so the weapon can be hidden when needed
+        //private SpriteEffects weaponSpriteEffects = SpriteEffects.None; // Used so the weapon's sprite can be flipped when needed
 
         public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)
         {
-            grantedLifeBonus = false;
-            armourBonus = 0;
-            Weapons.partDamageBonus = 0;
-            Weapons.partAttackSpeedBonus = 0;
+            //grantedLifeBonus = false;
+            //armourBonus = 0;
+            //Weapons.partDamageBonus = 0;
+            //Weapons.partAttackSpeedBonus = 0;
 
             if (drawType == 0)
             {
 
                 // Apply visuals to the Mech
-                //var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
-                //if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
-                //    headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
-                //if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
-                //    bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
-                //if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
-                //    armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}Visual").Value;
-                //if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
-                //    legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}Visual").Value;
-
-                // Apply visuals to the Mech (TEMPORARY)
                 var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
                 if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
-                    headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/BaseHeadVisual").Value;
+                    headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
                 if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
-                    bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/BaseBodyVisual").Value;
+                    bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
                 if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
-                    armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsVisual").Value;
+                    armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}Visual").Value;
                 if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
-                    legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsVisual").Value;
+                    legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}Visual").Value;
+
+                // Apply visuals to the Mech (TEMPORARY)
+                //var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
+                //if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
+                //    headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/BaseHeadVisual").Value;
+                //if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
+                //    bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/BaseBodyVisual").Value;
+                //if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
+                //    armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsVisual").Value;
+                //if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
+                //    legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsVisual").Value;
 
                 if (!modPlayer.equippedParts[MechMod.weaponIndex].IsAir)
                     weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{modPlayer.equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}").Value;
@@ -329,12 +342,11 @@ namespace MechMod.Content.Mechs
                     weaponTexture = null; // If no weapon is equipped, set the weapon texture to null
 
                 Rectangle setArmFrame = frame; // Get the default frame logic as a new rectangle
-                if (armFrame >= 0) // If the arm frame is manually set,
+                if (modPlayer.armFrame >= 0) // If the arm frame is manually set,
                 {
-                    int frameHeight = armsTexture.Height / armAnimationFrames; // Calculate the height of each frame based on the total height of the texture and the number of frames
-                    setArmFrame = new Rectangle(0, armFrame * frameHeight, armsTexture.Width, frameHeight); // Change the set arm frame to a new rectangle based on the arm frame and the height of each frame
+                    int frameHeight = armsTexture.Height / modPlayer.armAnimationFrames; // Calculate the height of each frame based on the total height of the texture and the number of frames
+                    setArmFrame = new Rectangle(0, modPlayer.armFrame * frameHeight, armsTexture.Width, frameHeight); // Change the set arm frame to a new rectangle based on the arm frame and the height of each frame
                 }
-
 
                 // Draw left arm first
                 playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(22 * drawPlayer.direction, -50), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
@@ -350,7 +362,7 @@ namespace MechMod.Content.Mechs
 
                 // Draw weapon
                 if (weaponTexture != null)
-                    playerDrawData.Add(new DrawData(weaponTexture, drawPosition + weaponPosition, null, drawColor, weaponRotation, weaponOrigin, weaponScale, weaponSpriteEffects));
+                    playerDrawData.Add(new DrawData(weaponTexture, drawPosition + modPlayer.weaponPosition, null, drawColor, modPlayer.weaponRotation, modPlayer.weaponOrigin, modPlayer.weaponScale, modPlayer.weaponSpriteEffects));
 
                 // Draw right arm last
                 playerDrawData.Add(new DrawData(armsTexture, drawPosition + new Vector2(-22 * drawPlayer.direction, -50), setArmFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
@@ -370,11 +382,11 @@ namespace MechMod.Content.Mechs
                     weapon.UseAbility(player, mousePosition, toggleOn);
                     if (weapon.canUse)
                     {
-                        if (Main.MouseWorld.X > Main.LocalPlayer.MountedCenter.X)
-                            Main.LocalPlayer.direction = 1;
+                        if (Main.MouseWorld.X > player.MountedCenter.X)
+                            player.direction = 1;
                         else
-                            Main.LocalPlayer.direction = -1;
-                        modPlayer.lastUseDirection = Main.LocalPlayer.direction;
+                            player.direction = -1;
+                        modPlayer.lastUseDirection = player.direction;
                         weapon.timer = 0;
                     }
                 }
@@ -389,10 +401,9 @@ namespace MechMod.Content.Mechs
         }
 
         // Function for weapon use animations like pointing and swinging 
-        private void WeaponUseAnimation(Weapons.UseType useType, IMechWeapon weapon)
+        private void WeaponUseAnimation(Player player, Weapons.UseType useType, IMechWeapon weapon)
         {
-            var player = Main.LocalPlayer;
-            var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
+            var modPlayer = player.GetModPlayer<MechModPlayer>();
 
             int weaponPositionX = 0; // X position of the weapon
             int weaponPositionY = 0; // Y position of the weapon
@@ -404,7 +415,7 @@ namespace MechMod.Content.Mechs
             {
                 case Weapons.UseType.Point:
 
-                    weaponScale = 1f;
+                    modPlayer.weaponScale = 1f;
 
                     weaponPositionX = 3;
                     weaponPositionY = -39;
@@ -414,32 +425,32 @@ namespace MechMod.Content.Mechs
 
                     if (Main.mouseLeft) // Only rotate on fire
                     {
-                        float pointAngle = (Main.MouseWorld - Main.LocalPlayer.MountedCenter).ToRotation(); // Get the angle between the mouse position and the player mounted center
+                        float pointAngle = (Main.MouseWorld - player.MountedCenter).ToRotation(); // Get the angle between the mouse position and the player mounted center
                         float pointAngleDeg = MathHelper.ToDegrees(pointAngle); // Convert the angle to degrees for easier calculations
-                        weaponRotation = pointAngle; // Set the weapon rotation to the angle between the mouse and the player
+                        modPlayer.weaponRotation = pointAngle; // Set the weapon rotation to the angle between the mouse and the player
 
                         // Check if the mouse is at different angles relative to the player (so if mouse is pointing up, the arm will point up, if mouse is pointing down, the arm will point down, etc.)
                         if (pointAngleDeg >= -135 && pointAngleDeg <= -45)
                         {
-                            armFrame = 9; // Pointing angled up
+                            modPlayer.armFrame = 9; // Pointing angled up
                         }
                         else if (pointAngleDeg >= -45 && pointAngleDeg <= 45)
                         {
-                            armFrame = 8; // Pointing horizontal right
+                            modPlayer.armFrame = 8; // Pointing horizontal right
                         }
                         else if (pointAngleDeg <= -135 || pointAngleDeg >= 135)
                         {
-                            armFrame = 8; // Pointing horizontal left
+                            modPlayer.armFrame = 8; // Pointing horizontal left
                         }
                         else if (pointAngleDeg <= 135 && pointAngleDeg >= 45)
                         {
-                            armFrame = 7; // Pointing angled down
+                            modPlayer.armFrame = 7; // Pointing angled down
                         }
                     }
                     break;
                 case Weapons.UseType.Swing:
 
-                    weaponScale = 1f;
+                    modPlayer.weaponScale = 1f;
 
                     weaponPositionX = -10;
                     weaponPositionY = -45;
@@ -449,37 +460,39 @@ namespace MechMod.Content.Mechs
 
                     float progress = 1f - (modPlayer.animationProgress / weapon.attackRate); // Calculate the progress of the animation based on the animation progress (equal to projectile's life time) and attack rate
 
-                    armFrame = (int)MathHelper.Lerp(11, 7, progress); // Lerp the arm through the up, angled up, horizontal and angled down frames respectively (11 is used as starting value to make the up frame last longer)
+                    modPlayer.armFrame = (int)MathHelper.Lerp(11, 7, progress); // Lerp the arm through the up, angled up, horizontal and angled down frames respectively (11 is used as starting value to make the up frame last longer)
 
                     // Calculate the swing's starting and ending angle and lerp it between the angle
                     float startAngle = -2f * modPlayer.lastUseDirection;
                     float endAngle = 1.5f * modPlayer.lastUseDirection;
                     float swingAngle = MathHelper.Lerp(startAngle, endAngle, progress);
 
-                    weaponRotation = swingAngle + (modPlayer.lastUseDirection == 1 ? 0f : MathHelper.Pi); // Set the weapon rotation to the swing angle (that also changes depending on last use direction)
+                    modPlayer.weaponRotation = swingAngle + (modPlayer.lastUseDirection == 1 ? 0f : MathHelper.Pi); // Set the weapon rotation to the swing angle (that also changes depending on last use direction)
 
                     break;
             }
-            weaponPosition = new Vector2(weaponPositionX * modPlayer.lastUseDirection, weaponPositionY); // Setting a new position lets a weapon be futher out or further up from the player
-            weaponOrigin = new Vector2(weaponTexture.Width / 2 + weaponOriginOffsetX, weaponTexture.Height / 2 + weaponOriginOffsetY); // Setting a new origin gives the weapon a different rotation point
-            weaponSpriteEffects = modPlayer.lastUseDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically; // Flip the weapon sprite based on the player's direction
+            modPlayer.weaponPosition = new Vector2(weaponPositionX * modPlayer.lastUseDirection, weaponPositionY); // Setting a new position lets a weapon be futher out or further up from the player
+            modPlayer.weaponOrigin = new Vector2(weaponTexture.Width / 2 + weaponOriginOffsetX, weaponTexture.Height / 2 + weaponOriginOffsetY); // Setting a new origin gives the weapon a different rotation point
+            modPlayer.weaponSpriteEffects = modPlayer.lastUseDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically; // Flip the weapon sprite based on the player's direction
         }
 
-        public void ApplyPartStats(MechModPlayer modPlayer, Item equippedHead, Item equippedBody, Item equippedArms, Item equippedLegs, Item equippedBooster)
+        public void ApplyPartStats(Player player, Item equippedHead, Item equippedBody, Item equippedArms, Item equippedLegs, Item equippedBooster)
         {
+            var modPlayer = player.GetModPlayer<MechModPlayer>();
+
             if (!equippedBody.IsAir)
                 if (modPlayer.equippedParts[MechMod.bodyIndex].ModItem is IMechParts body)
-                    body.ApplyStats(this);
+                    body.ApplyStats(player, this);
             if (!equippedArms.IsAir)
                 if (modPlayer.equippedParts[MechMod.armsIndex].ModItem is IMechParts arms)
-                    arms.ApplyStats(this);
+                    arms.ApplyStats(player, this);
             if (!equippedLegs.IsAir)
                 if (modPlayer.equippedParts[MechMod.legsIndex].ModItem is IMechParts legs)
-                    legs.ApplyStats(this);
+                    legs.ApplyStats(player, this);
             if (!equippedBooster.IsAir)
             {
                 if (modPlayer.equippedParts[MechMod.boosterIndex].ModItem is IMechParts booster)
-                    booster.ApplyStats(this);
+                    booster.ApplyStats(player, this);
             }
             else
             {
@@ -488,7 +501,6 @@ namespace MechMod.Content.Mechs
                 MountData.flightTimeMax = 0;
                 MountData.usesHover = false;
 
-                Player player = Main.LocalPlayer;
                 player.GetModPlayer<DashPlayer>().ableToDash = false;
                 player.GetModPlayer<DashPlayer>().dashCoolDown = 0;
                 player.GetModPlayer<DashPlayer>().dashDuration = 0;
@@ -499,7 +511,7 @@ namespace MechMod.Content.Mechs
             // Apply head stats last as it can have multiplicative effects
             if (!equippedHead.IsAir)
                 if (modPlayer.equippedParts[MechMod.headIndex].ModItem is IMechParts head)
-                    head.ApplyStats(this);
+                    head.ApplyStats(player, this);
         }
 
         public class DashPlayer : ModPlayer

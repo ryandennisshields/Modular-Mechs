@@ -37,6 +37,19 @@ namespace MechMod.Common.Players
 
         public int lastUseDirection; // Stores the last weapon use direction
 
+        // Variables beyond here used to be in ModMount for the Mech, but were changed over to ModPlayer so the variables can be unique per player while ModMount's variables are the same for every player
+        // CHECK WHAT STUFF NEEDS TO BE HERE OR IS STATIC AND CAN REMAIN IN ModMount
+
+        public int armFrame = -1; // Used for controlling the current arm frame
+        public int armAnimationFrames = 11; // Total number of frames that the arm texture has (to include the many arm rotations/positions for weapon animation)
+
+        public Vector2 weaponPosition = Vector2.Zero; // Used for positioning the weapon when it is drawn
+        public float weaponRotation = 0f; // Used for rotating the weapon when it is drawn
+        public Vector2 weaponOrigin = Vector2.Zero; // Used so a different origin can be set for rotation
+        public float weaponScale = 1f; // Used so the weapon can be hidden when needed
+        public SpriteEffects weaponSpriteEffects = SpriteEffects.None; // Used so the weapon's sprite can be flipped when needed
+
+
         public override void Initialize()
         {
             equippedParts = new Item[9];
@@ -134,49 +147,84 @@ namespace MechMod.Common.Players
                 upgradeDamageBonus = tag.GetFloat("upgradeDamageBonus");
         }
 
-        //public override void CopyClientState(ModPlayer targetCopy)
-        //{
-        //    var clone = (MechModPlayer)targetCopy;
-        //    for (int i = 0; i < equippedParts.Length; i++)
-        //    {
-        //        if (clone.equippedParts[i] == null)
-        //            clone.equippedParts[i] = new Item();
-        //        equippedParts[i].CopyNetStateTo(clone.equippedParts[i]);
-        //    }
-        //}
+        // Send out changes to server and other clients
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+        {
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)MechMod.MessageType.EquippedPartsAndLevelSync);
+            packet.Write((byte)Player.whoAmI);
+            for (int i = 0; i < equippedParts.Length; i++)
+                packet.Write(equippedParts[i].type);
 
-        //public override void SendClientChanges(ModPlayer clientPlayer)
-        //{
-        //    var clone = (MechModPlayer)clientPlayer;
-        //    for (int i = 0; i < equippedParts.Length; i++)
-        //    {
-        //        if (clone.equippedParts[i].type != equippedParts[i].type)
-        //        {
-        //            ModPacket packet = Mod.GetPacket();
-        //            packet.Write((byte)Player.whoAmI);
-        //            packet.Write((byte)i);
-        //            packet.Write(equippedParts[i].type);
-        //            packet.Send();
-        //        }
-        //    }
-        //}
+            // Add animation state
+            packet.Write(animationTimer);
+            packet.Write(animationProgress);
+            packet.Write(lastUseDirection);
+            packet.Write(armFrame);
+            // Add more as needed (weaponRotation, weaponScale, etc.)
 
-        //public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
-        //{
-        //    ModPacket packet = Mod.GetPacket();
-        //    packet.Write((byte)Player.whoAmI);
-        //    for (int i = 0; i < equippedParts.Length; i++)
-        //        packet.Write(equippedParts[i].type);
-        //    packet.Send(toWho, fromWho);
-        //}
+            packet.Send(toWho, fromWho);
+        }
 
-        //public void RecievePlayerSync(BinaryReader reader)
-        //{
-        //    for (int i = 0; i < equippedParts.Length; i++)
-        //    {
-        //        equippedParts[i].SetDefaults(reader.ReadInt32());
-        //    }
-        //}
+        // Receive changes from server and other clients
+        public void RecievePlayerSync(BinaryReader reader)
+        {
+            for (int i = 0; i < equippedParts.Length; i++)
+                equippedParts[i].SetDefaults(reader.ReadInt32());
+
+            // Read animation state
+            animationTimer = reader.ReadSingle();
+            animationProgress = reader.ReadInt32();
+            lastUseDirection = reader.ReadInt32();
+            armFrame = reader.ReadInt32();
+            // Read more as needed
+        }
+
+        public override void CopyClientState(ModPlayer targetCopy)
+        {
+            var clone = (MechModPlayer)targetCopy;
+
+            // Check clients against this client to watch for changes
+            // If a change is detected, SendClientChanges will sync the changes
+
+            for (int i = 0; i < equippedParts.Length; i++)
+                clone.equippedParts[i].type = equippedParts[i].type;
+
+            // Copy animation state
+            clone.animationTimer = animationTimer;
+            clone.animationProgress = animationProgress;
+            clone.lastUseDirection = lastUseDirection;
+            clone.armFrame = armFrame;
+            // Copy more as needed
+        }
+        public override void SendClientChanges(ModPlayer clientPlayer)
+        {
+            var clone = (MechModPlayer)clientPlayer;
+            bool needsSync = false;
+
+            for (int i = 0; i < equippedParts.Length; i++)
+            {
+                if (equippedParts[i].type != clone.equippedParts[i].type)
+                {
+                    needsSync = true;
+                    break;
+                }
+            }
+
+            // Check animation state
+            if (animationTimer != clone.animationTimer ||
+                animationProgress != clone.animationProgress ||
+                lastUseDirection != clone.lastUseDirection ||
+                armFrame != clone.armFrame)
+            {
+                needsSync = true;
+            }
+
+            if (needsSync) // Only sync clients if a variable changes
+                SyncPlayer(-1, Main.myPlayer, false);
+        }
+
+
 
         public override void ResetEffects()
         {

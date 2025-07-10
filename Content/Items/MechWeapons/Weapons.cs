@@ -37,9 +37,8 @@ namespace MechMod.Content.Items.MechWeapons
         public static float partAttackSpeedBonus;
         public static float partKnockbackBonus;
 
-        public static float BonusDamage(string totalOrmultOrflat)
+        public static float BonusDamage(Player player, string totalOrmultOrflat)
         {
-            var player = Main.LocalPlayer;
             var modPlayer = player.GetModPlayer<MechModPlayer>();
 
             float genericAddDamageBonus = player.GetDamage(DamageClass.Generic).Additive;
@@ -68,9 +67,8 @@ namespace MechMod.Content.Items.MechWeapons
             return 0f;
         }
 
-        public static float BonusCritChance()
+        public static float BonusCritChance(Player player)
         {
-            var player = Main.LocalPlayer;
             var modPlayer = player.GetModPlayer<MechModPlayer>();
 
             float genericCritChanceBonus = player.GetCritChance(DamageClass.Generic);
@@ -81,9 +79,8 @@ namespace MechMod.Content.Items.MechWeapons
             return critChanceBonus;
         }
 
-        public static float BonusAttackSpeed()
+        public static float BonusAttackSpeed(Player player)
         {
-            var player = Main.LocalPlayer;
             var modPlayer = player.GetModPlayer<MechModPlayer>();
 
             float genericAttackSpeedBonus = player.GetAttackSpeed(DamageClass.Generic);
@@ -94,9 +91,8 @@ namespace MechMod.Content.Items.MechWeapons
             return attackSpeedBonus;
         }
 
-        public static float BonusKnockback(string totalOrmultOrflat)
+        public static float BonusKnockback(Player player, string totalOrmultOrflat)
         {
-            var player = Main.LocalPlayer;
             var modPlayer = player.GetModPlayer<MechModPlayer>();
 
             float genericAddKnockbackBonus = player.GetKnockback(DamageClass.Generic).Additive;
@@ -127,9 +123,9 @@ namespace MechMod.Content.Items.MechWeapons
 
         public static int DamageCalc(int damage, Player player)
         {
-            float totalDamageBonus = BonusDamage("total");
-            float flatDamageBonus = BonusDamage("flat");
-            float multDamageBonus = BonusDamage("mult");
+            float totalDamageBonus = BonusDamage(player, "total");
+            float flatDamageBonus = BonusDamage(player, "flat");
+            float multDamageBonus = BonusDamage(player, "mult");
 
             damage = (int)((((damage * totalDamageBonus) * multDamageBonus) + flatDamageBonus));
 
@@ -143,7 +139,7 @@ namespace MechMod.Content.Items.MechWeapons
         // Returning a value is not required as Crit Chance bonuses work fine being increased with GetCritChance
         public static void CritChanceCalc(int critChance, Player player)
         {
-            float critChanceBonus = BonusCritChance();
+            float critChanceBonus = BonusCritChance(player);
 
             // 4 is taken away from the Weapon's Crit Chance to take into account the base Crit Chance
             critChance = (int)((critChance - 4) + critChanceBonus);
@@ -153,7 +149,7 @@ namespace MechMod.Content.Items.MechWeapons
 
         public static int AttackSpeedCalc(int attackSpeed, Player player)
         {
-            float attackSpeedBonus = BonusAttackSpeed();
+            float attackSpeedBonus = BonusAttackSpeed(player);
 
             attackSpeed = (int)(attackSpeed / attackSpeedBonus);
 
@@ -164,9 +160,9 @@ namespace MechMod.Content.Items.MechWeapons
 
         public static int KnockbackCalc(int knockback, Player player)
         {
-            float totalKnockbackBonus = BonusKnockback("total");
-            float flatKnockbackBonus = BonusKnockback("flat");
-            float multKnockbackBonus = BonusKnockback("mult");
+            float totalKnockbackBonus = BonusKnockback(player, "total");
+            float flatKnockbackBonus = BonusKnockback(player, "flat");
+            float multKnockbackBonus = BonusKnockback(player, "mult");
 
             knockback = (int)((((knockback * totalKnockbackBonus) * multKnockbackBonus) + flatKnockbackBonus));
 
