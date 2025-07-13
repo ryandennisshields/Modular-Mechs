@@ -16,6 +16,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -39,6 +40,14 @@ namespace MechMod.Common.Players
 
         // Variables beyond here used to be in ModMount for the Mech, but were changed over to ModPlayer so the variables can be unique per player while ModMount's variables are the same for every player
         // CHECK WHAT STUFF NEEDS TO BE HERE OR IS STATIC AND CAN REMAIN IN ModMount
+
+        public Texture2D headTexture;
+        public Texture2D bodyTexture;
+        public Texture2D armsTexture;
+        public Texture2D legsTexture;
+        public Texture2D weaponTexture; // Used so the equipped weapon can be drawn while in use
+
+        public bool animateOnce = false;
 
         public int armFrame = -1; // Used for controlling the current arm frame
         public int armAnimationFrames = 11; // Total number of frames that the arm texture has (to include the many arm rotations/positions for weapon animation)
@@ -161,6 +170,13 @@ namespace MechMod.Common.Players
             packet.Write(animationProgress);
             packet.Write(lastUseDirection);
             packet.Write(armFrame);
+            packet.Write(weaponPosition.X);
+            packet.Write(weaponPosition.Y);
+            packet.Write(weaponRotation);
+            packet.Write(weaponOrigin.X);
+            packet.Write(weaponOrigin.Y);
+            packet.Write(weaponScale);
+            packet.Write((int)weaponSpriteEffects);
             // Add more as needed (weaponRotation, weaponScale, etc.)
 
             packet.Send(toWho, fromWho);
@@ -172,11 +188,25 @@ namespace MechMod.Common.Players
             for (int i = 0; i < equippedParts.Length; i++)
                 equippedParts[i].SetDefaults(reader.ReadInt32());
 
+            headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
+            bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
+            armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}Visual").Value;
+            legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{equippedParts[MechMod.legsIndex].ModItem.GetType().Name}Visual").Value;
+            weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}").Value;
             // Read animation state
             animationTimer = reader.ReadSingle();
             animationProgress = reader.ReadInt32();
             lastUseDirection = reader.ReadInt32();
             armFrame = reader.ReadInt32();
+            //weaponPosition = reader.ReadVector2();
+            weaponPosition.X = reader.ReadInt32();
+            weaponPosition.Y = reader.ReadInt32();
+            weaponRotation = reader.ReadSingle();
+            //weaponOrigin = reader.ReadVector2();
+            weaponOrigin.X = reader.ReadInt32();
+            weaponOrigin.Y = reader.ReadInt32();
+            weaponScale = reader.ReadSingle();
+            weaponSpriteEffects = (SpriteEffects)reader.ReadInt32();
             // Read more as needed
         }
 
@@ -190,11 +220,21 @@ namespace MechMod.Common.Players
             for (int i = 0; i < equippedParts.Length; i++)
                 clone.equippedParts[i].type = equippedParts[i].type;
 
+            clone.headTexture = headTexture;
+            clone.bodyTexture = bodyTexture;
+            clone.armsTexture = armsTexture;
+            clone.legsTexture = legsTexture;
+            clone.weaponTexture = weaponTexture;
             // Copy animation state
             clone.animationTimer = animationTimer;
             clone.animationProgress = animationProgress;
             clone.lastUseDirection = lastUseDirection;
             clone.armFrame = armFrame;
+            clone.weaponPosition = weaponPosition;
+            clone.weaponRotation = weaponRotation;
+            clone.weaponOrigin = weaponOrigin;
+            clone.weaponScale = weaponScale;
+            clone.weaponSpriteEffects = weaponSpriteEffects;
             // Copy more as needed
         }
         public override void SendClientChanges(ModPlayer clientPlayer)
@@ -212,10 +252,21 @@ namespace MechMod.Common.Players
             }
 
             // Check animation state
-            if (animationTimer != clone.animationTimer ||
+            if (headTexture != clone.headTexture ||
+                bodyTexture != clone.bodyTexture ||
+                armsTexture != clone.armsTexture ||
+                legsTexture != clone.legsTexture ||
+                weaponTexture != clone.weaponTexture ||
+                animationTimer != clone.animationTimer ||
                 animationProgress != clone.animationProgress ||
                 lastUseDirection != clone.lastUseDirection ||
-                armFrame != clone.armFrame)
+                armFrame != clone.armFrame ||
+                weaponPosition != clone.weaponPosition ||
+                weaponRotation != clone.weaponRotation ||
+                weaponOrigin != clone.weaponOrigin ||
+                weaponScale != clone.weaponScale ||
+                weaponSpriteEffects != clone.weaponSpriteEffects
+                )
             {
                 needsSync = true;
             }
@@ -223,8 +274,6 @@ namespace MechMod.Common.Players
             if (needsSync) // Only sync clients if a variable changes
                 SyncPlayer(-1, Main.myPlayer, false);
         }
-
-
 
         public override void ResetEffects()
         {

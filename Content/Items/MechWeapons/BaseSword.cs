@@ -37,16 +37,12 @@ namespace MechMod.Content.Items.MechWeapons
             attackRate = Weapons.AttackSpeedCalc(50, player);
             float knockback = Weapons.KnockbackCalc(30, player);
 
-            if (player.whoAmI == Main.myPlayer)
+            int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter, new Vector2(0, 0), projectileType, damage, knockback, player.whoAmI);
+            if (Main.projectile.IndexInRange(projID) && Main.projectile[projID].ModProjectile is BaseSwordProj proj)
             {
-                int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter, new Vector2(0,0), projectileType, damage, knockback, player.whoAmI);
-                if (Main.projectile.IndexInRange(projID) && Main.projectile[projID].ModProjectile is BaseSwordProj proj)
-                {
-                    // Allow the swing speed to be modified by attack rate
-                    proj.swingDuration = attackRate; // Fixed number
-                    Main.projectile[projID].timeLeft = (int)attackRate; // Decreases each tick
-                    
-                }
+                // Allow the swing speed to be modified by attack rate
+                proj.swingDuration = attackRate; // Fixed number
+                Main.projectile[projID].timeLeft = (int)attackRate; // Decreases each tick
             }
         }
     }
@@ -79,8 +75,8 @@ namespace MechMod.Content.Items.MechWeapons
             modPlayer.animationProgress = Projectile.timeLeft; // Set the animation progress to the time left of the projectile
             float progress = 1f - (Projectile.timeLeft / swingDuration); // Progress goes from 1 to 0 as the projectile time decreases
 
-            // Change the position of the hitbox as it goes through the swing
-            Vector2 position = new Vector2(0,0);
+            // Changed the position of the hitbox as it goes through the swing
+            Vector2 position = new Vector2(0, 0);
 
             if (progress <= 0.33)
                 position = new Vector2(-30 * modPlayer.lastUseDirection, -130);

@@ -47,20 +47,18 @@ namespace MechMod.Content.Items.MechWeapons
             float classMultDamageBonus = player.GetDamage(damageClass).Multiplicative;
             float genericFlatDamageBonus = player.GetDamage(DamageClass.Generic).Flat;
             float classFlatDamageBonus = player.GetDamage(damageClass).Flat;
-            
-            float addDamageBonus = genericAddDamageBonus + classAddDamageBonus - 1f;
-            float multDamageBonus = genericMultDamageBonus + classMultDamageBonus - 1f;
-            float flatDamageBonus = genericFlatDamageBonus + classFlatDamageBonus;
-
-            float totalDamageBonus = addDamageBonus + modPlayer.upgradeDamageBonus + partDamageBonus;
 
             switch (totalOrmultOrflat)
             {
                 case "total":
+                    float addDamageBonus = genericAddDamageBonus + classAddDamageBonus - 1f;
+                    float totalDamageBonus = addDamageBonus + modPlayer.upgradeDamageBonus + partDamageBonus;
                     return totalDamageBonus;
                 case "mult":
+                    float multDamageBonus = genericMultDamageBonus + classMultDamageBonus - 1f;
                     return multDamageBonus;
                 case "flat":
+                    float flatDamageBonus = genericFlatDamageBonus + classFlatDamageBonus;
                     return flatDamageBonus;
 
             }
@@ -129,9 +127,6 @@ namespace MechMod.Content.Items.MechWeapons
 
             damage = (int)((((damage * totalDamageBonus) * multDamageBonus) + flatDamageBonus));
 
-            player.GetDamage(DamageClass.Generic).Flat += flatDamageBonus;
-            player.GetDamage(DamageClass.Generic) *= totalDamageBonus;
-
             return damage;
 
         }
@@ -144,7 +139,7 @@ namespace MechMod.Content.Items.MechWeapons
             // 4 is taken away from the Weapon's Crit Chance to take into account the base Crit Chance
             critChance = (int)((critChance - 4) + critChanceBonus);
 
-            player.GetCritChance(DamageClass.Generic) += critChanceBonus;
+            //player.GetCritChance(DamageClass.Generic) += critChanceBonus;
         }
 
         public static int AttackSpeedCalc(int attackSpeed, Player player)
@@ -153,7 +148,7 @@ namespace MechMod.Content.Items.MechWeapons
 
             attackSpeed = (int)(attackSpeed / attackSpeedBonus);
 
-            player.GetAttackSpeed(DamageClass.Generic) += attackSpeedBonus;
+            //player.GetAttackSpeed(DamageClass.Generic) += attackSpeedBonus;
 
             return attackSpeed;
         }
@@ -166,8 +161,8 @@ namespace MechMod.Content.Items.MechWeapons
 
             knockback = (int)((((knockback * totalKnockbackBonus) * multKnockbackBonus) + flatKnockbackBonus));
 
-            player.GetKnockback(DamageClass.Generic).Flat += flatKnockbackBonus;
-            player.GetKnockback(DamageClass.Generic) *= totalKnockbackBonus;
+            //player.GetKnockback(DamageClass.Generic).Flat += flatKnockbackBonus;
+            //player.GetKnockback(DamageClass.Generic) *= totalKnockbackBonus;
 
             return knockback;
 

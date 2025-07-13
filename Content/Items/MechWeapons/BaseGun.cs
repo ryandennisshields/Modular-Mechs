@@ -43,11 +43,8 @@ namespace MechMod.Content.Items.MechWeapons
             direction.Normalize(); // Normalize the direction vector to ensure it has a length of 1
             Vector2 velocity = direction * projSpeed;
 
-            //if (player.whoAmI == Main.myPlayer)
-            //{
-                int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter + offset, velocity, projectileType, damage, knockback, player.whoAmI);
-                player.GetModPlayer<MechModPlayer>().animationTimer = holdTime;
-            //}
+            int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter + offset, velocity, projectileType, damage, knockback, player.whoAmI);
+            player.GetModPlayer<MechModPlayer>().animationTimer = holdTime;
         }
     }
 }

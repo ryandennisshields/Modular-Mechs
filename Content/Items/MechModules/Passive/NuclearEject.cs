@@ -39,6 +39,7 @@ namespace MechMod.Content.Items.MechModules.Passive
                     Weapons.KnockbackCalc(explosionKnockback, player),
                     player.whoAmI
                     );
+                Main.NewText(Weapons.DamageCalc(explosionDamage, player));
             }
             mech.mechDebuffDuration = (int)(mech.mechDebuffDuration * 1.5f); // Increase debuff duration by 50%
             mech.launchForce *= 2; // Double the launch force
@@ -60,9 +61,19 @@ namespace MechMod.Content.Items.MechModules.Passive
             Projectile.ignoreWater = true; // Ignore water
         }
 
-        public override void OnSpawn(IEntitySource source)
+        //public override void OnSpawn(IEntitySource source)
+        //{
+        //    for (int i = 0; i < 2500; i++)
+        //    {
+        //        // Explosion dust
+        //        Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, default, 1f);
+        //        Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 0.5f);
+        //    }
+        //}
+
+        public override void AI()
         {
-            for (int i = 0; i < 2500; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 // Explosion dust
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, default, 1f);

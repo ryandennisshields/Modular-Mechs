@@ -30,7 +30,7 @@ namespace MechMod.Content.Items.MechWeapons
         public void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
         {
             int manaCost = 20; // Mana cost for use
-            if (player.whoAmI == Main.myPlayer && player.statMana > manaCost)
+            if (player.statMana > manaCost)
             {
                 canUse = true;
 
