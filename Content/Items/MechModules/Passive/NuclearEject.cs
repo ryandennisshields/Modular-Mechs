@@ -22,6 +22,7 @@ namespace MechMod.Content.Items.MechModules.Passive
         public ModuleSlot moduleSlot => ModuleSlot.Passive; // Passive slot
         public ModuleType moduleType => ModuleType.OnDismount; // Dismount effect
 
+        private DamageClass explosionClass = DamageClass.Default;
         private int explosionDamage = 100;
         private int explosionKnockback = 30;
         private int explosionType = ModContent.ProjectileType<NuclearEjectProjectile>();
@@ -35,8 +36,8 @@ namespace MechMod.Content.Items.MechModules.Passive
                     player.MountedCenter,
                     Vector2.Zero,
                     explosionType,
-                    Weapons.DamageCalc(explosionDamage, player),
-                    Weapons.KnockbackCalc(explosionKnockback, player),
+                    Weapons.DamageCalc(explosionDamage, player, explosionClass),
+                    Weapons.KnockbackCalc(explosionKnockback, player, explosionClass),
                     player.whoAmI
                     );
                 Main.NewText(Weapons.DamageCalc(explosionDamage, player));

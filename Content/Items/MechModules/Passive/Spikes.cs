@@ -21,6 +21,7 @@ namespace MechMod.Content.Items.MechModules.Passive
         public ModuleSlot moduleSlot => ModuleSlot.Passive; // Passive slot
         public ModuleType moduleType => ModuleType.Persistent; // Persistent effect
 
+        private DamageClass contactClass = DamageClass.Default; // Damage class for contact damage
         private int contactDamage = 10; // Damage dealt on contact with enemies
         private int contactKnockback = 20; // Knockback applied on contact
         //private Rectangle hitbox; // Hitbox for spikes
@@ -34,8 +35,8 @@ namespace MechMod.Content.Items.MechModules.Passive
                 NPC npc = Main.npc[i];
                 NPC.HitInfo hitInfo = new NPC.HitInfo
                 {
-                    Damage = Weapons.DamageCalc(contactDamage, player),
-                    Knockback = Weapons.KnockbackCalc(contactKnockback, player),
+                    Damage = Weapons.DamageCalc(contactDamage, player, contactClass),
+                    Knockback = Weapons.KnockbackCalc(contactKnockback, player, contactClass),
                     HitDirection = npc.Center.X < player.Center.X ? -1 : 1, // Determine hit direction based on NPC position relative to player
                 };
                 if (!damageCooldown.TryGetValue(npc.whoAmI, out int cooldown) && npc.active && !npc.friendly && !npc.dontTakeDamage && npc.Hitbox.Intersects(player.getRect()))

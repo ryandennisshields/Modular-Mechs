@@ -17,14 +17,13 @@ namespace MechMod.Content.Items.MechWeapons
             Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = 10000; // The value of the item in copper coins.
             Item.rare = 3; // The rarity of the item.
-
-            Weapons.damageClass = DamageClass.Magic;
         }
 
         public float timer { get; set; } = 0f;
         public float attackRate { get; set; } = 0f;
         public bool canUse { get; set; } = true;
 
+        public DamageClass damageClass => DamageClass.Magic;
         public Weapons.UseType useType => Weapons.UseType.Point;
 
         public void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)

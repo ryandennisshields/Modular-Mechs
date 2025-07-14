@@ -30,7 +30,7 @@ namespace MechMod.Content.Items.MechModules.Passive
 
         public void ModuleEffect(ModularMech mech, Player player)
         {
-            if (Main.mouseRight && Weapons.damageClass == DamageClass.Ranged) // If player is holding right-click and the weapon is ranged,
+            if (Main.mouseRight && Weapons.DamageClass == DamageClass.Ranged) // If player is holding right-click and the weapon is ranged,
             {
                 player.scope = true; // Scope out
                 if (!changed) // If stats haven't been changed yet,
@@ -45,7 +45,7 @@ namespace MechMod.Content.Items.MechModules.Passive
             }
             else if (changed) // If player is not holding right-click and stats have been changed,
             { // Reset stats
-                Weapons.partDamageBonus -= damageBonus; 
+                Weapons.partDamageBonus -= damageBonus;
                 mech.groundJumpSpeed /= speedReduction;
                 mech.groundHorizontalSpeed /= speedReduction;
                 mech.flightJumpSpeed /= speedReduction;

@@ -39,6 +39,7 @@ namespace MechMod.Content.Mechs
     public interface IMechWeapon
     {
         void UseAbility(Player player, Vector2 mousePosition, bool toggleOn);
+        public DamageClass damageClass { get; }
         Weapons.UseType useType { get; }
 
         public float timer { get; set; }
@@ -141,6 +142,8 @@ namespace MechMod.Content.Mechs
 
             // Hide the Player
             player.opacityForAnimation = 0;
+
+            Weapons.DamageClass = modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon ? weapon.damageClass : DamageClass.Generic;
 
             // Apply Part Stats
             ApplyPartStats(player, modPlayer.equippedParts[MechMod.headIndex], modPlayer.equippedParts[MechMod.bodyIndex], modPlayer.equippedParts[MechMod.armsIndex], modPlayer.equippedParts[MechMod.legsIndex], modPlayer.equippedParts[MechMod.boosterIndex]);
@@ -331,13 +334,13 @@ namespace MechMod.Content.Mechs
                 // Apply visuals to the Mech (TEMPORARY)
                 //var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
                 //if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
-                //    headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/BaseHeadVisual").Value;
+                //    modPlayer.headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/BaseHeadVisual").Value;
                 //if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
-                //    bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/BaseBodyVisual").Value;
+                //    modPlayer.bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/BaseBodyVisual").Value;
                 //if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
-                //    armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsVisual").Value;
+                //    modPlayer.armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsVisual").Value;
                 //if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
-                //    legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsVisual").Value;
+                //    modPlayer.legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsVisual").Value;
 
                 if (!modPlayer.equippedParts[MechMod.weaponIndex].IsAir)
                     modPlayer.weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{modPlayer.equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}").Value;
@@ -368,7 +371,11 @@ namespace MechMod.Content.Mechs
                     playerDrawData.Add(new DrawData(modPlayer.weaponTexture, drawPosition + modPlayer.weaponPosition, null, drawColor, modPlayer.weaponRotation, modPlayer.weaponOrigin, modPlayer.weaponScale, modPlayer.weaponSpriteEffects));
 
                 // Draw right arm last
-                playerDrawData.Add(new DrawData(modPlayer.armsTexture, drawPosition + new Vector2(-22 * drawPlayer.direction, -50), setArmFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+
+                // WEIRD BAND AID:
+                // For some reason, very specifically when the arm frame is manually set (like in weapon usage) *and* the player is facing left,
+                // the position of the arm is off by -10 pixels on the X axis, so the position needs to be adjusted for that specific case
+                playerDrawData.Add(new DrawData(modPlayer.armsTexture, drawPosition + new Vector2(modPlayer.armFrame >= 0 ? drawPlayer.direction == -1 ? 32 : -22 : -22 * drawPlayer.direction, -50), setArmFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
             }
 
             return false;
@@ -421,7 +428,7 @@ namespace MechMod.Content.Mechs
                     modPlayer.weaponScale = 1f;
 
                     weaponPositionX = 3;
-                    weaponPositionY = -39;
+                    weaponPositionY = -55;
 
                     weaponOriginOffsetX = -26;
                     weaponOriginOffsetY = 0;
@@ -461,17 +468,19 @@ namespace MechMod.Content.Mechs
                     weaponOriginOffsetX = -70;
                     weaponOriginOffsetY = 45 * modPlayer.lastUseDirection;
 
-                    float progress = 1f - (modPlayer.animationProgress / weapon.attackRate); // Calculate the progress of the animation based on the animation progress (equal to projectile's life time) and attack rate
+                    if (player.whoAmI == Main.myPlayer) // Progress calculation should only be done on the client player
+                    {
+                        float progress = 1f - (modPlayer.animationProgress / weapon.attackRate); // Calculate the progress of the animation based on the animation progress (equal to projectile's life time) and attack rate
 
-                    modPlayer.armFrame = (int)MathHelper.Lerp(11, 7, progress); // Lerp the arm through the up, angled up, horizontal and angled down frames respectively (11 is used as starting value to make the up frame last longer)
+                        modPlayer.armFrame = (int)MathHelper.Lerp(11, 7, progress); // Lerp the arm through the up, angled up, horizontal and angled down frames respectively (11 is used as starting value to make the up frame last longer)
 
-                    // Calculate the swing's starting and ending angle and lerp it between the angle
-                    float startAngle = -2f * modPlayer.lastUseDirection;
-                    float endAngle = 1.5f * modPlayer.lastUseDirection;
-                    float swingAngle = MathHelper.Lerp(startAngle, endAngle, progress);
+                        // Calculate the swing's starting and ending angle and lerp it between the angle
+                        float startAngle = -2f * modPlayer.lastUseDirection;
+                        float endAngle = 1.5f * modPlayer.lastUseDirection;
+                        float swingAngle = MathHelper.Lerp(startAngle, endAngle, progress);
 
-                    modPlayer.weaponRotation = swingAngle + (modPlayer.lastUseDirection == 1 ? 0f : MathHelper.Pi); // Set the weapon rotation to the swing angle (that also changes depending on last use direction)
-
+                        modPlayer.weaponRotation = swingAngle + (modPlayer.lastUseDirection == 1 ? 0f : MathHelper.Pi); // Set the weapon rotation to the swing angle (that also changes depending on last use direction)
+                    }
                     break;
             }
             modPlayer.weaponPosition = new Vector2(weaponPositionX * modPlayer.lastUseDirection, weaponPositionY); // Setting a new position lets a weapon be futher out or further up from the player
@@ -482,6 +491,12 @@ namespace MechMod.Content.Mechs
         public void ApplyPartStats(Player player, Item equippedHead, Item equippedBody, Item equippedArms, Item equippedLegs, Item equippedBooster)
         {
             var modPlayer = player.GetModPlayer<MechModPlayer>();
+
+            // Reset weapon stats that are added/multiplied before applying new ones
+            Weapons.partDamageBonus = 0f;
+            Weapons.partCritChanceBonus = 0f;
+            Weapons.partAttackSpeedBonus = 0f;
+            Weapons.partKnockbackBonus = 0f;
 
             if (!equippedBody.IsAir)
                 if (modPlayer.equippedParts[MechMod.bodyIndex].ModItem is IMechParts body)

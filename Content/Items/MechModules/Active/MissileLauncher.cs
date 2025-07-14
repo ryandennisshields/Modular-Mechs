@@ -35,6 +35,7 @@ namespace MechMod.Content.Items.MechModules.Active
         private int delayTimer;
         private int fireDelay = 5; // Delay between missile launches in frames (0.5 seconds)
 
+        private DamageClass missileClass = DamageClass.Default; // Damage class for the missiles
         private int missileDamage = 50;
         private int missileKnockback = 10;
         private int missileCount = 5;
@@ -53,13 +54,14 @@ namespace MechMod.Content.Items.MechModules.Active
             {
                 if (delayTimer >= fireDelay && missilesFired < missileCount) // If delay has passed and haven't fired all missiles yet,
                 {
+                    Weapons.DamageClass = DamageClass.Default;
                     Projectile.NewProjectile(
                         new EntitySource_Parent(player),
                         player.MountedCenter + new Vector2(0, -40),
                         Vector2.Zero,
                         missileType,
-                        Weapons.DamageCalc(missileDamage, player),
-                        Weapons.KnockbackCalc(missileKnockback, player),
+                        Weapons.DamageCalc(missileDamage, player, missileClass),
+                        Weapons.KnockbackCalc(missileKnockback, player, missileClass),
                         player.whoAmI
                     ); // Create a missile
                     missilesFired++; /// Increment the missile counter
