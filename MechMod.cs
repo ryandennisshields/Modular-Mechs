@@ -77,8 +77,10 @@ namespace MechMod
 
                 // Weapons
                 { "basegun", new MechPart(ModContent.ItemType<BaseGun>(), "weapon")},
-                { "sasesword", new MechPart(ModContent.ItemType<BaseSword>(), "weapon")},
+                { "basesword", new MechPart(ModContent.ItemType<BaseSword>(), "weapon")},
                 { "lasergun", new MechPart(ModContent.ItemType<LaserGun>(), "weapon")},
+                { "projsword", new MechPart(ModContent.ItemType<ProjSword>(), "weapon")},
+                { "baselauncher", new MechPart(ModContent.ItemType<BaseLauncher>(), "weapon")},
 
                 // Modules
                 // Passive

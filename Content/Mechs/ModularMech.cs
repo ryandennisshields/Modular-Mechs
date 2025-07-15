@@ -38,13 +38,10 @@ namespace MechMod.Content.Mechs
 
     public interface IMechWeapon
     {
+        void SetStats(Player player);
         void UseAbility(Player player, Vector2 mousePosition, bool toggleOn);
-        public DamageClass damageClass { get; }
-        Weapons.UseType useType { get; }
-
-        public float timer { get; set; }
-        public float attackRate { get; set; }
-        public bool canUse { get; set; }
+        //public DamageClass damageClass { get; }
+        //Weapons.UseType useType { get; }
     }
 
     public interface IMechModule
@@ -143,7 +140,10 @@ namespace MechMod.Content.Mechs
             // Hide the Player
             player.opacityForAnimation = 0;
 
-            Weapons.DamageClass = modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon ? weapon.damageClass : DamageClass.Generic;
+            if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon)
+                weapon.SetStats(player); // Set the weapon stats based on the equipped weapon
+
+            //Weapons.DamageClass = modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon ? weapon.damageClass : DamageClass.Generic;
 
             // Apply Part Stats
             ApplyPartStats(player, modPlayer.equippedParts[MechMod.headIndex], modPlayer.equippedParts[MechMod.bodyIndex], modPlayer.equippedParts[MechMod.armsIndex], modPlayer.equippedParts[MechMod.legsIndex], modPlayer.equippedParts[MechMod.boosterIndex]);
@@ -240,15 +240,15 @@ namespace MechMod.Content.Mechs
 
             if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon)
             {
-                if (weapon.canUse)
+                if (Weapons.canUse)
                 {
                     if (modPlayer.animationTimer > 0 || modPlayer.animationProgress > 0) // Only run animations if timer or progress is active
                     {
-                        if (weapon.useType == Weapons.UseType.Swing) // Constantly update animation
+                        if (Weapons.useType == Weapons.UseType.Swing) // Constantly update animation
                         {
                             WeaponUseAnimation(player, Weapons.UseType.Swing, weapon);
                         }
-                        else if (weapon.useType == Weapons.UseType.Point) // Only animate for one frame
+                        else if (Weapons.useType == Weapons.UseType.Point) // Only animate for one frame
                         {
                             if (!modPlayer.animateOnce)
                             {
@@ -257,7 +257,7 @@ namespace MechMod.Content.Mechs
                             }
                         }
                     }
-                    if (weapon.timer >= weapon.attackRate)
+                    if (Weapons.timer >= Weapons.attackRate)
                     {
                         modPlayer.animateOnce = false; // Reset the animate once bool when the weapon is ready to attack again
                     }
@@ -387,22 +387,22 @@ namespace MechMod.Content.Mechs
 
             if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon)
             {
-                if (player.whoAmI == Main.myPlayer && Main.mouseLeft && weapon.timer >= weapon.attackRate) // Attack when ready
+                if (player.whoAmI == Main.myPlayer && Main.mouseLeft && Weapons.timer >= Weapons.attackRate) // Attack when ready
                 {
                     weapon.UseAbility(player, mousePosition, toggleOn);
-                    if (weapon.canUse)
+                    if (Weapons.canUse)
                     {
                         if (Main.MouseWorld.X > player.MountedCenter.X)
                             player.direction = 1;
                         else
                             player.direction = -1;
                         modPlayer.lastUseDirection = player.direction;
-                        weapon.timer = 0;
+                        Weapons.timer = 0;
                     }
                 }
 
-                if (weapon.timer < weapon.attackRate)
-                    weapon.timer++; // Increment the timer until it reaches the attack rate
+                if (Weapons.timer < Weapons.attackRate)
+                    Weapons.timer++; // Increment the timer until it reaches the attack rate
             }
             else
             {
@@ -470,7 +470,7 @@ namespace MechMod.Content.Mechs
 
                     if (player.whoAmI == Main.myPlayer) // Progress calculation should only be done on the client player
                     {
-                        float progress = 1f - (modPlayer.animationProgress / weapon.attackRate); // Calculate the progress of the animation based on the animation progress (equal to projectile's life time) and attack rate
+                        float progress = 1f - (modPlayer.animationProgress / Weapons.attackRate); // Calculate the progress of the animation based on the animation progress (equal to projectile's life time) and attack rate
 
                         modPlayer.armFrame = (int)MathHelper.Lerp(11, 7, progress); // Lerp the arm through the up, angled up, horizontal and angled down frames respectively (11 is used as starting value to make the up frame last longer)
 

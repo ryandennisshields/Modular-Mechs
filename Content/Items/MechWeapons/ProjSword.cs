@@ -7,10 +7,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using MechMod.Common.Players;
+using Terraria.ID;
 
 namespace MechMod.Content.Items.MechWeapons
 {
-    public class BaseSword : ModItem, IMechWeapon
+    public class ProjSword : ModItem, IMechWeapon
     {
         public override void SetDefaults()
         {
@@ -42,10 +43,16 @@ namespace MechMod.Content.Items.MechWeapons
                 proj.swingDuration = Weapons.attackRate; // Fixed number
                 Main.projectile[projID].timeLeft = (int)Weapons.attackRate; // Decreases each tick
             }
+            float projSpeed = 10;
+            Vector2 offset = new Vector2(0, -42); // Offset to adjust the projectile's spawn position relative to the mech's center
+            Vector2 direction = (Main.MouseWorld - player.MountedCenter) - offset; // new Vector2 corrects the offset to still make it go towards the cursor
+            direction.Normalize(); // Normalize the direction vector to ensure it has a length of 1
+            Vector2 velocity = direction * projSpeed;
+            Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter + offset, velocity, ProjectileID.SwordBeam, damage, knockback, player.whoAmI);
         }
     }
 
-    public class BaseSwordProj : ModProjectile
+    public class ProjSwordProj : ModProjectile
     {
         Player player;
         MechModPlayer modPlayer;

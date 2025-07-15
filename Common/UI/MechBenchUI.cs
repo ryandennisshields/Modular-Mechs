@@ -1,4 +1,5 @@
 ﻿using MechMod.Common.Players;
+using MechMod.Content.Mechs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stubble.Core.Classes;
@@ -456,6 +457,11 @@ namespace MechMod.Common.UI
             modPlayer.upgradeLevel = 0;
             modPlayer.upgradeDamageBonus = 0.0f;
             Main.NewText("Player Reset");
+
+            if (slots[MechMod.weaponIndex].item.ModItem is IMechWeapon weapon)
+            {
+                
+            }
         }
     }
 }

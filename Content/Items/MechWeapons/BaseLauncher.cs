@@ -8,7 +8,7 @@ using MechMod.Common.Players;
 
 namespace MechMod.Content.Items.MechWeapons
 {
-    public class BaseGun : ModItem, IMechWeapon
+    public class BaseLauncher : ModItem, IMechWeapon
     {
         public override void SetDefaults()
         {
@@ -26,7 +26,7 @@ namespace MechMod.Content.Items.MechWeapons
 
         public void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
         {
-            int projectileType = ProjectileID.Bullet;
+            int projectileType = ProjectileID.MiniNukeRocketI;
 
             int damage = Weapons.DamageCalc(12, player);
             Weapons.CritChanceCalc(4, player);

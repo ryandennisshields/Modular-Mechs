@@ -28,9 +28,9 @@ namespace MechMod.Content.Items.MechWeapons
         }
         public static UseType useType;
 
-        public static float timer; // Timer for weapon attack rate
-        public static float attackRate; // Attack rate for the weapon, used to determine how fast the weapon can be used
-        public static bool canUse; // Determines if a weapon can be used, for example, disabling use if weapon is out of mana or ammo
+        public static float timer { get; set; } = 0f; // Timer for weapon attack rate
+        public static float attackRate { get; set; } = 0f; // Attack rate for the weapon, used to determine how fast the weapon can be used
+        public static bool canUse { get; set; } = true; // Determines if a weapon can be used, for example, disabling use if weapon is out of mana or ammo
 
         public static float partDamageBonus;
         public static float partCritChanceBonus;

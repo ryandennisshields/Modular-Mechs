@@ -205,19 +205,66 @@ Items: {
 
 	// Weapons
 	
+	// The values for the statistics act like "base values" for the weapon, unmodified by armour, accessories, parts, etc.
+	
 	BaseGun: {
 		DisplayName: Base Gun
-		Tooltip: ""
+		Tooltip:
+			'''
+			Weapon Part
+			12 ranged damage
+			4% critcal strike chance
+			Very fast speed
+			Weak knockback
+			'''
 	}
 
 	BaseSword: {
 		DisplayName: Base Sword
-		Tooltip: ""
+		Tooltip:
+			'''
+			Weapon Part
+			12 melee damage
+			4% critcal strike chance
+			Average speed
+			Strong knockback
+			'''
 	}
 
 	LaserGun: {
 		DisplayName: Laser Gun
-		Tooltip: ""
+		Tooltip:
+			'''
+			Weapon Part
+			12 magic damage
+			4% critcal strike chance
+			Very fast speed
+			Weak knockback
+			'''
+	}
+
+	ProjSword: {
+		DisplayName: Proj Sword
+		Tooltip:
+			'''
+			Weapon Part
+			12 melee damage
+			4% critcal strike chance
+			Average speed
+			Strong knockback
+			'''
+	}
+
+	BaseLauncher: {
+		DisplayName: Base Launcher
+		Tooltip:
+			'''
+			Weapon Part
+			12 ranged damage
+			4% critcal strike chance
+			Very fast speed
+			Weak knockback
+			'''
 	}
 
 	// Modules
@@ -319,6 +366,7 @@ Projectiles: {
 	BaseSwordProj.DisplayName: Base Sword Proj
 	MissileProjectile.DisplayName: Missile Projectile
 	NuclearEjectProjectile.DisplayName: Nuclear Eject Projectile
+	ProjSwordProj.DisplayName: Proj Sword Proj
 }
 
 Keybinds: {

@@ -19,25 +19,24 @@ namespace MechMod.Content.Items.MechWeapons
             Item.rare = 3; // The rarity of the item.
         }
 
-        public float timer { get; set; } = 0f;
-        public float attackRate { get; set; } = 0f;
-        public bool canUse { get; set; } = true;
-
-        public DamageClass damageClass => DamageClass.Magic;
-        public Weapons.UseType useType => Weapons.UseType.Point;
+        public void SetStats(Player player)
+        {
+            Weapons.DamageClass = DamageClass.Magic; // Set the damage class for ranged weapons
+            Weapons.useType = Weapons.UseType.Point; // Set the use type for point weapons
+        }
 
         public void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
         {
             int manaCost = 20; // Mana cost for use
             if (player.statMana > manaCost)
             {
-                canUse = true;
+                Weapons.canUse = true;
 
                 int projectileType = ProjectileID.LaserMachinegunLaser;
 
                 int damage = Weapons.DamageCalc(12, player);
                 Weapons.CritChanceCalc(4, player);
-                attackRate = Weapons.AttackSpeedCalc(20, player);
+                Weapons.attackRate = Weapons.AttackSpeedCalc(20, player);
                 float knockback = Weapons.KnockbackCalc(4, player);
 
                 float projSpeed = 10;
@@ -53,7 +52,7 @@ namespace MechMod.Content.Items.MechWeapons
                 player.GetModPlayer<MechModPlayer>().animationTimer = holdTime;
             }
             else
-                canUse = false;
+                Weapons.canUse = false;
         }
     }
 }
