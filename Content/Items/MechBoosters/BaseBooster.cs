@@ -1,6 +1,7 @@
 ﻿using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mechs;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using static MechMod.Content.Mechs.ModularMech;
 
@@ -29,6 +30,15 @@ namespace MechMod.Content.Items.MechBoosters
             player.GetModPlayer<DashPlayer>().dashVelo = 0f;
             player.GetModPlayer<DashPlayer>().dashCoolDown = 0;
             player.GetModPlayer<DashPlayer>().dashDuration = 0;
+        }
+
+        // THESE ARE PLACEHOLDER, PARTS WILL BE SOLD BY NPC
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.DirtBlock, 10) // Example ingredient
+                .AddTile(TileID.WorkBenches) // Required crafting station
+                .Register();
         }
     }
 }

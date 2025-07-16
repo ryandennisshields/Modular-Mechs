@@ -75,7 +75,7 @@ namespace MechMod.Content.Mechs
             MountData.heightBoost = 40; // Height between the mount and the ground (player's hitbox position)
             MountData.constantJump = true;
             MountData.blockExtraJumps = true;
-            MountData.buff = ModContent.BuffType<MechBuff>();
+            //MountData.buff = ModContent.BuffType<MechBuff>();
             // Effects
             MountData.spawnDust = DustID.Smoke;
             // Frame data and player offsets
@@ -137,6 +137,8 @@ namespace MechMod.Content.Mechs
         {
             var modPlayer = player.GetModPlayer<MechModPlayer>();
 
+            player.AddBuff(ModContent.BuffType<MechBuff>(), 7200); // Give the player the mech buff for a set duration
+
             // Hide the Player
             player.opacityForAnimation = 0;
 
@@ -167,7 +169,9 @@ namespace MechMod.Content.Mechs
         {
             var modPlayer = player.GetModPlayer<MechModPlayer>();
 
-            mechDebuffDuration = 60;
+            player.ClearBuff(ModContent.BuffType<MechBuff>()); // Clear the mech buff
+
+            mechDebuffDuration = 1800;
             launchForce = -10;
 
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
@@ -183,8 +187,12 @@ namespace MechMod.Content.Mechs
 
             // Debuff the Player
             int mechDebuff = ModContent.BuffType<MechDebuff>();
-            //Should be set to 3600 ticks
-            player.AddBuff(mechDebuff, mechDebuffDuration);
+            player.AddBuff(mechDebuff, (int)(mechDebuffDuration / // Debuff duration scales higher as the player's health gets lower relative to max health
+                ((float)player.statLife <= (float)player.statLifeMax2 * 0.25 ? // If statement for making sure the debuff duration isn't too punishing at low health
+                ((float)player.statLifeMax2 * 0.25) / (float)player.statLifeMax2
+                : (float)player.statLife / (float)player.statLifeMax2)));
+            Main.NewText($"{mechDebuffDuration}, {player.statLife}, {player.statLifeMax2}, {player.statLifeMax2 * 0.25}");
+            Main.NewText($"{(int)(mechDebuffDuration / ((float)player.statLife <= (float)player.statLifeMax2 * 0.25 ? ((float)player.statLifeMax2 * 0.25) / (float)player.statLifeMax2 : (float)player.statLife / (float)player.statLifeMax2))}");
             player.opacityForAnimation = 1; // Make Player visible
             player.velocity.Y = launchForce; // Launch the Player upwards
 

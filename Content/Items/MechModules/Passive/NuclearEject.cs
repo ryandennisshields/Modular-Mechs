@@ -19,6 +19,15 @@ namespace MechMod.Content.Items.MechModules.Passive
             Item.rare = 3; // The rarity of the item.
         }
 
+        // THESE ARE PLACEHOLDER, PARTS WILL BE SOLD BY NPC
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.DirtBlock, 10) // Example ingredient
+                .AddTile(TileID.WorkBenches) // Required crafting station
+                .Register();
+        }
+
         public ModuleSlot moduleSlot => ModuleSlot.Passive; // Passive slot
         public ModuleType moduleType => ModuleType.OnDismount; // Dismount effect
 

@@ -1,6 +1,7 @@
 ﻿using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mechs;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace MechMod.Content.Items.MechBodies
@@ -20,6 +21,15 @@ namespace MechMod.Content.Items.MechBodies
         {
             mech.lifeBonus += 150; // 150 health bonus
             Weapons.partDamageBonus -= 0.1f; // 10% damage reduction
+        }
+
+        // THESE ARE PLACEHOLDER, PARTS WILL BE SOLD BY NPC
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.DirtBlock, 10) // Example ingredient
+                .AddTile(TileID.WorkBenches) // Required crafting station
+                .Register();
         }
     }
 }

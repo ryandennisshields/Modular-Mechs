@@ -1,6 +1,7 @@
 ﻿using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mechs;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace MechMod.Content.Items.MechArms
@@ -21,6 +22,15 @@ namespace MechMod.Content.Items.MechArms
             Weapons.partDamageBonus += 0.3f; // 30% damage bonus
             Weapons.partAttackSpeedBonus -= 0.1f; // 10% slower attack speed
             Weapons.partCritChanceBonus -= 0.1f; // 10% less critical chance
+        }
+
+        // THESE ARE PLACEHOLDER, PARTS WILL BE SOLD BY NPC
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.DirtBlock, 10) // Example ingredient
+                .AddTile(TileID.WorkBenches) // Required crafting station
+                .Register();
         }
     }
 }

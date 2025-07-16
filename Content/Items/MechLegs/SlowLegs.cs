@@ -1,6 +1,7 @@
 ﻿using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mechs;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace MechMod.Content.Items.MechLegs
@@ -27,6 +28,15 @@ namespace MechMod.Content.Items.MechLegs
             // Jumping stats
             mech.MountData.jumpHeight = 7;
             mech.groundJumpSpeed = 4f;
+        }
+
+        // THESE ARE PLACEHOLDER, PARTS WILL BE SOLD BY NPC
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.DirtBlock, 10) // Example ingredient
+                .AddTile(TileID.WorkBenches) // Required crafting station
+                .Register();
         }
     }
 }

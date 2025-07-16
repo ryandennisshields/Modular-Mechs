@@ -1,5 +1,6 @@
 ﻿using MechMod.Content.Mechs;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace MechMod.Content.Items.MechBodies
@@ -17,6 +18,15 @@ namespace MechMod.Content.Items.MechBodies
         public void ApplyStats(Player player, ModularMech mech)
         {
             mech.lifeBonus += 100; // 100 health bonus
+        }
+
+        // THESE ARE PLACEHOLDER, PARTS WILL BE SOLD BY NPC
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.DirtBlock, 10) // Example ingredient
+                .AddTile(TileID.WorkBenches) // Required crafting station
+                .Register();
         }
     }
 }

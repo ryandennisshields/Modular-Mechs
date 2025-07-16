@@ -29,11 +29,12 @@ namespace MechMod.Content.Items.MechBench
             Item.value = Item.sellPrice(silver: 45);
         }
 
+        // THESE ARE PLACEHOLDER, PARTS WILL BE SOLD BY NPC
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ItemID.IronBar, 15)
-                .AddTile(TileID.Anvils)
+                .AddIngredient(ItemID.DirtBlock, 10) // Example ingredient
+                .AddTile(TileID.WorkBenches) // Required crafting station
                 .Register();
         }
 

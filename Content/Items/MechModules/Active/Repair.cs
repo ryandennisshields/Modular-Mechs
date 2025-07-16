@@ -21,6 +21,15 @@ namespace MechMod.Content.Items.MechModules.Active
             Item.rare = 3; // The rarity of the item.
         }
 
+        // THESE ARE PLACEHOLDER, PARTS WILL BE SOLD BY NPC
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.DirtBlock, 10) // Example ingredient
+                .AddTile(TileID.WorkBenches) // Required crafting station
+                .Register();
+        }
+
         public ModuleSlot moduleSlot => ModuleSlot.Active; // Active slot
         public ModuleType moduleType => ModuleType.Persistent; // Persistent effect
 

@@ -292,11 +292,9 @@ namespace MechMod.Common.Players
                 if (info.Damage >= Player.statLife || Player.statLife < 1)
                 {
                     float PlayerHealth = Player.statLifeMax;
+                    Player.mount.Dismount(Player);
                     Player.statLife = (int)(PlayerHealth *= 0.5f);
                     Player.immuneTime = 60;
-                    Player.mount.Dismount(Player);
-                    // Should be set to 7200 ticks
-                    Player.AddBuff(ModContent.BuffType<MechDebuff>(), 60);
                 }
             }
         }
@@ -333,7 +331,7 @@ namespace MechMod.Common.Players
             Player.frozen = false;
 
             // Buffs
-            int mountBuffID = Player.mount.BuffType;
+            int mountBuffID = ModContent.BuffType<MechBuff>();
 
             for (int i = 0; i < Player.buffType.Length; i++)
             {

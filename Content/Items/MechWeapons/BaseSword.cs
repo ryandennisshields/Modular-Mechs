@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using Terraria.ModLoader;
-using Terraria;
+﻿using MechMod.Common.Players;
 using MechMod.Content.Mechs;
-using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
-using MechMod.Common.Players;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace MechMod.Content.Items.MechWeapons
 {
@@ -18,6 +19,15 @@ namespace MechMod.Content.Items.MechWeapons
             Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = 10000; // The value of the item in copper coins.
             Item.rare = 3; // The rarity of the item.
+        }
+
+        // THESE ARE PLACEHOLDER, PARTS WILL BE SOLD BY NPC
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.DirtBlock, 10) // Example ingredient
+                .AddTile(TileID.WorkBenches) // Required crafting station
+                .Register();
         }
 
         public void SetStats(Player player)

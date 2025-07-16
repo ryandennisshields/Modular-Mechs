@@ -18,6 +18,15 @@ namespace MechMod.Content.Items.MechWeapons
             Item.rare = 3; // The rarity of the item.
         }
 
+        // THESE ARE PLACEHOLDER, PARTS WILL BE SOLD BY NPC
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.DirtBlock, 10) // Example ingredient
+                .AddTile(TileID.WorkBenches) // Required crafting station
+                .Register();
+        }
+
         public void SetStats(Player player)
         {
             Weapons.DamageClass = DamageClass.Ranged; // Set the damage class for ranged weapons
