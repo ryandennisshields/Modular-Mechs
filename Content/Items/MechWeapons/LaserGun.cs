@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using MechMod.Common.Players;
 using rail;
+using System.Net.Mail;
 
 namespace MechMod.Content.Items.MechWeapons
 {
@@ -36,19 +37,19 @@ namespace MechMod.Content.Items.MechWeapons
 
         public void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
         {
-            int manaCost = 20; // Mana cost for use
+            int manaCost = 6; // Mana cost for use
             if (player.statMana > manaCost)
             {
                 Weapons.canUse = true;
 
                 int projectileType = ProjectileID.LaserMachinegunLaser;
 
-                int damage = Weapons.DamageCalc(12, player);
+                int damage = Weapons.DamageCalc(14, player);
                 Weapons.CritChanceCalc(4, player);
-                Weapons.attackRate = Weapons.AttackSpeedCalc(20, player);
+                Weapons.attackRate = Weapons.AttackSpeedCalc(22, player);
                 float knockback = Weapons.KnockbackCalc(4, player);
 
-                float projSpeed = 10;
+                float projSpeed = 12;
                 int holdTime = 50; // Amount of time player holds out the weapon after ceasing to fire
                 Vector2 offset = new Vector2(0, -42); // Offset to adjust the projectile's spawn position relative to the mech's center
 
@@ -58,6 +59,7 @@ namespace MechMod.Content.Items.MechWeapons
 
                 int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter + offset, velocity, projectileType, damage, knockback, player.whoAmI);
                 player.CheckMana(manaCost, true);
+                player.manaRegenDelay = 120;
                 player.GetModPlayer<MechModPlayer>().animationTimer = holdTime;
             }
             else

@@ -4,6 +4,8 @@ Items: {
 		Tooltip:
 			'''
 			Enter your Mech
+			Using your Mech drains energy, so you can only use it for a limited time
+			Leaving your Mech will incur a debuff, Mech Fatigue, which reduces your damage, maximum life, and disables your Mech for a duration
 			While inside your Mech, Set Bonuses, Buffs, and Summons are disabled
 			Use a Mech Bench to Equip Parts
 			Head, Body, Arms and Legs must be Equipped to use your Mech!
@@ -212,8 +214,8 @@ Items: {
 		Tooltip:
 			'''
 			Weapon Part
-			12 ranged damage
-			4% critcal strike chance
+			5 ranged damage
+			7% critcal strike chance
 			Very fast speed
 			Weak knockback
 			'''
@@ -224,7 +226,7 @@ Items: {
 		Tooltip:
 			'''
 			Weapon Part
-			12 melee damage
+			21 melee damage
 			4% critcal strike chance
 			Average speed
 			Strong knockback
@@ -236,10 +238,11 @@ Items: {
 		Tooltip:
 			'''
 			Weapon Part
-			12 magic damage
+			14 magic damage
 			4% critcal strike chance
-			Very fast speed
+			Fast speed
 			Weak knockback
+			Uses 6 mana
 			'''
 	}
 
@@ -248,10 +251,10 @@ Items: {
 		Tooltip:
 			'''
 			Weapon Part
-			12 melee damage
-			4% critcal strike chance
-			Average speed
-			Strong knockback
+			8 melee damage
+			6% critcal strike chance
+			Very fast speed
+			Average knockback
 			'''
 	}
 
@@ -260,10 +263,10 @@ Items: {
 		Tooltip:
 			'''
 			Weapon Part
-			12 ranged damage
-			4% critcal strike chance
-			Very fast speed
-			Weak knockback
+			20 ranged damage
+			10% critcal strike chance
+			Extremely slow speed
+			Average knockback
 			'''
 	}
 
@@ -341,7 +344,7 @@ Items: {
 			Module
 			[c/3030FF:Active]
 			Repairs your Mech, restoring half of your health
-			60s Cooldown
+			30s Cooldown
 			'''
 	}
 }

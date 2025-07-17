@@ -35,7 +35,7 @@ namespace MechMod.Content.Items.MechModules.Active
 
         private int timer;
         // should be set to 1800
-        private int cooldown = 30; // Cooldown in frames (30 seconds)
+        private int cooldown = 1800; // Cooldown in frames (30 seconds)
 
         public void ModuleEffect(ModularMech mech, Player player)
         {

@@ -40,10 +40,10 @@ namespace MechMod.Content.Items.MechWeapons
         {
             int projectileType = ModContent.ProjectileType<BaseSwordProj>();
 
-            int damage = Weapons.DamageCalc(12, player);
-            Weapons.CritChanceCalc(4, player);
-            Weapons.attackRate = Weapons.AttackSpeedCalc(50, player);
-            float knockback = Weapons.KnockbackCalc(7, player);
+            int damage = Weapons.DamageCalc(8, player);
+            Weapons.CritChanceCalc(6, player);
+            Weapons.attackRate = Weapons.AttackSpeedCalc(20, player);
+            float knockback = Weapons.KnockbackCalc(6, player);
 
             int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter, new Vector2(0, 0), projectileType, damage, knockback, player.whoAmI);
             if (Main.projectile.IndexInRange(projID) && Main.projectile[projID].ModProjectile is BaseSwordProj proj)

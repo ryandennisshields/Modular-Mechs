@@ -37,9 +37,9 @@ namespace MechMod.Content.Items.MechWeapons
         {
             int projectileType = ProjectileID.Bullet;
 
-            int damage = Weapons.DamageCalc(12, player);
-            Weapons.CritChanceCalc(4, player);
-            Weapons.attackRate = Weapons.AttackSpeedCalc(20, player);
+            int damage = Weapons.DamageCalc(5, player);
+            Weapons.CritChanceCalc(7, player);
+            Weapons.attackRate = Weapons.AttackSpeedCalc(13, player);
             float knockback = Weapons.KnockbackCalc(4, player);
 
             float projSpeed = 10;

@@ -191,8 +191,6 @@ namespace MechMod.Content.Mechs
                 ((float)player.statLife <= (float)player.statLifeMax2 * 0.25 ? // If statement for making sure the debuff duration isn't too punishing at low health
                 ((float)player.statLifeMax2 * 0.25) / (float)player.statLifeMax2
                 : (float)player.statLife / (float)player.statLifeMax2)));
-            Main.NewText($"{mechDebuffDuration}, {player.statLife}, {player.statLifeMax2}, {player.statLifeMax2 * 0.25}");
-            Main.NewText($"{(int)(mechDebuffDuration / ((float)player.statLife <= (float)player.statLifeMax2 * 0.25 ? ((float)player.statLifeMax2 * 0.25) / (float)player.statLifeMax2 : (float)player.statLife / (float)player.statLifeMax2))}");
             player.opacityForAnimation = 1; // Make Player visible
             player.velocity.Y = launchForce; // Launch the Player upwards
 

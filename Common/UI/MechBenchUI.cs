@@ -202,13 +202,13 @@ namespace MechMod.Common.UI
             mainPanel.Append(playerLevel);
 
             //Dev Button
-            UIPanel resetButton = new UIPanel();
-            resetButton.Width.Set(25, 0);
-            resetButton.Height.Set(25, 0);
-            resetButton.Left.Set(225, 0);
-            resetButton.Top.Set(140, 0);
-            resetButton.OnLeftClick += OnResetButtonClick;
-            mainPanel.Append(resetButton);
+            //UIPanel resetButton = new UIPanel();
+            //resetButton.Width.Set(25, 0);
+            //resetButton.Height.Set(25, 0);
+            //resetButton.Left.Set(225, 0);
+            //resetButton.Top.Set(140, 0);
+            //resetButton.OnLeftClick += OnResetButtonClick;
+            //mainPanel.Append(resetButton);
         }
 
         public void OnPlayerUse()
@@ -451,17 +451,17 @@ namespace MechMod.Common.UI
             playerLevel.SetText($"Level {modPlayer.upgradeLevel + 1}");
         }
 
-        private void OnResetButtonClick(UIMouseEvent evt, UIElement listeningElement)
-        {
-            var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
-            modPlayer.upgradeLevel = 0;
-            modPlayer.upgradeDamageBonus = 0.0f;
-            Main.NewText("Player Reset");
+        //private void OnResetButtonClick(UIMouseEvent evt, UIElement listeningElement)
+        //{
+        //    var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
+        //    modPlayer.upgradeLevel = 0;
+        //    modPlayer.upgradeDamageBonus = 0.0f;
+        //    Main.NewText("Player Reset");
 
-            if (slots[MechMod.weaponIndex].item.ModItem is IMechWeapon weapon)
-            {
+        //    if (slots[MechMod.weaponIndex].item.ModItem is IMechWeapon weapon)
+        //    {
                 
-            }
-        }
+        //    }
+        //}
     }
 }

@@ -37,12 +37,12 @@ namespace MechMod.Content.Items.MechWeapons
         {
             int projectileType = ProjectileID.MiniNukeRocketI;
 
-            int damage = Weapons.DamageCalc(12, player);
-            Weapons.CritChanceCalc(4, player);
-            Weapons.attackRate = Weapons.AttackSpeedCalc(20, player);
-            float knockback = Weapons.KnockbackCalc(4, player);
+            int damage = Weapons.DamageCalc(20, player);
+            Weapons.CritChanceCalc(10, player);
+            Weapons.attackRate = Weapons.AttackSpeedCalc(55, player);
+            float knockback = Weapons.KnockbackCalc(6, player);
 
-            float projSpeed = 10;
+            float projSpeed = 8;
             int holdTime = 50; // Amount of time player holds out the weapon after ceasing to fire
             Vector2 offset = new Vector2(0, -42); // Offset to adjust the projectile's spawn position relative to the mech's center
 
