@@ -9,7 +9,7 @@ using MechMod.Content.Items.MechLegs;
 using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Items.MechModules.Passive;
 using MechMod.Content.Items.MechModules.Active;
-using MechMod.Content.Mechs;
+using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -19,6 +19,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using static MechMod.Common.Players.MechModPlayer;
 using System.IO;
+using MechMod.Content.NPCs;
 
 namespace MechMod
 {
@@ -107,7 +108,6 @@ namespace MechMod
         internal enum MessageType : byte
         {
             EquippedPartsAndLevelSync,
-            WeaponAnimationSync
         }
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
@@ -129,29 +129,29 @@ namespace MechMod
                         modPlayer.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
-                //case MessageType.WeaponAnimationSync:
-                //    int armFrame = reader.ReadInt32();
-                //    float animationTimer = reader.ReadSingle();
-                //    int animationProgress = reader.ReadInt32();
-                //    int lastUseDirection = reader.ReadInt32();
+                    //case MessageType.WeaponAnimationSync:
+                    //    int armFrame = reader.ReadInt32();
+                    //    float animationTimer = reader.ReadSingle();
+                    //    int animationProgress = reader.ReadInt32();
+                    //    int lastUseDirection = reader.ReadInt32();
 
-                //    modPlayer.armFrame = armFrame;
-                //    modPlayer.animationTimer = animationTimer;
-                //    modPlayer.animationProgress = animationProgress;
-                //    modPlayer.lastUseDirection = lastUseDirection;
+                    //    modPlayer.armFrame = armFrame;
+                    //    modPlayer.animationTimer = animationTimer;
+                    //    modPlayer.animationProgress = animationProgress;
+                    //    modPlayer.lastUseDirection = lastUseDirection;
 
-                //    if (Main.netMode == NetmodeID.Server)
-                //    {
-                //        ModPacket packet = GetPacket();
-                //        packet.Write((byte)MessageType.WeaponAnimationSync);
-                //        packet.Write((byte)playerNumber);
-                //        packet.Write(armFrame);
-                //        packet.Write(animationTimer);
-                //        packet.Write(animationProgress);
-                //        packet.Write(lastUseDirection);
-                //        packet.Send(-1, playerNumber);
-                //    }
-                //    break;
+                    //    if (Main.netMode == NetmodeID.Server)
+                    //    {
+                    //        ModPacket packet = GetPacket();
+                    //        packet.Write((byte)MessageType.WeaponAnimationSync);
+                    //        packet.Write((byte)playerNumber);
+                    //        packet.Write(armFrame);
+                    //        packet.Write(animationTimer);
+                    //        packet.Write(animationProgress);
+                    //        packet.Write(lastUseDirection);
+                    //        packet.Send(-1, playerNumber);
+                    //    }
+                    //    break;
             }
         }
 

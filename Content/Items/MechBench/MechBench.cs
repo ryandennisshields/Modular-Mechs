@@ -26,16 +26,7 @@ namespace MechMod.Content.Items.MechBench
             Item.noMelee = true;
 
             Item.rare = ItemRarityID.Blue;
-            Item.value = Item.sellPrice(silver: 45);
-        }
-
-        // THESE ARE PLACEHOLDER, PARTS WILL BE SOLD BY NPC
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.DirtBlock, 10) // Example ingredient
-                .AddTile(TileID.WorkBenches) // Required crafting station
-                .Register();
+            Item.value = Item.buyPrice(silver: 50);
         }
 
         public override bool? UseItem(Player player)

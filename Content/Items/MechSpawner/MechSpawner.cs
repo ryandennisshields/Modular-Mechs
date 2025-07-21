@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using MechMod.Common.Players;
 using MechMod.Common.UI;
 using MechMod.Content.Buffs;
-using MechMod.Content.Mechs;
+using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -30,17 +30,8 @@ namespace MechMod.Content.Items.MechSpawner
             Item.UseSound = SoundID.Research;
             Item.noMelee = true;
             Item.rare = ItemRarityID.Cyan;
-            Item.value = Item.sellPrice(silver: 25);
+            Item.value = Item.buyPrice(silver: 50);
             Item.mountType = ModContent.MountType<ModularMech>();
-        }
-
-        // THESE ARE PLACEHOLDER, PARTS WILL BE SOLD BY NPC
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.DirtBlock, 10) // Example ingredient
-                .AddTile(TileID.WorkBenches) // Required crafting station
-                .Register();
         }
     }
 }

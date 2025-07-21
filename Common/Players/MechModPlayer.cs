@@ -1,7 +1,7 @@
 ﻿using MechMod.Common.UI;
 using MechMod.Content.Buffs;
 using MechMod.Content.Items.MechSpawner;
-using MechMod.Content.Mechs;
+using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;

@@ -29,7 +29,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 
-namespace MechMod.Content.Mechs
+namespace MechMod.Content.Mounts
 {
     public interface IMechParts
     {
@@ -389,6 +389,10 @@ namespace MechMod.Content.Mechs
 
         public override void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
         {
+            // Block weapon usage if mousing over any user interface element
+            if (player.mouseInterface)
+                return;
+
             var modPlayer = player.GetModPlayer<MechModPlayer>();
 
             if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon)

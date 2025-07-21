@@ -376,3 +376,45 @@ Keybinds: {
 	MechDash.DisplayName: Mech Dash
 	MechActivateModule.DisplayName: Mech Activate Module
 }
+
+NPCs: {
+	Mechanitor: {
+		DisplayName: Mechanitor
+
+		TownNPCMood: {
+			Content: I am content.
+			NoHome: I hate not having a home.
+			FarFromHome: I am too far from home.
+			LoveSpace: I love having so much space.
+			DislikeCrowded: I dislike how crowded I am.
+			HateCrowded: I hate how crowded I am.
+			LikeBiome: I like {BiomeName}.
+			DislikeBiome: I dislike {BiomeName}.
+			LoveNPC: I love {NPCName}.
+			LikeNPC: I like {NPCName}.
+			DislikeNPC: I dislike {NPCName}.
+			HateNPC: I hate {NPCName}.
+			LikeNPC_Princess: I like {NPCName}.
+			Princess_LovesNPC: I like {NPCName}.
+		}
+
+		Dialogue: {
+			PartyGirlDialogue: Can you please tell {0} to stop decorating my house with colors?
+			StandardDialogue1: Sometimes I feel like I'm different from everyone else here.
+			StandardDialogue2: What's your favorite color? My favorite colors are white and black.
+			StandardDialogue3: What? I don't have any arms or legs? Oh, don't be ridiculous!
+			StandardDialogue4: Hey, if you find a [i:HiveBackpack], I can upgrade it for you.
+			CommonDialogue: This message has a weight of 5, meaning it appears 5 times more often.
+			RareDialogue: This message has a weight of 0.1, meaning it appears 10 times as rare.
+			TalkALot: I'm getting tired of talking to you. I have to go.
+			Tip1: Although many effects don't work inside the Mech, you still get the benefits of certain accessories, and any stat bonuses from accessories or armor. Keep in mind what you equip!
+			Tip2: You are immune to knockback, specific debuffs and dismounting debuffs inside the Mech.
+			Tip3: Leaving the Mech while it's active or having it run out of duration will leave you with Mech Fatigue, which reduces your damage, maximum life, and disables your Mech for a duration.
+			Tip4: Mechs will eject you and save you from death if you die inside it, but you will be left with little health and a long Mech Fatigue debuff!
+			Tip5: The duration of Mech Fatigue is affected by the amount of health you have when you leave your Mech, the lower health, the longer the duration.
+			Tip6: Boosters are a Mech Part that allows you to fly, dash (using the Mech Dash binding), or even both. You unlock them after entering Hardmode.
+			Tip7: Passive Modules can be unlocked after defeating all of the mechanical bosses, and offer unique effects that enhance your Mech.
+			Tip8: Active Modules can be unlocked after defeating the Golem, and allow you to use powerful abilities (using the Mech Activate Module binding) while inside your Mech.
+		}
+	}
+}

@@ -1,5 +1,5 @@
 ﻿using MechMod.Common.Players;
-using MechMod.Content.Mechs;
+using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -17,17 +17,8 @@ namespace MechMod.Content.Items.MechWeapons
         {
             Item.width = 20; // The width of the item's hitbox in pixels.
             Item.height = 20; // The height of the item's hitbox in pixels.
-            Item.value = 10000; // The value of the item in copper coins.
+            Item.value = Item.buyPrice(gold: 2);
             Item.rare = 3; // The rarity of the item.
-        }
-
-        // THESE ARE PLACEHOLDER, PARTS WILL BE SOLD BY NPC
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.DirtBlock, 10) // Example ingredient
-                .AddTile(TileID.WorkBenches) // Required crafting station
-                .Register();
         }
 
         public void SetStats(Player player)

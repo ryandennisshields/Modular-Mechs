@@ -1,9 +1,9 @@
 ﻿using MechMod.Content.Items.MechWeapons;
-using MechMod.Content.Mechs;
+using MechMod.Content.Mounts;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static MechMod.Content.Mechs.ModularMech;
+using static MechMod.Content.Mounts.ModularMech;
 
 namespace MechMod.Content.Items.MechBoosters
 {
@@ -14,7 +14,7 @@ namespace MechMod.Content.Items.MechBoosters
         {
             Item.width = 20; // The width of the item's hitbox in pixels.
             Item.height = 20; // The height of the item's hitbox in pixels.
-            Item.value = 10000; // The value of the item in copper coins.
+            Item.value = Item.buyPrice(gold: 20);
             Item.rare = 2; // The rarity of the item.
         }
 
@@ -29,15 +29,6 @@ namespace MechMod.Content.Items.MechBoosters
             player.GetModPlayer<DashPlayer>().dashVelo = 10f;
             player.GetModPlayer<DashPlayer>().dashCoolDown = 90; // 1.5 seconds of cooldown
             player.GetModPlayer<DashPlayer>().dashDuration = 60; // 1 second of dash duration
-        }
-
-        // THESE ARE PLACEHOLDER, PARTS WILL BE SOLD BY NPC
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.DirtBlock, 10) // Example ingredient
-                .AddTile(TileID.WorkBenches) // Required crafting station
-                .Register();
         }
     }
 }
