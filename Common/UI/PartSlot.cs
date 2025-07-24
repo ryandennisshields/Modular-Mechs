@@ -27,6 +27,8 @@ namespace MechMod.Common.UI
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
+            var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
+
             base.DrawSelf(spriteBatch);
             ItemSlot.Draw(spriteBatch, ref item, ItemSlot.Context.InventoryCoin, GetDimensions().Position());
             if (!item.IsAir)
@@ -39,9 +41,9 @@ namespace MechMod.Common.UI
             }
             else
             {
-                if (IsMouseHovering && slotPartType == "booster")
+                if (IsMouseHovering && slotPartType == "booster" && modPlayer.powerCellActive)
                 {
-                    UICommon.TooltipMouseText("Empty\n[c/30FFFF:+200 Health]");
+                    UICommon.TooltipMouseText("Empty\n[c/30FFFF:+100 Health]");
                 }
             }
         }

@@ -1,6 +1,6 @@
 ﻿using MechMod.Common.UI;
 using MechMod.Content.Buffs;
-using MechMod.Content.Items.MechSpawner;
+using MechMod.Content.Items.MechMisc;
 using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -32,6 +32,7 @@ namespace MechMod.Common.Players
         public Item[] equippedParts;
         public int upgradeLevel;
         public float upgradeDamageBonus;
+        public bool powerCellActive = false;
 
         public float animationTimer; // Timer for mech weapon animation logic (constantly ticks down)
         public int animationProgress; // Progress for mech weapon animation logic (needs to be manually incremented and decremented)
@@ -109,6 +110,7 @@ namespace MechMod.Common.Players
 
             tag["upgradeLevel"] = upgradeLevel;
             tag["upgradeDamageBonus"] = upgradeDamageBonus;
+            tag["powerCellActive"] = powerCellActive;
         }
 
         public override void LoadData(TagCompound tag)
@@ -154,6 +156,8 @@ namespace MechMod.Common.Players
                 upgradeLevel = tag.GetInt("upgradeLevel");
             if (tag.ContainsKey("upgradeDamageBonus"))
                 upgradeDamageBonus = tag.GetFloat("upgradeDamageBonus");
+            if (tag.ContainsKey("powerCellActive"))
+                powerCellActive = tag.GetBool("powerCellActive");
         }
 
         // Send out changes to server and other clients

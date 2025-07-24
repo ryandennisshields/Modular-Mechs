@@ -31,9 +31,9 @@ namespace MechMod.Content.Items.MechWeapons
         {
             int projectileType = ModContent.ProjectileType<BaseSwordProj>();
 
-            int damage = Weapons.DamageCalc(21, player);
+            int damage = Weapons.DamageCalc(19, player);
             Weapons.CritChanceCalc(4, player);
-            Weapons.attackRate = Weapons.AttackSpeedCalc(28, player);
+            Weapons.attackRate = Weapons.AttackSpeedCalc(30, player);
             float knockback = Weapons.KnockbackCalc(7, player);
 
             int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter, new Vector2(0, 0), projectileType, damage, knockback, player.whoAmI);
@@ -64,6 +64,7 @@ namespace MechMod.Content.Items.MechWeapons
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.ownerHitCheck = true;
+            Projectile.usesLocalNPCImmunity = true;
         }
 
         public override void AI()
@@ -106,27 +107,6 @@ namespace MechMod.Content.Items.MechWeapons
                 0
             );
             return false;
-        }
-
-        private HashSet<int> hitNPCs = new HashSet<int>(); // Track the NPCs that have been hit
-
-        public override bool? CanHitNPC(NPC target)
-        {
-            return !hitNPCs.Contains(target.whoAmI); // Allow hitting the NPC if it hasn't been hit yet
-        }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            hitNPCs.Add(target.whoAmI); // Mark the NPC as hit (prevents one NPC from being hit multiple times in one swing)
-        }
-
-        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
-        {
-            modifiers.HitDirectionOverride = modPlayer.lastUseDirection; // Set the hit direction based on the player's last use direction
-        }
-        public override void OnKill(int timeLeft)
-        {
-            modPlayer.animationProgress = 0; // Reset the animation progress
         }
     }
 }

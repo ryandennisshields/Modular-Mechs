@@ -126,21 +126,19 @@ namespace MechMod.Content.NPCs
 
         public override bool CanTownNPCSpawn(int numTownNPCs)
         {
-            //for (int k = 0; k < Main.maxPlayers; k++)
-            //{
-            //    Player player = Main.player[k];
-            //    if (!player.active)
-            //    {
-            //        continue;
-            //    }
+            for (int k = 0; k < Main.maxPlayers; k++)
+            {
+                Player player = Main.player[k];
+                if (!player.active)
+                {
+                    continue;
+                }
 
-            //    // Player has to have either an ExampleItem or an ExampleBlock in order for the NPC to spawn
-            //    if (player.inventory.Any(item => item.type == ModContent.ItemType<ExampleItem>() || item.type == ModContent.ItemType<Items.Placeable.ExampleBlock>()))
-            //    {
-            //        return true;
-            //    }
-            //}
-
+                if (player.CountItem(ItemID.IronBar) >= 10 || player.CountItem(ItemID.LeadBar) >= 10)
+                {
+                    return true;
+                }
+            }
             return false;
         }
 
@@ -239,8 +237,8 @@ namespace MechMod.Content.NPCs
 
             var npcShop = new NPCShop(Type, shopName)
                     // Base (Parts = 1 Gold, Weapons = 2 Gold)
-                    .Add<Items.MechSpawner.MechSpawner>()
-                    .Add<Items.MechBench.MechBench>()
+                    .Add<Items.MechMisc.MechSpawner>()
+                    .Add<Items.MechMisc.MechBench>()
                     .Add<Items.MechHeads.BaseHead>()
                     .Add<Items.MechBodies.BaseBody>()
                     .Add<Items.MechArms.BaseArms>()
@@ -254,6 +252,7 @@ namespace MechMod.Content.NPCs
                     .Add<Items.MechLegs.FastLegs>(condition1)
                     .Add<Items.MechWeapons.LaserGun>(condition1)
                     // Condition 2 (Parts = 4 Gold, Boosters = 20 Gold, Weapons = 8 Gold)
+                    .Add<Items.MechMisc.PowerCell>(condition2)
                     .Add<Items.MechHeads.SlowHead>(condition2)
                     .Add<Items.MechBodies.SlowBody>(condition2)
                     .Add<Items.MechArms.SlowArms>(condition2)

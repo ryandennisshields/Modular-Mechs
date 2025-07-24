@@ -17,6 +17,16 @@ Items: {
 		Tooltip: Equip and Unequip Parts to your Mech
 	}
 
+	PowerCell: {
+		DisplayName: Power Cell
+		Tooltip:
+			'''
+			One-Time Use
+			Increases Mech duration from 1 minute to 2 minutes
+			Unlocks Booster empty slot health bonus
+			'''
+	}
+
 	// Mech Parts
 	
 	// Grey (969696) = Descriptive
@@ -214,7 +224,8 @@ Items: {
 		Tooltip:
 			'''
 			Weapon Part
-			5 ranged damage
+			[c/969696:Base Stats]
+			9 ranged damage
 			7% critcal strike chance
 			Very fast speed
 			Weak knockback
@@ -226,7 +237,8 @@ Items: {
 		Tooltip:
 			'''
 			Weapon Part
-			21 melee damage
+			[c/969696:Base Stats]
+			19 melee damage
 			4% critcal strike chance
 			Average speed
 			Strong knockback
@@ -238,6 +250,7 @@ Items: {
 		Tooltip:
 			'''
 			Weapon Part
+			[c/969696:Base Stats]
 			14 magic damage
 			4% critcal strike chance
 			Fast speed
@@ -251,6 +264,7 @@ Items: {
 		Tooltip:
 			'''
 			Weapon Part
+			[c/969696:Base Stats]
 			8 melee damage
 			6% critcal strike chance
 			Very fast speed
@@ -263,6 +277,7 @@ Items: {
 		Tooltip:
 			'''
 			Weapon Part
+			[c/969696:Base Stats]
 			20 ranged damage
 			10% critcal strike chance
 			Extremely slow speed

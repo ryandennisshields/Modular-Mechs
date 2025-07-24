@@ -1,21 +1,16 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using MechMod.Common.Players;
-using MechMod.Common.UI;
-using MechMod.Content.Buffs;
-using MechMod.Content.Mounts;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.UI.Elements;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.ID;
-using Terraria.Localization;
+using Terraria;
 using Terraria.ModLoader;
-using Terraria.Utilities;
+using MechMod.Common.UI;
 
-namespace MechMod.Content.Items.MechSpawner
+namespace MechMod.Content.Items.MechMisc
 {
-    public class MechSpawner : ModItem
+    public class MechBench : ModItem
     {
         public override void SetDefaults()
         {
@@ -29,9 +24,18 @@ namespace MechMod.Content.Items.MechSpawner
             Item.useTime = 15;
             Item.UseSound = SoundID.Research;
             Item.noMelee = true;
-            Item.rare = ItemRarityID.Cyan;
+
+            Item.rare = ItemRarityID.Blue;
             Item.value = Item.buyPrice(silver: 50);
-            Item.mountType = ModContent.MountType<ModularMech>();
+        }
+
+        public override bool? UseItem(Player player)
+        {
+            if (Main.myPlayer == player.whoAmI)
+            {
+                ModContent.GetInstance<MechBenchUISystem>().ShowMyUI();
+            }
+            return true;
         }
     }
 }

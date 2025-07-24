@@ -137,7 +137,10 @@ namespace MechMod.Content.Mounts
         {
             var modPlayer = player.GetModPlayer<MechModPlayer>();
 
-            player.AddBuff(ModContent.BuffType<MechBuff>(), 7200); // Give the player the mech buff for a set duration
+            if (modPlayer.powerCellActive) // Give the player the mech buff for a set duration (longer if the player has a power cell active)
+                player.AddBuff(ModContent.BuffType<MechBuff>(), 7200);
+            else
+                player.AddBuff(ModContent.BuffType<MechBuff>(), 3600);
 
             // Hide the Player
             player.opacityForAnimation = 0;
@@ -171,7 +174,7 @@ namespace MechMod.Content.Mounts
 
             player.ClearBuff(ModContent.BuffType<MechBuff>()); // Clear the mech buff
 
-            mechDebuffDuration = 1800;
+            mechDebuffDuration = 900;
             launchForce = -10;
 
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
@@ -236,6 +239,8 @@ namespace MechMod.Content.Mounts
 
             // Grant life bonus
             player.statLifeMax2 += lifeBonus;
+            Main.NewText(player.statLifeMax2);
+            Main.NewText(lifeBonus);
             if (grantedLifeBonus == false)
             {
                 player.statLife += lifeBonus; // Increase player's health to match new max health
@@ -534,7 +539,8 @@ namespace MechMod.Content.Mounts
                 player.GetModPlayer<DashPlayer>().dashDuration = 0;
                 player.GetModPlayer<DashPlayer>().dashVelo = 0f;
 
-                lifeBonus += 200;
+                if (modPlayer.powerCellActive)
+                    lifeBonus += 100;
             }
             // Apply head stats last as it can have multiplicative effects
             if (!equippedHead.IsAir)

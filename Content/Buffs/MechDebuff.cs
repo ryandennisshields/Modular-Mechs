@@ -19,8 +19,8 @@ namespace MechMod.Content.Buffs
 
         public override void SetStaticDefaults()
         {
-            //Main.debuff[Type] = true;
-            //BuffID.Sets.NurseCannotRemoveDebuff[Type] = true;
+            Main.debuff[Type] = true;
+            BuffID.Sets.NurseCannotRemoveDebuff[Type] = true;
         }
 
         public override void Update(Player player, ref int buffIndex)
