@@ -25,6 +25,8 @@ namespace MechMod.Content.Buffs
 
         public override void Update(Player player, ref int buffIndex)
         {
+            if (player.mount.Active)
+                player.mount.Dismount(player); // Make sure the player is counted as dismounted
             float PlayerHealth = player.statLifeMax;
             int PlayerHealthModifier = (int)(PlayerHealth *= PlayerHealthReduction);
             player.statLifeMax2 -= PlayerHealthModifier;

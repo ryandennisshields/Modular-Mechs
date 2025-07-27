@@ -25,6 +25,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.Chat;
 using Terraria.DataStructures;
+using Terraria.GameContent.Biomes.Desert;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
@@ -135,7 +136,7 @@ namespace MechMod.Content.Mounts
 
         public override void SetMount(Player player, ref bool skipDust)
         {
-            var modPlayer = player.GetModPlayer<MechModPlayer>();
+            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
 
             if (modPlayer.powerCellActive) // Give the player the mech buff for a set duration (longer if the player has a power cell active)
                 player.AddBuff(ModContent.BuffType<MechBuff>(), 7200);
@@ -208,39 +209,22 @@ namespace MechMod.Content.Mounts
         public float flightJumpSpeed = 0f;
         public float flightHorizontalSpeed = 0f;
 
+        private int stepTimer = 0;
+        private bool changeposition = false;
+
         public override void UpdateEffects(Player player)
         {
             var modPlayer = player.GetModPlayer<MechModPlayer>();
-
-            // Disable player's ability to hover while flying
-            if (player.mount._frameState == Mount.FrameFlying && !allowDown)
-            {
-                player.controlDown = false;
-            }
-
-            // Set the mount's jump and run speeds based on if the mount is flying or not
-            if (player.mount._frameState == Mount.FrameFlying)
-            {
-                MountData.jumpSpeed = flightJumpSpeed;
-                MountData.runSpeed = flightHorizontalSpeed;
-                MountData.swimSpeed = flightHorizontalSpeed;
-            }
-            else
-            {
-                MountData.jumpSpeed = groundJumpSpeed;
-                MountData.runSpeed = groundHorizontalSpeed;
-                MountData.swimSpeed = groundHorizontalSpeed;
-            }
 
             // These are here to make sure the Player does not recieve buffs like set bonus buffs
             player.head = 0;
             player.body = 0;
             player.legs = 0;
 
+            FrameStateSpecific(player, modPlayer);
+
             // Grant life bonus
             player.statLifeMax2 += lifeBonus;
-            Main.NewText(player.statLifeMax2);
-            Main.NewText(lifeBonus);
             if (grantedLifeBonus == false)
             {
                 player.statLife += lifeBonus; // Increase player's health to match new max health
@@ -304,6 +288,88 @@ namespace MechMod.Content.Mounts
                     }
                 }
             }
+        }
+
+        private void FrameStateSpecific(Player player, MechModPlayer modPlayer)
+        {
+            if (player.mount._frameState == Mount.FrameFlying)
+            {
+                // Disable player's ability to hover while flying
+                if (!allowDown)
+                    player.controlDown = false;
+
+                MountData.jumpSpeed = flightJumpSpeed;
+                MountData.runSpeed = flightHorizontalSpeed;
+                MountData.swimSpeed = flightHorizontalSpeed;
+            }
+            else
+            {
+                MountData.jumpSpeed = groundJumpSpeed;
+                MountData.runSpeed = groundHorizontalSpeed;
+                MountData.swimSpeed = groundHorizontalSpeed;
+            }
+
+            #region Booster Dust
+
+            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+
+            if (modPlayer.equippedParts[MechMod.boosterIndex] != null && dashPlayer.dashActive || player.mount._frameState == Mount.FrameInAir || player.mount._frameState == Mount.FrameFlying)
+            {
+                float dustSpeedX = 0;
+                float dustSpeedY = 0;
+
+                if (dashPlayer.dashActive)
+                {
+                    dustSpeedX = 5;
+                    dustSpeedY = 0;
+                }
+                else if (player.mount._frameState == Mount.FrameInAir || player.mount._frameState == Mount.FrameFlying)
+                {
+                    dustSpeedX = 0;
+                    dustSpeedY = player.controlJump ? 14 : 8;
+                }
+                else
+                {
+                    dustSpeedX = 0;
+                    dustSpeedY = 0;
+                }
+
+                for (int i = 0; i < 10; i++)
+                {
+                    float posX = player.direction == -1 ? player.position.X + 40 : player.position.X - 30;
+                    float posY = (i < 5) ? player.position.Y : player.position.Y + 20;
+                    int dust = Dust.NewDust(new Vector2(posX, posY), 1, 1, DustID.Flare, dustSpeedX, dustSpeedY);
+                }
+            }
+
+            #endregion
+
+            #region Step Dust
+
+            float stepSpeed = 30 / player.velocity.Length();
+            int positionRight = player.direction == -1 ? 6 : 2;
+            int positionLeft = player.direction == -1 ? -14 : -20;
+
+            if (stepTimer < stepSpeed)
+                stepTimer++;
+            if (player.mount._frameState == Mount.FrameRunning && stepTimer >= stepSpeed)
+            {
+                if (!changeposition)
+                {
+                    for (int i = 0; i < 30; i++)
+                        Dust.NewDust(new Vector2(player.position.X + positionRight, player.position.Y + 80), 30, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when running
+                    changeposition = true;
+                }
+                else
+                {
+                    for (int i = 0; i < 30; i++)
+                        Dust.NewDust(new Vector2(player.position.X + positionLeft, player.position.Y + 80), 30, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when running
+                    changeposition = false;
+                }
+                stepTimer = 0;
+            }
+
+            #endregion
         }
 
         //private Texture2D headTexture;
@@ -551,6 +617,7 @@ namespace MechMod.Content.Mounts
         public class DashPlayer : ModPlayer
         {
             public bool ableToDash;
+            public bool dashActive; // Used to check if the player is currently dashing
 
             public int dashCoolDown;
             public int dashDuration;
@@ -574,18 +641,32 @@ namespace MechMod.Content.Mounts
                         else
                             dashDir = Player.direction;
 
-                        Vector2 newVelo = Player.velocity;
-                        newVelo.X = dashDir * dashVelo;
+                        float newVelo = Player.velocity.X;
+                        newVelo = dashDir * dashVelo;
 
                         dashDelay = dashCoolDown;
                         dashTimer = dashDuration;
-                        Player.velocity = newVelo;
+                        Player.velocity.X = newVelo;
+                        //Player.mount._frameState = Mount.FrameDashing;
                     }
 
                     if (dashDelay > 0)
                         dashDelay--;
                 }
+
+                if (dashTimer > 0)
+                {
+                    dashTimer--;
+                    dashActive = true;
+                    if (dashTimer <= 0)
+                    {
+                        dashActive = false;
+                        if (Player.direction == 1 ? Player.velocity.X > Player.mount.RunSpeed : Player.velocity.X < -Player.mount.RunSpeed)
+                            Player.velocity.X -= Player.mount.RunSpeed * Player.direction; // Stop the dash when the timer runs out
+                    }
+                }
             }
+
         }
     }
 }

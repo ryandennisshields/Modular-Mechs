@@ -114,5 +114,10 @@ namespace MechMod.Content.Items.MechWeapons
             );
             return false;
         }
+
+        public override void OnKill(int timeLeft)
+        {
+            modPlayer.animationProgress = 0; // Reset the animation progress
+        }
     }
 }
