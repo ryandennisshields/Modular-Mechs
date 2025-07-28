@@ -15,7 +15,6 @@ namespace MechMod.Content.Buffs
     {
         public override void SetStaticDefaults()
         {
-            Main.buffNoSave[Type] = true;
             // Although not a debuff, as this counts as the mount buff it should not be removable besides dismounting the mech
             Main.debuff[Type] = true;
             BuffID.Sets.NurseCannotRemoveDebuff[Type] = true;

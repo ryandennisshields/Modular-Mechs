@@ -2,6 +2,7 @@
 using log4net.Appender;
 using MechMod.Common.Players;
 using MechMod.Content.Buffs;
+using MechMod.Content.Dusts;
 using MechMod.Content.Items.MechArms;
 using MechMod.Content.Items.MechBodies;
 using MechMod.Content.Items.MechBoosters;
@@ -23,6 +24,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.GameContent.Biomes.Desert;
@@ -143,6 +145,8 @@ namespace MechMod.Content.Mounts
             else
                 player.AddBuff(ModContent.BuffType<MechBuff>(), 3600);
 
+            SoundEngine.PlaySound(SoundID.Research, player.position); // Play Research sound when mounting the mech
+
             // Hide the Player
             player.opacityForAnimation = 0;
 
@@ -174,6 +178,8 @@ namespace MechMod.Content.Mounts
             var modPlayer = player.GetModPlayer<MechModPlayer>();
 
             player.ClearBuff(ModContent.BuffType<MechBuff>()); // Clear the mech buff
+
+            SoundEngine.PlaySound(SoundID.Research, player.position); // Play Research sound when dismounting the mech
 
             mechDebuffDuration = 900;
             launchForce = -10;
@@ -209,9 +215,6 @@ namespace MechMod.Content.Mounts
         public float flightJumpSpeed = 0f;
         public float flightHorizontalSpeed = 0f;
 
-        private int stepTimer = 0;
-        private bool changeposition = false;
-
         public override void UpdateEffects(Player player)
         {
             var modPlayer = player.GetModPlayer<MechModPlayer>();
@@ -221,7 +224,24 @@ namespace MechMod.Content.Mounts
             player.body = 0;
             player.legs = 0;
 
-            FrameStateSpecific(player, modPlayer);
+            if (player.mount._frameState == Mount.FrameFlying)
+            {
+                // Disable player's ability to hover while flying
+                if (!allowDown)
+                    player.controlDown = false;
+
+                MountData.jumpSpeed = flightJumpSpeed;
+                MountData.runSpeed = flightHorizontalSpeed;
+                MountData.swimSpeed = flightHorizontalSpeed;
+            }
+            else
+            {
+                MountData.jumpSpeed = groundJumpSpeed;
+                MountData.runSpeed = groundHorizontalSpeed;
+                MountData.swimSpeed = groundHorizontalSpeed;
+            }
+
+            Effects(player, modPlayer);
 
             // Grant life bonus
             player.statLifeMax2 += lifeBonus;
@@ -290,31 +310,31 @@ namespace MechMod.Content.Mounts
             }
         }
 
-        private void FrameStateSpecific(Player player, MechModPlayer modPlayer)
+        private int boosterTimer = 0;
+
+        private int stepTimer = 0;
+        private bool changeposition = false;
+
+        private void Effects(Player player, MechModPlayer modPlayer)
         {
-            if (player.mount._frameState == Mount.FrameFlying)
-            {
-                // Disable player's ability to hover while flying
-                if (!allowDown)
-                    player.controlDown = false;
-
-                MountData.jumpSpeed = flightJumpSpeed;
-                MountData.runSpeed = flightHorizontalSpeed;
-                MountData.swimSpeed = flightHorizontalSpeed;
-            }
-            else
-            {
-                MountData.jumpSpeed = groundJumpSpeed;
-                MountData.runSpeed = groundHorizontalSpeed;
-                MountData.swimSpeed = groundHorizontalSpeed;
-            }
-
-            #region Booster Dust
+            #region Booster
 
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            int boosterDuration = 30;
 
             if (modPlayer.equippedParts[MechMod.boosterIndex] != null && dashPlayer.dashActive || player.mount._frameState == Mount.FrameInAir || player.mount._frameState == Mount.FrameFlying)
             {
+                if (boosterTimer < boosterDuration)
+                    boosterTimer++;
+                if (boosterTimer >= boosterDuration)
+                {
+                    if (dashPlayer.dashActive || player.mount._frameState == Mount.FrameFlying)
+                    {
+                        SoundEngine.PlaySound(SoundID.Item13, player.position); // Play Rocket Boots/Jetpack sound for Booster use
+                        boosterTimer = 0; // Reset the timer
+                    }
+                }
+
                 float dustSpeedX = 0;
                 float dustSpeedY = 0;
 
@@ -334,35 +354,62 @@ namespace MechMod.Content.Mounts
                     dustSpeedY = 0;
                 }
 
-                for (int i = 0; i < 10; i++)
+                float dustCenterXLeft = 8;
+                float dustCenterXRight = 2;
+
+                float dustOffsetX = 0;
+
+                for (int i = 0; i < 20; i++)
                 {
-                    float posX = player.direction == -1 ? player.position.X + 40 : player.position.X - 30;
-                    float posY = (i < 5) ? player.position.Y : player.position.Y + 20;
-                    int dust = Dust.NewDust(new Vector2(posX, posY), 1, 1, DustID.Flare, dustSpeedX, dustSpeedY);
+                    switch (i)
+                    {
+                        case 0:
+                            dustOffsetX = -8;
+                            break;
+                        case 5:
+                            dustOffsetX = 8;
+                            break;
+                        case 10:
+                            dustOffsetX = -8;
+                            break;
+                        case 15:
+                            dustOffsetX = 8;
+                            break;
+                    }
+                    float posX = player.direction == -1 ? player.position.X + dustCenterXLeft + dustOffsetX : player.position.X + dustCenterXRight + dustOffsetX;
+                    float posY = (i < 10) ? player.position.Y - 5 : player.position.Y + 15;
+                    //int dust = Dust.NewDust(new Vector2(posX, posY), 1, 1, DustID.Flare, dustSpeedX, dustSpeedY);
+                    int dust = Dust.NewDust(new Vector2(posX, posY), 1, 1, ModContent.DustType<BoosterDust>(), dustSpeedX, dustSpeedY);
+                    Main.dust[dust].customData = player; // Use custom data to hide dust if behind Mech
                 }
+            }
+            else
+            {
+                boosterTimer = boosterDuration;
             }
 
             #endregion
 
-            #region Step Dust
+            #region Step
 
-            float stepSpeed = 30 / player.velocity.Length();
+            float stepSpeed = 30 / (player.velocity.Length() / 2);
             int positionRight = player.direction == -1 ? 6 : 2;
             int positionLeft = player.direction == -1 ? -14 : -20;
 
             if (stepTimer < stepSpeed)
                 stepTimer++;
-            if (player.mount._frameState == Mount.FrameRunning && stepTimer >= stepSpeed)
+            if (stepTimer >= stepSpeed && player.mount._frameState == Mount.FrameRunning)
             {
+                SoundEngine.PlaySound(SoundID.NPCHit3, player.position); // Play Dig sound for step use
                 if (!changeposition)
                 {
-                    for (int i = 0; i < 30; i++)
+                    for (int i = 0; i < 15; i++)
                         Dust.NewDust(new Vector2(player.position.X + positionRight, player.position.Y + 80), 30, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when running
                     changeposition = true;
                 }
                 else
                 {
-                    for (int i = 0; i < 30; i++)
+                    for (int i = 0; i < 15; i++)
                         Dust.NewDust(new Vector2(player.position.X + positionLeft, player.position.Y + 80), 30, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when running
                     changeposition = false;
                 }
@@ -398,26 +445,26 @@ namespace MechMod.Content.Mounts
             {
 
                 // Apply visuals to the Mech
-                var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
-                if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
-                    modPlayer.headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
-                if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
-                    modPlayer.bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
-                if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
-                    modPlayer.armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}Visual").Value;
-                if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
-                    modPlayer.legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}Visual").Value;
-
-                // Apply visuals to the Mech (TEMPORARY)
                 //var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
                 //if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
-                //    modPlayer.headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/BaseHeadVisual").Value;
+                //    modPlayer.headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
                 //if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
-                //    modPlayer.bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/BaseBodyVisual").Value;
+                //    modPlayer.bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
                 //if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
-                //    modPlayer.armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsVisual").Value;
+                //    modPlayer.armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}Visual").Value;
                 //if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
-                //    modPlayer.legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsVisual").Value;
+                //    modPlayer.legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}Visual").Value;
+
+                // Apply visuals to the Mech (TEMPORARY)
+                var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
+                if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
+                    modPlayer.headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/BaseHeadVisual").Value;
+                if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
+                    modPlayer.bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/BaseBodyVisual").Value;
+                if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
+                    modPlayer.armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsVisual").Value;
+                if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
+                    modPlayer.legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsVisual").Value;
 
                 if (!modPlayer.equippedParts[MechMod.weaponIndex].IsAir)
                     modPlayer.weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{modPlayer.equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}").Value;

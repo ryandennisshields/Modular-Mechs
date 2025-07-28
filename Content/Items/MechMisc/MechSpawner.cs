@@ -27,7 +27,7 @@ namespace MechMod.Content.Items.MechMisc
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.useAnimation = 15;
             Item.useTime = 15;
-            Item.UseSound = SoundID.Research;
+            //Item.UseSound = SoundID.Research;
             Item.noMelee = true;
             Item.rare = ItemRarityID.Cyan;
             Item.value = Item.buyPrice(silver: 50);

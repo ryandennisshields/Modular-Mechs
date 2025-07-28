@@ -357,8 +357,6 @@ namespace MechMod.Common.Players
                 drawInfo.drawPlayer.body = 0;
                 drawInfo.drawPlayer.legs = 0;
 
-                drawInfo.drawPlayer.invis = true;
-
                 if (lastUseDirection != 0)
                     drawInfo.drawPlayer.direction = lastUseDirection; // Force player's direction to be the last use direction
             }
@@ -396,5 +394,49 @@ namespace MechMod.Common.Players
             }
             return true;
         }
+
+        //public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+        //{
+        //    Rectangle[] boxes =
+        //        [
+        //            new Rectangle( // Head
+        //                (int)(Player.position.X + (Player.direction == -1 ? -2 : -10) - Main.screenPosition.X),
+        //                (int)(Player.position.Y - 41 - Main.screenPosition.Y),
+        //                32,
+        //                36
+        //            ),
+        //            new Rectangle( // Body
+        //                (int)(Player.position.X + (Player.direction == -1 ? -18 : -28) - Main.screenPosition.X),
+        //                (int)(Player.position.Y - 12 - Main.screenPosition.Y),
+        //                66,
+        //                53
+        //            ),
+        //            new Rectangle( // Legs
+        //                (int)(Player.position.X + (Player.direction == -1 ? -8 : -16) - Main.screenPosition.X),
+        //                (int)(Player.position.Y + 32 - Main.screenPosition.Y),
+        //                44,
+        //                53
+        //            )
+        //        ];
+
+        //    foreach (Rectangle box in boxes)
+        //    {
+        //        DrawDebugRectangle(box, Color.Red);
+        //    }
+        //}
+
+        //private void DrawDebugRectangle(Rectangle rect, Color color)
+        //{
+        //    // Use a 1x1 white pixel texture (built-in)
+        //    Texture2D pixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
+        //    // Top
+        //    Main.spriteBatch.Draw(pixel, new Rectangle(rect.X, rect.Y, rect.Width, 2), color);
+        //    // Bottom
+        //    Main.spriteBatch.Draw(pixel, new Rectangle(rect.X, rect.Y + rect.Height - 2, rect.Width, 2), color);
+        //    // Left
+        //    Main.spriteBatch.Draw(pixel, new Rectangle(rect.X, rect.Y, 2, rect.Height), color);
+        //    // Right
+        //    Main.spriteBatch.Draw(pixel, new Rectangle(rect.X + rect.Width - 2, rect.Y, 2, rect.Height), color);
+        //}
     }
 }
