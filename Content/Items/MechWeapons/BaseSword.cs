@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -43,6 +44,8 @@ namespace MechMod.Content.Items.MechWeapons
                 proj.swingDuration = Weapons.attackRate; // Fixed number
                 Main.projectile[projID].timeLeft = (int)Weapons.attackRate; // Decreases each tick
             }
+
+            SoundEngine.PlaySound(SoundID.Item1, player.position); // Play Swing sound when the weapon is used
         }
     }
 

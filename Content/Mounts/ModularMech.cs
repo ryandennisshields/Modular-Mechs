@@ -1,36 +1,16 @@
-﻿using Humanizer;
-using log4net.Appender;
-using MechMod.Common.Players;
+﻿using MechMod.Common.Players;
 using MechMod.Content.Buffs;
 using MechMod.Content.Dusts;
-using MechMod.Content.Items.MechArms;
-using MechMod.Content.Items.MechBodies;
-using MechMod.Content.Items.MechBoosters;
-using MechMod.Content.Items.MechHeads;
-using MechMod.Content.Items.MechLegs;
 using MechMod.Content.Items.MechWeapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using rail;
-using System;
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Net.Mail;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Chat;
 using Terraria.DataStructures;
-using Terraria.GameContent.Biomes.Desert;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI.Chat;
 
 namespace MechMod.Content.Mounts
 {
@@ -218,11 +198,6 @@ namespace MechMod.Content.Mounts
         public override void UpdateEffects(Player player)
         {
             var modPlayer = player.GetModPlayer<MechModPlayer>();
-
-            // These are here to make sure the Player does not recieve buffs like set bonus buffs
-            player.head = 0;
-            player.body = 0;
-            player.legs = 0;
 
             if (player.mount._frameState == Mount.FrameFlying)
             {

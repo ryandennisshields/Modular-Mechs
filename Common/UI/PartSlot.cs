@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 using MechMod.Common.Players;
 using Terraria.ModLoader.UI;
+using Terraria.Audio;
+using Terraria.ID;
 
 namespace MechMod.Common.UI
 {
@@ -78,6 +80,7 @@ namespace MechMod.Common.UI
                 // If the slot has an item and the mouse is empty, pick up the item
                 Main.mouseItem = item.Clone();
                 item.TurnToAir();
+                SoundEngine.PlaySound(SoundID.Grab);
                 return;
             }
             if (isMechPart(Main.mouseItem))
@@ -96,6 +99,7 @@ namespace MechMod.Common.UI
                     // If the slot is empty and the mouse has an item, place the item
                     item = Main.mouseItem.Clone();
                     Main.mouseItem.TurnToAir();
+                    SoundEngine.PlaySound(SoundID.Grab);
                 }
                 else if (!Main.mouseItem.IsAir && !item.IsAir)
                 {
@@ -103,6 +107,7 @@ namespace MechMod.Common.UI
                     Item temp = item.Clone();
                     item = Main.mouseItem.Clone();
                     Main.mouseItem = temp;
+                    SoundEngine.PlaySound(SoundID.Grab);
                 }
             }
             else

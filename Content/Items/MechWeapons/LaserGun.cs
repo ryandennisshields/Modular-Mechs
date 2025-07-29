@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using MechMod.Common.Players;
 using rail;
 using System.Net.Mail;
+using Terraria.Audio;
 
 namespace MechMod.Content.Items.MechWeapons
 {
@@ -52,6 +53,8 @@ namespace MechMod.Content.Items.MechWeapons
                 player.CheckMana(manaCost, true);
                 player.manaRegenDelay = 120;
                 player.GetModPlayer<MechModPlayer>().animationTimer = holdTime;
+
+                SoundEngine.PlaySound(SoundID.Item12, player.position); // Play Laser sound when the weapon is used
             }
             else
                 Weapons.canUse = false;

@@ -362,6 +362,11 @@ Items: {
 			30s Cooldown
 			'''
 	}
+
+	HideVFX: {
+		DisplayName: Hide V F X
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -393,24 +398,25 @@ Keybinds: {
 }
 
 NPCs: {
-	Mechanitor: {
-		DisplayName: Mechanitor
+	Mechanist: {
+		DisplayName: Mechanist
 
 		TownNPCMood: {
-			Content: I am content.
-			NoHome: I hate not having a home.
-			FarFromHome: I am too far from home.
-			LoveSpace: I love having so much space.
-			DislikeCrowded: I dislike how crowded I am.
-			HateCrowded: I hate how crowded I am.
-			LikeBiome: I like {BiomeName}.
-			DislikeBiome: I dislike {BiomeName}.
-			LoveNPC: I love {NPCName}.
-			LikeNPC: I like {NPCName}.
-			DislikeNPC: I dislike {NPCName}.
-			HateNPC: I hate {NPCName}.
-			LikeNPC_Princess: I like {NPCName}.
-			Princess_LovesNPC: I like {NPCName}.
+			Content: I am feeling well, thank you.
+			NoHome: Where can I set up? I need a place to work!
+			FarFromHome: Being this far from my tools makes me antsy.
+			LoveSpace: I love how much space I have to work with!
+			DislikeCrowded: This isn't nearly enough space for the size of my babies...
+			HateCrowded: There's way too many people here! How am I supposed to do anything without collateral?
+			LikeBiome: "{BiomeName} is cosy and gives me room to test parts."
+			DislikeBiome: "{BiomeName} kinda sucks."
+			HateBiome: "{BiomeName}'s sand gets everywhere!."
+			LoveNPC: Whenever I'm stuck, {NPCName} gives great advice and inspiration!
+			LikeNPC: "{NPCName}'s supplies and ideas have been helpful."
+			DislikeNPC: Although my babies run on clean energy, {NPCName} is still skeptical...
+			HateNPC: '''{NPCName} has reprimanded me for my babies, calling them "dangerous" and "destructive". The gall!'''
+			LikeNPC_Princess: I dunno {NPCName}'s deal, but they're nice.
+			Princess_LovesNPC: "{NPCName} has loads of determination!"
 		}
 
 		Dialogue: {
@@ -431,5 +437,9 @@ NPCs: {
 			Tip7: Passive Modules can be unlocked after defeating all of the mechanical bosses, and offer unique effects that enhance your Mech.
 			Tip8: Active Modules can be unlocked after defeating the Golem, and allow you to use powerful abilities (using the Mech Activate Module binding) while inside your Mech.
 		}
+
+		Census.SpawnCondition: Have either 10 {$ItemName.IronBar} [i:IronBar] or 10 {$ItemName.LeadBar} [i:LeadBar] in your inventory
 	}
 }
+
+Emotes.MechanistEmote.Command: mechanistemote

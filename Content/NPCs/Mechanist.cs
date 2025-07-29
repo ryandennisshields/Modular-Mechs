@@ -21,7 +21,7 @@ using static Terraria.GameContent.Bestiary.IL_BestiaryDatabaseNPCsPopulator.Comm
 namespace MechMod.Content.NPCs
 {
     [AutoloadHead]
-    public class Mechanitor : ModNPC
+    public class Mechanist : ModNPC
     {
         public const string shopName = "Shop";
         public int numberOfTimesTalkedTo = 0;
@@ -46,27 +46,27 @@ namespace MechMod.Content.NPCs
             NPCID.Sets.AttackAverageChance[Type] = 30;
             NPCID.Sets.HatOffsetY[Type] = 4;
             NPCID.Sets.ShimmerTownTransform[NPC.type] = true;
-
             NPCID.Sets.ShimmerTownTransform[Type] = true;
-
-            //NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>();
+            NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<MechanistEmote>();
 
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
             {
                 Velocity = 1f,
-                Direction = 1
             };
 
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 
             NPC.Happiness
-                .SetBiomeAffection<ForestBiome>(AffectionLevel.Like)
-                .SetBiomeAffection<SnowBiome>(AffectionLevel.Dislike)
-                //.SetBiomeAffection<ExampleSurfaceBiome>(AffectionLevel.Love)
-                .SetNPCAffection(NPCID.Dryad, AffectionLevel.Love)
-                .SetNPCAffection(NPCID.Guide, AffectionLevel.Like)
-                .SetNPCAffection(NPCID.Merchant, AffectionLevel.Dislike)
-                .SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Hate);
+                .SetBiomeAffection<UndergroundBiome>(AffectionLevel.Like)
+                .SetBiomeAffection<SnowBiome>(AffectionLevel.Like)
+                .SetBiomeAffection<DesertBiome>(AffectionLevel.Hate)
+                .SetNPCAffection(NPCID.Cyborg, AffectionLevel.Love)
+                .SetNPCAffection(NPCID.Steampunker, AffectionLevel.Love)
+                .SetNPCAffection(NPCID.GoblinTinkerer, AffectionLevel.Like)
+                .SetNPCAffection(NPCID.Mechanic, AffectionLevel.Like)
+                .SetNPCAffection(NPCID.Dryad , AffectionLevel.Dislike)
+                .SetNPCAffection(NPCID.WitchDoctor, AffectionLevel.Hate)
+                ;
 
             NPCProfile = new Profiles.StackedNPCProfile(
                 new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
@@ -177,24 +177,24 @@ namespace MechMod.Content.NPCs
             int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
             if (partyGirl >= 0 && Main.rand.NextBool(4))
             {
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanitor.Dialogue.PartyGirlDialogue", Main.npc[partyGirl].GivenName));
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.PartyGirlDialogue", Main.npc[partyGirl].GivenName));
             }
-            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanitor.Dialogue.StandardDialogue1"));
-            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanitor.Dialogue.StandardDialogue2"));
-            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanitor.Dialogue.StandardDialogue3"));
-            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanitor.Dialogue.StandardDialogue4"));
-            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanitor.Dialogue.CommonDialogue"), 5.0);
-            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanitor.Dialogue.RareDialogue"), 0.1);
+            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.StandardDialogue1"));
+            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.StandardDialogue2"));
+            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.StandardDialogue3"));
+            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.StandardDialogue4"));
+            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.CommonDialogue"), 5.0);
+            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.RareDialogue"), 0.1);
 
             numberOfTimesTalkedTo++;
             if (numberOfTimesTalkedTo >= 10)
             {
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanitor.Dialogue.TalkALot"));
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.TalkALot"));
             }
 
             string chosenChat = chat;
 
-            //if (chosenChat == Language.GetTextValue("Mods.MechMod.NPCs.Mechanitor.Dialogue.StandardDialogue4"))
+            //if (chosenChat == Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.StandardDialogue4"))
             //{
             //    Main.npcChatCornerItem = ItemID.HiveBackpack;
             //}
@@ -220,7 +220,7 @@ namespace MechMod.Content.NPCs
             if (!firstButton) // Tips button
             {
                 tipIndex++;
-                Main.npcChatText = Language.GetTextValue($"Mods.MechMod.NPCs.Mechanitor.Dialogue.Tip{tipIndex}");
+                Main.npcChatText = Language.GetTextValue($"Mods.MechMod.NPCs.Mechanist.Dialogue.Tip{tipIndex}");
                 if (tipIndex >= tipCount)
                 {
                     tipIndex = 0;
@@ -354,5 +354,14 @@ namespace MechMod.Content.NPCs
         //    // Use this or return null if you don't want to override the emote selection totally
         //    return base.PickEmote(closestPlayer, emoteList, otherAnchor);
         //}
+    }
+
+    public class MechanistEmote : ModEmoteBubble
+    {
+        public override string Texture => "MechMod/Content/NPCs/MechanistEmote";
+        public override void SetStaticDefaults()
+        {
+            AddToCategory(EmoteID.Category.Town);
+        }
     }
 }

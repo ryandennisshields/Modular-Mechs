@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -267,6 +268,7 @@ namespace MechMod.Common.UI
         private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
             ModContent.GetInstance<MechBenchUISystem>().HideMyUI();
+            SoundEngine.PlaySound(SoundID.MenuClose);
         }
 
         private void OnPartSlotInteract(UIMouseEvent evt, UIElement listeningElement)
@@ -363,6 +365,8 @@ namespace MechMod.Common.UI
 
                 modPlayer.upgradeDamageBonus += upgradeDamageValues[modPlayer.upgradeLevel]; 
                 Main.NewText($"Upgrade Successful! Damage increased by {Math.Round(upgradeDamageValues[modPlayer.upgradeLevel] * 100)}%");
+
+                SoundEngine.PlaySound(SoundID.Research);
 
                 modPlayer.upgradeLevel++;
                 

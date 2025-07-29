@@ -5,6 +5,7 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using MechMod.Common.Players;
+using Terraria.Audio;
 
 namespace MechMod.Content.Items.MechWeapons
 {
@@ -43,6 +44,8 @@ namespace MechMod.Content.Items.MechWeapons
 
             int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter + offset, velocity, projectileType, damage, knockback, player.whoAmI);
             player.GetModPlayer<MechModPlayer>().animationTimer = holdTime;
+
+            SoundEngine.PlaySound(SoundID.Item11, player.position); // Play Gun sound when the weapon is used
         }
     }
 }

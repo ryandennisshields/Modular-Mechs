@@ -293,6 +293,7 @@ namespace MechMod.Common.Players
         {
             if (Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>())
             {
+                SoundEngine.PlaySound(SoundID.NPCHit4, Player.position); // Play metal hit sound when the mech is hurt
                 if (info.Damage >= Player.statLife || Player.statLife < 1)
                 {
                     float PlayerHealth = Player.statLifeMax;
@@ -312,10 +313,13 @@ namespace MechMod.Common.Players
         }
 
         // These disable the Player's Buffs, specific Debuffs, and any visual effects (For example, set bonus visual effects)
-        #region Disabling Player Effects
-
         public void DisablePlayerEffects()
         {
+            // Armor Set Bonuses
+            Player.head = 0;
+            Player.body = 0;
+            Player.legs = 0;
+
             // Debuffs
             // Removed to make the Mech more realistic and disabling effects that dismount the Player
             // General
@@ -348,21 +352,14 @@ namespace MechMod.Common.Players
             }
         }
 
-        // Visual Effects
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
         {
             if (Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>())
             {
-                drawInfo.drawPlayer.head = 0;
-                drawInfo.drawPlayer.body = 0;
-                drawInfo.drawPlayer.legs = 0;
-
                 if (lastUseDirection != 0)
-                    drawInfo.drawPlayer.direction = lastUseDirection; // Force player's direction to be the last use direction
+                    Player.direction = lastUseDirection; // Force player's direction to be the last use direction
             }
         }
-
-        #endregion
 
         public override void PreUpdate()
         {

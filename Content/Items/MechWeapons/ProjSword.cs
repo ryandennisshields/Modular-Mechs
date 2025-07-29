@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using MechMod.Common.Players;
 using Terraria.ID;
+using Terraria.Audio;
 
 namespace MechMod.Content.Items.MechWeapons
 {
@@ -49,6 +50,9 @@ namespace MechMod.Content.Items.MechWeapons
             direction.Normalize(); // Normalize the direction vector to ensure it has a length of 1
             Vector2 velocity = direction * projSpeed;
             Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter + offset, velocity, ProjectileID.SwordBeam, damage, knockback, player.whoAmI);
+
+            SoundEngine.PlaySound(SoundID.Item1, player.position); // Play Swing sound when the weapon is used
+            SoundEngine.PlaySound(SoundID.Item8, player.position); // Play Projectile sound when the weapon is used
         }
     }
 
