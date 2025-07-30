@@ -4,10 +4,12 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.Events;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent.UI;
@@ -96,7 +98,7 @@ namespace MechMod.Content.NPCs
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
 
-				new FlavorTextBestiaryInfoElement("Hailing from a mysterious greyscale cube world, the Example Person is here to help you understand everything about tModLoader."),
+				new FlavorTextBestiaryInfoElement("Having spent many years perfecting his craft, the Mechanitor provides his technology to others with a sense of pride."),
             });
         }
 
@@ -150,10 +152,16 @@ namespace MechMod.Content.NPCs
         public override List<string> SetNPCNameList()
         {
             return new List<string>() {
-                "Someone",
-                "Somebody",
-                "Blocky",
-                "Colorless"
+                "Ryan",
+                "Austin",
+                "Geoff",
+                "Geoffrey",
+                "Micheal",
+                "Jimothy",
+                "Jensen",
+                "Caleb",
+                "Cooper",
+                "Michigan"
             };
         }
 
@@ -174,30 +182,46 @@ namespace MechMod.Content.NPCs
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
 
-            int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
-            if (partyGirl >= 0 && Main.rand.NextBool(4))
+            int witchDoctor = NPC.FindFirstNPC(NPCID.WitchDoctor);
+            Condition golemCondition = Condition.DownedGolem;
+            if (witchDoctor >= 0)
             {
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.PartyGirlDialogue", Main.npc[partyGirl].GivenName));
+                if (golemCondition.IsMet())
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.WitchDoctorAfterGolem", Main.npc[witchDoctor].GivenName));
+                if (NPC.GivenName == "Ryan" && Main.rand.NextBool(30))
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.TheFunny", Main.npc[witchDoctor].GivenName));
             }
+            Condition mechCondition = Condition.DownedMechBossAny;
+            if (mechCondition.IsMet())
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.AfterMechBoss"));
+            else
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.BeforeMechBoss"));
+            if (Main.raining)
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Raining"));
+            if (Main.IsItStorming)
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Storming"));
+            if (Main.bloodMoon)
+            {
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.BloodMoon1"));
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.BloodMoon2"));
+            }
+            if (BirthdayParty.PartyIsUp)
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Party"));
+            if (Main.LocalPlayer.ZoneGraveyard)
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Graveyard"));
+            Condition hardmodeCondition = Condition.Hardmode;
+            if (hardmodeCondition.IsMet())
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Hardmode"));
+            else
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.PreHardmode"));
+            numberOfTimesTalkedTo++;
+            if (numberOfTimesTalkedTo >= 10)
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.TalkALot"));
             chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.StandardDialogue1"));
             chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.StandardDialogue2"));
             chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.StandardDialogue3"));
-            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.StandardDialogue4"));
-            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.CommonDialogue"), 5.0);
-            chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.RareDialogue"), 0.1);
-
-            numberOfTimesTalkedTo++;
-            if (numberOfTimesTalkedTo >= 10)
-            {
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.TalkALot"));
-            }
 
             string chosenChat = chat;
-
-            //if (chosenChat == Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.StandardDialogue4"))
-            //{
-            //    Main.npcChatCornerItem = ItemID.HiveBackpack;
-            //}
 
             return chosenChat;
         }

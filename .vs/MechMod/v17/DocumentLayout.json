@@ -208,7 +208,7 @@
               "RelativeDocumentMoniker": "Content\\NPCs\\Mechanist.cs",
               "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\NPCs\\Mechanist.cs",
               "RelativeToolTip": "Content\\NPCs\\Mechanist.cs",
-              "ViewState": "AgIAAEUAAAAAAAAAAAAQwE8AAAAgAAAAAAAAAA==",
+              "ViewState": "AgIAAFoBAAAAAAAAAAAcwL4AAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-17T14:58:11.389Z",
               "IsPinned": true,
@@ -222,23 +222,10 @@
               "RelativeDocumentMoniker": "Localization\\en-US_Mods.MechMod.hjson",
               "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Localization\\en-US_Mods.MechMod.hjson",
               "RelativeToolTip": "Localization\\en-US_Mods.MechMod.hjson",
-              "ViewState": "AgIAAI8BAAAAAAAAAAAAAJkBAABWAAAAAAAAAA==",
+              "ViewState": "AgIAAJsBAAAAAAAAAAAAALIBAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2025-07-17T16:26:12.925Z",
               "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ModularMech.cs",
-              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Mounts\\ModularMech.cs",
-              "RelativeDocumentMoniker": "Content\\Mounts\\ModularMech.cs",
-              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Mounts\\ModularMech.cs",
-              "RelativeToolTip": "Content\\Mounts\\ModularMech.cs",
-              "ViewState": "AgIAAKYAAAAAAAAAAAAqwLcAAABCAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-18T15:25:06.693Z",
               "EditorCaption": ""
             },
             {
@@ -255,6 +242,18 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ModularMech.cs",
+              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Mounts\\ModularMech.cs",
+              "RelativeDocumentMoniker": "Content\\Mounts\\ModularMech.cs",
+              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Mounts\\ModularMech.cs",
+              "RelativeToolTip": "Content\\Mounts\\ModularMech.cs",
+              "ViewState": "AgIAAKYAAAAAAAAAAAAqwLcAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T15:25:06.693Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 3,
               "Title": "MechModPlayer.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\Players\\MechModPlayer.cs",
@@ -263,8 +262,7 @@
               "RelativeToolTip": "Common\\Players\\MechModPlayer.cs",
               "ViewState": "AgIAAFcBAAAAAAAAAAAAAGUBAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-15T13:31:36.19Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-15T13:31:36.19Z"
             },
             {
               "$type": "Document",
@@ -276,8 +274,7 @@
               "RelativeToolTip": "Common\\UI\\PartSlot.cs",
               "ViewState": "AgIAAEsAAAAAAAAAAAAkwG0AAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T15:12:56.611Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-04T15:12:56.611Z"
             },
             {
               "$type": "Document",
@@ -289,8 +286,7 @@
               "RelativeToolTip": "Common\\UI\\MechBenchUI.cs",
               "ViewState": "AgIAAAEBAAAAAAAAAAAjwA4BAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-22T14:41:30.869Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-22T14:41:30.869Z"
             },
             {
               "$type": "Document",
@@ -302,8 +298,7 @@
               "RelativeToolTip": "Content\\Items\\MechWeapons\\ProjSword.cs",
               "ViewState": "AgIAADEAAAAAAAAAAAAewEEAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T13:48:20.429Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-15T13:48:20.429Z"
             },
             {
               "$type": "Document",
@@ -315,8 +310,7 @@
               "RelativeToolTip": "Content\\Items\\MechWeapons\\LaserGun.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACwAAABZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T14:42:36.592Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-14T14:42:36.592Z"
             },
             {
               "$type": "Document",
@@ -328,8 +322,7 @@
               "RelativeToolTip": "Content\\Items\\MechWeapons\\BaseSword.cs",
               "ViewState": "AgIAABkAAAAAAAAAAAAqwCwAAABTAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-01T12:21:34.851Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-01T12:21:34.851Z"
             },
             {
               "$type": "Document",
@@ -341,8 +334,7 @@
               "RelativeToolTip": "Content\\Items\\MechWeapons\\BaseLauncher.cs",
               "ViewState": "AgIAABYAAAAAAAAAAAAuwC8AAABcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T14:07:27.787Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-15T14:07:27.787Z"
             },
             {
               "$type": "Document",
@@ -354,8 +346,7 @@
               "RelativeToolTip": "Content\\Items\\MechWeapons\\BaseGun.cs",
               "ViewState": "AgIAABYAAAAAAAAAAAAYwC8AAABQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T14:40:44.771Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-04T14:40:44.771Z"
             },
             {
               "$type": "Document",

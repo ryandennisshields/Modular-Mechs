@@ -420,14 +420,22 @@ NPCs: {
 		}
 
 		Dialogue: {
-			PartyGirlDialogue: Can you please tell {0} to stop decorating my house with colors?
-			StandardDialogue1: Sometimes I feel like I'm different from everyone else here.
-			StandardDialogue2: What's your favorite color? My favorite colors are white and black.
-			StandardDialogue3: What? I don't have any arms or legs? Oh, don't be ridiculous!
-			StandardDialogue4: Hey, if you find a [i:HiveBackpack], I can upgrade it for you.
-			CommonDialogue: This message has a weight of 5, meaning it appears 5 times more often.
-			RareDialogue: This message has a weight of 0.1, meaning it appears 10 times as rare.
-			TalkALot: I'm getting tired of talking to you. I have to go.
+			WitchDoctorAfterGolem: It feels kinda hypocritical that {0} is so against my babies, yet his people made the Golem... We could get along so well!
+			TheFunny: I wish {0} was a woman... Uh, I mean, you need anything?
+			AfterMechBoss: OK... I was kinda joking about the whole "giant mechanical monster" thing, but at least I got some new ideas!
+			BeforeMechBoss: Imagine how crazy it would be if someone made a giant mechanical monster and used it against my babies! But no one shares my genius, right?
+			Raining: You know, it used to rain a lot where I lived. So relaxing...
+			Storming: Be careful with my babies in this weather, they don't like it!
+			BloodMoon1: This Blood Moon is perfect for testing all kinds of weaponry! Rip and tear!
+			BloodMoon2: Leave none of them alive! Crush them all!... OK, I'm getting a bit carried away.
+			Party: As much as I would prefer to be working on my babies, this is a nice chance to relax.
+			Graveyard: This is a chilly feeling... Are my babies not good enough to protect you?
+			Hardmode: Thanks to the world's strange changes and new resources, I was finally able to improve the energy of my babies!
+			PreHardmode: A large part of me coming to this world was to find a way to improve the energy source of my babies, but I haven't quite found anything yet...
+			TalkALot: Could I get back to work?
+			StandardDialogue1: I would pilot my own baby with you, but mine is too powerful for this world...
+			StandardDialogue2: I know, I know, my designs aren't exactly the most comfortable or ergonomic, but this stuff is expensive!
+			StandardDialogue3: You're lucky this world is full of resources, I would be charging way more otherwise.
 			Tip1: Although many effects don't work inside the Mech, you still get the benefits of certain accessories, and any stat bonuses from accessories or armor. Keep in mind what you equip!
 			Tip2: You are immune to knockback, specific debuffs and dismounting debuffs inside the Mech.
 			Tip3: Leaving the Mech while it's active or having it run out of duration will leave you with Mech Fatigue, which reduces your damage, maximum life, and disables your Mech for a duration.
