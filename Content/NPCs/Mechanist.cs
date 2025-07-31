@@ -44,8 +44,8 @@ namespace MechMod.Content.NPCs
             NPCID.Sets.AttackFrameCount[Type] = 4;
             NPCID.Sets.DangerDetectRange[Type] = 700;
             NPCID.Sets.AttackType[Type] = 1;
-            NPCID.Sets.AttackTime[Type] = 90;
-            NPCID.Sets.AttackAverageChance[Type] = 30;
+            NPCID.Sets.AttackTime[Type] = 8;
+            NPCID.Sets.AttackAverageChance[Type] = 1;
             NPCID.Sets.HatOffsetY[Type] = 4;
             NPCID.Sets.ShimmerTownTransform[NPC.type] = true;
             NPCID.Sets.ShimmerTownTransform[Type] = true;
@@ -324,16 +324,17 @@ namespace MechMod.Content.NPCs
 
         public override bool CanGoToStatue(bool toKingStatue) => true;
 
+
         public override void TownNPCAttackStrength(ref int damage, ref float knockback)
         {
-            damage = 20;
-            knockback = 4f;
+            damage = 3;
+            knockback = 0f;
         }
 
         public override void TownNPCAttackCooldown(ref int cooldown, ref int randExtraCooldown)
         {
-            cooldown = 30;
-            randExtraCooldown = 30;
+            cooldown = 1;
+            randExtraCooldown = 1;
         }
 
         public override void TownNPCAttackProj(ref int projType, ref int attackDelay)
@@ -346,6 +347,18 @@ namespace MechMod.Content.NPCs
         {
             multiplier = 12f;
             randomOffset = 2f;
+        }
+
+        public override void TownNPCAttackShoot(ref bool inBetweenShots)
+        {
+            inBetweenShots = true;
+        }
+
+        public override void DrawTownAttackGun(ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)
+        {
+            item = TextureAssets.Item[ItemID.Minishark].Value;
+            Main.GetItemDrawFrame(ItemID.Minishark, out item, out itemFrame);
+            horizontalHoldoutOffset = (int)Main.DrawPlayerItemPos(1f, ItemID.Minishark).X - 20;
         }
 
         public override void LoadData(TagCompound tag)

@@ -68,6 +68,7 @@ namespace MechMod.Content.Items.MechWeapons
             Projectile.ignoreWater = true;
             Projectile.ownerHitCheck = true;
             Projectile.usesLocalNPCImmunity = true;
+            Projectile.DamageType = DamageClass.Melee; // Inherit bonuses like magma stone effect but not damage class damage scaling
         }
 
         public override void AI()
