@@ -1,29 +1,23 @@
 ﻿using MechMod.Common.Players;
-using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stubble.Core.Classes;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Terraria.UI;
-using static System.Net.Mime.MediaTypeNames;
+using MechMod.Content.Items.MechMisc;
 
 namespace MechMod.Common.UI
 {
+    /// <summary>
+    /// Contains the information for the Mech Bench UI, which allows players to equip Parts to their mech and upgrade it.
+    /// <para/> Used with <see cref="MechBenchUISystem"/> to manage the UI state and existence, <see cref="PartSlot"/> to create the slots for Parts, and the <see cref="MechBench"/> item to access the UI in the game.
+    /// </summary>
+
     public class MechBenchUI : UIState
     {
-
         private UIPanel mainPanel;
         private PartSlot[] slots;
         private UIText[] slotNames;
@@ -32,7 +26,7 @@ namespace MechMod.Common.UI
         private UIText upgradeButton;
         private UIText playerLevel;
 
-        public bool playerLoaded;
+        #region UI Intialisation
 
         public override void OnInitialize()
         {
@@ -76,12 +70,13 @@ namespace MechMod.Common.UI
             mainPanel.OnLeftMouseUp += DragEnd;
             Append(mainPanel);
 
-            UIPanel button = new UIPanel();
-            button.Width.Set(25, 0);
-            button.Height.Set(25, 0);
-            button.HAlign = 1f;
-            button.OnLeftClick += OnButtonClick;
-            mainPanel.Append(button);
+            // Exit/Close Button
+            UIPanel closeButton = new UIPanel();
+            closeButton.Width.Set(25, 0);
+            closeButton.Height.Set(25, 0);
+            closeButton.HAlign = 1f;
+            closeButton.OnLeftClick += OnCloseClick;
+            mainPanel.Append(closeButton);
 
             // Head, Body, Arms and Legs Slots
             for (int i = 0; i < 4; i++)
@@ -171,8 +166,7 @@ namespace MechMod.Common.UI
                 slots[i].OnLeftClick += OnPartSlotInteract; 
             }
 
-            playerLoaded = false;
-
+            // Upgrade Section
             UIText upgradeText = new UIText("Upgrade");
             upgradeText.Width.Set(50, 0);
             upgradeText.Height.Set(25, 0);
@@ -202,7 +196,7 @@ namespace MechMod.Common.UI
             playerLevel.Top.Set(160, 0);
             mainPanel.Append(playerLevel);
 
-            //Dev Button
+            // Debugging Reset Button
             //UIPanel resetButton = new UIPanel();
             //resetButton.Width.Set(25, 0);
             //resetButton.Height.Set(25, 0);
@@ -212,14 +206,18 @@ namespace MechMod.Common.UI
             //mainPanel.Append(resetButton);
         }
 
+        #endregion
+
+        // Function for when the player opens the Mech Bench UI through the Mech Bench
         public void OnPlayerUse()
         {
             var player = Main.LocalPlayer;
             var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
 
-            player.mount.Dismount(player);
+            player.mount.Dismount(player); // Dismount to not cause any problems with editing the mech while it's active
+            modPlayer.disableMounts = true; // Disable mounts
 
-            modPlayer.disableMounts = true;
+            // Fill the Part slots with the player's equipped Parts
             for (int i = 0; i < slots.Length; i++)
             {
                 if (!modPlayer.equippedParts[i].IsAir)
@@ -235,23 +233,11 @@ namespace MechMod.Common.UI
         {
             base.Update(gameTime);
 
-            //var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
-
-            //for (int i = 0; i < slots.Length; i++)
-            //{
-            //    if (slots[i].item.IsAir)
-            //    {
-            //        modPlayer.equippedParts[i].TurnToAir();
-            //    }
-            //    else
-            //    {
-            //        modPlayer.equippedParts[i] = slots[i].item;
-            //    }
-            //}
-
+            // Let the game know when the player is mousing over the UI
             if (ContainsPoint(Main.MouseScreen))
                 Main.LocalPlayer.mouseInterface = true;
 
+            // If dragging the UI, update its position with the mouse
             if (dragging)
             {
                 mainPanel.Left.Set(Main.mouseX - offset.X, 0f);
@@ -259,22 +245,27 @@ namespace MechMod.Common.UI
                 Recalculate();
             }
 
+            // Change upgrade button color based on mouse hover to indicate interactivity
             if (upgradeButton.IsMouseHovering)
                 upgradeButton.TextColor = Color.Red;
             else
                 upgradeButton.TextColor = Color.Yellow;
         }
 
-        private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
+        // Function for when the player clicks the exit/close button
+        private void OnCloseClick(UIMouseEvent evt, UIElement listeningElement)
         {
+            // Hide the UI and play Menu Close sound
             ModContent.GetInstance<MechBenchUISystem>().HideMyUI();
             SoundEngine.PlaySound(SoundID.MenuClose);
         }
 
+        // Function for when the player interacts with a Part slot
         private void OnPartSlotInteract(UIMouseEvent evt, UIElement listeningElement)
         {
             var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
 
+            // Verify if the slot is empty or if the slot has a Part
             for (int i = 0; i < slots.Length; i++)
             {
                 if (slots[i].item.IsAir)
@@ -288,49 +279,46 @@ namespace MechMod.Common.UI
             }
         }
 
-        private Vector2 offset;
+        #region Dragging UI
+
+        private Vector2 offset; // Offset to keep track of where the mouse is relative to the panel
         private bool dragging;
 
         private void DragStart(UIMouseEvent evt, UIElement listeningElement)
         {
-            offset = new Vector2(evt.MousePosition.X - mainPanel.Left.Pixels, evt.MousePosition.Y - mainPanel.Top.Pixels);
+            // When the mouse button is pressed, calculate the offset based on the mouse position relative to the panel
+            offset = new Vector2(evt.MousePosition.X - mainPanel.Left.Pixels, evt.MousePosition.Y - mainPanel.Top.Pixels); // Set the offset based on the mouse position relative to the panel
             dragging = true;
         }
 
         private void DragEnd(UIMouseEvent evt, UIElement listeningElement)
         {
+            // When the mouse button is released, update the panel's position based on the final mouse position
             Vector2 endMousePosition = evt.MousePosition;
             dragging = false;
 
             mainPanel.Left.Set(endMousePosition.X - offset.X, 0f);
             mainPanel.Top.Set(endMousePosition.Y - offset.Y, 0f);
 
-            Recalculate();
+            Recalculate(); // Recalculate the panel's dimensions and position after dragging
         }
+
+        #endregion
 
         public override void OnDeactivate()
         {
-            base.OnDeactivate();
-
+            // After closing, force dismount the player again and allow mounts again
             var player = Main.LocalPlayer;
             var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
 
             player.mount.Dismount(player);
 
             modPlayer.disableMounts = false;
-            //for (int i = 0; i < slots.Length; i++)
-            //{
-            //    if (slots[i].item.IsAir)
-            //    {
-            //        modPlayer.equippedParts[i].TurnToAir();
-            //    }
-            //    else
-            //    {
-            //        modPlayer.equippedParts[i] = slots[i].item;
-            //    }
-            //}
         }
 
+        #region Uprade System
+
+        // Materials used for each upgrade level, including multiple options for materials that have variants
         private int[][] upgradeRequiredMaterial =
         [
             [ItemID.DemoniteBar, ItemID.CrimtaneBar],
@@ -340,8 +328,9 @@ namespace MechMod.Common.UI
             [ItemID.ChlorophyteBar],
             [ItemID.LunarBar]
         ];
-        private int upgradeCost = 20;
+        private int upgradeCost = 20; // Cost of each resource required for each upgrade
 
+        // Damage increases for each upgrade level (as a percentage increase, for example 0.70f means 70% increase)
         private float[] upgradeDamageValues =
         [
             0.70f,
@@ -352,6 +341,7 @@ namespace MechMod.Common.UI
             18.80f
         ];
 
+        // Function for when the player clicks the upgrade button
         private void OnUpgradeButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
             var player = Main.LocalPlayer;
@@ -360,39 +350,39 @@ namespace MechMod.Common.UI
             // Check if the player has enough resources
             if (HasUpgradeMaterial(player))
             {
-                // Before increasing Upgrade Level
+                // Before increasing upgrade level, remove associated resources from the player
                 DeductResources(player);
 
+                // Increase the upgrade damage bonus, notify the player of the increase, increase the upgrade level, and play a sound
                 modPlayer.upgradeDamageBonus += upgradeDamageValues[modPlayer.upgradeLevel]; 
                 Main.NewText($"Upgrade Successful! Damage increased by {Math.Round(upgradeDamageValues[modPlayer.upgradeLevel] * 100)}%");
-
-                SoundEngine.PlaySound(SoundID.Research);
-
                 modPlayer.upgradeLevel++;
+                SoundEngine.PlaySound(SoundID.Research);
                 
-                // After increasing Upgrade Level
+                // Update requirements for next upgrade
                 UpdateUpgradeRequirements();
             }
-            else if (modPlayer.upgradeLevel >= upgradeRequiredMaterial.Length)
+            else if (modPlayer.upgradeLevel >= upgradeRequiredMaterial.Length) // If max level, tell the player
             {
                 Main.NewText("Max Level");
             }
-            else
+            else // If not enough resources, notify the player
             {
                 Main.NewText($"Not enough resources for upgrade.");
             }
             
         }
 
+        // Function to check if the player has enough resources to upgrade their level
         private bool HasUpgradeMaterial(Player player)
         {
             var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
 
-            if (modPlayer.upgradeLevel < upgradeRequiredMaterial.Length)
+            if (modPlayer.upgradeLevel < upgradeRequiredMaterial.Length) // If the player's upgrade level is less than the maximum amount of upgrades available
             {
-                foreach (int materialID in upgradeRequiredMaterial[modPlayer.upgradeLevel])
+                foreach (int materialID in upgradeRequiredMaterial[modPlayer.upgradeLevel]) // Grab the materials required for the upgrade level
                 {
-                    if (player.CountItem(materialID) >= upgradeCost)
+                    if (player.CountItem(materialID) >= upgradeCost) // If the player has enough of the required material,
                     {
                         return true;
                     }
@@ -401,6 +391,7 @@ namespace MechMod.Common.UI
             return false;
         }
 
+        // Function to deduct the required resources from the player for the upgrade
         private void DeductResources(Player player)
         {
             var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
@@ -419,6 +410,7 @@ namespace MechMod.Common.UI
             }
         }
 
+        // Function to update the upgrade requirements text based on the player's current upgrade level
         private void UpdateUpgradeRequirements()
         {
             var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
@@ -439,21 +431,24 @@ namespace MechMod.Common.UI
                     // Add material name to the requirement text
                     requirementText += Lang.GetItemNameValue(materialID);
 
-                    // If there is multiple upgrade materials for one upgrade, add "or" between them
-                    if (i < currentMaterials.Length - 1)
+                    if (i < currentMaterials.Length - 1) // If there is multiple upgrade materials for one upgrade,
                     {
-                        requirementText += "\nor ";
+                        requirementText += "\nor "; // Add "or" between them
                     }
                 }
 
-                upgradeCostText.SetText(requirementText);
+                upgradeCostText.SetText(requirementText); // Display the upgrade requirements
             }
-            else
+            else // If the player has went to the maximum upgrade level,
             {
-                upgradeCostText.SetText("Max Level");
+                upgradeCostText.SetText("Max Level"); // Display max level text
             }
-            playerLevel.SetText($"Level {modPlayer.upgradeLevel + 1}");
+            playerLevel.SetText($"Level {modPlayer.upgradeLevel + 1}"); // Display the player's current upgrade level
         }
+
+        #endregion
+
+        #region Debugging Reset Button
 
         //private void OnResetButtonClick(UIMouseEvent evt, UIElement listeningElement)
         //{
@@ -464,8 +459,10 @@ namespace MechMod.Common.UI
 
         //    if (slots[MechMod.weaponIndex].item.ModItem is IMechWeapon weapon)
         //    {
-                
+
         //    }
         //}
+
+        #endregion
     }
 }

@@ -70,10 +70,10 @@ namespace MechMod.Content.NPCs
                 .SetNPCAffection(NPCID.WitchDoctor, AffectionLevel.Hate)
                 ;
 
-            NPCProfile = new Profiles.StackedNPCProfile(
-                new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
-                new Profiles.DefaultNPCProfile(Texture + "_Shimmer", shimmerHeadIndex, Texture + "_Shimmer_Party")
-            );
+            //NPCProfile = new Profiles.StackedNPCProfile(
+            //    new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
+            //    new Profiles.DefaultNPCProfile(Texture + "_Shimmer", shimmerHeadIndex, Texture + "_Shimmer_Party")
+            //);
         }
 
         public override void SetDefaults()

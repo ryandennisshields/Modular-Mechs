@@ -55,7 +55,6 @@ namespace MechMod.Content.Mounts
         {
             // Misc
             MountData.fallDamage = 0;
-            MountData.heightBoost = 40; // Height between the mount and the ground (player's hitbox position)
             MountData.constantJump = true;
             MountData.blockExtraJumps = true;
             //MountData.buff = ModContent.BuffType<MechBuff>();
@@ -63,24 +62,26 @@ namespace MechMod.Content.Mounts
             MountData.spawnDust = DustID.Smoke;
             // Frame data and player offsets
             MountData.totalFrames = 4; // Although the actual frame count is different, animations breaks if this value is any higher or lower
-            MountData.playerYOffsets = Enumerable.Repeat(20, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code
+            MountData.heightBoost = 41; // Height between the mount and the ground (player's hitbox position)
+            MountData.playerYOffsets = Enumerable.Repeat(41, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code
+            MountData.playerHeadOffset = 43; // Changes player's head position (mainly to show the correct player head position on map)
             // Standing
             // All set to 0 as there is no standing animation
             MountData.standingFrameCount = 0;
             MountData.standingFrameDelay = 0;
             MountData.standingFrameStart = 0;
             // Running
-            MountData.runningFrameCount = 4;
-            MountData.runningFrameDelay = 12;
-            MountData.runningFrameStart = 0;
+            MountData.runningFrameCount = 7;
+            MountData.runningFrameDelay = 25;
+            MountData.runningFrameStart = 1;
             // Flying
             MountData.flyingFrameCount = 1;
-            MountData.flyingFrameDelay = 12;
-            MountData.flyingFrameStart = 4;
+            MountData.flyingFrameDelay = 0;
+            MountData.flyingFrameStart = 8;
             // In-air
             MountData.inAirFrameCount = 1;
-            MountData.inAirFrameDelay = 12;
-            MountData.inAirFrameStart = 5;
+            MountData.inAirFrameDelay = 0;
+            MountData.inAirFrameStart = 9;
             // Idle
             // All set to 0 as there is no idle animation
             MountData.idleFrameCount = 0;
@@ -256,7 +257,7 @@ namespace MechMod.Content.Mounts
                 {
                     modPlayer.armFrame = -1; // Reset the arm frame to default
                     modPlayer.weaponScale = 0f; // Hide the weapon when not in use
-                    modPlayer.lastUseDirection = 0; // Reset last use direction
+                    modPlayer.useDirection = 0; // Reset last use direction
                 }
             }
 
@@ -269,7 +270,7 @@ namespace MechMod.Content.Mounts
             //    packet.Write(modPlayer.armFrame);
             //    packet.Write(modPlayer.animationTimer);
             //    packet.Write(modPlayer.animationProgress);
-            //    packet.Write(modPlayer.lastUseDirection);
+            //    packet.Write(modPlayer.useDirection);
             //    packet.Send();
             //}
 
@@ -437,9 +438,15 @@ namespace MechMod.Content.Mounts
                 if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
                     modPlayer.bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/BaseBodyVisual").Value;
                 if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
-                    modPlayer.armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsVisual").Value;
+                {
+                    modPlayer.armsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsRVisual").Value;
+                    modPlayer.armsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsLVisual").Value;
+                }
                 if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
-                    modPlayer.legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsVisual").Value;
+                {
+                    modPlayer.legsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsRVisual").Value;
+                    modPlayer.legsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsLVisual").Value;
+                }
 
                 if (!modPlayer.equippedParts[MechMod.weaponIndex].IsAir)
                     modPlayer.weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{modPlayer.equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}").Value;
@@ -449,32 +456,41 @@ namespace MechMod.Content.Mounts
                 Rectangle setArmFrame = frame; // Get the default frame logic as a new rectangle
                 if (modPlayer.armFrame >= 0) // If the arm frame is manually set,
                 {
-                    int frameHeight = modPlayer.armsTexture.Height / modPlayer.armAnimationFrames; // Calculate the height of each frame based on the total height of the texture and the number of frames
-                    setArmFrame = new Rectangle(0, modPlayer.armFrame * frameHeight, modPlayer.armsTexture.Width, frameHeight); // Change the set arm frame to a new rectangle based on the arm frame and the height of each frame
+                    int frameHeight = modPlayer.armsLTexture.Height / modPlayer.armAnimationFrames; // Calculate the height of each frame based on the total height of the texture and the number of frames
+                    setArmFrame = new Rectangle(0, modPlayer.armFrame * frameHeight, modPlayer.armsLTexture.Width, frameHeight); // Change the set arm frame to a new rectangle based on the arm frame and the height of each frame
                 }
 
-                // Draw left arm first
-                playerDrawData.Add(new DrawData(modPlayer.armsTexture, drawPosition + new Vector2(22 * drawPlayer.direction, -50), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                int visualDirection = modPlayer.useDirection != 0 ? modPlayer.useDirection : drawPlayer.direction; // Use the use direction if it is not 0, otherwise use the player's direction
+                spriteEffects = visualDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
-                // Draw legs
-                playerDrawData.Add(new DrawData(modPlayer.legsTexture, drawPosition + new Vector2(drawPlayer.direction, 20), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                // Positions should be universal for each Mech Part
+                // If a Part is misaligned, the position of the sprite on it's canvas should be modified to fit (Base Parts are the "default" position, right in the middle of their canvas)
+
+                // Draw right arm first
+                playerDrawData.Add(new DrawData(modPlayer.armsRTexture, drawPosition + new Vector2(23 * visualDirection, -30), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+
+                // Draw right leg
+                playerDrawData.Add(new DrawData(modPlayer.legsRTexture, drawPosition + new Vector2(18 * visualDirection, 18), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw body
-                playerDrawData.Add(new DrawData(modPlayer.bodyTexture, drawPosition + new Vector2(drawPlayer.direction, -27), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.bodyTexture, drawPosition + new Vector2(0, -13), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+
+                // Draw left leg
+                playerDrawData.Add(new DrawData(modPlayer.legsLTexture, drawPosition + new Vector2(-8 * visualDirection, 18), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw head
-                playerDrawData.Add(new DrawData(modPlayer.headTexture, drawPosition + new Vector2(drawPlayer.direction, -66), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.headTexture, drawPosition + new Vector2(4 * visualDirection, -40), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw weapon
                 if (modPlayer.weaponTexture != null)
                     playerDrawData.Add(new DrawData(modPlayer.weaponTexture, drawPosition + modPlayer.weaponPosition, null, drawColor, modPlayer.weaponRotation, modPlayer.weaponOrigin, modPlayer.weaponScale, modPlayer.weaponSpriteEffects));
 
-                // Draw right arm last
+                // Draw left arm last
 
                 // WEIRD BAND AID:
                 // For some reason, very specifically when the arm frame is manually set (like in weapon usage) *and* the player is facing left,
                 // the position of the arm is off by -10 pixels on the X axis, so the position needs to be adjusted for that specific case
-                playerDrawData.Add(new DrawData(modPlayer.armsTexture, drawPosition + new Vector2(modPlayer.armFrame >= 0 ? drawPlayer.direction == -1 ? 32 : -22 : -22 * drawPlayer.direction, -50), setArmFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.armsLTexture, drawPosition + new Vector2(modPlayer.armFrame >= 0 ? visualDirection == -1 ? 33 : -23 : -23 * visualDirection, -30), setArmFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
             }
 
             return false;
@@ -492,14 +508,15 @@ namespace MechMod.Content.Mounts
             {
                 if (player.whoAmI == Main.myPlayer && Main.mouseLeft && Weapons.timer >= Weapons.attackRate) // Attack when ready
                 {
+                    if (Main.MouseWorld.X > player.MountedCenter.X)
+                        modPlayer.useDirection = 1;
+                    else
+                        modPlayer.useDirection = -1;
+                    if (!player.controlLeft || !player.controlRight)
+                        player.direction = modPlayer.useDirection; // Set the player's direction to the last use direction if not controlling horizontal movement
                     weapon.UseAbility(player, mousePosition, toggleOn);
                     if (Weapons.canUse)
                     {
-                        if (Main.MouseWorld.X > player.MountedCenter.X)
-                            player.direction = 1;
-                        else
-                            player.direction = -1;
-                        modPlayer.lastUseDirection = player.direction;
                         Weapons.timer = 0;
                     }
                 }
@@ -545,19 +562,19 @@ namespace MechMod.Content.Mounts
                         // Check if the mouse is at different angles relative to the player (so if mouse is pointing up, the arm will point up, if mouse is pointing down, the arm will point down, etc.)
                         if (pointAngleDeg >= -135 && pointAngleDeg <= -45)
                         {
-                            modPlayer.armFrame = 9; // Pointing angled up
+                            modPlayer.armFrame = 13; // Pointing angled up
                         }
                         else if (pointAngleDeg >= -45 && pointAngleDeg <= 45)
                         {
-                            modPlayer.armFrame = 8; // Pointing horizontal right
+                            modPlayer.armFrame = 12; // Pointing horizontal right
                         }
                         else if (pointAngleDeg <= -135 || pointAngleDeg >= 135)
                         {
-                            modPlayer.armFrame = 8; // Pointing horizontal left
+                            modPlayer.armFrame = 12; // Pointing horizontal left
                         }
                         else if (pointAngleDeg <= 135 && pointAngleDeg >= 45)
                         {
-                            modPlayer.armFrame = 7; // Pointing angled down
+                            modPlayer.armFrame = 11; // Pointing angled down
                         }
                     }
                     break;
@@ -569,26 +586,26 @@ namespace MechMod.Content.Mounts
                     weaponPositionY = -45;
 
                     weaponOriginOffsetX = -70;
-                    weaponOriginOffsetY = 45 * modPlayer.lastUseDirection;
+                    weaponOriginOffsetY = 45 * modPlayer.useDirection;
 
                     if (player.whoAmI == Main.myPlayer) // Progress calculation should only be done on the client player
                     {
                         float progress = 1f - (modPlayer.animationProgress / Weapons.attackRate); // Calculate the progress of the animation based on the animation progress (equal to projectile's life time) and attack rate
 
-                        modPlayer.armFrame = (int)MathHelper.Lerp(11, 7, progress); // Lerp the arm through the up, angled up, horizontal and angled down frames respectively (11 is used as starting value to make the up frame last longer)
+                        modPlayer.armFrame = (int)MathHelper.Lerp(15, 11, progress); // Lerp the arm through the up, angled up, horizontal and angled down frames respectively (11 is used as starting value to make the up frame last longer)
 
                         // Calculate the swing's starting and ending angle and lerp it between the angle
-                        float startAngle = -2f * modPlayer.lastUseDirection;
-                        float endAngle = 1.5f * modPlayer.lastUseDirection;
+                        float startAngle = -2f * modPlayer.useDirection;
+                        float endAngle = 1.5f * modPlayer.useDirection;
                         float swingAngle = MathHelper.Lerp(startAngle, endAngle, progress);
 
-                        modPlayer.weaponRotation = swingAngle + (modPlayer.lastUseDirection == 1 ? 0f : MathHelper.Pi); // Set the weapon rotation to the swing angle (that also changes depending on last use direction)
+                        modPlayer.weaponRotation = swingAngle + (modPlayer.useDirection == -1 ? MathHelper.Pi : 0f); // Set the weapon rotation to the swing angle (that also changes depending on last use direction)
                     }
                     break;
             }
-            modPlayer.weaponPosition = new Vector2(weaponPositionX * modPlayer.lastUseDirection, weaponPositionY); // Setting a new position lets a weapon be futher out or further up from the player
+            modPlayer.weaponPosition = new Vector2(weaponPositionX * modPlayer.useDirection, weaponPositionY); // Setting a new position lets a weapon be futher out or further up from the player
             modPlayer.weaponOrigin = new Vector2(modPlayer.weaponTexture.Width / 2 + weaponOriginOffsetX, modPlayer.weaponTexture.Height / 2 + weaponOriginOffsetY); // Setting a new origin gives the weapon a different rotation point
-            modPlayer.weaponSpriteEffects = modPlayer.lastUseDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically; // Flip the weapon sprite based on the player's direction
+            modPlayer.weaponSpriteEffects = modPlayer.useDirection == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None; // Flip the weapon sprite based on the player's direction
         }
 
         public void ApplyPartStats(Player player, Item equippedHead, Item equippedBody, Item equippedArms, Item equippedLegs, Item equippedBooster)
@@ -617,7 +634,7 @@ namespace MechMod.Content.Mounts
             }
             else
             {
-                // Unique as a player can go without a Booster, but the other parts are required
+                // Unique as a player can go without a Booster, but the other Parts are required
 
                 MountData.flightTimeMax = 0;
                 MountData.usesHover = false;

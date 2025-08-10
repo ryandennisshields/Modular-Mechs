@@ -133,12 +133,12 @@ namespace MechMod
                     //    int armFrame = reader.ReadInt32();
                     //    float animationTimer = reader.ReadSingle();
                     //    int animationProgress = reader.ReadInt32();
-                    //    int lastUseDirection = reader.ReadInt32();
+                    //    int useDirection = reader.ReadInt32();
 
                     //    modPlayer.armFrame = armFrame;
                     //    modPlayer.animationTimer = animationTimer;
                     //    modPlayer.animationProgress = animationProgress;
-                    //    modPlayer.lastUseDirection = lastUseDirection;
+                    //    modPlayer.useDirection = useDirection;
 
                     //    if (Main.netMode == NetmodeID.Server)
                     //    {
@@ -148,7 +148,7 @@ namespace MechMod
                     //        packet.Write(armFrame);
                     //        packet.Write(animationTimer);
                     //        packet.Write(animationProgress);
-                    //        packet.Write(lastUseDirection);
+                    //        packet.Write(useDirection);
                     //        packet.Send(-1, playerNumber);
                     //    }
                     //    break;
@@ -163,7 +163,7 @@ namespace MechMod
 
             public override string Usage => "/equipPart <itemName>";
 
-            public override string Description => "Equips the specified part to the mech.";
+            public override string Description => "Equips the specified Part to the mech.";
 
             public override void Action(CommandCaller caller, string input, string[] args)
             {
@@ -231,7 +231,7 @@ namespace MechMod
 
             public override string Usage => "/unequipPart <partslotName>";
 
-            public override string Description => "Unequips the part equipped to the specified slot of the mech.";
+            public override string Description => "Unequips the Part equipped to the specified slot of the mech.";
 
             public override void Action(CommandCaller caller, string input, string[] args)
             {

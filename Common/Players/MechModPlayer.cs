@@ -1,30 +1,24 @@
-﻿using MechMod.Common.UI;
-using MechMod.Content.Buffs;
+﻿using MechMod.Content.Buffs;
 using MechMod.Content.Items.MechMisc;
 using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json.Linq;
-using Steamworks;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Chat;
 using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.Utilities.Terraria.Utilities;
 
 namespace MechMod.Common.Players
 {
+    /// <summary>
+    /// Stores player-related data and specific player-related logic.
+    /// <para/> Things like equipped Parts, upgrades, and visual information are stored here to be accessible through many Parts of the code but to also be synced between clients when the mod is used in multiplayer.
+    /// <para/> It also contains logic for things like disabling mounts under certain conditions, saving the player when they die in the mech, and disabling certain player effects and buffs/debuffs when the mech is active.
+    /// </summary>
+
     public class MechModPlayer : ModPlayer
     {
         public bool disableMounts; // Flag to control whether mounts are disabled
@@ -37,21 +31,20 @@ namespace MechMod.Common.Players
         public float animationTimer; // Timer for mech weapon animation logic (constantly ticks down)
         public int animationProgress; // Progress for mech weapon animation logic (needs to be manually incremented and decremented)
 
-        public int lastUseDirection; // Stores the last weapon use direction
-
-        // Variables beyond here used to be in ModMount for the Mech, but were changed over to ModPlayer so the variables can be unique per player while ModMount's variables are the same for every player
-        // CHECK WHAT STUFF NEEDS TO BE HERE OR IS STATIC AND CAN REMAIN IN ModMount
-
         public Texture2D headTexture;
         public Texture2D bodyTexture;
-        public Texture2D armsTexture;
-        public Texture2D legsTexture;
+        public Texture2D armsRTexture;
+        public Texture2D armsLTexture;
+        public Texture2D legsRTexture;
+        public Texture2D legsLTexture;
         public Texture2D weaponTexture; // Used so the equipped weapon can be drawn while in use
 
-        public bool animateOnce = false;
+        public bool animateOnce = false; // Used to control whether the mech weapon animation should only play once or loop
 
         public int armFrame = -1; // Used for controlling the current arm frame
-        public int armAnimationFrames = 11; // Total number of frames that the arm texture has (to include the many arm rotations/positions for weapon animation)
+        public int armAnimationFrames = 15; // Total number of frames that the arm texture has (to include the many arm rotations/positions for weapon animation)
+
+        public int useDirection; // Stores the last weapon use direction
 
         public Vector2 weaponPosition = Vector2.Zero; // Used for positioning the weapon when it is drawn
         public float weaponRotation = 0f; // Used for rotating the weapon when it is drawn
@@ -62,15 +55,17 @@ namespace MechMod.Common.Players
 
         public override void Initialize()
         {
+            // Fill equipped Parts with empty items while intialising
             equippedParts = new Item[9];
             for (int i = 0; i < equippedParts.Length; i++)
                 equippedParts[i] = new Item();
-            upgradeLevel = 0;
-            upgradeDamageBonus = 0;
         }
+
+        #region Saving and Loading Data
 
         public override void SaveData(TagCompound tag)
         {
+            // Save equipped Parts, upgrade level, damage bonus, and power cell state
             if (!equippedParts[MechMod.headIndex].IsAir)
                 tag["equippedHead"] = ItemIO.Save(equippedParts[MechMod.headIndex]);
             else
@@ -115,6 +110,7 @@ namespace MechMod.Common.Players
 
         public override void LoadData(TagCompound tag)
         {
+            // Load equipped Parts, upgrade level, damage bonus, and power cell state
             if (tag.ContainsKey("equippedHead"))
                 equippedParts[MechMod.headIndex] = ItemIO.Load(tag.GetCompound("equippedHead"));
             else
@@ -160,19 +156,22 @@ namespace MechMod.Common.Players
                 powerCellActive = tag.GetBool("powerCellActive");
         }
 
+        #endregion
+
+        #region Syncing Player Data (Networking)
+
         // Send out changes to server and other clients
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
+            // Sync up the equipped Parts and animation details between clients
             ModPacket packet = Mod.GetPacket();
             packet.Write((byte)MechMod.MessageType.EquippedPartsAndLevelSync);
             packet.Write((byte)Player.whoAmI);
             for (int i = 0; i < equippedParts.Length; i++)
                 packet.Write(equippedParts[i].type);
-
-            // Add animation state
             packet.Write(animationTimer);
             packet.Write(animationProgress);
-            packet.Write(lastUseDirection);
+            packet.Write(useDirection);
             packet.Write(armFrame);
             packet.Write(weaponPosition.X);
             packet.Write(weaponPosition.Y);
@@ -181,7 +180,6 @@ namespace MechMod.Common.Players
             packet.Write(weaponOrigin.Y);
             packet.Write(weaponScale);
             packet.Write((int)weaponSpriteEffects);
-            // Add more as needed (weaponRotation, weaponScale, etc.)
 
             packet.Send(toWho, fromWho);
         }
@@ -191,61 +189,57 @@ namespace MechMod.Common.Players
         {
             for (int i = 0; i < equippedParts.Length; i++)
                 equippedParts[i].SetDefaults(reader.ReadInt32());
-
             headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
             bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
-            armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}Visual").Value;
-            legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{equippedParts[MechMod.legsIndex].ModItem.GetType().Name}Visual").Value;
+            armsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual").Value;
+            armsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual").Value;
+            legsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual").Value;
+            legsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual").Value;
             weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}").Value;
-            // Read animation state
             animationTimer = reader.ReadSingle();
             animationProgress = reader.ReadInt32();
-            lastUseDirection = reader.ReadInt32();
+            useDirection = reader.ReadInt32();
             armFrame = reader.ReadInt32();
-            //weaponPosition = reader.ReadVector2();
             weaponPosition.X = reader.ReadInt32();
             weaponPosition.Y = reader.ReadInt32();
             weaponRotation = reader.ReadSingle();
-            //weaponOrigin = reader.ReadVector2();
             weaponOrigin.X = reader.ReadInt32();
             weaponOrigin.Y = reader.ReadInt32();
             weaponScale = reader.ReadSingle();
             weaponSpriteEffects = (SpriteEffects)reader.ReadInt32();
-            // Read more as needed
         }
 
+        // Check clients against this client to watch for changes
+        // If a change is detected, SendClientChanges will sync the changes
         public override void CopyClientState(ModPlayer targetCopy)
         {
             var clone = (MechModPlayer)targetCopy;
 
-            // Check clients against this client to watch for changes
-            // If a change is detected, SendClientChanges will sync the changes
-
             for (int i = 0; i < equippedParts.Length; i++)
                 clone.equippedParts[i].type = equippedParts[i].type;
-
             clone.headTexture = headTexture;
             clone.bodyTexture = bodyTexture;
-            clone.armsTexture = armsTexture;
-            clone.legsTexture = legsTexture;
+            clone.armsRTexture = armsRTexture;
+            clone.armsLTexture = armsLTexture;
+            clone.legsRTexture = legsRTexture;
+            clone.legsLTexture = legsLTexture;
             clone.weaponTexture = weaponTexture;
-            // Copy animation state
             clone.animationTimer = animationTimer;
             clone.animationProgress = animationProgress;
-            clone.lastUseDirection = lastUseDirection;
+            clone.useDirection = useDirection;
             clone.armFrame = armFrame;
             clone.weaponPosition = weaponPosition;
             clone.weaponRotation = weaponRotation;
             clone.weaponOrigin = weaponOrigin;
             clone.weaponScale = weaponScale;
             clone.weaponSpriteEffects = weaponSpriteEffects;
-            // Copy more as needed
         }
+
+        // If CopyClientState detects a change, this method will be called to sync the changes
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
             var clone = (MechModPlayer)clientPlayer;
             bool needsSync = false;
-
             for (int i = 0; i < equippedParts.Length; i++)
             {
                 if (equippedParts[i].type != clone.equippedParts[i].type)
@@ -254,16 +248,16 @@ namespace MechMod.Common.Players
                     break;
                 }
             }
-
-            // Check animation state
             if (headTexture != clone.headTexture ||
                 bodyTexture != clone.bodyTexture ||
-                armsTexture != clone.armsTexture ||
-                legsTexture != clone.legsTexture ||
+                armsRTexture != clone.armsRTexture ||
+                armsLTexture != clone.armsLTexture ||
+                legsRTexture != clone.legsRTexture ||
+                legsLTexture != clone.legsLTexture ||
                 weaponTexture != clone.weaponTexture ||
                 animationTimer != clone.animationTimer ||
                 animationProgress != clone.animationProgress ||
-                lastUseDirection != clone.lastUseDirection ||
+                useDirection != clone.useDirection ||
                 armFrame != clone.armFrame ||
                 weaponPosition != clone.weaponPosition ||
                 weaponRotation != clone.weaponRotation ||
@@ -275,18 +269,20 @@ namespace MechMod.Common.Players
                 needsSync = true;
             }
 
-            if (needsSync) // Only sync clients if a variable changes
+            if (needsSync) // Only sync clients if needed
                 SyncPlayer(-1, Main.myPlayer, false);
         }
 
+        #endregion
+
         public override void ResetEffects()
         {
-            disableMounts = false; // Reset the flag when effects are recalculated
+            disableMounts = false; // Reset disabling mounts when effects are recalculated
         }
 
         public override void UpdateDead()
         {
-            disableMounts = false; // Reset the flag when the player dies
+            disableMounts = false; // Reset disabling mounts when the player dies
         }
 
         public override void OnHurt(Player.HurtInfo info)
@@ -294,12 +290,13 @@ namespace MechMod.Common.Players
             if (Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>())
             {
                 SoundEngine.PlaySound(SoundID.NPCHit4, Player.position); // Play metal hit sound when the mech is hurt
-                if (info.Damage >= Player.statLife || Player.statLife < 1)
+                // Save the player if they die in the mech
+                if (info.Damage >= Player.statLife || Player.statLife < 1) // If the player dies in the mech,
                 {
-                    float PlayerHealth = Player.statLifeMax;
-                    Player.mount.Dismount(Player);
-                    Player.statLife = (int)(PlayerHealth *= 0.5f);
-                    Player.immuneTime = 60;
+                    Player.mount.Dismount(Player); // Dismount the player
+                    float PlayerHealth = Player.statLifeMax; // Get the player's max health
+                    Player.statLife = (int)(PlayerHealth *= 0.5f); // Set the player's health to 50% of their max health
+                    Player.immuneTime = 80; // Give the player 1.33 seconds of invincibility
                 }
             }
         }
@@ -356,15 +353,15 @@ namespace MechMod.Common.Players
         {
             if (Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>())
             {
-                if (lastUseDirection != 0)
-                    Player.direction = lastUseDirection; // Force player's direction to be the last use direction
+                //if (useDirection != 0)
+                //    Player.direction = useDirection; // Force player's direction to be the last use direction
             }
         }
 
         public override void PreUpdate()
         {
+            // Disable spawning the mech in different cases, like having the Mech debuff or not having certain equipped Parts
             MechSpawner mechSpawnerItem = ModContent.GetInstance<MechSpawner>();
-            // Check for your debuff and set the disableMounts flag accordingly
             if (Player.HasBuff(ModContent.BuffType<MechDebuff>()))
             {
                 disableMounts = true;
@@ -380,9 +377,10 @@ namespace MechMod.Common.Players
             }
 
             if (animationTimer > 0)
-                animationTimer--;
+                animationTimer--; // Count down the animation timer
         }
 
+        // Disable the use of the Mech spawner if mounts are disabled
         public override bool CanUseItem(Item item)
         {
             if (disableMounts)
@@ -391,6 +389,8 @@ namespace MechMod.Common.Players
             }
             return true;
         }
+
+        #region Debugging Booster Dust hiding area
 
         //public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         //{
@@ -435,5 +435,7 @@ namespace MechMod.Common.Players
         //    // Right
         //    Main.spriteBatch.Draw(pixel, new Rectangle(rect.X + rect.Width - 2, rect.Y, 2, rect.Height), color);
         //}
+
+        #endregion
     }
 }

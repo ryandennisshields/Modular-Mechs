@@ -83,11 +83,11 @@ namespace MechMod.Content.Items.MechWeapons
             Vector2 position = new Vector2(0, 0);
 
             if (progress <= 0.33)
-                position = new Vector2(-30 * modPlayer.lastUseDirection, -130);
+                position = new Vector2(-30 * modPlayer.useDirection, -130);
             else if (progress <= 0.66)
-                position = new Vector2(70 * modPlayer.lastUseDirection, -100);
+                position = new Vector2(70 * modPlayer.useDirection, -100);
             else
-                position = new Vector2(70 * modPlayer.lastUseDirection, 0);
+                position = new Vector2(70 * modPlayer.useDirection, 0);
 
             Projectile.Center = player.Center + position;
 

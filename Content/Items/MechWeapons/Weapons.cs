@@ -13,7 +13,7 @@ namespace MechMod.Content.Items.MechWeapons
     public static class Weapons
     {
 
-        // These functions allow easy grabbing of Damage, Critical Chance, Attack Speed and Knockback bonuses for when the Mech parts change them (or for Upgrades)
+        // These functions allow easy grabbing of Damage, Critical Chance, Attack Speed and Knockback bonuses for when the Mech Parts change them (or for Upgrades)
 
         // DamageClass sets the type of damage the weapon does, which is used to calculate what bonuses the weapon recieves
         // e.g. Melee weapons will recieve bonuses from Melee Damage, Ranged weapons will recieve bonuses from Ranged Damage, etc.

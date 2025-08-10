@@ -217,7 +217,7 @@ Items: {
 
 	// Weapons
 	
-	// The values for the statistics act like "base values" for the weapon, unmodified by armour, accessories, parts, etc.
+	// The values for the statistics act like "base values" for the weapon, unmodified by armour, accessories, Parts, etc.
 	
 	BaseGun: {
 		DisplayName: Base Gun
@@ -408,7 +408,7 @@ NPCs: {
 			LoveSpace: I love how much space I have to work with!
 			DislikeCrowded: This isn't nearly enough space for the size of my babies...
 			HateCrowded: There's way too many people here! How am I supposed to do anything without collateral?
-			LikeBiome: "{BiomeName} is cosy and gives me room to test parts."
+			LikeBiome: "{BiomeName} is cosy and gives me room to test Parts."
 			DislikeBiome: "{BiomeName} kinda sucks."
 			HateBiome: "{BiomeName}'s sand gets everywhere!."
 			LoveNPC: Whenever I'm stuck, {NPCName} gives great advice and inspiration!
@@ -431,7 +431,7 @@ NPCs: {
 			Party: As much as I would prefer to be working on my babies, this is a nice chance to relax.
 			Graveyard: This is a chilly feeling... Are my babies not good enough to protect you?
 			Hardmode: Thanks to the world's strange changes and new resources, I was finally able to improve the energy of my babies!
-			PreHardmode: A large part of me coming to this world was to find a way to improve the energy source of my babies, but I haven't quite found anything yet...
+			PreHardmode: A large Part of me coming to this world was to find a way to improve the energy source of my babies, but I haven't quite found anything yet...
 			TalkALot: Could I get back to work?
 			StandardDialogue1: I would pilot my own baby with you, but mine is too powerful for this world...
 			StandardDialogue2: I know, I know, my designs aren't exactly the most comfortable or ergonomic, but this stuff is expensive!
