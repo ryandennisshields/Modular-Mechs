@@ -288,8 +288,8 @@ Items: {
 	// Modules
 	// Passive
 	
-	// Cyan (30FFFF) = On Mount
-	// Purple (FF30FF) = On Dismount
+	// Cyan (30FFFF) = On Mount/Dismount
+	// Purple (FF30FF) = Conditional
 	// Yellow (FFFF30) = Persistent
 	
 	Spikes: {
@@ -307,7 +307,7 @@ Items: {
 		Tooltip:
 			'''
 			Module
-			[c/FF30FF:Passive]
+			[c/30FFFF:Passive]
 			When you leave your Mech manually or automatically, your Mech will explode, dealing damage in a large area
 			Increases the duration of Mech Fatigue
 			'''
@@ -329,7 +329,7 @@ Items: {
 		Tooltip:
 			'''
 			Module
-			[c/FFFF30:Passive]
+			[c/FF30FF:Passive]
 			If using a Ranged Weapon, you can scope/zoom out
 			Scoping/Zooming out increases damage, but reduces movement speed
 			'''

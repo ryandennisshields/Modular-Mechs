@@ -41,8 +41,12 @@ namespace MechMod.Common.Players
 
         public bool animateOnce = false; // Used to control whether the mech weapon animation should only play once or loop
 
-        public int armFrame = -1; // Used for controlling the current arm frame
-        public int armAnimationFrames = 15; // Total number of frames that the arm texture has (to include the many arm rotations/positions for weapon animation)
+        // Used for controlling the current arm frame
+        public int armRFrame = -1;
+        public int armLFrame = -1;
+        // Total number of frames that the arm texture has (to include the many arm rotations/positions for weapon animation)
+        public int armRAnimationFrames = 9;
+        public int armLAnimationFrames = 14;
 
         public int useDirection; // Stores the last weapon use direction
 
@@ -172,7 +176,8 @@ namespace MechMod.Common.Players
             packet.Write(animationTimer);
             packet.Write(animationProgress);
             packet.Write(useDirection);
-            packet.Write(armFrame);
+            packet.Write(armRFrame);
+            packet.Write(armLFrame);
             packet.Write(weaponPosition.X);
             packet.Write(weaponPosition.Y);
             packet.Write(weaponRotation);
@@ -199,7 +204,8 @@ namespace MechMod.Common.Players
             animationTimer = reader.ReadSingle();
             animationProgress = reader.ReadInt32();
             useDirection = reader.ReadInt32();
-            armFrame = reader.ReadInt32();
+            armRFrame = reader.ReadInt32();
+            armLFrame = reader.ReadInt32();
             weaponPosition.X = reader.ReadInt32();
             weaponPosition.Y = reader.ReadInt32();
             weaponRotation = reader.ReadSingle();
@@ -227,7 +233,8 @@ namespace MechMod.Common.Players
             clone.animationTimer = animationTimer;
             clone.animationProgress = animationProgress;
             clone.useDirection = useDirection;
-            clone.armFrame = armFrame;
+            clone.armRFrame = armRFrame;
+            clone.armLFrame = armLFrame;
             clone.weaponPosition = weaponPosition;
             clone.weaponRotation = weaponRotation;
             clone.weaponOrigin = weaponOrigin;
@@ -258,7 +265,8 @@ namespace MechMod.Common.Players
                 animationTimer != clone.animationTimer ||
                 animationProgress != clone.animationProgress ||
                 useDirection != clone.useDirection ||
-                armFrame != clone.armFrame ||
+                armRFrame != clone.armRFrame ||
+                armLFrame != clone.armLFrame ||
                 weaponPosition != clone.weaponPosition ||
                 weaponRotation != clone.weaponRotation ||
                 weaponOrigin != clone.weaponOrigin ||

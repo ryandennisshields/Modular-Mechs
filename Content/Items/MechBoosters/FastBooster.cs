@@ -9,7 +9,6 @@ namespace MechMod.Content.Items.MechBoosters
 {
     internal class FastBooster : ModItem, IMechParts
     {
-        public override string Texture => "MechMod/Content/Items/MechBoosters/BaseBooster";
         public override void SetDefaults()
         {
             Item.width = 20; // The width of the item's hitbox in pixels.
