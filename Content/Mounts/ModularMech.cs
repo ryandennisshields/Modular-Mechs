@@ -71,17 +71,17 @@ namespace MechMod.Content.Mounts
             MountData.standingFrameDelay = 0;
             MountData.standingFrameStart = 0;
             // Running
-            MountData.runningFrameCount = 6;
+            MountData.runningFrameCount = 7;
             MountData.runningFrameDelay = 25;
             MountData.runningFrameStart = 1;
             // Flying
             MountData.flyingFrameCount = 1;
             MountData.flyingFrameDelay = 0;
-            MountData.flyingFrameStart = 7;
+            MountData.flyingFrameStart = 8;
             // In-air
             MountData.inAirFrameCount = 1;
             MountData.inAirFrameDelay = 0;
-            MountData.inAirFrameStart = 8;
+            MountData.inAirFrameStart = 9;
             // Idle
             // All set to 0 as there is no idle animation
             MountData.idleFrameCount = 0;
@@ -473,10 +473,10 @@ namespace MechMod.Content.Mounts
                 spriteEffects = visualDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
                 // Draw right arm first
-                playerDrawData.Add(new DrawData(modPlayer.armsRTexture, drawPosition + new Vector2(23 * visualDirection, -30), setArmRFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.armsRTexture, drawPosition + new Vector2(23 * visualDirection, -29), setArmRFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw right leg
-                playerDrawData.Add(new DrawData(modPlayer.legsRTexture, drawPosition + new Vector2(18 * visualDirection, 18), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.legsRTexture, drawPosition + new Vector2(16 * visualDirection, 18), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw body
                 playerDrawData.Add(new DrawData(modPlayer.bodyTexture, drawPosition + new Vector2(0, -13), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
@@ -492,7 +492,7 @@ namespace MechMod.Content.Mounts
                     playerDrawData.Add(new DrawData(modPlayer.weaponTexture, drawPosition + modPlayer.weaponPosition, null, drawColor, modPlayer.weaponRotation, modPlayer.weaponOrigin, modPlayer.weaponScale, modPlayer.weaponSpriteEffects));
 
                 // Draw left arm last
-                playerDrawData.Add(new DrawData(modPlayer.armsLTexture, drawPosition + new Vector2(-23 * visualDirection, -30), setArmLFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.armsLTexture, drawPosition + new Vector2(-21 * visualDirection, -29), setArmLFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
             }
 
             return false;
@@ -561,24 +561,24 @@ namespace MechMod.Content.Mounts
                         float pointAngleDeg = MathHelper.ToDegrees(pointAngle); // Convert the angle to degrees for easier calculations
                         modPlayer.weaponRotation = pointAngle; // Set the weapon rotation to the angle between the mouse and the player
 
-                        modPlayer.armRFrame = 7; // Set the right arm frame to be by side
+                        modPlayer.armRFrame = 4; // Set the right arm frame to be by side
 
                         // Check if the mouse is at different angles relative to the player (so if mouse is pointing up, the arm will point up, if mouse is pointing down, the arm will point down, etc.)
                         if (pointAngleDeg >= -135 && pointAngleDeg <= -45)
                         {
-                            modPlayer.armLFrame = 12; // Pointing angled up
+                            modPlayer.armLFrame = 13; // Pointing angled up
                         }
                         else if (pointAngleDeg >= -45 && pointAngleDeg <= 45)
                         {
-                            modPlayer.armLFrame = 11; // Pointing horizontal right
+                            modPlayer.armLFrame = 12; // Pointing horizontal right
                         }
                         else if (pointAngleDeg <= -135 || pointAngleDeg >= 135)
                         {
-                            modPlayer.armLFrame = 11; // Pointing horizontal left
+                            modPlayer.armLFrame = 12; // Pointing horizontal left
                         }
                         else if (pointAngleDeg <= 135 && pointAngleDeg >= 45)
                         {
-                            modPlayer.armLFrame = 10; // Pointing angled down
+                            modPlayer.armLFrame = 11; // Pointing angled down
                         }
                     }
                     break;
@@ -596,9 +596,9 @@ namespace MechMod.Content.Mounts
                     {
                         float progress = 1f - (modPlayer.animationProgress / Weapons.attackRate); // Calculate the progress of the animation based on the animation progress (equal to projectile's life time) and attack rate
 
-                        modPlayer.armRFrame = 7; // Set the right arm frame to be by side
+                        modPlayer.armRFrame = 4; // Set the right arm frame to be by side
 
-                        modPlayer.armLFrame = (int)MathHelper.Lerp(14, 10, progress); // Lerp the arm through the up, angled up, horizontal and angled down frames respectively (11 is used as starting value to make the up frame last longer)
+                        modPlayer.armLFrame = (int)MathHelper.Lerp(15, 11, progress); // Lerp the arm through the up, angled up, horizontal and angled down frames respectively (11 is used as starting value to make the up frame last longer)
 
                         // Calculate the swing's starting and ending angle and lerp it between the angle
                         float startAngle = -2f * modPlayer.useDirection;

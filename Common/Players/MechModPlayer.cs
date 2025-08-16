@@ -45,8 +45,8 @@ namespace MechMod.Common.Players
         public int armRFrame = -1;
         public int armLFrame = -1;
         // Total number of frames that the arm texture has (to include the many arm rotations/positions for weapon animation)
-        public int armRAnimationFrames = 9;
-        public int armLAnimationFrames = 14;
+        public int armRAnimationFrames = 10;
+        public int armLAnimationFrames = 15;
 
         public int useDirection; // Stores the last weapon use direction
 
