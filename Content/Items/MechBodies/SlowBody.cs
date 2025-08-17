@@ -22,5 +22,7 @@ namespace MechMod.Content.Items.MechBodies
             mech.lifeBonus += 150; // 150 health bonus
             Weapons.partDamageBonus -= 0.1f; // 10% damage reduction
         }
+
+        public void BodyOffsets(Player player, string body) { }
     }
 }

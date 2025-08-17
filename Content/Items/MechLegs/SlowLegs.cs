@@ -1,5 +1,7 @@
-﻿using MechMod.Content.Items.MechWeapons;
+﻿using MechMod.Common.Players;
+using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mounts;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -28,6 +30,23 @@ namespace MechMod.Content.Items.MechLegs
             // Jumping stats
             mech.MountData.jumpHeight = 7;
             mech.groundJumpSpeed = 4f;
+        }
+
+        public void BodyOffsets(Player player, string body)
+        {
+            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
+
+            switch (body)
+            {
+                case "FastBody":
+                    modPlayer.bodyOffsets[1] = new Vector2(0, 0);
+                    modPlayer.bodyOffsets[2] = new Vector2(0, 0);
+                    break;
+                default:
+                    modPlayer.bodyOffsets[1] = new Vector2(0, 0);
+                    modPlayer.bodyOffsets[2] = new Vector2(0, 0);
+                    break;
+            }
         }
     }
 }

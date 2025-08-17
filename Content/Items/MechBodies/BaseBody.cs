@@ -1,4 +1,5 @@
-﻿using MechMod.Content.Mounts;
+﻿using MechMod.Common.Players;
+using MechMod.Content.Mounts;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -19,5 +20,7 @@ namespace MechMod.Content.Items.MechBodies
         {
             mech.lifeBonus += 100; // 100 health bonus
         }
+
+        public void BodyOffsets(Player player, string body) { }
     }
 }

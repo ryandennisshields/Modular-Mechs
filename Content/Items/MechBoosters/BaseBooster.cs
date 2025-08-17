@@ -31,5 +31,7 @@ namespace MechMod.Content.Items.MechBoosters
             player.GetModPlayer<DashPlayer>().dashCoolDown = 0;
             player.GetModPlayer<DashPlayer>().dashDuration = 0;
         }
+
+        public void BodyOffsets(Player player, string body) { }
     }
 }

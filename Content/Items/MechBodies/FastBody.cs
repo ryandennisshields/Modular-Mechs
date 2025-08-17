@@ -24,5 +24,7 @@ namespace MechMod.Content.Items.MechBodies
             mech.MountData.runSpeed *= 1.2f; // 20% faster run speed
             mech.MountData.swimSpeed *= 1.2f; // 20% faster swim speed
         }
+
+        public void BodyOffsets(Player player, string body) { }
     }
 }

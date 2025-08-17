@@ -1,5 +1,7 @@
-﻿using MechMod.Content.Items.MechWeapons;
+﻿using MechMod.Common.Players;
+using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mounts;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,6 +22,21 @@ namespace MechMod.Content.Items.MechHeads
         public void ApplyStats(Player player, ModularMech mech)
         {
             mech.armourBonus = player.statDefense; // Double the armour
+        }
+
+        public void BodyOffsets(Player player, string body)
+        {
+            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
+
+            switch (body)
+            {
+                case "FastBody":
+                    modPlayer.bodyOffsets[3] = new Vector2(0, 0);
+                    break;
+                default:
+                    modPlayer.bodyOffsets[3] = new Vector2(0, 0);
+                    break;
+            }
         }
     }
 }

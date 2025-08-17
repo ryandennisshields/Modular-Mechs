@@ -1,6 +1,7 @@
 ﻿using MechMod.Common.Players;
 using MechMod.Content.Buffs;
 using MechMod.Content.Dusts;
+using MechMod.Content.Items.MechLegs;
 using MechMod.Content.Items.MechWeapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +11,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
+
 using Terraria.ModLoader;
 
 namespace MechMod.Content.Mounts
@@ -17,6 +19,9 @@ namespace MechMod.Content.Mounts
     public interface IMechParts
     {
         void ApplyStats(Player player, ModularMech mech);
+
+        void BodyOffsets(Player player, string body);
+
     }
 
     public interface IMechWeapon
@@ -71,17 +76,17 @@ namespace MechMod.Content.Mounts
             MountData.standingFrameDelay = 0;
             MountData.standingFrameStart = 0;
             // Running
-            MountData.runningFrameCount = 7;
+            MountData.runningFrameCount = 6;
             MountData.runningFrameDelay = 25;
             MountData.runningFrameStart = 1;
             // Flying
             MountData.flyingFrameCount = 1;
             MountData.flyingFrameDelay = 0;
-            MountData.flyingFrameStart = 8;
+            MountData.flyingFrameStart = 7;
             // In-air
             MountData.inAirFrameCount = 1;
             MountData.inAirFrameDelay = 0;
-            MountData.inAirFrameStart = 9;
+            MountData.inAirFrameStart = 8;
             // Idle
             // All set to 0 as there is no idle animation
             MountData.idleFrameCount = 0;
@@ -107,8 +112,8 @@ namespace MechMod.Content.Mounts
 
             if (!Main.dedServ)
             {
-                MountData.textureWidth = 120;
-                MountData.textureHeight = 120;
+                MountData.textureWidth = 150;
+                MountData.textureHeight = 150;
             }
         }
 
@@ -141,6 +146,10 @@ namespace MechMod.Content.Mounts
 
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
             {
+                if (part.ModItem is IMechParts mechPart)
+                {
+                    mechPart.BodyOffsets(player, modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name); // Apply body offsets based on the equipped body part
+                }
                 if (part.ModItem is IMechModule mechModule)
                 {
                     if (mechModule.moduleType == IMechModule.ModuleType.OnMount)
@@ -370,7 +379,7 @@ namespace MechMod.Content.Mounts
 
             #region Step
 
-            float stepSpeed = 30 / (player.velocity.Length() / 2);
+            float stepSpeed = 26 / (player.velocity.Length() / 3);
             int positionRight = player.direction == -1 ? 6 : 2;
             int positionLeft = player.direction == -1 ? -14 : -20;
 
@@ -423,32 +432,38 @@ namespace MechMod.Content.Mounts
             {
 
                 // Apply visuals to the Mech
-                //var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
-                //if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
-                //    modPlayer.headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
-                //if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
-                //    modPlayer.bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
-                //if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
-                //    modPlayer.armsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}Visual").Value;
-                //if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
-                //    modPlayer.legsTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}Visual").Value;
-
-                // Apply visuals to the Mech (TEMPORARY)
                 var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
                 if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
-                    modPlayer.headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/BaseHeadVisual").Value;
+                    modPlayer.headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
                 if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
-                    modPlayer.bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/BaseBodyVisual").Value;
+                    modPlayer.bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
                 if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
                 {
-                    modPlayer.armsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsRVisual").Value;
-                    modPlayer.armsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsLVisual").Value;
+                    modPlayer.armsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual").Value;
+                    modPlayer.armsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual").Value;
                 }
                 if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
                 {
-                    modPlayer.legsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsRVisual").Value;
-                    modPlayer.legsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsLVisual").Value;
+                    modPlayer.legsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual").Value;
+                    modPlayer.legsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}LVisual").Value;
                 }
+
+                // Apply visuals to the Mech (TEMPORARY)
+                //var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
+                //if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
+                //    modPlayer.headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/BaseHeadVisual").Value;
+                //if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
+                //    modPlayer.bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/BaseBodyVisual").Value;
+                //if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
+                //{
+                //    modPlayer.armsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsRVisual").Value;
+                //    modPlayer.armsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/BaseArmsLVisual").Value;
+                //}
+                //if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
+                //{
+                //    modPlayer.legsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsRVisual").Value;
+                //    modPlayer.legsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/BaseLegsLVisual").Value;
+                //}
 
                 if (!modPlayer.equippedParts[MechMod.weaponIndex].IsAir)
                     modPlayer.weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{modPlayer.equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}").Value;
@@ -473,26 +488,26 @@ namespace MechMod.Content.Mounts
                 spriteEffects = visualDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
                 // Draw right arm first
-                playerDrawData.Add(new DrawData(modPlayer.armsRTexture, drawPosition + new Vector2(23 * visualDirection, -29), setArmRFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.armsRTexture, drawPosition + new Vector2(0, -13) + modPlayer.bodyOffsets[0], setArmRFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw right leg
-                playerDrawData.Add(new DrawData(modPlayer.legsRTexture, drawPosition + new Vector2(16 * visualDirection, 18), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.legsRTexture, drawPosition + new Vector2(0, -13) + modPlayer.bodyOffsets[1], frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw body
                 playerDrawData.Add(new DrawData(modPlayer.bodyTexture, drawPosition + new Vector2(0, -13), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw left leg
-                playerDrawData.Add(new DrawData(modPlayer.legsLTexture, drawPosition + new Vector2(-8 * visualDirection, 18), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.legsLTexture, drawPosition + new Vector2(0, -13) + modPlayer.bodyOffsets[2], frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw head
-                playerDrawData.Add(new DrawData(modPlayer.headTexture, drawPosition + new Vector2(4 * visualDirection, -40), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.headTexture, drawPosition + new Vector2(0, -13) + modPlayer.bodyOffsets[3], frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw weapon
                 if (modPlayer.weaponTexture != null)
-                    playerDrawData.Add(new DrawData(modPlayer.weaponTexture, drawPosition + modPlayer.weaponPosition, null, drawColor, modPlayer.weaponRotation, modPlayer.weaponOrigin, modPlayer.weaponScale, modPlayer.weaponSpriteEffects));
+                    playerDrawData.Add(new DrawData(modPlayer.weaponTexture, drawPosition + modPlayer.weaponPosition + new Vector2(0, -13), null, drawColor, modPlayer.weaponRotation, modPlayer.weaponOrigin, modPlayer.weaponScale, modPlayer.weaponSpriteEffects));
 
                 // Draw left arm last
-                playerDrawData.Add(new DrawData(modPlayer.armsLTexture, drawPosition + new Vector2(-21 * visualDirection, -29), setArmLFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.armsLTexture, drawPosition + new Vector2(0, -13) + modPlayer.bodyOffsets[4], setArmLFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
             }
 
             return false;
@@ -561,24 +576,24 @@ namespace MechMod.Content.Mounts
                         float pointAngleDeg = MathHelper.ToDegrees(pointAngle); // Convert the angle to degrees for easier calculations
                         modPlayer.weaponRotation = pointAngle; // Set the weapon rotation to the angle between the mouse and the player
 
-                        modPlayer.armRFrame = 4; // Set the right arm frame to be by side
+                        modPlayer.armRFrame = 9; // Set the right arm frame to be by side
 
                         // Check if the mouse is at different angles relative to the player (so if mouse is pointing up, the arm will point up, if mouse is pointing down, the arm will point down, etc.)
                         if (pointAngleDeg >= -135 && pointAngleDeg <= -45)
                         {
-                            modPlayer.armLFrame = 13; // Pointing angled up
+                            modPlayer.armLFrame = 12; // Pointing angled up
                         }
                         else if (pointAngleDeg >= -45 && pointAngleDeg <= 45)
                         {
-                            modPlayer.armLFrame = 12; // Pointing horizontal right
+                            modPlayer.armLFrame = 11; // Pointing horizontal right
                         }
                         else if (pointAngleDeg <= -135 || pointAngleDeg >= 135)
                         {
-                            modPlayer.armLFrame = 12; // Pointing horizontal left
+                            modPlayer.armLFrame = 11; // Pointing horizontal left
                         }
                         else if (pointAngleDeg <= 135 && pointAngleDeg >= 45)
                         {
-                            modPlayer.armLFrame = 11; // Pointing angled down
+                            modPlayer.armLFrame = 10; // Pointing angled down
                         }
                     }
                     break;
@@ -596,9 +611,9 @@ namespace MechMod.Content.Mounts
                     {
                         float progress = 1f - (modPlayer.animationProgress / Weapons.attackRate); // Calculate the progress of the animation based on the animation progress (equal to projectile's life time) and attack rate
 
-                        modPlayer.armRFrame = 4; // Set the right arm frame to be by side
+                        modPlayer.armRFrame = 9; // Set the right arm frame to be by side
 
-                        modPlayer.armLFrame = (int)MathHelper.Lerp(15, 11, progress); // Lerp the arm through the up, angled up, horizontal and angled down frames respectively (11 is used as starting value to make the up frame last longer)
+                        modPlayer.armLFrame = (int)MathHelper.Lerp(14, 10, progress); // Lerp the arm through the up, angled up, horizontal and angled down frames respectively (11 is used as starting value to make the up frame last longer)
 
                         // Calculate the swing's starting and ending angle and lerp it between the angle
                         float startAngle = -2f * modPlayer.useDirection;

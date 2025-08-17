@@ -3,11 +3,11 @@ ALL ANIMATION SHOULD LOOK SOMEWHAT CLOSE TO BASE MECH
 
 Running Animation:
 
+LEGS SHOULD NEVER BE DOWN FURTHER THAN IDLE LEGS
 ARMS MOVE FORWARD WITH LEGS
 
 Frame 2-4: Left Leg forward
-Frame 5: Neutral Position
-Frame 6-8: Right Leg forward
+Frame 5-7: Right Leg forward
 
 Frame 2:
  Body + Head + Arms Y offset: 0
@@ -23,17 +23,12 @@ Frame 4:
 
 Frame 5:
  Body + Head + Arms Y offset: 0
- Arms outward offset: 0
-
-Frame 6:
- Body + Head + Arms Y offset: 0
  Arms outward offset: 1
 
-Frame 7:
+Frame 6:
  Body + Head + Arms Y offset: 1
  Arms outward offset: 1
 
-Frame 8:
+Frame 7:
  Body + Head + Arms Y offset: -2
  Arms outward offset: 1
-

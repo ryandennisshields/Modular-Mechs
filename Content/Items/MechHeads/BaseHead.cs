@@ -1,5 +1,7 @@
-﻿using MechMod.Content.Items.MechWeapons;
-using MechMod.Content.Mounts; 
+﻿using MechMod.Common.Players;
+using MechMod.Content.Items.MechWeapons;
+using MechMod.Content.Mounts;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,6 +22,21 @@ namespace MechMod.Content.Items.MechHeads
         {
             mech.lifeBonus += 50; // 50 health bonus
             Weapons.partDamageBonus += 0.10f; // 10% damage bonus
+        }
+
+        public void BodyOffsets(Player player, string body)
+        {
+            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
+
+            switch (body)
+            {
+                case "FastBody":
+                    modPlayer.bodyOffsets[3] = new Vector2(-1, 0);
+                    break;
+                default:
+                    modPlayer.bodyOffsets[3] = new Vector2(0, 0);
+                    break;
+            }
         }
     }
 }

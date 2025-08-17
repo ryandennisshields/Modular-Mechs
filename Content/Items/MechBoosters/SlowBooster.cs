@@ -29,5 +29,7 @@ namespace MechMod.Content.Items.MechBoosters
             player.GetModPlayer<DashPlayer>().dashCoolDown = 90; // 1.5 seconds of cooldown
             player.GetModPlayer<DashPlayer>().dashDuration = 60; // 1 second of dash duration
         }
+
+        public void BodyOffsets(Player player, string body) { }
     }
 }

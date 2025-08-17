@@ -39,6 +39,8 @@ namespace MechMod.Common.Players
         public Texture2D legsLTexture;
         public Texture2D weaponTexture; // Used so the equipped weapon can be drawn while in use
 
+        public Vector2[] bodyOffsets = new Vector2[5];
+
         public bool animateOnce = false; // Used to control whether the mech weapon animation should only play once or loop
 
         // Used for controlling the current arm frame
@@ -46,7 +48,7 @@ namespace MechMod.Common.Players
         public int armLFrame = -1;
         // Total number of frames that the arm texture has (to include the many arm rotations/positions for weapon animation)
         public int armRAnimationFrames = 10;
-        public int armLAnimationFrames = 15;
+        public int armLAnimationFrames = 14;
 
         public int useDirection; // Stores the last weapon use direction
 
