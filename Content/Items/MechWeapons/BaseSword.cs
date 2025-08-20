@@ -37,7 +37,7 @@ namespace MechMod.Content.Items.MechWeapons
             Weapons.attackRate = Weapons.AttackSpeedCalc(30, player);
             float knockback = Weapons.KnockbackCalc(7, player);
 
-            int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter, new Vector2(0, 0), projectileType, damage, knockback, player.whoAmI);
+            int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.Center, new Vector2(0, 0), projectileType, damage, knockback, player.whoAmI);
             if (Main.projectile.IndexInRange(projID) && Main.projectile[projID].ModProjectile is BaseSwordProj proj)
             {
                 // Allow the swing speed to be modified by attack rate

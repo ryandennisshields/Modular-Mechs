@@ -566,10 +566,10 @@ namespace MechMod.Content.Mounts
 
                     modPlayer.weaponScale = 1f;
 
-                    weaponPositionX = 3;
-                    weaponPositionY = -55;
+                    weaponPositionX = 0;
+                    weaponPositionY = -22;
 
-                    weaponOriginOffsetX = -26;
+                    weaponOriginOffsetX = -38;
                     weaponOriginOffsetY = 0;
 
                     if (Main.mouseLeft) // Only rotate on fire
@@ -604,10 +604,10 @@ namespace MechMod.Content.Mounts
                     modPlayer.weaponScale = 1f;
 
                     weaponPositionX = -10;
-                    weaponPositionY = -45;
+                    weaponPositionY = -12;
 
-                    weaponOriginOffsetX = -70;
-                    weaponOriginOffsetY = 45 * modPlayer.useDirection;
+                    weaponOriginOffsetX = -62;
+                    weaponOriginOffsetY = 44 * modPlayer.useDirection;
 
                     if (player.whoAmI == Main.myPlayer) // Progress calculation should only be done on the client player
                     {

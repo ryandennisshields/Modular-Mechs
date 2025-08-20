@@ -37,7 +37,7 @@ namespace MechMod.Content.Items.MechWeapons
             Weapons.attackRate = Weapons.AttackSpeedCalc(20, player);
             float knockback = Weapons.KnockbackCalc(6, player);
 
-            int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter, new Vector2(0, 0), projectileType, damage, knockback, player.whoAmI);
+            int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.Center, new Vector2(0, 0), projectileType, damage, knockback, player.whoAmI);
             if (Main.projectile.IndexInRange(projID) && Main.projectile[projID].ModProjectile is BaseSwordProj proj)
             {
                 // Allow the swing speed to be modified by attack rate
@@ -46,10 +46,10 @@ namespace MechMod.Content.Items.MechWeapons
             }
             float projSpeed = 10;
             Vector2 offset = new Vector2(0, -42); // Offset to adjust the projectile's spawn position relative to the mech's center
-            Vector2 direction = (Main.MouseWorld - player.MountedCenter) - offset; // new Vector2 corrects the offset to still make it go towards the cursor
+            Vector2 direction = (Main.MouseWorld - player.Center) - offset; // new Vector2 corrects the offset to still make it go towards the cursor
             direction.Normalize(); // Normalize the direction vector to ensure it has a length of 1
             Vector2 velocity = direction * projSpeed;
-            Projectile.NewProjectile(new EntitySource_Parent(player), player.MountedCenter + offset, velocity, ProjectileID.SwordBeam, damage, knockback, player.whoAmI);
+            Projectile.NewProjectile(new EntitySource_Parent(player), player.Center + offset, velocity, ProjectileID.SwordBeam, damage, knockback, player.whoAmI);
 
             SoundEngine.PlaySound(SoundID.Item1, player.position); // Play Swing sound when the weapon is used
             SoundEngine.PlaySound(SoundID.Item8, player.position); // Play Projectile sound when the weapon is used
