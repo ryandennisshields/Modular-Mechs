@@ -8,7 +8,6 @@ namespace MechMod.Content.Items.MechBodies
 {
     internal class SlowBody : ModItem, IMechParts
     {
-        public override string Texture => "MechMod/Content/Items/MechBodies/BaseBody";
         public override void SetDefaults()
         {
             Item.width = 20; // The width of the item's hitbox in pixels.

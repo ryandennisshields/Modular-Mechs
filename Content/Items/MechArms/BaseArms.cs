@@ -30,8 +30,12 @@ namespace MechMod.Content.Items.MechArms
             switch (body)
             {
                 case "FastBody":
-                    modPlayer.bodyOffsets[0] = new Vector2(-3, 0);
-                    modPlayer.bodyOffsets[4] = new Vector2(3, 0);
+                    modPlayer.bodyOffsets[0] = new Vector2(-5, 0);
+                    modPlayer.bodyOffsets[4] = new Vector2(5, 0);
+                    break;
+                case "SlowBody":
+                    modPlayer.bodyOffsets[0] = new Vector2(0, -6);
+                    modPlayer.bodyOffsets[4] = new Vector2(0, -6);
                     break;
                 default:
                     modPlayer.bodyOffsets[0] = new Vector2(0, 0); // Right

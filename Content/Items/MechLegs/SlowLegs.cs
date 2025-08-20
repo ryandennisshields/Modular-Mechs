@@ -10,7 +10,6 @@ namespace MechMod.Content.Items.MechLegs
 {
     public class SlowLegs : ModItem, IMechParts
     {
-        public override string Texture => "MechMod/Content/Items/MechLegs/BaseLegs";
         public override void SetDefaults()
         {
             Item.width = 20; // The width of the item's hitbox in pixels.
@@ -38,13 +37,17 @@ namespace MechMod.Content.Items.MechLegs
 
             switch (body)
             {
+                case "BaseBody":
+                    modPlayer.bodyOffsets[1] = new Vector2(-2, 0);
+                    modPlayer.bodyOffsets[2] = new Vector2(-2, 0);
+                    break;
                 case "FastBody":
-                    modPlayer.bodyOffsets[1] = new Vector2(0, 0);
-                    modPlayer.bodyOffsets[2] = new Vector2(0, 0);
+                    modPlayer.bodyOffsets[1] = new Vector2(-3, 0);
+                    modPlayer.bodyOffsets[2] = new Vector2(-3, 0);
                     break;
                 default:
-                    modPlayer.bodyOffsets[1] = new Vector2(0, 0);
-                    modPlayer.bodyOffsets[2] = new Vector2(0, 0);
+                    modPlayer.bodyOffsets[1] = new Vector2(0, 0); // Right
+                    modPlayer.bodyOffsets[2] = new Vector2(0, 0); // Left
                     break;
             }
         }

@@ -10,7 +10,6 @@ namespace MechMod.Content.Items.MechArms
 {
     internal class SlowArms : ModItem, IMechParts
     {
-        public override string Texture => "MechMod/Content/Items/MechArms/BaseArms";
         public override void SetDefaults()
         {
             Item.width = 20; // The width of the item's hitbox in pixels.
@@ -32,13 +31,17 @@ namespace MechMod.Content.Items.MechArms
 
             switch (body)
             {
-                case "FastBody":
-                    modPlayer.bodyOffsets[0] = new Vector2(0, 0);
+                case "BaseBody":
+                    modPlayer.bodyOffsets[0] = new Vector2(-2, 0);
                     modPlayer.bodyOffsets[4] = new Vector2(0, 0);
                     break;
+                case "FastBody":
+                    modPlayer.bodyOffsets[0] = new Vector2(-5, 0);
+                    modPlayer.bodyOffsets[4] = new Vector2(1, 0);
+                    break;
                 default:
-                    modPlayer.bodyOffsets[0] = new Vector2(0, 0);
-                    modPlayer.bodyOffsets[4] = new Vector2(0, 0);
+                    modPlayer.bodyOffsets[0] = new Vector2(0, 0); // Right
+                    modPlayer.bodyOffsets[4] = new Vector2(0, 0); // Left
                     break;
             }
         }

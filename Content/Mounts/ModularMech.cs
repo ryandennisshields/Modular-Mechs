@@ -487,27 +487,29 @@ namespace MechMod.Content.Mounts
                 int visualDirection = modPlayer.useDirection != 0 ? modPlayer.useDirection : drawPlayer.direction; // Use the use direction if it is not 0, otherwise use the player's direction
                 spriteEffects = visualDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
+                Vector2 groundOffset = new Vector2(0, -13); // Offset to position the mech above the ground
+
                 // Draw right arm first
-                playerDrawData.Add(new DrawData(modPlayer.armsRTexture, drawPosition + new Vector2(0, -13) + modPlayer.bodyOffsets[0], setArmRFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.armsRTexture, drawPosition + groundOffset +  new Vector2 (modPlayer.bodyOffsets[0].X * visualDirection, modPlayer.bodyOffsets[0].Y), setArmRFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw right leg
-                playerDrawData.Add(new DrawData(modPlayer.legsRTexture, drawPosition + new Vector2(0, -13) + modPlayer.bodyOffsets[1], frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.legsRTexture, drawPosition + groundOffset + new Vector2(modPlayer.bodyOffsets[1].X * visualDirection, modPlayer.bodyOffsets[1].Y), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw body
-                playerDrawData.Add(new DrawData(modPlayer.bodyTexture, drawPosition + new Vector2(0, -13), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.bodyTexture, drawPosition + groundOffset, frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw left leg
-                playerDrawData.Add(new DrawData(modPlayer.legsLTexture, drawPosition + new Vector2(0, -13) + modPlayer.bodyOffsets[2], frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.legsLTexture, drawPosition + groundOffset + new Vector2(modPlayer.bodyOffsets[2].X * visualDirection, modPlayer.bodyOffsets[2].Y), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw head
-                playerDrawData.Add(new DrawData(modPlayer.headTexture, drawPosition + new Vector2(0, -13) + modPlayer.bodyOffsets[3], frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.headTexture, drawPosition + groundOffset + new Vector2(modPlayer.bodyOffsets[3].X * visualDirection, modPlayer.bodyOffsets[3].Y), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
 
                 // Draw weapon
                 if (modPlayer.weaponTexture != null)
-                    playerDrawData.Add(new DrawData(modPlayer.weaponTexture, drawPosition + modPlayer.weaponPosition + new Vector2(0, -13), null, drawColor, modPlayer.weaponRotation, modPlayer.weaponOrigin, modPlayer.weaponScale, modPlayer.weaponSpriteEffects));
+                    playerDrawData.Add(new DrawData(modPlayer.weaponTexture, drawPosition + modPlayer.weaponPosition + groundOffset, null, drawColor, modPlayer.weaponRotation, modPlayer.weaponOrigin, modPlayer.weaponScale, modPlayer.weaponSpriteEffects));
 
                 // Draw left arm last
-                playerDrawData.Add(new DrawData(modPlayer.armsLTexture, drawPosition + new Vector2(0, -13) + modPlayer.bodyOffsets[4], setArmLFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                playerDrawData.Add(new DrawData(modPlayer.armsLTexture, drawPosition + groundOffset + new Vector2(modPlayer.bodyOffsets[4].X * visualDirection, modPlayer.bodyOffsets[4].Y), setArmLFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
             }
 
             return false;

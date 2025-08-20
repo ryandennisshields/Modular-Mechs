@@ -41,6 +41,10 @@ namespace MechMod.Content.Items.MechLegs
                     modPlayer.bodyOffsets[1] = new Vector2(1, 0);
                     modPlayer.bodyOffsets[2] = new Vector2(1, 0);
                     break;
+                case "SlowBody":
+                    modPlayer.bodyOffsets[1] = new Vector2(0, 0);
+                    modPlayer.bodyOffsets[2] = new Vector2(0, 0);
+                    break;
                 default:
                     modPlayer.bodyOffsets[1] = new Vector2(0, 0); // Right
                     modPlayer.bodyOffsets[2] = new Vector2(0, 0); // Left

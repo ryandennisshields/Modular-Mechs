@@ -38,10 +38,10 @@ namespace MechMod.Content.NPCs
 
         public override void SetStaticDefaults()
         {
-            Main.npcFrameCount[Type] = 25;
+            Main.npcFrameCount[Type] = 24;
 
-            NPCID.Sets.ExtraFramesCount[Type] = 9;
-            NPCID.Sets.AttackFrameCount[Type] = 4;
+            NPCID.Sets.ExtraFramesCount[Type] = 8;
+            NPCID.Sets.AttackFrameCount[Type] = 3;
             NPCID.Sets.DangerDetectRange[Type] = 700;
             NPCID.Sets.AttackType[Type] = 1;
             NPCID.Sets.AttackTime[Type] = 8;
@@ -70,10 +70,10 @@ namespace MechMod.Content.NPCs
                 .SetNPCAffection(NPCID.WitchDoctor, AffectionLevel.Hate)
                 ;
 
-            //NPCProfile = new Profiles.StackedNPCProfile(
-            //    new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
-            //    new Profiles.DefaultNPCProfile(Texture + "_Shimmer", shimmerHeadIndex, Texture + "_Shimmer_Party")
-            //);
+            NPCProfile = new Profiles.StackedNPCProfile(
+                new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture)),
+                new Profiles.DefaultNPCProfile(Texture + "_Shimmer", shimmerHeadIndex)
+            );
         }
 
         public override void SetDefaults()

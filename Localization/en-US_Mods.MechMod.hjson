@@ -146,7 +146,7 @@ Items: {
 			[c/3030FF:+50 Health]
 			[c/969696:Enables Dashing]
 			Medium Dash Speed
-			[c/3030FF: High Dash Distance]
+			[c/3030FF:High Dash Distance]
 			Medium Dash Cooldown
 			'''
 	}

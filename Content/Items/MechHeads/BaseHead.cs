@@ -33,6 +33,9 @@ namespace MechMod.Content.Items.MechHeads
                 case "FastBody":
                     modPlayer.bodyOffsets[3] = new Vector2(-1, 0);
                     break;
+                case "SlowBody":
+                    modPlayer.bodyOffsets[3] = new Vector2(2, -6);
+                    break;
                 default:
                     modPlayer.bodyOffsets[3] = new Vector2(0, 0);
                     break;

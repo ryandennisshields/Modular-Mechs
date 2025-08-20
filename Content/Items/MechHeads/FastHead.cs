@@ -10,7 +10,6 @@ namespace MechMod.Content.Items.MechHeads
 {
     internal class FastHead : ModItem, IMechParts
     {
-        public override string Texture => "MechMod/Content/Items/MechHeads/BaseHead";
         public override void SetDefaults()
         {
             Item.width = 20; // The width of the item's hitbox in pixels.
@@ -32,6 +31,9 @@ namespace MechMod.Content.Items.MechHeads
             {
                 case "BaseBody":
                     modPlayer.bodyOffsets[3] = new Vector2(-1, 0);
+                    break;
+                case "SlowBody":
+                    modPlayer.bodyOffsets[3] = new Vector2(1, -6);
                     break;
                 default:
                     modPlayer.bodyOffsets[3] = new Vector2(0, 0);
