@@ -400,36 +400,18 @@ namespace MechMod.Common.Players
             return true;
         }
 
+        
         #region Debugging Booster Dust hiding area
 
         //public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         //{
-        //    Rectangle[] boxes =
-        //        [
-        //            new Rectangle( // Head
-        //                (int)(Player.position.X + (Player.direction == -1 ? -2 : -10) - Main.screenPosition.X),
-        //                (int)(Player.position.Y - 41 - Main.screenPosition.Y),
-        //                32,
-        //                36
-        //            ),
-        //            new Rectangle( // Body
-        //                (int)(Player.position.X + (Player.direction == -1 ? -18 : -28) - Main.screenPosition.X),
-        //                (int)(Player.position.Y - 12 - Main.screenPosition.Y),
-        //                66,
-        //                53
-        //            ),
-        //            new Rectangle( // Legs
-        //                (int)(Player.position.X + (Player.direction == -1 ? -8 : -16) - Main.screenPosition.X),
-        //                (int)(Player.position.Y + 32 - Main.screenPosition.Y),
-        //                44,
-        //                53
-        //            )
-        //        ];
-
-        //    foreach (Rectangle box in boxes)
-        //    {
-        //        DrawDebugRectangle(box, Color.Red);
-        //    }
+        //    Rectangle box = new Rectangle(
+        //                (int)(Player.position.X - (Player.direction == -1 ? 22 : 30) - Main.screenPosition.X),
+        //                (int)(Player.position.Y - 29 - Main.screenPosition.Y),
+        //                72,
+        //                106
+        //                );
+        //    DrawDebugRectangle(box, Color.Red);
         //}
 
         //private void DrawDebugRectangle(Rectangle rect, Color color)

@@ -341,8 +341,8 @@ namespace MechMod.Content.Mounts
                     dustSpeedY = 0;
                 }
 
-                float dustCenterXLeft = 8;
-                float dustCenterXRight = 2;
+                float dustCenterXLeft = 2;
+                float dustCenterXRight = 8;
 
                 float dustOffsetX = 0;
 

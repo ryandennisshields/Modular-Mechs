@@ -37,38 +37,13 @@ namespace MechMod.Content.Dusts
 
             if (dust.customData is Player player)
             {
-                Rectangle[] boxes =
-                [
-                    new Rectangle( // Head
-                        (int)(player.position.X + (player.direction == -1 ? -2 : -10)),
-                        (int)(player.position.Y - 45),
-                        32,
-                        36
-                    ),
-                    new Rectangle( // Body
-                        (int)(player.position.X + (player.direction == -1 ? -18 : -28)),
-                        (int)(player.position.Y - 16),
-                        66,
-                        53
-                    ),
-                    new Rectangle( // Legs
-                        (int)(player.position.X + (player.direction == -1 ? -8 : -16)),
-                        (int)(player.position.Y + 28),
-                        44,
-                        53
-                    )
-                ];
-
-                bool insideAnyBox = false;
-                foreach (Rectangle box in boxes)
-                {
-                    if (box.Contains(dust.position.ToPoint()))
-                    {
-                        insideAnyBox = true;
-                        break;
-                    }
-                }
-                dust.alpha = insideAnyBox ? 255 : 0;
+                Rectangle box = new Rectangle(
+                            (int)(player.position.X - (player.direction == -1 ? 22 : 30)),
+                            (int)(player.position.Y - 29),
+                            72,
+                            106
+                            );
+                dust.alpha = box.Contains(dust.position.ToPoint()) ? 255 : 0;
             }
             return true;
         }
