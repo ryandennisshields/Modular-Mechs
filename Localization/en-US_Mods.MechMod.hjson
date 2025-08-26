@@ -225,7 +225,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			9 ranged damage
+			15 ranged damage
 			7% critcal strike chance
 			Very fast speed
 			Weak knockback
@@ -238,7 +238,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			19 melee damage
+			32 melee damage
 			4% critcal strike chance
 			Average speed
 			Strong knockback
@@ -251,7 +251,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			14 magic damage
+			24 magic damage
 			4% critcal strike chance
 			Fast speed
 			Weak knockback
@@ -265,7 +265,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			8 melee damage
+			14 melee damage
 			6% critcal strike chance
 			Very fast speed
 			Average knockback
@@ -278,7 +278,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			20 ranged damage
+			34 ranged damage
 			10% critcal strike chance
 			Extremely slow speed
 			Average knockback
@@ -431,7 +431,7 @@ NPCs: {
 			Party: As much as I would prefer to be working on my babies, this is a nice chance to relax.
 			Graveyard: This is a chilly feeling... Are my babies not good enough to protect you?
 			Hardmode: Thanks to the world's strange changes and new resources, I was finally able to improve the energy of my babies!
-			PreHardmode: A large Part of me coming to this world was to find a way to improve the energy source of my babies, but I haven't quite found anything yet...
+			PreHardmode: My reason for coming to this world was to find a way to improve the energy source of my babies, but I haven't quite found anything yet...
 			TalkALot: Could I get back to work?
 			StandardDialogue1: I would pilot my own baby with you, but mine is too powerful for this world...
 			StandardDialogue2: I know, I know, my designs aren't exactly the most comfortable or ergonomic, but this stuff is expensive!
@@ -446,7 +446,7 @@ NPCs: {
 			Tip8: Active Modules can be unlocked after defeating the Golem, and allow you to use powerful abilities (using the Mech Activate Module binding) while inside your Mech.
 		}
 
-		Census.SpawnCondition: Have either 10 {$ItemName.IronBar} [i:IronBar] or 10 {$ItemName.LeadBar} [i:LeadBar] in your inventory
+		Census.SpawnCondition: Defeat Eater of Worlds or Brain of Cthulhu
 	}
 }
 

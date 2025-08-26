@@ -32,7 +32,7 @@ namespace MechMod.Content.Items.MechWeapons
         {
             int projectileType = ModContent.ProjectileType<BaseSwordProj>();
 
-            int damage = Weapons.DamageCalc(8, player);
+            int damage = Weapons.DamageCalc(14, player);
             Weapons.CritChanceCalc(6, player);
             Weapons.attackRate = Weapons.AttackSpeedCalc(20, player);
             float knockback = Weapons.KnockbackCalc(6, player);

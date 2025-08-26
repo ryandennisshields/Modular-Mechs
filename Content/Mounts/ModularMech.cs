@@ -309,65 +309,68 @@ namespace MechMod.Content.Mounts
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             int boosterDuration = 30;
 
-            if (modPlayer.equippedParts[MechMod.boosterIndex] != null && dashPlayer.dashActive || player.mount._frameState == Mount.FrameInAir || player.mount._frameState == Mount.FrameFlying)
+            if (!modPlayer.equippedParts[MechMod.boosterIndex].IsAir)
             {
-                if (boosterTimer < boosterDuration)
-                    boosterTimer++;
-                if (boosterTimer >= boosterDuration)
+                if (dashPlayer.dashActive || player.mount._frameState == Mount.FrameInAir || player.mount._frameState == Mount.FrameFlying)
                 {
-                    if (dashPlayer.dashActive || player.mount._frameState == Mount.FrameFlying)
+                    if (boosterTimer < boosterDuration)
+                        boosterTimer++;
+                    if (boosterTimer >= boosterDuration)
                     {
-                        SoundEngine.PlaySound(SoundID.Item13, player.position); // Play Rocket Boots/Jetpack sound for Booster use
-                        boosterTimer = 0; // Reset the timer
+                        if (dashPlayer.dashActive || player.mount._frameState == Mount.FrameFlying)
+                        {
+                            SoundEngine.PlaySound(SoundID.Item13, player.position); // Play Rocket Boots/Jetpack sound for Booster use
+                            boosterTimer = 0; // Reset the timer
+                        }
                     }
-                }
 
-                float dustSpeedX = 0;
-                float dustSpeedY = 0;
+                    float dustSpeedX = 0;
+                    float dustSpeedY = 0;
 
-                if (dashPlayer.dashActive)
-                {
-                    dustSpeedX = 5;
-                    dustSpeedY = 0;
-                }
-                else if (player.mount._frameState == Mount.FrameInAir || player.mount._frameState == Mount.FrameFlying)
-                {
-                    dustSpeedX = 0;
-                    dustSpeedY = player.controlJump ? 14 : 8;
-                }
-                else
-                {
-                    dustSpeedX = 0;
-                    dustSpeedY = 0;
-                }
-
-                float dustCenterXLeft = 2;
-                float dustCenterXRight = 8;
-
-                float dustOffsetX = 0;
-
-                for (int i = 0; i < 20; i++)
-                {
-                    switch (i)
+                    if (dashPlayer.dashActive)
                     {
-                        case 0:
-                            dustOffsetX = -8;
-                            break;
-                        case 5:
-                            dustOffsetX = 8;
-                            break;
-                        case 10:
-                            dustOffsetX = -8;
-                            break;
-                        case 15:
-                            dustOffsetX = 8;
-                            break;
+                        dustSpeedX = 5;
+                        dustSpeedY = 0;
                     }
-                    float posX = player.direction == -1 ? player.position.X + dustCenterXLeft + dustOffsetX : player.position.X + dustCenterXRight + dustOffsetX;
-                    float posY = (i < 10) ? player.position.Y - 5 : player.position.Y + 15;
-                    //int dust = Dust.NewDust(new Vector2(posX, posY), 1, 1, DustID.Flare, dustSpeedX, dustSpeedY);
-                    int dust = Dust.NewDust(new Vector2(posX, posY), 1, 1, ModContent.DustType<BoosterDust>(), dustSpeedX, dustSpeedY);
-                    Main.dust[dust].customData = player; // Use custom data to hide dust if behind Mech
+                    else if (player.mount._frameState == Mount.FrameInAir || player.mount._frameState == Mount.FrameFlying)
+                    {
+                        dustSpeedX = 0;
+                        dustSpeedY = player.controlJump ? 14 : 8;
+                    }
+                    else
+                    {
+                        dustSpeedX = 0;
+                        dustSpeedY = 0;
+                    }
+
+                    float dustCenterXLeft = 2;
+                    float dustCenterXRight = 8;
+
+                    float dustOffsetX = 0;
+
+                    for (int i = 0; i < 20; i++)
+                    {
+                        switch (i)
+                        {
+                            case 0:
+                                dustOffsetX = -8;
+                                break;
+                            case 5:
+                                dustOffsetX = 8;
+                                break;
+                            case 10:
+                                dustOffsetX = -8;
+                                break;
+                            case 15:
+                                dustOffsetX = 8;
+                                break;
+                        }
+                        float posX = player.direction == -1 ? player.position.X + dustCenterXLeft + dustOffsetX : player.position.X + dustCenterXRight + dustOffsetX;
+                        float posY = (i < 10) ? player.position.Y - 5 : player.position.Y + 15;
+                        //int dust = Dust.NewDust(new Vector2(posX, posY), 1, 1, DustID.Flare, dustSpeedX, dustSpeedY);
+                        int dust = Dust.NewDust(new Vector2(posX, posY), 1, 1, ModContent.DustType<BoosterDust>(), dustSpeedX, dustSpeedY);
+                        Main.dust[dust].customData = player; // Use custom data to hide dust if behind Mech
+                    }
                 }
             }
             else
@@ -527,15 +530,15 @@ namespace MechMod.Content.Mounts
             {
                 if (player.whoAmI == Main.myPlayer && Main.mouseLeft && Weapons.timer >= Weapons.attackRate) // Attack when ready
                 {
-                    if (Main.MouseWorld.X > player.MountedCenter.X)
-                        modPlayer.useDirection = 1;
-                    else
-                        modPlayer.useDirection = -1;
-                    if (!player.controlLeft || !player.controlRight)
-                        player.direction = modPlayer.useDirection; // Set the player's direction to the last use direction if not controlling horizontal movement
                     weapon.UseAbility(player, mousePosition, toggleOn);
                     if (Weapons.canUse)
                     {
+                        if (Main.MouseWorld.X > player.MountedCenter.X)
+                            modPlayer.useDirection = 1;
+                        else
+                            modPlayer.useDirection = -1;
+                        if (!player.controlLeft || !player.controlRight)
+                            player.direction = modPlayer.useDirection; // Set the player's direction to the last use direction if not controlling horizontal movement
                         Weapons.timer = 0;
                     }
                 }

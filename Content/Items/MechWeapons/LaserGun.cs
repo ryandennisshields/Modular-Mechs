@@ -36,7 +36,7 @@ namespace MechMod.Content.Items.MechWeapons
 
                 int projectileType = ProjectileID.LaserMachinegunLaser;
 
-                int damage = Weapons.DamageCalc(14, player);
+                int damage = Weapons.DamageCalc(24, player);
                 Weapons.CritChanceCalc(4, player);
                 Weapons.attackRate = Weapons.AttackSpeedCalc(22, player);
                 float knockback = Weapons.KnockbackCalc(4, player);
@@ -48,6 +48,12 @@ namespace MechMod.Content.Items.MechWeapons
                 Vector2 direction = (Main.MouseWorld - player.Center) - offset; // new Vector2 corrects the offset to still make it go towards the cursor
                 direction.Normalize(); // Normalize the direction vector to ensure it has a length of 1
                 Vector2 velocity = direction * projSpeed;
+                // Adjust the spawn position to be at the end of the muzzle
+                Vector2 muzzleOffset = Vector2.Normalize(velocity) * 70f;
+                if (Collision.CanHit(player.Center + offset, 0, 0, player.Center + offset + muzzleOffset, 0, 0))
+                {
+                    offset += muzzleOffset;
+                }
 
                 int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.Center + offset, velocity, projectileType, damage, knockback, player.whoAmI);
                 player.CheckMana(manaCost, true);

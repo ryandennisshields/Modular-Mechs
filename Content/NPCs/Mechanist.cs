@@ -136,7 +136,7 @@ namespace MechMod.Content.NPCs
                     continue;
                 }
 
-                if (player.CountItem(ItemID.IronBar) >= 10 || player.CountItem(ItemID.LeadBar) >= 10)
+                if (Condition.DownedEowOrBoc.IsMet())
                 {
                     return true;
                 }
@@ -254,7 +254,7 @@ namespace MechMod.Content.NPCs
 
         public override void AddShops()
         {
-            Condition condition1 = Condition.DownedEowOrBoc;
+            Condition condition1 = Condition.DownedSkeletron;
             Condition condition2 = Condition.Hardmode;
             Condition condition3 = Condition.DownedMechBossAll;
             Condition condition4 = Condition.DownedGolem;

@@ -8,6 +8,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 using MechMod.Content.Items.MechMisc;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MechMod.Common.UI
 {
@@ -71,9 +72,9 @@ namespace MechMod.Common.UI
             Append(mainPanel);
 
             // Exit/Close Button
-            UIPanel closeButton = new UIPanel();
-            closeButton.Width.Set(25, 0);
-            closeButton.Height.Set(25, 0);
+            UIImage closeButton = new UIImage(ModContent.Request<Texture2D>("MechMod/Common/UI/Close"));
+            closeButton.Width.Set(20, 0);
+            closeButton.Height.Set(20, 0);
             closeButton.HAlign = 1f;
             closeButton.OnLeftClick += OnCloseClick;
             mainPanel.Append(closeButton);
@@ -316,12 +317,11 @@ namespace MechMod.Common.UI
             modPlayer.disableMounts = false;
         }
 
-        #region Uprade System
+        #region Upgrade System
 
         // Materials used for each upgrade level, including multiple options for materials that have variants
         private int[][] upgradeRequiredMaterial =
         [
-            [ItemID.DemoniteBar, ItemID.CrimtaneBar],
             [ItemID.HellstoneBar],
             [ItemID.MythrilBar, ItemID.OrichalcumBar],
             [ItemID.HallowedBar],
@@ -333,7 +333,6 @@ namespace MechMod.Common.UI
         // Damage increases for each upgrade level (as a percentage increase, for example 0.70f means 70% increase)
         private float[] upgradeDamageValues =
         [
-            0.70f,
             1.20f,
             1.60f,
             1.60f,
