@@ -7,6 +7,7 @@ using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -400,11 +401,11 @@ namespace MechMod.Common.Players
             return true;
         }
 
-        
-        #region Debugging Booster Dust hiding area
+        #region Debugging Drawing
 
         //public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         //{
+        //    /// Booster Dust hiding area rectangle
         //    Rectangle box = new Rectangle(
         //                (int)(Player.position.X - (Player.direction == -1 ? 22 : 30) - Main.screenPosition.X),
         //                (int)(Player.position.Y - 29 - Main.screenPosition.Y),
@@ -412,11 +413,30 @@ namespace MechMod.Common.Players
         //                106
         //                );
         //    DrawDebugRectangle(box, Color.Red);
+
+        //    /// Inventory Slot rectangles
+        //    float slotSize = 75f * Main.inventoryScale;
+        //    float slotGap = 4f * Main.inventoryScale;
+        //    float startX = 20.5f;
+        //    float startY = 20;
+
+        //    for (int row = 0; row < 5; row++)
+        //    {
+        //        for (int col = 0; col < 10; col++)
+        //        {
+        //            int index = row * 10 + col;
+        //            float x = startX + col * (slotSize + slotGap);
+        //            float y = startY + row * (slotSize + slotGap);
+        //            Rectangle slotRect = new Rectangle((int)x, (int)y, (int)slotSize, (int)slotSize);
+
+        //            Color color = slotRect.Contains(Main.mouseX, Main.mouseY) ? Color.Red : Color.White;
+        //            Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, slotRect, color * 0.5f);
+        //        }
+        //    }
         //}
 
         //private void DrawDebugRectangle(Rectangle rect, Color color)
         //{
-        //    // Use a 1x1 white pixel texture (built-in)
         //    Texture2D pixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
         //    // Top
         //    Main.spriteBatch.Draw(pixel, new Rectangle(rect.X, rect.Y, rect.Width, 2), color);

@@ -86,7 +86,7 @@ namespace MechMod.Common.UI
                 slots[i].Height.Set(32.5f, 0);
                 slots[i].HAlign = 0.25f;
                 slots[i].Top.Set(30 + (i * 40), 0);
-                slots[i].OnLeftClick += slots[i].EquipPart;
+                slots[i].OnLeftClick += slots[i].DropEquipPart;
                 mainPanel.Append(slots[i]);
 
                 slotNames[i].Width.Set(50, 0);
@@ -101,7 +101,7 @@ namespace MechMod.Common.UI
             slots[4].Height.Set(32.5f, 0);
             slots[4].HAlign = 0.25f;
             slots[4].Top.Set(215, 0);
-            slots[4].OnLeftClick += slots[4].EquipPart;
+            slots[4].OnLeftClick += slots[4].DropEquipPart;
             mainPanel.Append(slots[4]);
 
             slotNames[4].Width.Set(50, 0);
@@ -115,7 +115,7 @@ namespace MechMod.Common.UI
             slots[5].Height.Set(32.5f, 0);
             slots[5].HAlign = 0.75f;
             slots[5].Top.Set(215, 0);
-            slots[5].OnLeftClick += slots[5].EquipPart;
+            slots[5].OnLeftClick += slots[5].DropEquipPart;
             mainPanel.Append(slots[5]);
 
             slotNames[5].Width.Set(50, 0);
@@ -131,7 +131,7 @@ namespace MechMod.Common.UI
                 slots[i].Height.Set(32.5f, 0);
                 slots[i].HAlign = 0.175f + (i - 6) * 0.15f;
                 slots[i].Top.Set(290, 0);
-                slots[i].OnLeftClick += slots[i].EquipPart;
+                slots[i].OnLeftClick += slots[i].DropEquipPart;
                 mainPanel.Append(slots[i]);
             }
 
@@ -140,7 +140,7 @@ namespace MechMod.Common.UI
             slots[8].Height.Set(32.5f, 0);
             slots[8].HAlign = 0.75f;
             slots[8].Top.Set(290, 0);
-            slots[8].OnLeftClick += slots[8].EquipPart;
+            slots[8].OnLeftClick += slots[8].DropEquipPart;
             mainPanel.Append(slots[8]);
 
             // Module Text
@@ -223,7 +223,7 @@ namespace MechMod.Common.UI
             {
                 if (!modPlayer.equippedParts[i].IsAir)
                 {
-                    slots[i].item = modPlayer.equippedParts[i];
+                    slots[i].slotItem = modPlayer.equippedParts[i];
                 }
             }
 
@@ -261,6 +261,8 @@ namespace MechMod.Common.UI
             SoundEngine.PlaySound(SoundID.MenuClose);
         }
 
+        #region Update Equipped Parts
+
         // Function for when the player interacts with a Part slot
         private void OnPartSlotInteract(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -269,16 +271,38 @@ namespace MechMod.Common.UI
             // Verify if the slot is empty or if the slot has a Part
             for (int i = 0; i < slots.Length; i++)
             {
-                if (slots[i].item.IsAir)
+                if (slots[i].slotItem.IsAir)
                 {
                     modPlayer.equippedParts[i].TurnToAir();
                 }
                 else
                 {
-                    modPlayer.equippedParts[i] = slots[i].item;
+                    modPlayer.equippedParts[i] = slots[i].slotItem;
                 }
             }
         }
+
+        // Function for when the player right-clicks a Part (so when right-click is used to equip/swap a Part, it updates the equipped Parts properly)
+        public override void RightMouseDown(UIMouseEvent evt)
+        {
+            var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
+
+            // Verify if the slot is empty or if the slot has a Part
+            for (int i = 0; i < slots.Length; i++)
+            {
+                slots[i].RightClickEquipPart();
+                if (slots[i].slotItem.IsAir)
+                {
+                    modPlayer.equippedParts[i].TurnToAir();
+                }
+                else
+                {
+                    modPlayer.equippedParts[i] = slots[i].slotItem;
+                }
+            }
+        }
+
+        #endregion
 
         #region Dragging UI
 

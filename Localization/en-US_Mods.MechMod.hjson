@@ -4,11 +4,11 @@ Items: {
 		Tooltip:
 			'''
 			Enter your Mech
-			Using your Mech drains energy, so you can only use it for a limited time
-			Leaving your Mech will incur a debuff, Mech Fatigue, which reduces your damage, maximum life, and disables your Mech for a duration
-			While inside your Mech, Set Bonuses, Buffs, and Summons are disabled
-			Use a Mech Bench to Equip Parts
-			Head, Body, Arms and Legs must be Equipped to use your Mech!
+			Limited duration
+			Leaving the Mech by any means will incur a Debuff that also disables re-entry for a duration
+			Disables Set Bonuses, Buffs, and Summons
+			Use a Mech Bench to equip Parts
+			Head, Body, Arms and Legs must be equipped!
 			'''
 	}
 
@@ -24,6 +24,7 @@ Items: {
 			One-Time Use
 			Increases Mech duration from 1 minute to 2 minutes
 			Unlocks Booster empty slot health bonus
+			Mechs gain a powered-up appearance
 			'''
 	}
 

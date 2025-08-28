@@ -436,19 +436,46 @@ namespace MechMod.Content.Mounts
 
                 // Apply visuals to the Mech
                 var modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
+
                 if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
-                    modPlayer.headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
+                {
+                    if (!modPlayer.powerCellActive)
+                        modPlayer.headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/Pre{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
+                    else
+                        modPlayer.headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
+                }
                 if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
-                    modPlayer.bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
+                {
+                    if (!modPlayer.powerCellActive)
+                        modPlayer.bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/Pre{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
+                    else
+                        modPlayer.bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
+                }
                 if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
                 {
-                    modPlayer.armsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual").Value;
-                    modPlayer.armsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual").Value;
+                    if (!modPlayer.powerCellActive)
+                    {
+                        modPlayer.armsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/Pre{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual").Value;
+                        modPlayer.armsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/Pre{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual").Value;
+                    }
+                    else
+                    {
+                        modPlayer.armsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual").Value;
+                        modPlayer.armsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual").Value;
+                    }
                 }
                 if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
                 {
-                    modPlayer.legsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual").Value;
-                    modPlayer.legsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}LVisual").Value;
+                    if (!modPlayer.powerCellActive)
+                    {
+                        modPlayer.legsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/Pre{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual").Value;
+                        modPlayer.legsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/Pre{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}LVisual").Value;
+                    }
+                    else
+                    {
+                        modPlayer.legsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual").Value;
+                        modPlayer.legsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}LVisual").Value;
+                    }
                 }
 
                 // Apply visuals to the Mech (TEMPORARY)
