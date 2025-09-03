@@ -1,4 +1,5 @@
-﻿using MechMod.Content.Items.MechWeapons;
+﻿using MechMod.Common.Players;
+using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mounts;
 using Terraria;
 using Terraria.ID;
@@ -18,7 +19,9 @@ namespace MechMod.Content.Items.MechBodies
 
         public void ApplyStats(Player player, ModularMech mech)
         {
-            mech.lifeBonus += 50; // 50 health bonus
+            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
+
+            modPlayer.lifeBonus += 50; // 50 health bonus
             mech.MountData.acceleration *= 1.2f; // 20% faster acceleration
             mech.MountData.runSpeed *= 1.2f; // 20% faster run speed
             mech.MountData.swimSpeed *= 1.2f; // 20% faster swim speed

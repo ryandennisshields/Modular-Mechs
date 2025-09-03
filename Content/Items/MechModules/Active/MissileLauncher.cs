@@ -29,8 +29,7 @@ namespace MechMod.Content.Items.MechModules.Active
         private int missilesFired = 0; // Counter for missiles fired
 
         private int timer;
-        // should be set to 1800
-        private int cooldown = 1800; // Cooldown in frames (30 seconds)
+        private int cooldown = 1200; // Cooldown in frames (20 seconds)
 
         private int delayTimer;
         private int fireDelay = 5; // Delay between missile launches in frames (0.5 seconds)
@@ -40,6 +39,11 @@ namespace MechMod.Content.Items.MechModules.Active
         private int missileKnockback = 10;
         private int missileCount = 5;
         private int missileType = ModContent.ProjectileType<MissileProjectile>();
+
+        public void InitialEffect(ModularMech mech, Player player)
+        {
+            timer = cooldown; // Start off with the ability ready to use
+        }
 
         public void ModuleEffect(ModularMech mech, Player player)
         {

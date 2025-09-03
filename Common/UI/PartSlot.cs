@@ -50,7 +50,7 @@ namespace MechMod.Common.UI
                 // Unique tooltip for an empty Booster slot to indicate the empty Booster slot health bonus
                 if (IsMouseHovering && slotPartType == "booster" && modPlayer.powerCellActive)
                 {
-                    UICommon.TooltipMouseText("Empty\n[c/30FFFF:+100 Health]");
+                    UICommon.TooltipMouseText("Empty\n[c/3030FF:+100 Health]");
                 }
             }
         }

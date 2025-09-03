@@ -19,7 +19,7 @@ namespace MechMod.Content.Items.MechBoosters
 
         public void ApplyStats(Player player, ModularMech mech)
         {
-            mech.lifeBonus = 0;
+            //mech.lifeBonus = 0;
 
             // Flight stats
             mech.MountData.flightTimeMax = 150; // 2.5 seconds of flight time

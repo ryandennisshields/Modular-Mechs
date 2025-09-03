@@ -43,7 +43,7 @@ namespace MechMod.Content.Items.MechWeapons
                 return;
             }
 
-            int damage = Weapons.DamageCalc(34, player);
+            int damage = Weapons.DamageCalc(102, player);
             Weapons.CritChanceCalc(10, player);
             Weapons.attackRate = Weapons.AttackSpeedCalc(55, player);
             float knockback = Weapons.KnockbackCalc(6, player);

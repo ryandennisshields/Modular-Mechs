@@ -20,7 +20,9 @@ namespace MechMod.Content.Items.MechHeads
 
         public void ApplyStats(Player player, ModularMech mech)
         {
-            mech.armourBonus = player.statDefense; // Double the armour
+            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
+
+            modPlayer.armourBonus = player.statDefense / 2; // 1.5x the armour
         }
 
         public void BodyOffsets(Player player, string body)

@@ -20,9 +20,11 @@ namespace MechMod.Content.Items.MechArms
 
         public void ApplyStats(Player player, ModularMech mech)
         {
+            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
+
             Weapons.partDamageBonus += 0.2f; // 20% damage bonus
             Weapons.partCritChanceBonus += 0.1f; // 10% more critical chance
-            mech.lifeBonus -= 25; // 25 health penalty
+            modPlayer.lifeBonus -= 25; // 25 health penalty
         }
 
         public void BodyOffsets(Player player, string body)

@@ -28,6 +28,8 @@ namespace MechMod.Content.Items.MechModules.Passive
         private const float damageBonus = 0.1f; // 10% damage bonus
         private const float speedReduction = 0.9f; // 10% speed reduction
 
+        public void InitialEffect(ModularMech mech, Player player) { }
+
         public void ModuleEffect(ModularMech mech, Player player)
         {
             if (Main.mouseRight && Weapons.DamageClass == DamageClass.Ranged) // If player is holding right-click and the weapon is ranged,

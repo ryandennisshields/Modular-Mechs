@@ -29,6 +29,9 @@ namespace MechMod.Common.Players
         public float upgradeDamageBonus;
         public bool powerCellActive = false;
 
+        public int lifeBonus;
+        public int armourBonus;
+
         public float animationTimer; // Timer for mech weapon animation logic (constantly ticks down)
         public int animationProgress; // Progress for mech weapon animation logic (needs to be manually incremented and decremented)
 
@@ -320,7 +323,7 @@ namespace MechMod.Common.Players
             }
         }
 
-        // These disable the Player's Buffs, specific Debuffs, and any visual effects (For example, set bonus visual effects)
+        // These disable the Player's Set Bonus, specific Debuffs, and any visual effects (For example, set bonus visual effects)
         public void DisablePlayerEffects()
         {
             // Armor Set Bonuses
@@ -345,19 +348,6 @@ namespace MechMod.Common.Players
             Player.cursed = false;
             Player.tongued = false;
             Player.frozen = false;
-
-            // Buffs
-            int mountBuffID = ModContent.BuffType<MechBuff>();
-
-            for (int i = 0; i < Player.buffType.Length; i++)
-            {
-                int buffType = Player.buffType[i];
-
-                if (buffType != 0 && buffType != mountBuffID && !Main.debuff[buffType])
-                {
-                    Player.DelBuff(i);
-                }
-            }
         }
 
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)

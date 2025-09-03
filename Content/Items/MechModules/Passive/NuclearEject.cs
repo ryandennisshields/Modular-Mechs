@@ -27,6 +27,8 @@ namespace MechMod.Content.Items.MechModules.Passive
         private int explosionKnockback = 30;
         private int explosionType = ModContent.ProjectileType<NuclearEjectProjectile>();
 
+        public void InitialEffect(ModularMech mech, Player player) { }
+
         public void ModuleEffect(ModularMech mech, Player player)
         {
             if (Main.myPlayer == player.whoAmI)
@@ -40,7 +42,6 @@ namespace MechMod.Content.Items.MechModules.Passive
                     Weapons.KnockbackCalc(explosionKnockback, player, explosionClass),
                     player.whoAmI
                     );
-                Main.NewText(Weapons.DamageCalc(explosionDamage, player));
             }
             mech.mechDebuffDuration = (int)(mech.mechDebuffDuration * 1.5f); // Increase debuff duration by 50%
             mech.launchForce *= 2; // Double the launch force

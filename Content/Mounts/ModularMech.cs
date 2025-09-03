@@ -49,6 +49,8 @@ namespace MechMod.Content.Mounts
         }
         public ModuleType moduleType { get; }
 
+        void InitialEffect(ModularMech mech, Player player);
+
         void ModuleEffect(ModularMech mech, Player player);
     }
 
@@ -117,19 +119,16 @@ namespace MechMod.Content.Mounts
             }
         }
 
-        public int lifeBonus;
         private bool grantedLifeBonus;
-
-        public int armourBonus;
 
         public override void SetMount(Player player, ref bool skipDust)
         {
             MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
 
             if (modPlayer.powerCellActive) // Give the player the mech buff for a set duration (longer if the player has a power cell active)
-                player.AddBuff(ModContent.BuffType<MechBuff>(), 7200);
+                player.AddBuff(ModContent.BuffType<MechBuff>(), 5400);
             else
-                player.AddBuff(ModContent.BuffType<MechBuff>(), 3600);
+                player.AddBuff(ModContent.BuffType<MechBuff>(), 2700);
 
             SoundEngine.PlaySound(SoundID.Research, player.position); // Play Research sound when mounting the mech
 
@@ -152,6 +151,7 @@ namespace MechMod.Content.Mounts
                 }
                 if (part.ModItem is IMechModule mechModule)
                 {
+                    mechModule.InitialEffect(this, player); // Apply the module's initial effect when mounting
                     if (mechModule.moduleType == IMechModule.ModuleType.OnMount)
                     {
                         mechModule.ModuleEffect(this, player); // Apply the module effect on mount
@@ -171,7 +171,8 @@ namespace MechMod.Content.Mounts
 
             SoundEngine.PlaySound(SoundID.Research, player.position); // Play Research sound when dismounting the mech
 
-            mechDebuffDuration = 900;
+            // Should be 900
+            mechDebuffDuration = 1;
             launchForce = -10;
 
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
@@ -195,8 +196,8 @@ namespace MechMod.Content.Mounts
             player.velocity.Y = launchForce; // Launch the Player upwards
 
             // Reset stat values
-            lifeBonus = 0;
-            armourBonus = 0;
+            modPlayer.lifeBonus = 0;
+            modPlayer.armourBonus = 0;
         }
 
         // Seperate variables for the mount's jump and run speeds for ground and flight states
@@ -229,14 +230,14 @@ namespace MechMod.Content.Mounts
             Effects(player, modPlayer);
 
             // Grant life bonus
-            player.statLifeMax2 += lifeBonus;
+            player.statLifeMax2 += modPlayer.lifeBonus;
             if (grantedLifeBonus == false)
             {
-                player.statLife += lifeBonus; // Increase player's health to match new max health
+                player.statLife += modPlayer.lifeBonus; // Increase player's health to match new max health
                 grantedLifeBonus = true;
             }
             // Grant armour bonus
-            player.statDefense += armourBonus;
+            player.statDefense += modPlayer.armourBonus;
 
             if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon)
             {
@@ -698,7 +699,7 @@ namespace MechMod.Content.Mounts
                 player.GetModPlayer<DashPlayer>().dashVelo = 0f;
 
                 if (modPlayer.powerCellActive)
-                    lifeBonus += 100;
+                    modPlayer.lifeBonus += 100;
             }
             // Apply head stats last as it can have multiplicative effects
             if (!equippedHead.IsAir)

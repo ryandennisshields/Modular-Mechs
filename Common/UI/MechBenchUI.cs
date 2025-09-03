@@ -198,13 +198,13 @@ namespace MechMod.Common.UI
             mainPanel.Append(playerLevel);
 
             // Debugging Reset Button
-            //UIPanel resetButton = new UIPanel();
-            //resetButton.Width.Set(25, 0);
-            //resetButton.Height.Set(25, 0);
-            //resetButton.Left.Set(225, 0);
-            //resetButton.Top.Set(140, 0);
-            //resetButton.OnLeftClick += OnResetButtonClick;
-            //mainPanel.Append(resetButton);
+            UIPanel resetButton = new UIPanel();
+            resetButton.Width.Set(25, 0);
+            resetButton.Height.Set(25, 0);
+            resetButton.Left.Set(225, 0);
+            resetButton.Top.Set(140, 0);
+            resetButton.OnLeftClick += OnResetButtonClick;
+            mainPanel.Append(resetButton);
         }
 
         #endregion
@@ -350,6 +350,7 @@ namespace MechMod.Common.UI
             [ItemID.MythrilBar, ItemID.OrichalcumBar],
             [ItemID.HallowedBar],
             [ItemID.ChlorophyteBar],
+            [ItemID.FragmentNebula, ItemID.FragmentSolar, ItemID.FragmentStardust, ItemID.FragmentVortex],
             [ItemID.LunarBar]
         ];
         private int upgradeCost = 20; // Cost of each resource required for each upgrade
@@ -357,11 +358,12 @@ namespace MechMod.Common.UI
         // Damage increases for each upgrade level (as a percentage increase, for example 0.70f means 70% increase)
         private float[] upgradeDamageValues =
         [
-            1.20f,
-            1.60f,
-            1.60f,
-            2.65f,
-            18.80f
+            1.50f,
+            2.00f,
+            1.80f,
+            3.00f,
+            2.00f,
+            22.55f
         ];
 
         // Function for when the player clicks the upgrade button
@@ -446,20 +448,27 @@ namespace MechMod.Common.UI
                 // Create a string for the requirement text
                 string requirementText = $"{upgradeCost}x ";
 
-                // Loop through materials and display them
-                for (int i = 0; i < currentMaterials.Length; i++)
+                // Specific text for Fragments
+                if (modPlayer.upgradeLevel == 4)
                 {
-                    int materialID = currentMaterials[i];
-
-                    // Add material name to the requirement text
-                    requirementText += Lang.GetItemNameValue(materialID);
-
-                    if (i < currentMaterials.Length - 1) // If there is multiple upgrade materials for one upgrade,
+                    requirementText += "any Lunar\nFragment";
+                }
+                else
+                {
+                    // Loop through materials and display them
+                    for (int i = 0; i < currentMaterials.Length; i++)
                     {
-                        requirementText += "\nor "; // Add "or" between them
+                        int materialID = currentMaterials[i];
+                        // Add material name to the requirement text
+                        requirementText += Lang.GetItemNameValue(materialID);
+
+                        if (i < currentMaterials.Length - 1) // If there is multiple upgrade materials for one upgrade,
+                        {
+                            requirementText += "\nor "; // Add "or" between them
+                        }
+
                     }
                 }
-
                 upgradeCostText.SetText(requirementText); // Display the upgrade requirements
             }
             else // If the player has went to the maximum upgrade level,
@@ -473,18 +482,13 @@ namespace MechMod.Common.UI
 
         #region Debugging Reset Button
 
-        //private void OnResetButtonClick(UIMouseEvent evt, UIElement listeningElement)
-        //{
-        //    var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
-        //    modPlayer.upgradeLevel = 0;
-        //    modPlayer.upgradeDamageBonus = 0.0f;
-        //    Main.NewText("Player Reset");
-
-        //    if (slots[MechMod.weaponIndex].item.ModItem is IMechWeapon weapon)
-        //    {
-
-        //    }
-        //}
+        private void OnResetButtonClick(UIMouseEvent evt, UIElement listeningElement)
+        {
+            var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
+            modPlayer.upgradeLevel = 0;
+            modPlayer.upgradeDamageBonus = 0.0f;
+            Main.NewText("Player Reset");
+        }
 
         #endregion
     }

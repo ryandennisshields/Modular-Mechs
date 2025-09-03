@@ -28,6 +28,11 @@ namespace MechMod.Content.Items.MechModules.Active
         // should be set to 1800
         private int cooldown = 1800; // Cooldown in frames (30 seconds)
 
+        public void InitialEffect(ModularMech mech, Player player)
+        {
+            timer = cooldown; // Start off with the ability ready to use
+        }
+
         public void ModuleEffect(ModularMech mech, Player player)
         {
             if (MechMod.MechActivateModule.JustPressed && timer >= cooldown)

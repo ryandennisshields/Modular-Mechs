@@ -1,10 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zAAFzwga90U=",
+  "dgSpecHash": "AqkYyGySUyo=",
   "success": true,
   "projectFilePath": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\MechMod.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\ryan0\\.nuget\\packages\\tmodloader.codeassist\\0.1.5\\tmodloader.codeassist.0.1.5.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

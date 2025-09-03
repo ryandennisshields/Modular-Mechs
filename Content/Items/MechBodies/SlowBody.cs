@@ -1,4 +1,5 @@
-﻿using MechMod.Content.Items.MechWeapons;
+﻿using MechMod.Common.Players;
+using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mounts;
 using Terraria;
 using Terraria.ID;
@@ -18,7 +19,9 @@ namespace MechMod.Content.Items.MechBodies
 
         public void ApplyStats(Player player, ModularMech mech)
         {
-            mech.lifeBonus += 150; // 150 health bonus
+            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
+
+            modPlayer.lifeBonus += 150; // 150 health bonus
             Weapons.partDamageBonus -= 0.1f; // 10% damage reduction
         }
 

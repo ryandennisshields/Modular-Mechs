@@ -23,6 +23,8 @@ namespace MechMod.Content.Items.MechModules.Passive
         public ModuleSlot moduleSlot => ModuleSlot.Passive; // Passive slot
         public ModuleType moduleType => ModuleType.Persistent; // Persistent effect
 
+        public void InitialEffect(ModularMech mech, Player player) { }
+
         public void ModuleEffect(ModularMech mech, Player player)
         {
             if (player.mount._frameState == Mount.FrameFlying) // If player is flying,

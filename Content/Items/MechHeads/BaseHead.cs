@@ -20,7 +20,9 @@ namespace MechMod.Content.Items.MechHeads
 
         public void ApplyStats(Player player, ModularMech mech)
         {
-            mech.lifeBonus += 50; // 50 health bonus
+            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
+
+            modPlayer.lifeBonus += 50; // 50 health bonus
             Weapons.partDamageBonus += 0.10f; // 10% damage bonus
         }
 

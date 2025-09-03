@@ -18,7 +18,9 @@ namespace MechMod.Content.Items.MechBodies
 
         public void ApplyStats(Player player, ModularMech mech)
         {
-            mech.lifeBonus += 100; // 100 health bonus
+            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
+
+            modPlayer.lifeBonus += 100; // 100 health bonus
         }
 
         public void BodyOffsets(Player player, string body) { }

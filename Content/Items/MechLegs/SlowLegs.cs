@@ -20,7 +20,9 @@ namespace MechMod.Content.Items.MechLegs
 
         public void ApplyStats(Player player, ModularMech mech)
         {
-            mech.lifeBonus += 100; // 100 health bonus
+            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
+
+            modPlayer.lifeBonus += 100; // 100 health bonus
 
             // Ground stats
             mech.MountData.acceleration = 0.1f;

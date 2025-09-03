@@ -1,4 +1,5 @@
-﻿using MechMod.Content.Items.MechWeapons;
+﻿using MechMod.Common.Players;
+using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mounts;
 using Terraria;
 using Terraria.ID;
@@ -19,7 +20,9 @@ namespace MechMod.Content.Items.MechBoosters
 
         public void ApplyStats(Player player, ModularMech mech)
         {
-            mech.lifeBonus -= 50; // 50 health penalty
+            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
+
+            modPlayer.lifeBonus -= 50; // 50 health penalty
 
             // Flight stats
             mech.MountData.flightTimeMax = 105; // 1.75 seconds of flight time

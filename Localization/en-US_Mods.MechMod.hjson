@@ -6,7 +6,7 @@ Items: {
 			Enter your Mech
 			Limited duration
 			Leaving the Mech by any means will incur a Debuff that also disables re-entry for a duration
-			Disables Set Bonuses, Buffs, and Summons
+			Disables Set Bonuses
 			Use a Mech Bench to equip Parts
 			Head, Body, Arms and Legs must be equipped!
 			'''
@@ -22,7 +22,7 @@ Items: {
 		Tooltip:
 			'''
 			One-Time Use
-			Increases Mech duration from 1 minute to 2 minutes
+			Increases Mech duration from 45 seconds to 90 seconds
 			Unlocks Booster empty slot health bonus
 			Mechs gain a powered-up appearance
 			'''
@@ -99,7 +99,7 @@ Items: {
 		Tooltip:
 			'''
 			Head Part
-			[c/3030FF:2x Armour]
+			[c/3030FF:1.5x Armour]
 			'''
 	}
 
@@ -226,7 +226,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			15 ranged damage
+			18 ranged damage
 			7% critcal strike chance
 			Very fast speed
 			Weak knockback
@@ -239,7 +239,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			32 melee damage
+			38 melee damage
 			4% critcal strike chance
 			Average speed
 			Strong knockback
@@ -252,7 +252,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			24 magic damage
+			29 magic damage
 			4% critcal strike chance
 			Fast speed
 			Weak knockback
@@ -266,7 +266,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			14 melee damage
+			17 melee damage
 			6% critcal strike chance
 			Very fast speed
 			Average knockback
@@ -279,7 +279,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			34 ranged damage
+			41 ranged damage
 			10% critcal strike chance
 			Extremely slow speed
 			Average knockback
@@ -349,7 +349,7 @@ Items: {
 			Module
 			[c/FF3030:Active]
 			Fires a barrage of missiles that fly upwards before homing in on the nearest enemy to them
-			30s Cooldown
+			20s Cooldown
 			'''
 	}
 
@@ -437,14 +437,13 @@ NPCs: {
 			StandardDialogue1: I would pilot my own baby with you, but mine is too powerful for this world...
 			StandardDialogue2: I know, I know, my designs aren't exactly the most comfortable or ergonomic, but this stuff is expensive!
 			StandardDialogue3: You're lucky this world is full of resources, I would be charging way more otherwise.
-			Tip1: Although many effects don't work inside the Mech, you still get the benefits of certain accessories, and any stat bonuses from accessories or armor. Keep in mind what you equip!
-			Tip2: You are immune to knockback, specific debuffs and dismounting debuffs inside the Mech.
-			Tip3: Leaving the Mech while it's active or having it run out of duration will leave you with Mech Fatigue, which reduces your damage, maximum life, and disables your Mech for a duration.
-			Tip4: Mechs will eject you and save you from death if you die inside it, but you will be left with little health and a long Mech Fatigue debuff!
-			Tip5: The duration of Mech Fatigue is affected by the amount of health you have when you leave your Mech, the lower health, the longer the duration.
-			Tip6: Boosters are a Mech Part that allows you to fly, dash (using the Mech Dash binding), or even both. You unlock them after entering Hardmode.
-			Tip7: Passive Modules can be unlocked after defeating all of the mechanical bosses, and offer unique effects that enhance your Mech.
-			Tip8: Active Modules can be unlocked after defeating the Golem, and allow you to use powerful abilities (using the Mech Activate Module binding) while inside your Mech.
+			Tip1: You are immune to knockback, specific debuffs and dismounting debuffs inside the Mech.
+			Tip2: Leaving the Mech while it's active or having it run out of duration will leave you with Mech Fatigue, which reduces your damage, maximum life, and disables your Mech for a duration.
+			Tip3: Mechs will eject you and save you from death if you die inside it, but you will be left with little health and a long Mech Fatigue debuff!
+			Tip4: The duration of Mech Fatigue is affected by the amount of health you have when you leave your Mech, the lower health, the longer the duration.
+			Tip5: Boosters are a Mech Part that allows you to fly, dash (using the Mech Dash binding), or even both. You unlock them after entering Hardmode.
+			Tip6: Passive Modules can be unlocked after defeating all of the mechanical bosses, and offer unique effects that enhance your Mech.
+			Tip7: Active Modules can be unlocked after defeating the Golem, and allow you to use powerful abilities (using the Mech Activate Module binding) while inside your Mech.
 		}
 
 		Census.SpawnCondition: Defeat Eater of Worlds or Brain of Cthulhu

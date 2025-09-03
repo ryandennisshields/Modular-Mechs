@@ -136,7 +136,7 @@ namespace MechMod.Content.NPCs
                     continue;
                 }
 
-                if (Condition.DownedEowOrBoc.IsMet())
+                if (NPC.downedBoss2)
                 {
                     return true;
                 }
@@ -233,7 +233,7 @@ namespace MechMod.Content.NPCs
         }
 
         private int tipIndex = 0;
-        private int tipCount = 8;
+        private int tipCount = 7;
 
         public override void OnChatButtonClicked(bool firstButton, ref string shop)
         {
@@ -256,7 +256,7 @@ namespace MechMod.Content.NPCs
         {
             Condition condition1 = Condition.DownedSkeletron;
             Condition condition2 = Condition.Hardmode;
-            Condition condition3 = Condition.DownedMechBossAll;
+            Condition condition3 = Condition.DownedMechBossAny;
             Condition condition4 = Condition.DownedGolem;
 
             var npcShop = new NPCShop(Type, shopName)
@@ -359,16 +359,6 @@ namespace MechMod.Content.NPCs
             item = TextureAssets.Item[ItemID.Minishark].Value;
             Main.GetItemDrawFrame(ItemID.Minishark, out item, out itemFrame);
             horizontalHoldoutOffset = (int)Main.DrawPlayerItemPos(1f, ItemID.Minishark).X - 20;
-        }
-
-        public override void LoadData(TagCompound tag)
-        {
-            numberOfTimesTalkedTo = tag.GetInt("numberOfTimesTalkedTo");
-        }
-
-        public override void SaveData(TagCompound tag)
-        {
-            tag["numberOfTimesTalkedTo"] = numberOfTimesTalkedTo;
         }
 
         // Let the NPC "talk about" minion boss

@@ -36,7 +36,7 @@ namespace MechMod.Content.Items.MechWeapons
 
                 int projectileType = ProjectileID.LaserMachinegunLaser;
 
-                int damage = Weapons.DamageCalc(24, player);
+                int damage = Weapons.DamageCalc(66, player);
                 Weapons.CritChanceCalc(4, player);
                 Weapons.attackRate = Weapons.AttackSpeedCalc(22, player);
                 float knockback = Weapons.KnockbackCalc(4, player);
