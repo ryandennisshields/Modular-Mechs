@@ -16,7 +16,7 @@ namespace MechMod.Content.Items.MechModules.Passive
         {
             Item.width = 20; // The width of the item's hitbox in pixels.
             Item.height = 20; // The height of the item's hitbox in pixels.
-            Item.value = Item.buyPrice(gold: 10);
+            Item.value = Item.buyPrice(gold: 4);
             Item.rare = 3; // The rarity of the item.
         }
 

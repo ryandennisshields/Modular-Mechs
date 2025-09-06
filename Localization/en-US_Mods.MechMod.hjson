@@ -52,7 +52,10 @@ Items: {
 		Tooltip:
 			'''
 			Body Part
-			[c/3030FF:+100 Health]
+			[c/3030FF:+50 Health]
+			[c/3030FF:1.25x Head Effectiveness]
+			[c/3030FF:1.25x Arms Effectiveness]
+			[c/3030FF:1.25x Legs Effectiveness]
 			'''
 	}
 
@@ -70,7 +73,7 @@ Items: {
 		Tooltip:
 			'''
 			Legs Part
-			[c/3030FF:+50 Health]
+			[c/3030FF:+100 Health]
 			[c/969696:Ground Stats]
 			Medium Acceleration
 			Medium Speed
@@ -108,8 +111,9 @@ Items: {
 		Tooltip:
 			'''
 			Body Part
-			[c/3030FF:+150 Health]
-			[c/FF3030:-10% Damage]
+			[c/3030FF:+100 Health]
+			[c/3030FF:2x Head Effectiveness]
+			[c/FF3030:0.75x Legs Effectiveness]
 			'''
 	}
 
@@ -129,7 +133,7 @@ Items: {
 		Tooltip:
 			'''
 			Legs Part
-			[c/3030FF:+100 Health]
+			[c/3030FF:+150 Health]
 			[c/969696:Ground Stats]
 			Medium Acceleration
 			[c/FF3030:Low Speed]
@@ -168,9 +172,9 @@ Items: {
 		Tooltip:
 			'''
 			Body Part
-			[c/3030FF:+50 Health]
-			[c/3030FF:+20% Acceleration]
-			[c/3030FF:+20% Speed]
+			[c/3030FF:+25 Health]
+			[c/3030FF:1.5x Legs Effectiveness]
+			[c/FF3030:0.75x Arms Effectiveness]
 			'''
 	}
 
@@ -190,7 +194,7 @@ Items: {
 		Tooltip:
 			'''
 			Legs Part
-			[c/3030FF:+25 Health]
+			[c/3030FF:+50 Health]
 			[c/969696:Ground Stats]
 			[c/3030FF:High Acceleration]
 			[c/3030FF:High Speed]
@@ -226,7 +230,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			18 ranged damage
+			40 ranged damage
 			7% critcal strike chance
 			Very fast speed
 			Weak knockback
@@ -239,7 +243,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			38 melee damage
+			100 melee damage
 			4% critcal strike chance
 			Average speed
 			Strong knockback
@@ -252,7 +256,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			29 magic damage
+			66 magic damage
 			4% critcal strike chance
 			Fast speed
 			Weak knockback
@@ -266,7 +270,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			17 melee damage
+			32 melee damage
 			6% critcal strike chance
 			Very fast speed
 			Average knockback
@@ -279,7 +283,7 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			41 ranged damage
+			102 ranged damage
 			10% critcal strike chance
 			Extremely slow speed
 			Average knockback
@@ -442,8 +446,7 @@ NPCs: {
 			Tip3: Mechs will eject you and save you from death if you die inside it, but you will be left with little health and a long Mech Fatigue debuff!
 			Tip4: The duration of Mech Fatigue is affected by the amount of health you have when you leave your Mech, the lower health, the longer the duration.
 			Tip5: Boosters are a Mech Part that allows you to fly, dash (using the Mech Dash binding), or even both. You unlock them after entering Hardmode.
-			Tip6: Passive Modules can be unlocked after defeating all of the mechanical bosses, and offer unique effects that enhance your Mech.
-			Tip7: Active Modules can be unlocked after defeating the Golem, and allow you to use powerful abilities (using the Mech Activate Module binding) while inside your Mech.
+			Tip6: Part Effectiveness on Body Parts makes the effects of other Parts stronger, but it also makes negative effects weaker too. This applies vice versa if Part Effectiveness is lower than 1!
 		}
 
 		Census.SpawnCondition: Defeat Eater of Worlds or Brain of Cthulhu

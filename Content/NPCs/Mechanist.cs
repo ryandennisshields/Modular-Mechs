@@ -233,7 +233,7 @@ namespace MechMod.Content.NPCs
         }
 
         private int tipIndex = 0;
-        private int tipCount = 7;
+        private int tipCount = 6;
 
         public override void OnChatButtonClicked(bool firstButton, ref string shop)
         {
@@ -260,7 +260,7 @@ namespace MechMod.Content.NPCs
             Condition condition4 = Condition.DownedGolem;
 
             var npcShop = new NPCShop(Type, shopName)
-                    // Base (Parts = 1 Gold, Weapons = 2 Gold)
+                    // Base (Parts = 1 Gold, Weapons = 2 Gold, Passive Modules = 4 Gold, Active Modules = 8 Gold)
                     .Add<Items.MechMisc.MechSpawner>()
                     .Add<Items.MechMisc.MechBench>()
                     .Add<Items.MechHeads.BaseHead>()
@@ -269,13 +269,19 @@ namespace MechMod.Content.NPCs
                     .Add<Items.MechLegs.BaseLegs>()
                     .Add<Items.MechWeapons.BaseGun>()
                     .Add<Items.MechWeapons.BaseSword>()
+                    .Add<Items.MechModules.Passive.Brace>()
+                    .Add<Items.MechModules.Passive.Hover>()
+                    .Add<Items.MechModules.Passive.NuclearEject>()
+                    .Add<Items.MechModules.Passive.Spikes>()
+                    .Add<Items.MechModules.Active.MissileLauncher>()
+                    .Add<Items.MechModules.Active.Repair>()
                     // Condition 1 (Parts = 2 Gold, Weapons = 4 Gold)
                     .Add<Items.MechHeads.FastHead>(condition1)
                     .Add<Items.MechBodies.FastBody>(condition1)
                     .Add<Items.MechArms.FastArms>(condition1)
                     .Add<Items.MechLegs.FastLegs>(condition1)
                     .Add<Items.MechWeapons.LaserGun>(condition1)
-                    // Condition 2 (Parts = 4 Gold, Boosters = 20 Gold, Weapons = 8 Gold)
+                    // Condition 2 (Parts = 4 Gold, Boosters = 10 Gold, Weapons = 8 Gold)
                     .Add<Items.MechMisc.PowerCell>(condition2)
                     .Add<Items.MechHeads.SlowHead>(condition2)
                     .Add<Items.MechBodies.SlowBody>(condition2)
@@ -284,16 +290,16 @@ namespace MechMod.Content.NPCs
                     .Add<Items.MechBoosters.BaseBooster>(condition2)
                     .Add<Items.MechBoosters.FastBooster>(condition2)
                     .Add<Items.MechBoosters.SlowBooster>(condition2)
-                    .Add<Items.MechWeapons.BaseLauncher>(condition2)
                     .Add<Items.MechWeapons.ProjSword>(condition2)
-                    // Condition 3 (Modules = 10 Gold)
-                    .Add<Items.MechModules.Passive.Brace>(condition3)
-                    .Add<Items.MechModules.Passive.Hover>(condition3)
-                    .Add<Items.MechModules.Passive.NuclearEject>(condition3)
-                    .Add<Items.MechModules.Passive.Spikes>(condition3)
-                    // Condition 4 (Modules = 20 Gold)
-                    .Add<Items.MechModules.Active.MissileLauncher>(condition4)
-                    .Add<Items.MechModules.Active.Repair>(condition4)
+                                        // Condition 3
+                                        //.Add<Items.MechModules.Passive.Brace>(condition3)
+                                        //.Add<Items.MechModules.Passive.Hover>(condition3)
+                                        //.Add<Items.MechModules.Passive.NuclearEject>(condition3)
+                                        //.Add<Items.MechModules.Passive.Spikes>(condition3)
+                                        // Condition 4
+                                        .Add<Items.MechWeapons.BaseLauncher>(condition4)
+                    //.Add<Items.MechModules.Active.MissileLauncher>(condition4)
+                    //.Add<Items.MechModules.Active.Repair>(condition4)
                     ;
             npcShop.Register();
         }

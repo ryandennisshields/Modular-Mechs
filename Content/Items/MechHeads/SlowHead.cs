@@ -18,11 +18,9 @@ namespace MechMod.Content.Items.MechHeads
             Item.rare = 2; // The rarity of the item.
         }
 
-        public void ApplyStats(Player player, ModularMech mech)
+        public void ApplyStats(Player player, MechModPlayer modPlayer, ModularMech mech)
         {
-            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
-
-            modPlayer.armourBonus = player.statDefense / 2; // 1.5x the armour
+            modPlayer.armourBonus = (player.statDefense / 2) * modPlayer.partEffectiveness[MechMod.headIndex]; // 1.5x the armour
         }
 
         public void BodyOffsets(Player player, string body)

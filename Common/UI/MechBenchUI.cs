@@ -358,12 +358,12 @@ namespace MechMod.Common.UI
         // Damage increases for each upgrade level (as a percentage increase, for example 0.70f means 70% increase)
         private float[] upgradeDamageValues =
         [
-            1.50f,
-            2.00f,
-            1.80f,
-            3.00f,
-            2.00f,
-            22.55f
+            0.20f,
+            0.25f,
+            0.50f,
+            0.50f,
+            3.50f,
+            3.00f
         ];
 
         // Function for when the player clicks the upgrade button

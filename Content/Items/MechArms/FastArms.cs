@@ -18,13 +18,11 @@ namespace MechMod.Content.Items.MechArms
             Item.rare = 2; // The rarity of the item.
         }
 
-        public void ApplyStats(Player player, ModularMech mech)
+        public void ApplyStats(Player player, MechModPlayer modPlayer, ModularMech mech)
         {
-            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
-
-            Weapons.partDamageBonus += 0.2f; // 20% damage bonus
-            Weapons.partCritChanceBonus += 0.1f; // 10% more critical chance
-            modPlayer.lifeBonus -= 25; // 25 health penalty
+            Weapons.partDamageBonus += 0.2f * modPlayer.partEffectiveness[MechMod.armsIndex]; // 20% damage bonus
+            Weapons.partCritChanceBonus += 0.1f * modPlayer.partEffectiveness[MechMod.armsIndex]; // 10% more critical chance
+            modPlayer.lifeBonus -= (int)(25 / modPlayer.partEffectiveness[MechMod.armsIndex]); // 25 health penalty
         }
 
         public void BodyOffsets(Player player, string body)

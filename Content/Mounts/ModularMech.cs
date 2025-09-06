@@ -18,7 +18,7 @@ namespace MechMod.Content.Mounts
 {
     public interface IMechParts
     {
-        void ApplyStats(Player player, ModularMech mech);
+        void ApplyStats(Player player, MechModPlayer modPlayer, ModularMech mech);
 
         void BodyOffsets(Player player, string body);
 
@@ -664,7 +664,7 @@ namespace MechMod.Content.Mounts
 
         public void ApplyPartStats(Player player, Item equippedHead, Item equippedBody, Item equippedArms, Item equippedLegs, Item equippedBooster)
         {
-            var modPlayer = player.GetModPlayer<MechModPlayer>();
+            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
 
             // Reset weapon stats that are added/multiplied before applying new ones
             Weapons.partDamageBonus = 0f;
@@ -672,39 +672,45 @@ namespace MechMod.Content.Mounts
             Weapons.partAttackSpeedBonus = 0f;
             Weapons.partKnockbackBonus = 0f;
 
+            for (int i = 0; i < modPlayer.partEffectiveness.Length; i++)
+            {
+                modPlayer.partEffectiveness[i] = 1f; // Reset part effectiveness multipliers
+            }
+            // Apply body stats first as it increases and decreases the effectivness of other parts
             if (!equippedBody.IsAir)
                 if (modPlayer.equippedParts[MechMod.bodyIndex].ModItem is IMechParts body)
-                    body.ApplyStats(player, this);
+                    body.ApplyStats(player, modPlayer, this);
+
             if (!equippedArms.IsAir)
                 if (modPlayer.equippedParts[MechMod.armsIndex].ModItem is IMechParts arms)
-                    arms.ApplyStats(player, this);
+                    arms.ApplyStats(player, modPlayer, this);
             if (!equippedLegs.IsAir)
                 if (modPlayer.equippedParts[MechMod.legsIndex].ModItem is IMechParts legs)
-                    legs.ApplyStats(player, this);
+                    legs.ApplyStats(player, modPlayer, this);
+
+            MountData.flightTimeMax = 0;
+            flightHorizontalSpeed = 0f;
+            flightJumpSpeed = 0f;
+            player.GetModPlayer<DashPlayer>().ableToDash = false;
+            player.GetModPlayer<DashPlayer>().dashCoolDown = 0;
+            player.GetModPlayer<DashPlayer>().dashDuration = 0;
+            player.GetModPlayer<DashPlayer>().dashVelo = 0f;
             if (!equippedBooster.IsAir)
             {
                 if (modPlayer.equippedParts[MechMod.boosterIndex].ModItem is IMechParts booster)
-                    booster.ApplyStats(player, this);
+                    booster.ApplyStats(player, modPlayer, this);
             }
             else
             {
                 // Unique as a player can go without a Booster, but the other Parts are required
-
-                MountData.flightTimeMax = 0;
-                MountData.usesHover = false;
-
-                player.GetModPlayer<DashPlayer>().ableToDash = false;
-                player.GetModPlayer<DashPlayer>().dashCoolDown = 0;
-                player.GetModPlayer<DashPlayer>().dashDuration = 0;
-                player.GetModPlayer<DashPlayer>().dashVelo = 0f;
-
                 if (modPlayer.powerCellActive)
                     modPlayer.lifeBonus += 100;
             }
+
             // Apply head stats last as it can have multiplicative effects
             if (!equippedHead.IsAir)
                 if (modPlayer.equippedParts[MechMod.headIndex].ModItem is IMechParts head)
-                    head.ApplyStats(player, this);
+                    head.ApplyStats(player, modPlayer, this);
         }
 
         public class DashPlayer : ModPlayer

@@ -18,19 +18,17 @@ namespace MechMod.Content.Items.MechLegs
             Item.rare = 2; // The rarity of the item.
         }
 
-        public void ApplyStats(Player player, ModularMech mech)
+        public void ApplyStats(Player player, MechModPlayer modPlayer, ModularMech mech)
         {
-            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
-
-            modPlayer.lifeBonus += 50; // 50 health bonus
+            modPlayer.lifeBonus += (int)(100 * modPlayer.partEffectiveness[MechMod.legsIndex]); // 100 health bonus
 
             // Ground stats
-            mech.MountData.acceleration = 0.1f;
-            mech.groundHorizontalSpeed = 4f;
+            mech.MountData.acceleration = 0.1f * modPlayer.partEffectiveness[MechMod.legsIndex];
+            mech.groundHorizontalSpeed = 4f * modPlayer.partEffectiveness[MechMod.legsIndex];
 
             // Jumping stats
-            mech.MountData.jumpHeight = 10;
-            mech.groundJumpSpeed = 8f;
+            mech.MountData.jumpHeight = (int)(10 * modPlayer.partEffectiveness[MechMod.legsIndex]);
+            mech.groundJumpSpeed = 8f * modPlayer.partEffectiveness[MechMod.legsIndex];
         }
 
         public void BodyOffsets(Player player, string body)

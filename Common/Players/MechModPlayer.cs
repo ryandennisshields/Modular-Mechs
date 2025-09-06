@@ -29,6 +29,8 @@ namespace MechMod.Common.Players
         public float upgradeDamageBonus;
         public bool powerCellActive = false;
 
+        public float[] partEffectiveness = new float[9];
+
         public int lifeBonus;
         public int armourBonus;
 

@@ -17,12 +17,13 @@ namespace MechMod.Content.Items.MechBodies
             Item.rare = 2; // The rarity of the item.
         }
 
-        public void ApplyStats(Player player, ModularMech mech)
+        public void ApplyStats(Player player, MechModPlayer modPlayer, ModularMech mech)
         {
-            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
+            modPlayer.lifeBonus += 100; // 100 health bonus
+            //Weapons.partDamageBonus -= 0.1f; // 10% damage reduction
 
-            modPlayer.lifeBonus += 150; // 150 health bonus
-            Weapons.partDamageBonus -= 0.1f; // 10% damage reduction
+            modPlayer.partEffectiveness[MechMod.headIndex] = 2f; // 2x effectiveness for head
+            modPlayer.partEffectiveness[MechMod.legsIndex] = 0.75f; // 0.75x effectiveness for legs
         }
 
         public void BodyOffsets(Player player, string body) { }

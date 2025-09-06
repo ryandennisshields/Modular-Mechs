@@ -18,9 +18,9 @@ namespace MechMod.Content.Items.MechHeads
             Item.rare = 2; // The rarity of the item.
         }
 
-        public void ApplyStats(Player player, ModularMech mech)
+        public void ApplyStats(Player player, MechModPlayer modPlayer, ModularMech mech)
         {
-            Weapons.partCritChanceBonus *= 2f; // Double critical chance
+            Weapons.partCritChanceBonus *= 2f * modPlayer.partEffectiveness[MechMod.headIndex]; // Double critical chance
         }
 
         public void BodyOffsets(Player player, string body)

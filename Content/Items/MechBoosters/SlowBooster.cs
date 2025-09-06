@@ -14,21 +14,17 @@ namespace MechMod.Content.Items.MechBoosters
         {
             Item.width = 20; // The width of the item's hitbox in pixels.
             Item.height = 20; // The height of the item's hitbox in pixels.
-            Item.value = Item.buyPrice(gold: 20);
+            Item.value = Item.buyPrice(gold: 10);
             Item.rare = 2; // The rarity of the item.
         }
 
-        public void ApplyStats(Player player, ModularMech mech)
+        public void ApplyStats(Player player, MechModPlayer modPlayer, ModularMech mech)
         {
-            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
-
             modPlayer.lifeBonus += 50; // 50 health bonus
-
-            mech.MountData.flightTimeMax = 0;
 
             // Allow dashing
             player.GetModPlayer<DashPlayer>().ableToDash = true;
-            player.GetModPlayer<DashPlayer>().dashVelo = 15f;
+            player.GetModPlayer<DashPlayer>().dashVelo = 15f * modPlayer.partEffectiveness[MechMod.boosterIndex];
             player.GetModPlayer<DashPlayer>().dashCoolDown = 90; // 1.5 seconds of cooldown
             player.GetModPlayer<DashPlayer>().dashDuration = 60; // 1 second of dash duration
         }
