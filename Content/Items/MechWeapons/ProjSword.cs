@@ -19,7 +19,7 @@ namespace MechMod.Content.Items.MechWeapons
             Item.width = 20; // The width of the item's hitbox in pixels.
             Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 8);
-            Item.rare = 3; // The rarity of the item.
+            Item.rare = ItemRarityID.Orange; // The rarity of the item.
         }
 
         public void SetStats(Player player)
@@ -45,7 +45,7 @@ namespace MechMod.Content.Items.MechWeapons
                 Main.projectile[projID].timeLeft = (int)Weapons.attackRate; // Decreases each tick
             }
             float projSpeed = 10;
-            Vector2 offset = new Vector2(0, -42); // Offset to adjust the projectile's spawn position relative to the mech's center
+            Vector2 offset = new(0, -42); // Offset to adjust the projectile's spawn position relative to the mech's center
             Vector2 direction = (Main.MouseWorld - player.Center) - offset; // new Vector2 corrects the offset to still make it go towards the cursor
             direction.Normalize(); // Normalize the direction vector to ensure it has a length of 1
             Vector2 velocity = direction * projSpeed;
@@ -87,14 +87,14 @@ namespace MechMod.Content.Items.MechWeapons
             float progress = 1f - (Projectile.timeLeft / swingDuration); // Progress goes from 1 to 0 as the projectile time decreases
 
             // Changed the position of the hitbox as it goes through the swing
-            Vector2 position = new Vector2(0, 0);
+            Vector2 position;
 
             if (progress <= 0.33)
-                position = new Vector2(-30 * modPlayer.useDirection, -130);
+                position = new(-30 * modPlayer.useDirection, -130);
             else if (progress <= 0.66)
-                position = new Vector2(70 * modPlayer.useDirection, -100);
+                position = new(70 * modPlayer.useDirection, -100);
             else
-                position = new Vector2(70 * modPlayer.useDirection, 0);
+                position = new(70 * modPlayer.useDirection, 0);
 
             Projectile.Center = player.Center + position;
 

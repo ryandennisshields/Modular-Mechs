@@ -383,10 +383,15 @@ Buffs: {
 	MechDebuff: {
 		Description:
 			'''
-			The Mech drains your energy to return. Until it's ready, you'll have to survive
+			Mounts disabled
 			Damage and maximum life are reduced
 			'''
 		DisplayName: Mech Fatigue
+	}
+
+	Cooldown: {
+		DisplayName: Module Cooldown
+		Description: Your active Module is recharging
 	}
 }
 

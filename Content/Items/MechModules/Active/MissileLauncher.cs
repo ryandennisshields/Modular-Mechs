@@ -9,6 +9,7 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using System.Runtime.CompilerServices;
 using MechMod.Content.Items.MechWeapons;
+using MechMod.Content.Buffs;
 
 namespace MechMod.Content.Items.MechModules.Active
 {
@@ -19,16 +20,15 @@ namespace MechMod.Content.Items.MechModules.Active
             Item.width = 20; // The width of the item's hitbox in pixels.
             Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 8);
-            Item.rare = 3; // The rarity of the item.
+            Item.rare = ItemRarityID.Orange; // The rarity of the item.
         }
 
-        public ModuleSlot moduleSlot => ModuleSlot.Active; // Active slot
-        public ModuleType moduleType => ModuleType.Persistent; // Persistent effect
+        public ModuleSlot MSlot => ModuleSlot.Active; // Active slot
+        public ModuleType MType => ModuleType.Persistent; // Persistent effect
 
         private bool fireMissiles = false;
         private int missilesFired = 0; // Counter for missiles fired
 
-        private int timer;
         private int cooldown = 1200; // Cooldown in frames (20 seconds)
 
         private int delayTimer;
@@ -40,15 +40,11 @@ namespace MechMod.Content.Items.MechModules.Active
         private int missileCount = 5;
         private int missileType = ModContent.ProjectileType<MissileProjectile>();
 
-        public void InitialEffect(ModularMech mech, Player player)
-        {
-            timer = cooldown; // Start off with the ability ready to use
-        }
-
         public void ModuleEffect(ModularMech mech, Player player)
         {
-            if (MechMod.MechActivateModule.JustPressed && timer >= cooldown && Main.myPlayer == player.whoAmI)
+            if (MechMod.MechActivateModule.JustPressed && !player.HasBuff(ModContent.BuffType<Cooldown>()) && Main.myPlayer == player.whoAmI)
             {
+                player.AddBuff(ModContent.BuffType<Cooldown>(), cooldown);
                 fireMissiles = true;
                 missilesFired = 0; // Reset the missile counter
                 delayTimer = fireDelay; // Fire first missile immediately
@@ -75,14 +71,8 @@ namespace MechMod.Content.Items.MechModules.Active
                 delayTimer++; // Constantly increase the delay timer while firing missiles
 
                 if (missilesFired >= missileCount) // After firing all missiles,
-                {
                     fireMissiles = false; // Stop firing missiles
-                    timer = 0; // Reset the cooldown timer
-                }
             }
-
-            if (timer < cooldown)
-                timer++;
         }
     }
 

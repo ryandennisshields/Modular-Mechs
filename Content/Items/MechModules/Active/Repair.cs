@@ -1,13 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MechMod.Content.Buffs;
 using MechMod.Content.Mounts;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 using static MechMod.Content.Mounts.IMechModule;
-using Terraria.ID;
-using Terraria.DataStructures;
-using System.Runtime.CompilerServices;
 
 namespace MechMod.Content.Items.MechModules.Active
 {
@@ -18,30 +19,21 @@ namespace MechMod.Content.Items.MechModules.Active
             Item.width = 20; // The width of the item's hitbox in pixels.
             Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 8);
-            Item.rare = 3; // The rarity of the item.
+            Item.rare = ItemRarityID.Orange; // The rarity of the item.
         }
 
-        public ModuleSlot moduleSlot => ModuleSlot.Active; // Active slot
-        public ModuleType moduleType => ModuleType.Persistent; // Persistent effect
+        public ModuleSlot MSlot => ModuleSlot.Active; // Active slot
+        public ModuleType MType => ModuleType.Persistent; // Persistent effect
 
-        private int timer;
-        // should be set to 1800
         private int cooldown = 1800; // Cooldown in frames (30 seconds)
-
-        public void InitialEffect(ModularMech mech, Player player)
-        {
-            timer = cooldown; // Start off with the ability ready to use
-        }
 
         public void ModuleEffect(ModularMech mech, Player player)
         {
-            if (MechMod.MechActivateModule.JustPressed && timer >= cooldown)
+            if (MechMod.MechActivateModule.JustPressed && !player.HasBuff(ModContent.BuffType<Cooldown>()))
             {
+                player.AddBuff(ModContent.BuffType<Cooldown>(), cooldown);
                 player.Heal(player.statLifeMax2 / 2); // Heal the player by half of their max health
             }
-
-            if (timer < cooldown)
-                timer++;
         }
     }
 }

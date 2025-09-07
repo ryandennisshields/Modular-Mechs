@@ -3,6 +3,7 @@ using MechMod.Content.Items.MechMisc;
 using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -37,13 +38,13 @@ namespace MechMod.Common.Players
         public float animationTimer; // Timer for mech weapon animation logic (constantly ticks down)
         public int animationProgress; // Progress for mech weapon animation logic (needs to be manually incremented and decremented)
 
-        public Texture2D headTexture;
-        public Texture2D bodyTexture;
-        public Texture2D armsRTexture;
-        public Texture2D armsLTexture;
-        public Texture2D legsRTexture;
-        public Texture2D legsLTexture;
-        public Texture2D weaponTexture; // Used so the equipped weapon can be drawn while in use
+        public Asset<Texture2D> headTexture;
+        public Asset<Texture2D> bodyTexture;
+        public Asset<Texture2D> armsRTexture;
+        public Asset<Texture2D> armsLTexture;
+        public Asset<Texture2D> legsRTexture;
+        public Asset<Texture2D> legsLTexture;
+        public Asset<Texture2D> weaponTexture; // Used so the equipped weapon can be drawn while in use
 
         public Vector2[] bodyOffsets = new Vector2[5];
 
@@ -202,13 +203,13 @@ namespace MechMod.Common.Players
         {
             for (int i = 0; i < equippedParts.Length; i++)
                 equippedParts[i].SetDefaults(reader.ReadInt32());
-            headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual").Value;
-            bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual").Value;
-            armsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual").Value;
-            armsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual").Value;
-            legsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual").Value;
-            legsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual").Value;
-            weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}").Value;
+            headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual");
+            bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual");
+            armsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual");
+            armsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual");
+            legsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual");
+            legsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual");
+            weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}");
             animationTimer = reader.ReadSingle();
             animationProgress = reader.ReadInt32();
             useDirection = reader.ReadInt32();

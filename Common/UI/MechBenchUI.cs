@@ -72,7 +72,7 @@ namespace MechMod.Common.UI
             Append(mainPanel);
 
             // Exit/Close Button
-            UIImage closeButton = new UIImage(ModContent.Request<Texture2D>("MechMod/Common/UI/Close"));
+            UIImage closeButton = new(ModContent.Request<Texture2D>("MechMod/Common/UI/Close"));
             closeButton.Width.Set(20, 0);
             closeButton.Height.Set(20, 0);
             closeButton.HAlign = 1f;
@@ -168,7 +168,7 @@ namespace MechMod.Common.UI
             }
 
             // Upgrade Section
-            UIText upgradeText = new UIText("Upgrade");
+            UIText upgradeText = new("Upgrade");
             upgradeText.Width.Set(50, 0);
             upgradeText.Height.Set(25, 0);
             upgradeText.Left.Set(105, 0);
@@ -198,7 +198,7 @@ namespace MechMod.Common.UI
             mainPanel.Append(playerLevel);
 
             // Debugging Reset Button
-            UIPanel resetButton = new UIPanel();
+            UIPanel resetButton = new();
             resetButton.Width.Set(25, 0);
             resetButton.Height.Set(25, 0);
             resetButton.Left.Set(225, 0);

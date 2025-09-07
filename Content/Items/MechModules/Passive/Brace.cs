@@ -17,18 +17,16 @@ namespace MechMod.Content.Items.MechModules.Passive
             Item.width = 20; // The width of the item's hitbox in pixels.
             Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 4);
-            Item.rare = 3; // The rarity of the item.
+            Item.rare = ItemRarityID.Orange; // The rarity of the item.
         }
 
-        public ModuleSlot moduleSlot => ModuleSlot.Passive; // Passive slot
-        public ModuleType moduleType => ModuleType.Persistent; // Persistent effect
+        public ModuleSlot MSlot => ModuleSlot.Passive; // Passive slot
+        public ModuleType MType => ModuleType.Persistent; // Persistent effect
 
         private bool changed = false;
 
         private const float damageBonus = 0.1f; // 10% damage bonus
         private const float speedReduction = 0.9f; // 10% speed reduction
-
-        public void InitialEffect(ModularMech mech, Player player) { }
 
         public void ModuleEffect(ModularMech mech, Player player)
         {

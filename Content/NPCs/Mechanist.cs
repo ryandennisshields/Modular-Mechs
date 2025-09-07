@@ -51,7 +51,7 @@ namespace MechMod.Content.NPCs
             NPCID.Sets.ShimmerTownTransform[Type] = true;
             NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<MechanistEmote>();
 
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new()
             {
                 Velocity = 1f,
             };
@@ -95,11 +95,11 @@ namespace MechMod.Content.NPCs
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
-            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+            bestiaryEntry.Info.AddRange([
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
 
 				new FlavorTextBestiaryInfoElement("Having spent many years perfecting his craft, the Mechanitor provides his technology to others with a sense of pride."),
-            });
+            ]);
         }
 
         public override void HitEffect(NPC.HitInfo hit)
@@ -151,7 +151,7 @@ namespace MechMod.Content.NPCs
 
         public override List<string> SetNPCNameList()
         {
-            return new List<string>() {
+            return [
                 "Ryan",
                 "Austin",
                 "Geoff",
@@ -162,7 +162,7 @@ namespace MechMod.Content.NPCs
                 "Caleb",
                 "Cooper",
                 "Michigan"
-            };
+            ];
         }
 
         public override void FindFrame(int frameHeight)
@@ -180,7 +180,7 @@ namespace MechMod.Content.NPCs
 
         public override string GetChat()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<string> chat = new();
 
             int witchDoctor = NPC.FindFirstNPC(NPCID.WitchDoctor);
             Condition golemCondition = Condition.DownedGolem;
@@ -256,7 +256,7 @@ namespace MechMod.Content.NPCs
         {
             Condition condition1 = Condition.DownedSkeletron;
             Condition condition2 = Condition.Hardmode;
-            Condition condition3 = Condition.DownedMechBossAny;
+            //Condition condition3 = Condition.DownedMechBossAny;
             Condition condition4 = Condition.DownedGolem;
 
             var npcShop = new NPCShop(Type, shopName)
@@ -363,7 +363,7 @@ namespace MechMod.Content.NPCs
         public override void DrawTownAttackGun(ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)
         {
             item = TextureAssets.Item[ItemID.Minishark].Value;
-            Main.GetItemDrawFrame(ItemID.Minishark, out item, out itemFrame);
+            Main.GetItemDrawFrame(ItemID.Minishark, out _, out itemFrame);
             horizontalHoldoutOffset = (int)Main.DrawPlayerItemPos(1f, ItemID.Minishark).X - 20;
         }
 

@@ -19,7 +19,7 @@ namespace MechMod.Content.Items.MechWeapons
             Item.width = 20; // The width of the item's hitbox in pixels.
             Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 2);
-            Item.rare = 3; // The rarity of the item.
+            Item.rare = ItemRarityID.Orange; // The rarity of the item.
         }
 
         public void SetStats(Player player)
@@ -80,14 +80,14 @@ namespace MechMod.Content.Items.MechWeapons
             float progress = 1f - (Projectile.timeLeft / swingDuration); // Progress goes from 1 to 0 as the projectile time decreases
 
             // Changed the position of the hitbox as it goes through the swing
-            Vector2 position = new Vector2(0, 0);
+            Vector2 position;
 
             if (progress <= 0.33)
-                position = new Vector2(-30 * modPlayer.useDirection, -130);
+                position = new(-30 * modPlayer.useDirection, -130);
             else if (progress <= 0.66)
-                position = new Vector2(70 * modPlayer.useDirection, -100);
+                position = new(70 * modPlayer.useDirection, -100);
             else
-                position = new Vector2(70 * modPlayer.useDirection, 0);
+                position = new(70 * modPlayer.useDirection, 0);
 
             Projectile.Center = player.Center + position;
 

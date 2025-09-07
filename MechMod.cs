@@ -23,16 +23,10 @@ using MechMod.Content.NPCs;
 
 namespace MechMod
 {
-    public struct MechPart
+    public struct MechPart(int itemType, string partType)
     {
-        public int ItemType;
-        public string PartType;
-
-        public MechPart(int itemType, string partType)
-        {
-            ItemType = itemType;
-            PartType = partType;
-        }
+        public int ItemType = itemType;
+        public string PartType = partType;
     }
 
     public class MechMod : Mod
