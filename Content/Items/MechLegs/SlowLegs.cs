@@ -15,20 +15,20 @@ namespace MechMod.Content.Items.MechLegs
             Item.width = 20; // The width of the item's hitbox in pixels.
             Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 4);
-            Item.rare = 2; // The rarity of the item.
+            Item.rare = ItemRarityID.Green; // The rarity of the item.
         }
 
-        public void ApplyStats(Player player, MechModPlayer modPlayer, ModularMech mech)
+        public void ApplyStats(Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, ModularMech mech)
         {
             modPlayer.lifeBonus += (int)(150 * modPlayer.partEffectiveness[MechMod.legsIndex]); // 150 health bonus
 
             // Ground stats
             mech.MountData.acceleration = 0.1f * modPlayer.partEffectiveness[MechMod.legsIndex];
-            mech.groundHorizontalSpeed = 3f * modPlayer.partEffectiveness[MechMod.legsIndex];
+            modPlayer.groundHorizontalSpeed = 3f * modPlayer.partEffectiveness[MechMod.legsIndex];
 
             // Jumping stats
             mech.MountData.jumpHeight = (int)(7 * modPlayer.partEffectiveness[MechMod.legsIndex]);
-            mech.groundJumpSpeed = 4f * modPlayer.partEffectiveness[MechMod.legsIndex];
+            modPlayer.groundJumpSpeed = 4f * modPlayer.partEffectiveness[MechMod.legsIndex];
         }
 
         public void BodyOffsets(Player player, string body)

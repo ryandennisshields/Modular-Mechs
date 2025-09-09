@@ -1,4 +1,5 @@
-﻿using MechMod.Content.Buffs;
+﻿using MechMod.Common.Players;
+using MechMod.Content.Buffs;
 using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace MechMod.Content.Items.MechModules.Active
 
         private int cooldown = 1800; // Cooldown in frames (30 seconds)
 
-        public void ModuleEffect(ModularMech mech, Player player)
+        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
         {
             if (MechMod.MechActivateModule.JustPressed && !player.HasBuff(ModContent.BuffType<Cooldown>()))
             {

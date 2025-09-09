@@ -77,6 +77,7 @@ namespace MechMod.Common.UI
             return false;
         }
 
+        // Function to prevent equipping the same passive module in both slots
         private bool DupeCheckPassiveModule(MechModPlayer modPlayer, Item item)
         {
             if (slotPartType == "passivemodule1" || slotPartType == "passivemodule2")
@@ -95,27 +96,29 @@ namespace MechMod.Common.UI
             return true;
         }
 
+        // Function to get the index of the inventory slot currently being hovered over by the mouse
         public static int GetHoveredInventorySlot()
         {
-            int slotIndex = -1;
             float slotSize = 75f * Main.inventoryScale;
             float slotGap = 4f * Main.inventoryScale;
             float startX = 20.5f;
             float startY = 20;
 
+            // For the inventory, there are 5 rows of 10 slots
             for (int row = 0; row < 5; row++)
             {
                 for (int col = 0; col < 10; col++)
                 {
-                    int index = row * 10 + col;
+                    int index = row * 10 + col; // Get the index of the slot in the inventory array
+                    // Calculate the positioning of the inventory slots
                     float x = startX + col * (slotSize + slotGap);
                     float y = startY + row * (slotSize + slotGap);
-                    Rectangle slotRect = new Rectangle((int)x, (int)y, (int)slotSize, (int)slotSize);
+                    Rectangle slotRect = new((int)x, (int)y, (int)slotSize, (int)slotSize);
 
-                    if (slotRect.Contains(Main.mouseX, Main.mouseY))
+                    if (slotRect.Contains(Main.mouseX, Main.mouseY)) // If the mouse is hovering over a slot,
                     {
-                        slotIndex = index;
-                        return slotIndex;
+                        int slotIndex = index;
+                        return slotIndex; // Return the index of the hovered slot
                     }
                 }
             }
@@ -173,27 +176,27 @@ namespace MechMod.Common.UI
             }
         }
 
+        // Function to equip a Part to the slot when right-clicked
         public void RightClickEquipPart()
         {
-            int hoveredSlot = GetHoveredInventorySlot();
-            if (hoveredSlot >= 0 && hoveredSlot < Main.LocalPlayer.inventory.Length)
+            int hoveredSlot = GetHoveredInventorySlot(); // Get the index of the inventory slot currently being hovered over by the mouse
+            if (hoveredSlot >= 0 && hoveredSlot < Main.LocalPlayer.inventory.Length) // If the hovered slot index is valid,
             {
                 var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
 
-                Item item = Main.LocalPlayer.inventory[hoveredSlot];
+                Item item = Main.LocalPlayer.inventory[hoveredSlot]; // Get the item in the hovered inventory slot
 
                 if (!item.IsAir)
                 {
                     if (IsMechPart(item))
                     {
-                        // Passive modules
                         if (!DupeCheckPassiveModule(modPlayer, item))
                         {
                             return; // Prevent equipping the same passive module in both slots
                         }
-                        // Other parts
-                        else if (slotItem.IsAir)
+                        else if (slotItem.IsAir) // If the corresponding part slot is empty,
                         {
+                            // Equip the Part into the corresponding part slot
                             slotItem = item.Clone();
                             Main.LocalPlayer.inventory[hoveredSlot].TurnToAir();
                             SoundEngine.PlaySound(SoundID.Grab);
@@ -201,6 +204,7 @@ namespace MechMod.Common.UI
                         }
                         else
                         {
+                            // Swap the Parts from the inventory and the corresponding part slot
                             Utils.Swap(ref slotItem, ref Main.LocalPlayer.inventory[hoveredSlot]);
                             SoundEngine.PlaySound(SoundID.Grab);
                             return;

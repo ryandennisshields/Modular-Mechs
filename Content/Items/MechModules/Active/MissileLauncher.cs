@@ -10,6 +10,7 @@ using Terraria.DataStructures;
 using System.Runtime.CompilerServices;
 using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Buffs;
+using MechMod.Common.Players;
 
 namespace MechMod.Content.Items.MechModules.Active
 {
@@ -40,7 +41,7 @@ namespace MechMod.Content.Items.MechModules.Active
         private int missileCount = 5;
         private int missileType = ModContent.ProjectileType<MissileProjectile>();
 
-        public void ModuleEffect(ModularMech mech, Player player)
+        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
         {
             if (MechMod.MechActivateModule.JustPressed && !player.HasBuff(ModContent.BuffType<Cooldown>()) && Main.myPlayer == player.whoAmI)
             {
@@ -54,14 +55,14 @@ namespace MechMod.Content.Items.MechModules.Active
             {
                 if (delayTimer >= fireDelay && missilesFired < missileCount) // If delay has passed and haven't fired all missiles yet,
                 {
-                    Weapons.DamageClass = DamageClass.Default;
+                    weaponsPlayer.DamageClass = DamageClass.Default;
                     Projectile.NewProjectile(
                         new EntitySource_Parent(player),
                         player.MountedCenter + new Vector2(0, -40),
                         Vector2.Zero,
                         missileType,
-                        Weapons.DamageCalc(missileDamage, player, missileClass),
-                        Weapons.KnockbackCalc(missileKnockback, player, missileClass),
+                        weaponsPlayer.DamageCalc(missileDamage, player, missileClass),
+                        weaponsPlayer.KnockbackCalc(missileKnockback, player, missileClass),
                         player.whoAmI
                     ); // Create a missile
                     missilesFired++; /// Increment the missile counter

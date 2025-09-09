@@ -16,40 +16,40 @@ namespace MechMod.Content.Items.MechWeapons
             Item.width = 20; // The width of the item's hitbox in pixels.
             Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 2);
-            Item.rare = 3; // The rarity of the item.
+            Item.rare = ItemRarityID.Orange; // The rarity of the item.
 
             Item.useAmmo = AmmoID.Bullet; // Make the weapon use ammo
         }
 
-        public void SetStats(Player player)
+        public void SetStats(MechWeaponsPlayer weaponsPlayer)
         {
-            Weapons.DamageClass = DamageClass.Ranged; // Set the damage class for ranged weapons
-            Weapons.useType = Weapons.UseType.Point; // Set the use type for point weapons
+            weaponsPlayer.DamageClass = DamageClass.Ranged; // Set the damage class for ranged weapons
+            weaponsPlayer.useType = MechWeaponsPlayer.UseType.Point; // Set the use type for point weapons
         }
 
-        public void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
+        public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, Vector2 mousePosition, bool toggleOn)
         {
             player.PickAmmo(Item, out int projectileType, out float _, out int _, out float _, out int usedAmmo); // Set the projectile type to use corresponding ammo and get the ammo item ID
             // Consume ammo, disable weapon use if out of ammo
             if (player.CountItem(usedAmmo) > 0)
             {
-                Weapons.canUse = true;
+                weaponsPlayer.canUse = true;
                 player.ConsumeItem(usedAmmo);
             }
             else
             {
-                Weapons.canUse = false;
+                weaponsPlayer.canUse = false;
                 return;
             }
 
-            int damage = Weapons.DamageCalc(40, player);
-            Weapons.CritChanceCalc(7, player);
-            Weapons.attackRate = Weapons.AttackSpeedCalc(13, player);
-            float knockback = Weapons.KnockbackCalc(4, player);
+            int damage = weaponsPlayer.DamageCalc(40, player);
+            weaponsPlayer.CritChanceCalc(7, player);
+            weaponsPlayer.attackRate = weaponsPlayer.AttackSpeedCalc(13, player);
+            float knockback = weaponsPlayer.KnockbackCalc(4, player);
 
             float projSpeed = 10;
             int holdTime = 50; // Amount of time player holds out the weapon after ceasing to fire
-            Vector2 offset = new Vector2(0, -44); // Offset to adjust the projectile's spawn position relative to the mech's center
+            Vector2 offset = new(0, -44); // Offset to adjust the projectile's spawn position relative to the mech's center
 
             Vector2 direction = (Main.MouseWorld - player.Center) - offset; // new Vector2 corrects the offset to still make it go towards the cursor
             direction.Normalize(); // Normalize the direction vector to ensure it has a length of 1

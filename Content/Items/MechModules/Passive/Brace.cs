@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using MechMod.Content.Items.MechWeapons;
 using Microsoft.VisualBasic;
+using MechMod.Common.Players;
 
 namespace MechMod.Content.Items.MechModules.Passive
 {
@@ -28,28 +29,28 @@ namespace MechMod.Content.Items.MechModules.Passive
         private const float damageBonus = 0.1f; // 10% damage bonus
         private const float speedReduction = 0.9f; // 10% speed reduction
 
-        public void ModuleEffect(ModularMech mech, Player player)
+        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
         {
-            if (Main.mouseRight && Weapons.DamageClass == DamageClass.Ranged) // If player is holding right-click and the weapon is ranged,
+            if (Main.mouseRight && weaponsPlayer.DamageClass == DamageClass.Ranged) // If player is holding right-click and the weapon is ranged,
             {
                 player.scope = true; // Scope out
                 if (!changed) // If stats haven't been changed yet,
                 { // Change stats
-                    Weapons.partDamageBonus += damageBonus; // Apply damage bonus
-                    mech.groundHorizontalSpeed *= speedReduction;
-                    mech.groundJumpSpeed *= speedReduction;
-                    mech.flightHorizontalSpeed *= speedReduction;
-                    mech.flightJumpSpeed *= speedReduction;
+                    weaponsPlayer.partDamageBonus += damageBonus; // Apply damage bonus
+                    modPlayer.groundHorizontalSpeed *= speedReduction;
+                    modPlayer.groundJumpSpeed *= speedReduction;
+                    modPlayer.flightHorizontalSpeed *= speedReduction;
+                    modPlayer.flightJumpSpeed *= speedReduction;
                     changed = true;
                 }
             }
             else if (changed) // If player is not holding right-click and stats have been changed,
             { // Reset stats
-                Weapons.partDamageBonus -= damageBonus;
-                mech.groundJumpSpeed /= speedReduction;
-                mech.groundHorizontalSpeed /= speedReduction;
-                mech.flightJumpSpeed /= speedReduction;
-                mech.flightHorizontalSpeed /= speedReduction;
+                weaponsPlayer.partDamageBonus -= damageBonus;
+                modPlayer.groundJumpSpeed /= speedReduction;
+                modPlayer.groundHorizontalSpeed /= speedReduction;
+                modPlayer.flightJumpSpeed /= speedReduction;
+                modPlayer.flightHorizontalSpeed /= speedReduction;
                 changed = false;
             }
         }

@@ -30,13 +30,31 @@ namespace MechMod.Common.Players
         public float upgradeDamageBonus;
         public bool powerCellActive = false;
 
+        public bool grantedLifeBonus;
+
+        public bool allowDown;
+
+        public int mechDebuffDuration; // Duration that the player can't resummon the mech and is debuffed for
+        public int launchForce; // Force applied to the player when dismounting the mech
+
         public float[] partEffectiveness = new float[9];
 
         public int lifeBonus;
         public int armourBonus;
 
+        // Seperate variables for the mount's jump and run speeds for ground and flight states
+        public float groundJumpSpeed = 0f;
+        public float groundHorizontalSpeed = 0f;
+        public float flightJumpSpeed = 0f;
+        public float flightHorizontalSpeed = 0f;
+
         public float animationTimer; // Timer for mech weapon animation logic (constantly ticks down)
         public int animationProgress; // Progress for mech weapon animation logic (needs to be manually incremented and decremented)
+
+        public int boosterTimer = 0;
+
+        public int stepTimer = 0;
+        public bool changeposition = false;
 
         public Asset<Texture2D> headTexture;
         public Asset<Texture2D> bodyTexture;
@@ -208,18 +226,18 @@ namespace MechMod.Common.Players
             armsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual");
             armsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual");
             legsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual");
-            legsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual");
-            weaponTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechWeapons/{equippedParts[MechMod.weaponIndex].ModItem.GetType().Name}");
+            legsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{equippedParts[MechMod.legsIndex].ModItem.GetType().Name}LVisual");
+            weaponTexture = TextureAssets.Item[equippedParts[MechMod.weaponIndex].type];
             animationTimer = reader.ReadSingle();
             animationProgress = reader.ReadInt32();
             useDirection = reader.ReadInt32();
             armRFrame = reader.ReadInt32();
             armLFrame = reader.ReadInt32();
-            weaponPosition.X = reader.ReadInt32();
-            weaponPosition.Y = reader.ReadInt32();
+            weaponPosition.X = reader.ReadSingle();
+            weaponPosition.Y = reader.ReadSingle();
             weaponRotation = reader.ReadSingle();
-            weaponOrigin.X = reader.ReadInt32();
-            weaponOrigin.Y = reader.ReadInt32();
+            weaponOrigin.X = reader.ReadSingle();
+            weaponOrigin.Y = reader.ReadSingle();
             weaponScale = reader.ReadSingle();
             weaponSpriteEffects = (SpriteEffects)reader.ReadInt32();
         }

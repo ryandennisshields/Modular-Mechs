@@ -22,27 +22,29 @@ namespace MechMod.Content.Items.MechWeapons
             Item.rare = ItemRarityID.Orange; // The rarity of the item.
         }
 
-        public void SetStats(Player player)
+        public void SetStats(MechWeaponsPlayer weaponsPlayer)
         {
-            Weapons.DamageClass = DamageClass.Melee; // Set the damage class for ranged weapons
-            Weapons.useType = Weapons.UseType.Swing; // Set the use type for point weapons
+            weaponsPlayer.DamageClass = DamageClass.Melee; // Set the damage class for ranged weapons
+            weaponsPlayer.useType = MechWeaponsPlayer.UseType.Swing; // Set the use type for point weapons
         }
 
-        public void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
+        public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, Vector2 mousePosition, bool toggleOn)
         {
+            weaponsPlayer.canUse = true; // Always allow use for this weapon
+
             int projectileType = ModContent.ProjectileType<BaseSwordProj>();
 
-            int damage = Weapons.DamageCalc(100, player);
-            Weapons.CritChanceCalc(4, player);
-            Weapons.attackRate = Weapons.AttackSpeedCalc(30, player);
-            float knockback = Weapons.KnockbackCalc(7, player);
+            int damage = weaponsPlayer.DamageCalc(100, player);
+            weaponsPlayer.CritChanceCalc(4, player);
+            weaponsPlayer.attackRate = weaponsPlayer.AttackSpeedCalc(30, player);
+            float knockback = weaponsPlayer.KnockbackCalc(7, player);
 
             int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.Center, new Vector2(0, 0), projectileType, damage, knockback, player.whoAmI);
             if (Main.projectile.IndexInRange(projID) && Main.projectile[projID].ModProjectile is BaseSwordProj proj)
             {
                 // Allow the swing speed to be modified by attack rate
-                proj.swingDuration = Weapons.attackRate; // Fixed number
-                Main.projectile[projID].timeLeft = (int)Weapons.attackRate; // Decreases each tick
+                proj.swingDuration = weaponsPlayer.attackRate; // Fixed number
+                Main.projectile[projID].timeLeft = (int)weaponsPlayer.attackRate; // Decreases each tick
             }
 
             SoundEngine.PlaySound(SoundID.Item1, player.position); // Play Swing sound when the weapon is used

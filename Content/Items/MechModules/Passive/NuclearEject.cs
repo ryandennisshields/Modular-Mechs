@@ -6,6 +6,7 @@ using static MechMod.Content.Mounts.IMechModule;
 using Terraria.DataStructures;
 using Terraria.ID;
 using MechMod.Content.Items.MechWeapons;
+using MechMod.Common.Players;
 
 namespace MechMod.Content.Items.MechModules.Passive
 {
@@ -27,7 +28,7 @@ namespace MechMod.Content.Items.MechModules.Passive
         private int explosionKnockback = 30;
         private int explosionType = ModContent.ProjectileType<NuclearEjectProjectile>();
 
-        public void ModuleEffect(ModularMech mech, Player player)
+        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
         {
             if (Main.myPlayer == player.whoAmI)
             {
@@ -36,13 +37,13 @@ namespace MechMod.Content.Items.MechModules.Passive
                     player.MountedCenter,
                     Vector2.Zero,
                     explosionType,
-                    Weapons.DamageCalc(explosionDamage, player, explosionClass),
-                    Weapons.KnockbackCalc(explosionKnockback, player, explosionClass),
+                    weaponsPlayer.DamageCalc(explosionDamage, player, explosionClass),
+                    weaponsPlayer.KnockbackCalc(explosionKnockback, player, explosionClass),
                     player.whoAmI
                     );
             }
-            mech.mechDebuffDuration = (int)(mech.mechDebuffDuration * 1.5f); // Increase debuff duration by 50%
-            mech.launchForce *= 2; // Double the launch force
+            modPlayer.mechDebuffDuration = (int)(modPlayer.mechDebuffDuration * 1.5f); // Increase debuff duration by 50%
+            modPlayer.launchForce *= 2; // Double the launch force
         }
     }
 

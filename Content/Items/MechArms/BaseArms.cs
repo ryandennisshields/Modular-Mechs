@@ -15,12 +15,12 @@ namespace MechMod.Content.Items.MechArms
             Item.width = 20; // The width of the item's hitbox in pixels.
             Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 1);
-            Item.rare = 2; // The rarity of the item.
+            Item.rare = ItemRarityID.Green; // The rarity of the item.
         }
 
-        public void ApplyStats(Player player, MechModPlayer modPlayer, ModularMech mech)
+        public void ApplyStats(Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, ModularMech mech)
         {
-            Weapons.partDamageBonus += 0.2f * modPlayer.partEffectiveness[MechMod.armsIndex]; // 20% damage bonus
+            weaponsPlayer.partDamageBonus += 0.2f * modPlayer.partEffectiveness[MechMod.armsIndex]; // 20% damage bonus
         }
 
         public void BodyOffsets(Player player, string body)

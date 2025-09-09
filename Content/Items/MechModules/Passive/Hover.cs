@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using MechMod.Content.Items.MechWeapons;
 using Microsoft.VisualBasic;
+using MechMod.Common.Players;
 
 namespace MechMod.Content.Items.MechModules.Passive
 {
@@ -23,14 +24,14 @@ namespace MechMod.Content.Items.MechModules.Passive
         public ModuleSlot MSlot => ModuleSlot.Passive; // Passive slot
         public ModuleType MType => ModuleType.Persistent; // Persistent effect
 
-        public void ModuleEffect(ModularMech mech, Player player)
+        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
         {
             if (player.mount._frameState == Mount.FrameFlying) // If player is flying,
             {
-                mech.allowDown = true; // Allow hovering
+                modPlayer.allowDown = true; // Allow hovering
                 if (player.controlDown) // If player is hovering,
                 {
-                    Weapons.partDamageBonus += 0.1f; // 10% damage bonus
+                    weaponsPlayer.partDamageBonus += 0.1f; // 10% damage bonus
                 }
             }
         }

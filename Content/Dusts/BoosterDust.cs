@@ -12,11 +12,12 @@ using Terraria.ModLoader;
 
 namespace MechMod.Content.Dusts
 {
+    /// <summary>
+    /// Custom dust effect for the Mech's booster, with code to make it look like the dust comes from behind the Mech, covering it until it goes past the Mech.
+    /// </summary>
+
     public class BoosterDust : ModDust
     {
-
-        // This class is for a custom Dust effect for the Mech's booster, with code to make it look like the dust is behind the Mech.
-
         public override string Texture => null;
 
         public override void OnSpawn(Terraria.Dust dust)
@@ -33,11 +34,12 @@ namespace MechMod.Content.Dusts
 
         public override bool Update(Terraria.Dust dust)
         {
-            Lighting.AddLight(dust.position, 1f, 0.5f, 0f);
+            Lighting.AddLight(dust.position, 1f, 0.5f, 0f); // Create light around the dust
 
+            // Make the dust invisible while "behind" the Mech
             if (dust.customData is Player player)
             {
-                Rectangle box = new Rectangle(
+                Rectangle box = new(
                             (int)(player.position.X - (player.direction == -1 ? 22 : 30)),
                             (int)(player.position.Y - 29),
                             72,

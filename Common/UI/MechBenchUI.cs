@@ -198,13 +198,13 @@ namespace MechMod.Common.UI
             mainPanel.Append(playerLevel);
 
             // Debugging Reset Button
-            UIPanel resetButton = new();
-            resetButton.Width.Set(25, 0);
-            resetButton.Height.Set(25, 0);
-            resetButton.Left.Set(225, 0);
-            resetButton.Top.Set(140, 0);
-            resetButton.OnLeftClick += OnResetButtonClick;
-            mainPanel.Append(resetButton);
+            //UIPanel resetButton = new();
+            //resetButton.Width.Set(25, 0);
+            //resetButton.Height.Set(25, 0);
+            //resetButton.Left.Set(225, 0);
+            //resetButton.Top.Set(140, 0);
+            //resetButton.OnLeftClick += OnResetButtonClick;
+            //mainPanel.Append(resetButton);
         }
 
         #endregion
@@ -290,7 +290,7 @@ namespace MechMod.Common.UI
             // Verify if the slot is empty or if the slot has a Part
             for (int i = 0; i < slots.Length; i++)
             {
-                slots[i].RightClickEquipPart();
+                slots[i].RightClickEquipPart(); // Call the right-click equip function for each slot
                 if (slots[i].slotItem.IsAir)
                 {
                     modPlayer.equippedParts[i].TurnToAir();
@@ -482,13 +482,13 @@ namespace MechMod.Common.UI
 
         #region Debugging Reset Button
 
-        private void OnResetButtonClick(UIMouseEvent evt, UIElement listeningElement)
-        {
-            var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
-            modPlayer.upgradeLevel = 0;
-            modPlayer.upgradeDamageBonus = 0.0f;
-            Main.NewText("Player Reset");
-        }
+        //private void OnResetButtonClick(UIMouseEvent evt, UIElement listeningElement)
+        //{
+        //    var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
+        //    modPlayer.upgradeLevel = 0;
+        //    modPlayer.upgradeDamageBonus = 0.0f;
+        //    Main.NewText("Player Reset");
+        //}
 
         #endregion
     }

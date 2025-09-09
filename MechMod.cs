@@ -114,8 +114,6 @@ namespace MechMod
             switch (msgType)
             {
                 case MessageType.EquippedPartsAndLevelSync:
-                    //byte playerNumber = reader.ReadByte();
-                    //MechModPlayer modPlayer = Main.player[playerNumber].GetModPlayer<MechModPlayer>();
                     modPlayer.RecievePlayerSync(reader);
 
                     if (Main.netMode == NetmodeID.Server)
@@ -123,29 +121,6 @@ namespace MechMod
                         modPlayer.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
-                    //case MessageType.WeaponAnimationSync:
-                    //    int armFrame = reader.ReadInt32();
-                    //    float animationTimer = reader.ReadSingle();
-                    //    int animationProgress = reader.ReadInt32();
-                    //    int useDirection = reader.ReadInt32();
-
-                    //    modPlayer.armFrame = armFrame;
-                    //    modPlayer.animationTimer = animationTimer;
-                    //    modPlayer.animationProgress = animationProgress;
-                    //    modPlayer.useDirection = useDirection;
-
-                    //    if (Main.netMode == NetmodeID.Server)
-                    //    {
-                    //        ModPacket packet = GetPacket();
-                    //        packet.Write((byte)MessageType.WeaponAnimationSync);
-                    //        packet.Write((byte)playerNumber);
-                    //        packet.Write(armFrame);
-                    //        packet.Write(animationTimer);
-                    //        packet.Write(animationProgress);
-                    //        packet.Write(useDirection);
-                    //        packet.Send(-1, playerNumber);
-                    //    }
-                    //    break;
             }
         }
 

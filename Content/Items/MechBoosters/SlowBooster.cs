@@ -15,10 +15,10 @@ namespace MechMod.Content.Items.MechBoosters
             Item.width = 20; // The width of the item's hitbox in pixels.
             Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 10);
-            Item.rare = 2; // The rarity of the item.
+            Item.rare = ItemRarityID.Green; // The rarity of the item.
         }
 
-        public void ApplyStats(Player player, MechModPlayer modPlayer, ModularMech mech)
+        public void ApplyStats(Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, ModularMech mech)
         {
             modPlayer.lifeBonus += 50; // 50 health bonus
 

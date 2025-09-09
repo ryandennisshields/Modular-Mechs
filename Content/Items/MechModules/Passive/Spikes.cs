@@ -1,4 +1,5 @@
-﻿using MechMod.Content.Items.MechWeapons;
+﻿using MechMod.Common.Players;
+using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mounts;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,15 +30,15 @@ namespace MechMod.Content.Items.MechModules.Passive
 
         private Dictionary<int, int> damageCooldown = []; // Cooldown for each NPC
 
-        public void ModuleEffect(ModularMech mech, Player player)
+        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
         {
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 NPC npc = Main.npc[i];
                 NPC.HitInfo hitInfo = new()
                 {
-                    Damage = Weapons.DamageCalc(contactDamage, player, contactClass),
-                    Knockback = Weapons.KnockbackCalc(contactKnockback, player, contactClass),
+                    Damage = weaponsPlayer.DamageCalc(contactDamage, player, contactClass),
+                    Knockback = weaponsPlayer.KnockbackCalc(contactKnockback, player, contactClass),
                     HitDirection = npc.Center.X < player.Center.X ? -1 : 1, // Determine hit direction based on NPC position relative to player
                 };
                 if (!damageCooldown.TryGetValue(npc.whoAmI, out _) && npc.active && !npc.friendly && !npc.dontTakeDamage && npc.Hitbox.Intersects(player.getRect()))
