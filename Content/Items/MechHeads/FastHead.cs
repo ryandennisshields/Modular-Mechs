@@ -23,20 +23,18 @@ namespace MechMod.Content.Items.MechHeads
             weaponsPlayer.partCritChanceBonus *= 2f * modPlayer.partEffectiveness[MechMod.headIndex]; // Double critical chance
         }
 
-        public void BodyOffsets(Player player, string body)
+        public void BodyOffsets(MechVisualPlayer visualPlayer, string body)
         {
-            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
-
             switch (body)
             {
                 case "BaseBody":
-                    modPlayer.bodyOffsets[3] = new Vector2(-1, 0);
+                    visualPlayer.bodyOffsets[3] = new Vector2(-1, 0);
                     break;
                 case "SlowBody":
-                    modPlayer.bodyOffsets[3] = new Vector2(1, -6);
+                    visualPlayer.bodyOffsets[3] = new Vector2(1, -6);
                     break;
                 default:
-                    modPlayer.bodyOffsets[3] = new Vector2(0, 0);
+                    visualPlayer.bodyOffsets[3] = new Vector2(0, 0);
                     break;
             }
         }

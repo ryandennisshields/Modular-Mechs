@@ -28,6 +28,6 @@ namespace MechMod.Content.Items.MechBodies
             modPlayer.partEffectiveness[MechMod.armsIndex] = 0.75f; // 0.75x effectiveness for arms
         }
 
-        public void BodyOffsets(Player player, string body) { }
+        public void BodyOffsets(MechVisualPlayer visualPlayer, string body) { }
     }
 }

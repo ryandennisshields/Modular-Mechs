@@ -27,7 +27,7 @@ namespace MechMod.Content.Items.MechWeapons
             weaponsPlayer.useType = MechWeaponsPlayer.UseType.Point; // Set the use type for point weapons
         }
 
-        public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, Vector2 mousePosition, bool toggleOn)
+        public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn)
         {
             int manaCost = 6; // Mana cost for use
             if (player.statMana > manaCost)
@@ -58,7 +58,7 @@ namespace MechMod.Content.Items.MechWeapons
                 int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.Center + offset, velocity, projectileType, damage, knockback, player.whoAmI);
                 player.CheckMana(manaCost, true);
                 player.manaRegenDelay = 120;
-                player.GetModPlayer<MechModPlayer>().animationTimer = holdTime;
+                visualPlayer.animationTimer = holdTime;
 
                 SoundEngine.PlaySound(SoundID.Item12, player.position); // Play Laser sound when the weapon is used
             }

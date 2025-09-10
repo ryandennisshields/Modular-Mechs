@@ -28,7 +28,7 @@ namespace MechMod.Content.Items.MechWeapons
             weaponsPlayer.useType = MechWeaponsPlayer.UseType.Point; // Set the use type for point weapons
         }
 
-        public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, Vector2 mousePosition, bool toggleOn)
+        public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn)
         {
             player.PickAmmo(Item, out int projectileType, out float _, out int _, out float _, out int usedAmmo); // Set the projectile type to use corresponding ammo and get the ammo item ID
             // Consume ammo, disable weapon use if out of ammo
@@ -63,7 +63,7 @@ namespace MechMod.Content.Items.MechWeapons
             }
 
             int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.Center + offset, velocity, projectileType, damage, knockback, player.whoAmI);
-            player.GetModPlayer<MechModPlayer>().animationTimer = holdTime;
+            visualPlayer.animationTimer = holdTime;
 
             SoundEngine.PlaySound(SoundID.Item61, player.position); // Play Grenade Launcher sound when the weapon is used
         }

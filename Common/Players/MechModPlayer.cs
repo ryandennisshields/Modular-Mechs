@@ -34,6 +34,7 @@ namespace MechMod.Common.Players
 
         public bool allowDown;
 
+        public float maxLife; // Saves the maximum life of players for the debuff duration calculation
         public int mechDebuffDuration; // Duration that the player can't resummon the mech and is debuffed for
         public int launchForce; // Force applied to the player when dismounting the mech
 
@@ -47,42 +48,6 @@ namespace MechMod.Common.Players
         public float groundHorizontalSpeed = 0f;
         public float flightJumpSpeed = 0f;
         public float flightHorizontalSpeed = 0f;
-
-        public float animationTimer; // Timer for mech weapon animation logic (constantly ticks down)
-        public int animationProgress; // Progress for mech weapon animation logic (needs to be manually incremented and decremented)
-
-        public int boosterTimer = 0;
-
-        public int stepTimer = 0;
-        public bool changeposition = false;
-
-        public Asset<Texture2D> headTexture;
-        public Asset<Texture2D> bodyTexture;
-        public Asset<Texture2D> armsRTexture;
-        public Asset<Texture2D> armsLTexture;
-        public Asset<Texture2D> legsRTexture;
-        public Asset<Texture2D> legsLTexture;
-        public Asset<Texture2D> weaponTexture; // Used so the equipped weapon can be drawn while in use
-
-        public Vector2[] bodyOffsets = new Vector2[5];
-
-        public bool animateOnce = false; // Used to control whether the mech weapon animation should only play once or loop
-
-        // Used for controlling the current arm frame
-        public int armRFrame = -1;
-        public int armLFrame = -1;
-        // Total number of frames that the arm texture has (to include the many arm rotations/positions for weapon animation)
-        public int armRAnimationFrames = 10;
-        public int armLAnimationFrames = 14;
-
-        public int useDirection; // Stores the last weapon use direction
-
-        public Vector2 weaponPosition = Vector2.Zero; // Used for positioning the weapon when it is drawn
-        public float weaponRotation = 0f; // Used for rotating the weapon when it is drawn
-        public Vector2 weaponOrigin = Vector2.Zero; // Used so a different origin can be set for rotation
-        public float weaponScale = 1f; // Used so the weapon can be hidden when needed
-        public SpriteEffects weaponSpriteEffects = SpriteEffects.None; // Used so the weapon's sprite can be flipped when needed
-
 
         public override void Initialize()
         {
@@ -194,24 +159,12 @@ namespace MechMod.Common.Players
         // Send out changes to server and other clients
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
-            // Sync up the equipped Parts and animation details between clients
             ModPacket packet = Mod.GetPacket();
-            packet.Write((byte)MechMod.MessageType.EquippedPartsAndLevelSync);
+            packet.Write((byte)MechMod.MessageType.PartsSync);
             packet.Write((byte)Player.whoAmI);
+            packet.Write(powerCellActive);
             for (int i = 0; i < equippedParts.Length; i++)
                 packet.Write(equippedParts[i].type);
-            packet.Write(animationTimer);
-            packet.Write(animationProgress);
-            packet.Write(useDirection);
-            packet.Write(armRFrame);
-            packet.Write(armLFrame);
-            packet.Write(weaponPosition.X);
-            packet.Write(weaponPosition.Y);
-            packet.Write(weaponRotation);
-            packet.Write(weaponOrigin.X);
-            packet.Write(weaponOrigin.Y);
-            packet.Write(weaponScale);
-            packet.Write((int)weaponSpriteEffects);
 
             packet.Send(toWho, fromWho);
         }
@@ -219,27 +172,9 @@ namespace MechMod.Common.Players
         // Receive changes from server and other clients
         public void RecievePlayerSync(BinaryReader reader)
         {
+            powerCellActive = reader.ReadBoolean();
             for (int i = 0; i < equippedParts.Length; i++)
                 equippedParts[i].SetDefaults(reader.ReadInt32());
-            headTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechHeads/{equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual");
-            bodyTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechBodies/{equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual");
-            armsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual");
-            armsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechArms/{equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual");
-            legsRTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual");
-            legsLTexture = Mod.Assets.Request<Texture2D>($"Content/Items/MechLegs/{equippedParts[MechMod.legsIndex].ModItem.GetType().Name}LVisual");
-            weaponTexture = TextureAssets.Item[equippedParts[MechMod.weaponIndex].type];
-            animationTimer = reader.ReadSingle();
-            animationProgress = reader.ReadInt32();
-            useDirection = reader.ReadInt32();
-            armRFrame = reader.ReadInt32();
-            armLFrame = reader.ReadInt32();
-            weaponPosition.X = reader.ReadSingle();
-            weaponPosition.Y = reader.ReadSingle();
-            weaponRotation = reader.ReadSingle();
-            weaponOrigin.X = reader.ReadSingle();
-            weaponOrigin.Y = reader.ReadSingle();
-            weaponScale = reader.ReadSingle();
-            weaponSpriteEffects = (SpriteEffects)reader.ReadInt32();
         }
 
         // Check clients against this client to watch for changes
@@ -248,63 +183,29 @@ namespace MechMod.Common.Players
         {
             var clone = (MechModPlayer)targetCopy;
 
+            clone.powerCellActive = powerCellActive;
             for (int i = 0; i < equippedParts.Length; i++)
                 clone.equippedParts[i].type = equippedParts[i].type;
-            clone.headTexture = headTexture;
-            clone.bodyTexture = bodyTexture;
-            clone.armsRTexture = armsRTexture;
-            clone.armsLTexture = armsLTexture;
-            clone.legsRTexture = legsRTexture;
-            clone.legsLTexture = legsLTexture;
-            clone.weaponTexture = weaponTexture;
-            clone.animationTimer = animationTimer;
-            clone.animationProgress = animationProgress;
-            clone.useDirection = useDirection;
-            clone.armRFrame = armRFrame;
-            clone.armLFrame = armLFrame;
-            clone.weaponPosition = weaponPosition;
-            clone.weaponRotation = weaponRotation;
-            clone.weaponOrigin = weaponOrigin;
-            clone.weaponScale = weaponScale;
-            clone.weaponSpriteEffects = weaponSpriteEffects;
         }
 
         // If CopyClientState detects a change, this method will be called to sync the changes
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
             var clone = (MechModPlayer)clientPlayer;
-            bool needsSync = false;
+            bool syncPlayer = false;
+            if (powerCellActive != clone.powerCellActive)
+            {
+                syncPlayer = true;
+            }
             for (int i = 0; i < equippedParts.Length; i++)
             {
                 if (equippedParts[i].type != clone.equippedParts[i].type)
                 {
-                    needsSync = true;
-                    break;
+                    syncPlayer = true;
                 }
             }
-            if (headTexture != clone.headTexture ||
-                bodyTexture != clone.bodyTexture ||
-                armsRTexture != clone.armsRTexture ||
-                armsLTexture != clone.armsLTexture ||
-                legsRTexture != clone.legsRTexture ||
-                legsLTexture != clone.legsLTexture ||
-                weaponTexture != clone.weaponTexture ||
-                animationTimer != clone.animationTimer ||
-                animationProgress != clone.animationProgress ||
-                useDirection != clone.useDirection ||
-                armRFrame != clone.armRFrame ||
-                armLFrame != clone.armLFrame ||
-                weaponPosition != clone.weaponPosition ||
-                weaponRotation != clone.weaponRotation ||
-                weaponOrigin != clone.weaponOrigin ||
-                weaponScale != clone.weaponScale ||
-                weaponSpriteEffects != clone.weaponSpriteEffects
-                )
-            {
-                needsSync = true;
-            }
 
-            if (needsSync) // Only sync clients if needed
+            if (syncPlayer) // Only sync clients if needed
                 SyncPlayer(-1, Main.myPlayer, false);
         }
 
@@ -398,8 +299,8 @@ namespace MechMod.Common.Players
                 CanUseItem(mechSpawnerItem.Item);
             }
 
-            if (animationTimer > 0)
-                animationTimer--; // Count down the animation timer
+            //if (animationTimer > 0)
+            //    animationTimer--; // Count down the animation timer
         }
 
         // Disable the use of the Mech spawner if mounts are disabled

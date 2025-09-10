@@ -101,7 +101,8 @@ namespace MechMod
 
         internal enum MessageType : byte
         {
-            EquippedPartsAndLevelSync,
+            PartsSync,
+            VisualSync
         }
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
@@ -110,15 +111,25 @@ namespace MechMod
 
             byte playerNumber = reader.ReadByte();
             MechModPlayer modPlayer = Main.player[playerNumber].GetModPlayer<MechModPlayer>();
+            MechVisualPlayer visualPlayer = Main.player[playerNumber].GetModPlayer<MechVisualPlayer>();
 
             switch (msgType)
             {
-                case MessageType.EquippedPartsAndLevelSync:
+                case MessageType.PartsSync:
                     modPlayer.RecievePlayerSync(reader);
+                    visualPlayer.UpdateTextures(modPlayer);
 
                     if (Main.netMode == NetmodeID.Server)
                     {
                         modPlayer.SyncPlayer(-1, whoAmI, false);
+                    }
+                    break;
+                case MessageType.VisualSync:
+                    visualPlayer.RecievePlayerSync(reader);
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        visualPlayer.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
             }

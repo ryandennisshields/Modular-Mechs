@@ -31,23 +31,21 @@ namespace MechMod.Content.Items.MechLegs
             modPlayer.groundJumpSpeed = 4f * modPlayer.partEffectiveness[MechMod.legsIndex];
         }
 
-        public void BodyOffsets(Player player, string body)
+        public void BodyOffsets(MechVisualPlayer visualPlayer, string body)
         {
-            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
-
             switch (body)
             {
                 case "BaseBody":
-                    modPlayer.bodyOffsets[1] = new Vector2(-2, 0);
-                    modPlayer.bodyOffsets[2] = new Vector2(-2, 0);
+                    visualPlayer.bodyOffsets[1] = new Vector2(-2, 0);
+                    visualPlayer.bodyOffsets[2] = new Vector2(-2, 0);
                     break;
                 case "FastBody":
-                    modPlayer.bodyOffsets[1] = new Vector2(-3, 0);
-                    modPlayer.bodyOffsets[2] = new Vector2(-3, 0);
+                    visualPlayer.bodyOffsets[1] = new Vector2(-3, 0);
+                    visualPlayer.bodyOffsets[2] = new Vector2(-3, 0);
                     break;
                 default:
-                    modPlayer.bodyOffsets[1] = new Vector2(0, 0); // Right
-                    modPlayer.bodyOffsets[2] = new Vector2(0, 0); // Left
+                    visualPlayer.bodyOffsets[1] = new Vector2(0, 0); // Right
+                    visualPlayer.bodyOffsets[2] = new Vector2(0, 0); // Left
                     break;
             }
         }

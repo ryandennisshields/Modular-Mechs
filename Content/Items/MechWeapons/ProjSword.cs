@@ -28,7 +28,7 @@ namespace MechMod.Content.Items.MechWeapons
             weaponsPlayer.useType = MechWeaponsPlayer.UseType.Swing; // Set the use type for point weapons
         }
 
-        public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, Vector2 mousePosition, bool toggleOn)
+        public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn)
         {
             weaponsPlayer.canUse = true; // Always allow use for this weapon
 
@@ -61,7 +61,7 @@ namespace MechMod.Content.Items.MechWeapons
     public class ProjSwordProj : ModProjectile
     {
         Player player;
-        MechModPlayer modPlayer;
+        MechVisualPlayer visualPlayer;
 
         public float swingDuration = 0f;
 
@@ -83,20 +83,20 @@ namespace MechMod.Content.Items.MechWeapons
         public override void AI()
         {
             player = Main.player[Projectile.owner];
-            modPlayer = player.GetModPlayer<MechModPlayer>();
+            visualPlayer = player.GetModPlayer<MechVisualPlayer>();
 
-            modPlayer.animationProgress = Projectile.timeLeft; // Set the animation progress to the time left of the projectile
+            visualPlayer.animationProgress = Projectile.timeLeft; // Set the animation progress to the time left of the projectile
             float progress = 1f - (Projectile.timeLeft / swingDuration); // Progress goes from 1 to 0 as the projectile time decreases
 
             // Changed the position of the hitbox as it goes through the swing
             Vector2 position;
 
             if (progress <= 0.33)
-                position = new(-30 * modPlayer.useDirection, -130);
+                position = new(-30 * visualPlayer.useDirection, -130);
             else if (progress <= 0.66)
-                position = new(70 * modPlayer.useDirection, -100);
+                position = new(70 * visualPlayer.useDirection, -100);
             else
-                position = new(70 * modPlayer.useDirection, 0);
+                position = new(70 * visualPlayer.useDirection, 0);
 
             Projectile.Center = player.Center + position;
 
@@ -124,7 +124,7 @@ namespace MechMod.Content.Items.MechWeapons
 
         public override void OnKill(int timeLeft)
         {
-            modPlayer.animationProgress = 0; // Reset the animation progress
+            visualPlayer.animationProgress = 0; // Reset the animation progress
         }
     }
 }

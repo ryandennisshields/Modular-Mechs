@@ -28,6 +28,6 @@ namespace MechMod.Content.Items.MechBoosters
             modPlayer.flightJumpSpeed = 6f * modPlayer.partEffectiveness[MechMod.boosterIndex];
         }
 
-        public void BodyOffsets(Player player, string body) { }
+        public void BodyOffsets(MechVisualPlayer visualPlayer, string body) { }
     }
 }

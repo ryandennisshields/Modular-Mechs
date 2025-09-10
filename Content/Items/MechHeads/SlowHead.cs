@@ -23,20 +23,18 @@ namespace MechMod.Content.Items.MechHeads
             modPlayer.armourBonus = (player.statDefense / 2) * modPlayer.partEffectiveness[MechMod.headIndex]; // 1.5x the armour
         }
 
-        public void BodyOffsets(Player player, string body)
+        public void BodyOffsets(MechVisualPlayer visualPlayer, string body)
         {
-            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
-
             switch (body)
             {
                 case "BaseBody":
-                    modPlayer.bodyOffsets[3] = new Vector2(0, 8);
+                    visualPlayer.bodyOffsets[3] = new Vector2(0, 8);
                     break;
                 case "FastBody":
-                    modPlayer.bodyOffsets[3] = new Vector2(-1, 8);
+                    visualPlayer.bodyOffsets[3] = new Vector2(-1, 8);
                     break;
                 default:
-                    modPlayer.bodyOffsets[3] = new Vector2(0, 0);
+                    visualPlayer.bodyOffsets[3] = new Vector2(0, 0);
                     break;
             }
         }

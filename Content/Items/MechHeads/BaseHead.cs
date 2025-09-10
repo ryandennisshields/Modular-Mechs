@@ -24,20 +24,18 @@ namespace MechMod.Content.Items.MechHeads
             weaponsPlayer.partDamageBonus += 0.10f * modPlayer.partEffectiveness[MechMod.headIndex]; // 10% damage bonus
         }
 
-        public void BodyOffsets(Player player, string body)
+        public void BodyOffsets(MechVisualPlayer visualPlayer, string body)
         {
-            MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
-
             switch (body)
             {
                 case "FastBody":
-                    modPlayer.bodyOffsets[3] = new Vector2(-1, 0);
+                    visualPlayer.bodyOffsets[3] = new Vector2(-1, 0);
                     break;
                 case "SlowBody":
-                    modPlayer.bodyOffsets[3] = new Vector2(2, -6);
+                    visualPlayer.bodyOffsets[3] = new Vector2(2, -6);
                     break;
                 default:
-                    modPlayer.bodyOffsets[3] = new Vector2(0, 0);
+                    visualPlayer.bodyOffsets[3] = new Vector2(0, 0);
                     break;
             }
         }
