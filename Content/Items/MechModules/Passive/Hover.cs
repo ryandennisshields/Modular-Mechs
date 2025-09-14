@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using static MechMod.Content.Mounts.IMechModule;
 using Terraria.DataStructures;
 using Terraria.ID;
-using MechMod.Content.Items.MechWeapons;
+
 using Microsoft.VisualBasic;
 using MechMod.Common.Players;
 
@@ -15,10 +15,8 @@ namespace MechMod.Content.Items.MechModules.Passive
     {
         public override void SetDefaults()
         {
-            Item.width = 20; // The width of the item's hitbox in pixels.
-            Item.height = 20; // The height of the item's hitbox in pixels.
-            Item.value = Item.buyPrice(gold: 4);
-            Item.rare = ItemRarityID.Orange; // The rarity of the item.
+            Item.value = Item.buyPrice(gold: 10);
+            Item.rare = ItemRarityID.Orange;
         }
 
         public ModuleSlot MSlot => ModuleSlot.Passive; // Passive slot

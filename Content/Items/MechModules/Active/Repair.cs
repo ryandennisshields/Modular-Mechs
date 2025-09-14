@@ -17,10 +17,8 @@ namespace MechMod.Content.Items.MechModules.Active
     {
         public override void SetDefaults()
         {
-            Item.width = 20; // The width of the item's hitbox in pixels.
-            Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 8);
-            Item.rare = ItemRarityID.Orange; // The rarity of the item.
+            Item.rare = ItemRarityID.Orange;
         }
 
         public ModuleSlot MSlot => ModuleSlot.Active; // Active slot

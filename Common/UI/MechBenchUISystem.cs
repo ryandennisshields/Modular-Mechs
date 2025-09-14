@@ -15,7 +15,7 @@ namespace MechMod.Common.UI
     public class MechBenchUISystem : ModSystem
     {
         private UserInterface mechBenchInterface; // UserInterface works as the actual UI, MechBenchUI just contains the actual UI elements and logic
-        internal MechBenchUI mechBenchUI; // This is the custom state that contains the UI elements and logic for the Mech Bench UI
+        internal MechBenchUI mechBenchUI; // Custom state that contains the UI elements and logic for the Mech Bench UI
 
         // Functions to set the state of the UI to show and hide
         public void ShowMyUI()
@@ -47,7 +47,7 @@ namespace MechMod.Common.UI
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
-            // Modify the interface layers to treat the Mech Bench UI to be Part of a UI layer and draw it
+            // Modify the interface layers to treat the Mech Bench UI to be part of a UI layer and draw it
             int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text")); // Use Mouse Text layer
             if (mouseTextIndex != -1)
             {

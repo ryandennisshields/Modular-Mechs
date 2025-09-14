@@ -163,7 +163,11 @@ namespace MechMod.Content.Mounts
                 }
             }
 
-            // Apply Part Visuals
+            // For each Part texture:
+            // 1. Check if the part is not air (i.e. a part is equipped)
+            // 2. If a Part is equipped, check if the power cell is active to determine which texture to use (powered or unpowered)
+            // 3. Grab the texture's spritesheet using the Part's name and the appropriate path
+            // 4. Set the texture variable to the grabbed texture
             if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
             {
                 string headPath = modPlayer.powerCellActive
@@ -204,9 +208,9 @@ namespace MechMod.Content.Mounts
                 visualPlayer.legsLTexture = Mod.Assets.Request<Texture2D>(legsL);
             }
 
+            // For weapons, grab the item texture directly from the item if the weapon Part is not air
             if (!modPlayer.equippedParts[MechMod.weaponIndex].IsAir)
             {
-                // Fallback to the item’s texture if no custom visual exists
                 visualPlayer.weaponTexture = TextureAssets.Item[modPlayer.equippedParts[MechMod.weaponIndex].type];
             }
             else
@@ -221,6 +225,7 @@ namespace MechMod.Content.Mounts
             MechWeaponsPlayer weaponsPlayer = player.GetModPlayer<MechWeaponsPlayer>();
 
             player.ClearBuff(ModContent.BuffType<MechBuff>()); // Clear the mech buff
+            player.ClearBuff(ModContent.BuffType<Cooldown>()); // Clear active module cooldown
 
             SoundEngine.PlaySound(SoundID.Research, player.position); // Play Research sound when dismounting the mech
 
@@ -386,26 +391,15 @@ namespace MechMod.Content.Mounts
             #region Step
 
             float stepSpeed = 26 / (player.velocity.Length() / 3);
-            int positionRight = player.direction == -1 ? 6 : 2;
-            int positionLeft = player.direction == -1 ? -14 : -20;
+            int directionOffset = player.direction == -1 ? -10 : 0;
 
             if (visualPlayer.stepTimer < stepSpeed)
                 visualPlayer.stepTimer++;
             if (visualPlayer.stepTimer >= stepSpeed && player.mount._frameState == Mount.FrameRunning)
             {
                 SoundEngine.PlaySound(SoundID.NPCHit3, player.position); // Play Dig sound for step use
-                if (!visualPlayer.changeposition)
-                {
-                    for (int i = 0; i < 15; i++)
-                        Dust.NewDust(new Vector2(player.position.X + positionRight, player.position.Y + 80), 30, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when running
-                    visualPlayer.changeposition = true;
-                }
-                else
-                {
-                    for (int i = 0; i < 15; i++)
-                        Dust.NewDust(new Vector2(player.position.X + positionLeft, player.position.Y + 80), 30, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when running
-                    visualPlayer.changeposition = false;
-                }
+                for (int i = 0; i < 15; i++)
+                    Dust.NewDust(new Vector2(player.position.X + directionOffset, player.position.Y + 80), 30, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when running
                 visualPlayer.stepTimer = 0;
             }
 

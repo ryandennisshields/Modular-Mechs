@@ -1,5 +1,4 @@
 ﻿using MechMod.Common.Players;
-using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -8,19 +7,17 @@ using Terraria.ModLoader;
 
 namespace MechMod.Content.Items.MechHeads
 {
-    internal class FastHead : ModItem, IMechParts
+    public class FastHead : ModItem, IMechParts
     {
         public override void SetDefaults()
         {
-            Item.width = 20; // The width of the item's hitbox in pixels.
-            Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 2);
-            Item.rare = ItemRarityID.Green; // The rarity of the item.
+            Item.rare = ItemRarityID.Green;
         }
 
         public void ApplyStats(Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, ModularMech mech)
         {
-            weaponsPlayer.partCritChanceBonus *= 2f * modPlayer.partEffectiveness[MechMod.headIndex]; // Double critical chance
+            weaponsPlayer.partCritChanceBonus *= 2f * modPlayer.partEffectiveness[MechMod.headIndex]; // 2x critical chance
         }
 
         public void BodyOffsets(MechVisualPlayer visualPlayer, string body)

@@ -16,8 +16,8 @@ using Terraria.ModLoader.IO;
 namespace MechMod.Common.Players
 {
     /// <summary>
-    /// Stores player-related data and specific player-related logic.
-    /// <para/> Things like equipped Parts, upgrades, and visual information are stored here to be accessible through many Parts of the code but to also be synced between clients when the mod is used in multiplayer.
+    /// Stores general player-related data and specific player-related logic.
+    /// <para/> Things like equipped Parts and upgrades are stored here to be accessible through the code but to also be synced between clients when the mod is used in multiplayer.
     /// <para/> It also contains logic for things like disabling mounts under certain conditions, saving the player when they die in the mech, and disabling certain player effects and buffs/debuffs when the mech is active.
     /// </summary>
 
@@ -25,29 +25,32 @@ namespace MechMod.Common.Players
     {
         public bool disableMounts; // Flag to control whether mounts are disabled
 
+        /// Parts and upgrades
         public Item[] equippedParts;
         public int upgradeLevel;
         public float upgradeDamageBonus;
-        public bool powerCellActive = false;
+        public bool powerCellActive;
 
-        public bool grantedLifeBonus;
-
-        public bool allowDown;
-
-        public float maxLife; // Saves the maximum life of players for the debuff duration calculation
-        public int mechDebuffDuration; // Duration that the player can't resummon the mech and is debuffed for
-        public int launchForce; // Force applied to the player when dismounting the mech
-
-        public float[] partEffectiveness = new float[9];
-
+        /// Part effects
         public int lifeBonus;
         public int armourBonus;
+
+        public float[] partEffectiveness = new float[9]; // Array to store the effectiveness of each Part (changed by Body Parts)
 
         // Seperate variables for the mount's jump and run speeds for ground and flight states
         public float groundJumpSpeed = 0f;
         public float groundHorizontalSpeed = 0f;
         public float flightJumpSpeed = 0f;
         public float flightHorizontalSpeed = 0f;
+
+        /// General Mech variables
+        public bool allowDown; // Controls whether the player can hold down to hover with Booster Parts
+        public int mechDebuffDuration; // Duration of the Mech Debuff applied when dismounting the Mech
+        public int launchForce; // Force applied to the player when dismounting the Mech
+
+        /// Trackers
+        public bool grantedLifeBonus; // Tracks if the player has received the life bonus given from Parts
+        public float maxLife; // Saves the maximum life of players for the debuff duration calculation
 
         public override void Initialize()
         {
@@ -156,7 +159,7 @@ namespace MechMod.Common.Players
 
         #region Syncing Player Data (Networking)
 
-        // Send out changes to server and other clients
+        // Function to send out changes to server and other clients as a packet that gets collected in MechMod.HandlePacket
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();
@@ -169,7 +172,7 @@ namespace MechMod.Common.Players
             packet.Send(toWho, fromWho);
         }
 
-        // Receive changes from server and other clients
+        // Function that receives changes from server and other clients from packets that get received in MechMod.HandlePacket
         public void RecievePlayerSync(BinaryReader reader)
         {
             powerCellActive = reader.ReadBoolean();
@@ -177,8 +180,10 @@ namespace MechMod.Common.Players
                 equippedParts[i].SetDefaults(reader.ReadInt32());
         }
 
-        // Check clients against this client to watch for changes
-        // If a change is detected, SendClientChanges will sync the changes
+        // These functions work together to detect changes in the player data and sync them between clients,
+        // removing the need to manually call SyncPlayer whenever a change in data/variables is made
+
+        // Function that copies other client's data to then be checked against this client in SendClientChanges
         public override void CopyClientState(ModPlayer targetCopy)
         {
             var clone = (MechModPlayer)targetCopy;
@@ -188,7 +193,7 @@ namespace MechMod.Common.Players
                 clone.equippedParts[i].type = equippedParts[i].type;
         }
 
-        // If CopyClientState detects a change, this method will be called to sync the changes
+        // Function that runs if CopyClientState detects a change, syncing the changes between clients
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
             var clone = (MechModPlayer)clientPlayer;
@@ -298,9 +303,6 @@ namespace MechMod.Common.Players
                 disableMounts = true;
                 CanUseItem(mechSpawnerItem.Item);
             }
-
-            //if (animationTimer > 0)
-            //    animationTimer--; // Count down the animation timer
         }
 
         // Disable the use of the Mech spawner if mounts are disabled

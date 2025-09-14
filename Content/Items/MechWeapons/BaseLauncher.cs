@@ -13,10 +13,8 @@ namespace MechMod.Content.Items.MechWeapons
     {
         public override void SetDefaults()
         {
-            Item.width = 20; // The width of the item's hitbox in pixels.
-            Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 8);
-            Item.rare = ItemRarityID.Orange; // The rarity of the item.
+            Item.rare = ItemRarityID.Orange;
 
             Item.useAmmo = AmmoID.Rocket; // Make the weapon use ammo
             AmmoID.Sets.SpecificLauncherAmmoProjectileFallback[Item.type] = ItemID.RocketLauncher; // As this is a launcher, they need specific values from a dictionary to dictate what projectile will be used, this code makes it use the same Rockets as the Rocket Launcher 

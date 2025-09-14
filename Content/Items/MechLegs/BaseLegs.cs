@@ -1,5 +1,4 @@
 ﻿using MechMod.Common.Players;
-using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -12,10 +11,8 @@ namespace MechMod.Content.Items.MechLegs
     {
         public override void SetDefaults()
         {
-            Item.width = 20; // The width of the item's hitbox in pixels.
-            Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 1);
-            Item.rare = ItemRarityID.Green; // The rarity of the item.
+            Item.rare = ItemRarityID.Green;
         }
 
         public void ApplyStats(Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, ModularMech mech)
@@ -23,12 +20,12 @@ namespace MechMod.Content.Items.MechLegs
             modPlayer.lifeBonus += (int)(100 * modPlayer.partEffectiveness[MechMod.legsIndex]); // 100 health bonus
 
             // Ground stats
-            mech.MountData.acceleration = 0.1f * modPlayer.partEffectiveness[MechMod.legsIndex];
-            modPlayer.groundHorizontalSpeed = 4f * modPlayer.partEffectiveness[MechMod.legsIndex];
+            mech.MountData.acceleration = 0.1f * modPlayer.partEffectiveness[MechMod.legsIndex]; // 0.1 acceleration
+            modPlayer.groundHorizontalSpeed = 4f * modPlayer.partEffectiveness[MechMod.legsIndex]; // 4 horizontal speed
 
             // Jumping stats
-            mech.MountData.jumpHeight = (int)(10 * modPlayer.partEffectiveness[MechMod.legsIndex]);
-            modPlayer.groundJumpSpeed = 8f * modPlayer.partEffectiveness[MechMod.legsIndex];
+            mech.MountData.jumpHeight = (int)(10 * modPlayer.partEffectiveness[MechMod.legsIndex]); // 10 jump height
+            modPlayer.groundJumpSpeed = 8f * modPlayer.partEffectiveness[MechMod.legsIndex]; // 8 jump speed
         }
 
         public void BodyOffsets(MechVisualPlayer visualPlayer, string body)

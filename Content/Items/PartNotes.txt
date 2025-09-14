@@ -1,0 +1,38 @@
+All Parts have a SetDefaults:
+Contains smaller things like the item's value for being purchased and sold and the rarity of the item/Part.
+
+
+Head, Body, Arms and Legs:
+
+ApplyStats:
+Applies stats depending on the Part. For example,
+Head gives unique bonuses that can change how you think about your other stat/part choices.
+Body modifies the effectveness of other parts to make their positive effects stronger and negative effects weaker.
+Arms effect offensive capabilities like damage, critical strike chance, attack speed, and knockback.
+Legs modify the acceleration, ground movement speed, ground jump height, and ground jump speed.
+
+BodyOffsets:
+Modifies the visual positions of Parts (except the Body) to match better with different Bodies.
+
+
+Boosters:
+These also use ApplyStats similarly to the previous Parts, but the ApplyStats do things differently.
+
+Gives the player the ability to fly or dash depending on the specific Booster.
+Flying has a flying horizontal speed and flying jump speed.
+Dashing has a velocity, cooldown, and duration.
+Dashing accesses a ModPlayer called "DashPlayer" inside ModularMech.
+
+
+Weapons:
+Weapons work with MechWeaponsPlayer to set a DamageClass (to tell calculations what class of bonuses the weapon should recieve (Melee, Ranged, Magic, Summoner)) and UseType (decides the way the weapon is used in animation, like pointing or swinging).
+They also utilise an IMechWeapon interface to share UseAbility between ModularMech and a weapon, a function for making the weapon create projectile(s) to actually damage things with. 
+Specifics of each weapon, including custom projectiles can be found in their respective classes.
+
+
+Modules:
+Utilises an IMechModule interface to share different things between ModularMech and a Module.
+
+MSlot decides if the Module is a Passive (effect happens on its own) or Active (effect requires manual activation).
+MType changes when the module can use its effect, for example, OnMount makes it activate on Mech entry, Persistent is constantly active, and OnDismount activates on leaving the Mech.
+ModuleEffect is the actual effect of the Module, details of each Module effect can be found in their respective classes.

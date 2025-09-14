@@ -13,37 +13,41 @@ using Terraria.ModLoader;
 
 namespace MechMod.Common.Players
 {
+    /// <summary>
+    /// Stores the many visual variables of the Mech, including textures, animation states and weapon drawing info.
+    /// <para/>Any visual information that needs to be synced between clients is also handled here.
+    /// </summary>
+
     public class MechVisualPlayer : ModPlayer
     {
-        public float animationTimer; // Timer for mech weapon animation logic (constantly ticks down)
-        public int animationProgress; // Progress for mech weapon animation logic (needs to be manually incremented and decremented)
-
-        public int boosterTimer = 0;
-
-        public int stepTimer = 0;
-        public bool changeposition = false;
-
+        /// Textures
         public Asset<Texture2D> headTexture;
         public Asset<Texture2D> bodyTexture;
         public Asset<Texture2D> armsRTexture;
         public Asset<Texture2D> armsLTexture;
         public Asset<Texture2D> legsRTexture;
         public Asset<Texture2D> legsLTexture;
-        public Asset<Texture2D> weaponTexture; // Used so the equipped weapon can be drawn while in use
+        public Asset<Texture2D> weaponTexture;
 
-        public Vector2[] bodyOffsets = new Vector2[5];
+        public Vector2[] bodyOffsets = new Vector2[5]; // Offsets for Parts (Head, Arms, Legs) to align them properly with the Body
 
+        /// Mech visual effects
+        public int boosterTimer = 0; // Timer for booster visual effects
+        public int stepTimer = 0; // Timer for mech step effects
+
+        /// Weapon animation variables
+        public float animationTimer; // Timer for mech weapon animation logic (constantly ticks down)
+        public int animationProgress; // Progress for mech weapon animation logic (needs to be manually incremented and decremented)
         public bool animateOnce = false; // Used to control whether the mech weapon animation should only play once or loop
-
         // Used for controlling the current arm frame
         public int armRFrame = -1;
         public int armLFrame = -1;
         // Total number of frames that the arm texture has (to include the many arm rotations/positions for weapon animation)
         public int armRAnimationFrames = 10;
         public int armLAnimationFrames = 14;
-
         public int useDirection; // Stores the last weapon use direction
 
+        /// Weapon drawing variables
         public Vector2 weaponPosition = Vector2.Zero; // Used for positioning the weapon when it is drawn
         public float weaponRotation = 0f; // Used for rotating the weapon when it is drawn
         public Vector2 weaponOrigin = Vector2.Zero; // Used so a different origin can be set for rotation
@@ -52,10 +56,9 @@ namespace MechMod.Common.Players
 
         #region Syncing Player Data (Networking)
 
-        // Send out changes to server and other clients
+        // Function to send out changes to server and other clients as a packet that gets collected in MechMod.HandlePacket
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
-            // Sync up the equipped Parts and animation details between clients
             ModPacket packet = Mod.GetPacket();
             packet.Write((byte)MechMod.MessageType.VisualSync);
             packet.Write((byte)Player.whoAmI);
@@ -75,8 +78,15 @@ namespace MechMod.Common.Players
             packet.Send(toWho, fromWho);
         }
 
+        // Function to update the mech textures based on the currently equipped Parts
+        // Called whenever the parts are syncing in MechModPlayer so the textures are also updated
         public void UpdateTextures(MechModPlayer modPlayer)
         {
+            // For each Part texture:
+            // 1. Check if the part is not air (i.e. a part is equipped)
+            // 2. If a Part is equipped, check if the power cell is active to determine which texture to use (powered or unpowered)
+            // 3. Grab the texture's spritesheet using the Part's name and the appropriate path
+            // 4. Set the texture variable to the grabbed texture
             if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
             {
                 string headPath = modPlayer.powerCellActive
@@ -117,9 +127,9 @@ namespace MechMod.Common.Players
                 legsLTexture = Mod.Assets.Request<Texture2D>(legsL);
             }
 
+            // For weapons, grab the item texture directly from the item if the weapon Part is not air
             if (!modPlayer.equippedParts[MechMod.weaponIndex].IsAir)
             {
-                // Fallback to the item’s texture if no custom visual exists
                 weaponTexture = TextureAssets.Item[modPlayer.equippedParts[MechMod.weaponIndex].type];
             }
             else
@@ -128,7 +138,7 @@ namespace MechMod.Common.Players
             }
         }
 
-        // Receive changes from server and other clients
+        // Function that receives changes from server and other clients from packets that get received in MechMod.HandlePacket
         public void RecievePlayerSync(BinaryReader reader)
         {
             animationTimer = reader.ReadSingle();
@@ -145,19 +155,14 @@ namespace MechMod.Common.Players
             weaponSpriteEffects = (SpriteEffects)reader.ReadInt32();
         }
 
-        // Check clients against this client to watch for changes
-        // If a change is detected, SendClientChanges will sync the changes
+        // These functions work together to detect changes in the player data and sync them between clients,
+        // removing the need to manually call SyncPlayer whenever a change in data/variables is made
+
+        // Function that copies other client's data to then be checked against this client in SendClientChanges
         public override void CopyClientState(ModPlayer targetCopy)
         {
             var clone = (MechVisualPlayer)targetCopy;
 
-            //clone.headTexture = headTexture;
-            //clone.bodyTexture = bodyTexture;
-            //clone.armsRTexture = armsRTexture;
-            //clone.armsLTexture = armsLTexture;
-            //clone.legsRTexture = legsRTexture;
-            //clone.legsLTexture = legsLTexture;
-            //clone.weaponTexture = weaponTexture;
             clone.animationTimer = animationTimer;
             clone.animationProgress = animationProgress;
             clone.useDirection = useDirection;
@@ -170,18 +175,10 @@ namespace MechMod.Common.Players
             clone.weaponSpriteEffects = weaponSpriteEffects;
         }
 
-        // If CopyClientState detects a change, this method will be called to sync the changes
+        // Function that runs if CopyClientState detects a change, syncing the changes between clients
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
             var clone = (MechVisualPlayer)clientPlayer;
-            //bool needsSync = false;
-            //if (headTexture != clone.headTexture ||
-            //    bodyTexture != clone.bodyTexture ||
-            //    armsRTexture != clone.armsRTexture ||
-            //    armsLTexture != clone.armsLTexture ||
-            //    legsRTexture != clone.legsRTexture ||
-            //    legsLTexture != clone.legsLTexture ||
-            //    weaponTexture != clone.weaponTexture ||
             if  (animationTimer != clone.animationTimer ||
                 animationProgress != clone.animationProgress ||
                 useDirection != clone.useDirection ||
@@ -195,11 +192,7 @@ namespace MechMod.Common.Players
                 )
             {
                 SyncPlayer(-1, Main.myPlayer, false);
-                //needsSync = true;
             }
-
-            //if (needsSync) // Only sync clients if needed
-            //    SyncPlayer(-1, Main.myPlayer, false);
         }
 
         #endregion

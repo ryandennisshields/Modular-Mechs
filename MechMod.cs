@@ -1,25 +1,17 @@
 using MechMod.Common.Players;
-using MechMod.Common.UI;
-using MechMod.Content.Buffs;
-using MechMod.Content.Items.MechArms;
-using MechMod.Content.Items.MechBodies;
-using MechMod.Content.Items.MechBoosters;
 using MechMod.Content.Items.MechHeads;
+using MechMod.Content.Items.MechBodies;
+using MechMod.Content.Items.MechArms;
 using MechMod.Content.Items.MechLegs;
+using MechMod.Content.Items.MechBoosters;
 using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Items.MechModules.Passive;
 using MechMod.Content.Items.MechModules.Active;
-using MechMod.Content.Mounts;
-using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI;
-using static MechMod.Common.Players.MechModPlayer;
 using System.IO;
-using MechMod.Content.NPCs;
 
 namespace MechMod
 {
@@ -105,6 +97,7 @@ namespace MechMod
             VisualSync
         }
 
+        // Function that handles incoming packets from SyncPlayer and sends them out to appropiate ModPlayers though ReceivePlayerSync and any other functions
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
             MessageType msgType = (MessageType)reader.ReadByte();
@@ -116,17 +109,19 @@ namespace MechMod
             switch (msgType)
             {
                 case MessageType.PartsSync:
-                    modPlayer.RecievePlayerSync(reader);
-                    visualPlayer.UpdateTextures(modPlayer);
+                    modPlayer.RecievePlayerSync(reader); // Recieve other client's MechModPlayer data
+                    visualPlayer.UpdateTextures(modPlayer); // Update other client's Mech textures to be visible for this client based on the newly recieved MechModPlayer data
 
+                    // If server, relay the packet to other clients (keeps player data in sync always)
                     if (Main.netMode == NetmodeID.Server)
                     {
                         modPlayer.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
                 case MessageType.VisualSync:
-                    visualPlayer.RecievePlayerSync(reader);
+                    visualPlayer.RecievePlayerSync(reader); // Recieve other client's MechVisualPlayer data
 
+                    // If server, relay the packet to other clients (keeps player data in sync always)
                     if (Main.netMode == NetmodeID.Server)
                     {
                         visualPlayer.SyncPlayer(-1, whoAmI, false);

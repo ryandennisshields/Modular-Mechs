@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ID;
+﻿using Terraria.ID;
 using Terraria;
 using Terraria.ModLoader;
 using MechMod.Common.UI;
 
 namespace MechMod.Content.Items.MechMisc
 {
+    /// <summary>
+    /// Item that serves as the way to access the <see cref="MechBenchUI"/> so the player can modify their Mech.
+    /// </summary>
+
     public class MechBench : ModItem
     {
         public override void SetDefaults()
         {
-            Item.width = 32;
-            Item.height = 32;
-            Item.maxStack = 1;
-            Item.useTurn = true;
             Item.autoReuse = false;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.useAnimation = 15;
@@ -31,9 +26,9 @@ namespace MechMod.Content.Items.MechMisc
 
         public override bool? UseItem(Player player)
         {
-            if (Main.myPlayer == player.whoAmI)
+            if (Main.myPlayer == player.whoAmI) // If the player is using the item,
             {
-                ModContent.GetInstance<MechBenchUISystem>().ShowMyUI();
+                ModContent.GetInstance<MechBenchUISystem>().ShowMyUI(); // Show the MechBenchUI
             }
             return true;
         }

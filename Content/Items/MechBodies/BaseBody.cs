@@ -6,14 +6,12 @@ using Terraria.ModLoader;
 
 namespace MechMod.Content.Items.MechBodies
 {
-    internal class BaseBody : ModItem, IMechParts
+    public class BaseBody : ModItem, IMechParts
     {
         public override void SetDefaults()
         {
-            Item.width = 20; // The width of the item's hitbox in pixels.
-            Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 1);
-            Item.rare = ItemRarityID.Green; // The rarity of the item.
+            Item.rare = ItemRarityID.Green;
         }
 
         public void ApplyStats(Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, ModularMech mech)

@@ -15,10 +15,8 @@ namespace MechMod.Content.Items.MechWeapons
     {
         public override void SetDefaults()
         {
-            Item.width = 20; // The width of the item's hitbox in pixels.
-            Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 4);
-            Item.rare = ItemRarityID.Orange; // The rarity of the item.
+            Item.rare = ItemRarityID.Orange;
         }
 
         public void SetStats(MechWeaponsPlayer weaponsPlayer)

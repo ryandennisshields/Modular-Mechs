@@ -1,5 +1,5 @@
 ﻿using MechMod.Common.Players;
-using MechMod.Content.Items.MechWeapons;
+
 using MechMod.Content.Mounts;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +14,8 @@ namespace MechMod.Content.Items.MechModules.Passive
     {
         public override void SetDefaults()
         {
-            Item.width = 20; // The width of the item's hitbox in pixels.
-            Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 4);
-            Item.rare = ItemRarityID.Orange; // The rarity of the item.
+            Item.rare = ItemRarityID.Orange;
         }
 
         public ModuleSlot MSlot => ModuleSlot.Passive; // Passive slot
@@ -26,7 +24,6 @@ namespace MechMod.Content.Items.MechModules.Passive
         private DamageClass contactClass = DamageClass.Default; // Damage class for contact damage
         private int contactDamage = 10; // Damage dealt on contact with enemies
         private int contactKnockback = 20; // Knockback applied on contact
-        //private Rectangle hitbox; // Hitbox for spikes
 
         private Dictionary<int, int> damageCooldown = []; // Cooldown for each NPC
 

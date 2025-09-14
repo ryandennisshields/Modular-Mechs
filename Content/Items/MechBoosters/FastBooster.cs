@@ -1,5 +1,4 @@
 ﻿using MechMod.Common.Players;
-using MechMod.Content.Items.MechWeapons;
 using MechMod.Content.Mounts;
 using Terraria;
 using Terraria.ID;
@@ -8,14 +7,12 @@ using static MechMod.Content.Mounts.ModularMech;
 
 namespace MechMod.Content.Items.MechBoosters
 {
-    internal class FastBooster : ModItem, IMechParts
+    public class FastBooster : ModItem, IMechParts
     {
         public override void SetDefaults()
         {
-            Item.width = 20; // The width of the item's hitbox in pixels.
-            Item.height = 20; // The height of the item's hitbox in pixels.
             Item.value = Item.buyPrice(gold: 10);
-            Item.rare = ItemRarityID.Green; // The rarity of the item.
+            Item.rare = ItemRarityID.Green;
         }
 
         public void ApplyStats(Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, ModularMech mech)
@@ -24,12 +21,12 @@ namespace MechMod.Content.Items.MechBoosters
 
             // Flight stats
             mech.MountData.flightTimeMax = (int)(105 * modPlayer.partEffectiveness[MechMod.boosterIndex]); // 1.75 seconds of flight time
-            modPlayer.flightHorizontalSpeed = 8f * modPlayer.partEffectiveness[MechMod.boosterIndex];
-            modPlayer.flightJumpSpeed = 8f * modPlayer.partEffectiveness[MechMod.boosterIndex];
+            modPlayer.flightHorizontalSpeed = 8f * modPlayer.partEffectiveness[MechMod.boosterIndex]; // 8 horizontal speed
+            modPlayer.flightJumpSpeed = 8f * modPlayer.partEffectiveness[MechMod.boosterIndex]; // 8 jump speed
 
-            // Allow dashing
-            player.GetModPlayer<DashPlayer>().ableToDash = true;
-            player.GetModPlayer<DashPlayer>().dashVelo = 15f * modPlayer.partEffectiveness[MechMod.boosterIndex];
+            // Dashing stats
+            player.GetModPlayer<DashPlayer>().ableToDash = true; // Allow dashing
+            player.GetModPlayer<DashPlayer>().dashVelo = 15f * modPlayer.partEffectiveness[MechMod.boosterIndex]; // 15 velocity
             player.GetModPlayer<DashPlayer>().dashCoolDown = 60; // 1 second of cooldown
             player.GetModPlayer<DashPlayer>().dashDuration = 30; // 0.5 seconds of dash duration
         }
