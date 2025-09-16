@@ -1,16 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using MechMod.Content.Mounts;
+﻿using MechMod.Content.Mounts;
 using Terraria;
 using Terraria.ModLoader;
 using static MechMod.Content.Mounts.IMechModule;
-using Terraria.DataStructures;
 using Terraria.ID;
-
-using Microsoft.VisualBasic;
 using MechMod.Common.Players;
 
 namespace MechMod.Content.Items.MechModules.Passive
 {
+    /// <summary>
+    /// Passive Module that allows the player to hover with Boosters, granting a small damage bonus when hovering.
+    /// </summary>
+
     public class Hover : ModItem, IMechModule
     {
         public override void SetDefaults()

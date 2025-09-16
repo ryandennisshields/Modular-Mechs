@@ -5,12 +5,14 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using MechMod.Common.Players;
-using rail;
-using System.Net.Mail;
 using Terraria.Audio;
 
 namespace MechMod.Content.Items.MechWeapons
 {
+    /// <summary>
+    /// Weapon that fires a laser beam towards the cursor consuming mana.
+    /// </summary>
+
     public class LaserGun : ModItem, IMechWeapon
     {
         public override void SetDefaults()
@@ -21,31 +23,32 @@ namespace MechMod.Content.Items.MechWeapons
 
         public void SetStats(MechWeaponsPlayer weaponsPlayer)
         {
-            weaponsPlayer.DamageClass = DamageClass.Magic; // Set the damage class for ranged weapons
-            weaponsPlayer.useType = MechWeaponsPlayer.UseType.Point; // Set the use type for point weapons
+            weaponsPlayer.DamageClass = DamageClass.Magic; // Set DamageClass to Magic
+            weaponsPlayer.useType = MechWeaponsPlayer.UseType.Point; // Set use type to Point
         }
 
         public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn)
         {
             int manaCost = 6; // Mana cost for use
-            if (player.statMana > manaCost)
+            if (player.statMana > manaCost) // If the player has enough mana,
             {
-                weaponsPlayer.canUse = true;
+                weaponsPlayer.canUse = true; // Allow weapon use
 
-                int projectileType = ProjectileID.LaserMachinegunLaser;
+                int projectileType = ProjectileID.LaserMachinegunLaser; // Use the Laser Machinegun Laser projectile
 
+                // Calculate projectile properties
                 int damage = weaponsPlayer.DamageCalc(66, player);
                 weaponsPlayer.CritChanceCalc(4, player);
                 weaponsPlayer.attackRate = weaponsPlayer.AttackSpeedCalc(22, player);
                 float knockback = weaponsPlayer.KnockbackCalc(4, player);
-
                 float projSpeed = 12;
-                int holdTime = 50; // Amount of time player holds out the weapon after ceasing to fire
-                Vector2 offset = new(0, -38); // Offset to adjust the projectile's spawn position relative to the mech's center
 
-                Vector2 direction = (Main.MouseWorld - player.Center) - offset; // new Vector2 corrects the offset to still make it go towards the cursor
-                direction.Normalize(); // Normalize the direction vector to ensure it has a length of 1
+                // Get the direction and velocity towards the mouse cursor, adjusting for the offset
+                Vector2 offset = new(0, -38); // Offset to adjust the projectile's spawn position relative to the mech's center
+                Vector2 direction = (Main.MouseWorld - player.Center) - offset;
+                direction.Normalize();
                 Vector2 velocity = direction * projSpeed;
+
                 // Adjust the spawn position to be at the end of the muzzle
                 Vector2 muzzleOffset = Vector2.Normalize(velocity) * 70f;
                 if (Collision.CanHit(player.Center + offset, 0, 0, player.Center + offset + muzzleOffset, 0, 0))
@@ -53,15 +56,19 @@ namespace MechMod.Content.Items.MechWeapons
                     offset += muzzleOffset;
                 }
 
-                int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.Center + offset, velocity, projectileType, damage, knockback, player.whoAmI);
-                player.CheckMana(manaCost, true);
-                player.manaRegenDelay = 120;
-                visualPlayer.animationTimer = holdTime;
+                // Create projectile
+                Projectile.NewProjectile(new EntitySource_Parent(player), player.Center + offset, velocity, projectileType, damage, knockback, player.whoAmI);
 
+                // Consume mana and apply mana regen delay
+                player.CheckMana(manaCost, true);
+                player.manaRegenDelay = 120; // 2 seconds of mana regen delay
+
+                int holdTime = 50; // Amount of time player holds out the weapon after ceasing to fire
+                visualPlayer.animationTimer = holdTime; // Set the animation timer to hold the weapon out
                 SoundEngine.PlaySound(SoundID.Item12, player.position); // Play Laser sound when the weapon is used
             }
-            else
-                weaponsPlayer.canUse = false;
+            else // If not enough mana,
+                weaponsPlayer.canUse = false; // Disable weapon use
         }
     }
 }

@@ -15,30 +15,42 @@ using Terraria.ModLoader;
 
 namespace MechMod.Content.Mounts
 {
+    /// These interfaces are used to define the required methods for Mech Parts, Weapons, and Modules.
+    /// Interfaces create a contract, the other class provides implemention for the methods, and then that method is ran somewhere in ModularMech.
+
+    /// <summary>
+    /// Interface for Mech Parts (head, body, arms, legs, booster).
+    /// </summary>
     public interface IMechParts
     {
-        void ApplyStats(Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, ModularMech mech);
+        void ApplyStats(Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, ModularMech mech); // Apply part stats to the player and mech
 
-        void BodyOffsets(MechVisualPlayer visualPlayer, string body);
+        void BodyOffsets(MechVisualPlayer visualPlayer, string body); // Set body offsets for other parts while drawing the mech
     }
 
+    /// <summary>
+    /// Interface for Mech Weapons.
+    /// </summary>
     public interface IMechWeapon
     {
-        void SetStats(MechWeaponsPlayer weaponsPlayer);
+        void SetStats(MechWeaponsPlayer weaponsPlayer); // Apply the weapon's stats (mainly DamageClass and use type)
 
-        void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn);
+        void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn); // Activate the weapon's projectile(s) and visuals
     }
 
+    /// <summary>
+    /// Interface for Mech Modules.
+    /// </summary>
     public interface IMechModule
     {
-        public enum ModuleSlot
+        public enum ModuleSlot // Defines which slot the module can be equipped in
         {
             Passive,
             Active
         }
         public ModuleSlot MSlot { get; }
 
-        public enum ModuleType
+        public enum ModuleType // Defines when the module effect is applied
         {
             Persistent,
             OnMount,
@@ -46,8 +58,13 @@ namespace MechMod.Content.Mounts
         }
         public ModuleType MType { get; }
 
-        void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer);
+        void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer); // Execute effect of the module
     }
+
+    /// <summary>
+    /// Mount that represents the Modular Mech, which can be customized with different parts and weapons.
+    /// <para/> Basically the "core" of the mod.
+    /// </summary>
 
     public class ModularMech : ModMount
     {
@@ -57,7 +74,6 @@ namespace MechMod.Content.Mounts
             MountData.fallDamage = 0;
             MountData.constantJump = true;
             MountData.blockExtraJumps = true;
-            //MountData.buff = ModContent.BuffType<MechBuff>();
             // Effects
             MountData.spawnDust = DustID.Smoke;
             // Frame data and player offsets
@@ -93,6 +109,7 @@ namespace MechMod.Content.Mounts
             MountData.swimFrameDelay = MountData.inAirFrameDelay;
             MountData.swimFrameStart= MountData.inAirFrameStart;
 
+            // Set movement stats to 0, as they will be modified in code based on the equipped parts
             MountData.acceleration = 0f;
             MountData.runSpeed = 0f;
             MountData.swimSpeed = 0f;
@@ -104,6 +121,7 @@ namespace MechMod.Content.Mounts
 
             MountData.flightTimeMax = 0;
 
+            // Set the mount's texture size
             if (!Main.dedServ)
             {
                 MountData.textureWidth = 150;
@@ -117,22 +135,18 @@ namespace MechMod.Content.Mounts
             MechVisualPlayer visualPlayer = player.GetModPlayer<MechVisualPlayer>();
             MechWeaponsPlayer weaponsPlayer = player.GetModPlayer<MechWeaponsPlayer>();
 
-            modPlayer.allowDown = false;
-
             if (modPlayer.powerCellActive) // Give the player the mech buff for a set duration (longer if the player has a power cell active)
                 player.AddBuff(ModContent.BuffType<MechBuff>(), 5400);
             else
                 player.AddBuff(ModContent.BuffType<MechBuff>(), 2700);
 
-            SoundEngine.PlaySound(SoundID.Research, player.position); // Play Research sound when mounting the mech
+            modPlayer.allowDown = false; // Disable hovering with Boosters
 
-            // Hide the Player
-            player.opacityForAnimation = 0;
+            ApplyParts(player, modPlayer, visualPlayer, weaponsPlayer); // Apply the stats and textures of the equipped parts
 
-            ApplyParts(player, modPlayer, visualPlayer, weaponsPlayer);
+            modPlayer.grantedLifeBonus = false; // Reset the life bonus tracker so the life bonus can be applied again
 
-            modPlayer.grantedLifeBonus = false;
-
+            // Check for any OnMount modules and apply their effects
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
             {
                 if (part.ModItem is IMechModule mechModule)
@@ -143,11 +157,16 @@ namespace MechMod.Content.Mounts
                     }
                 }
             }
+
+            player.opacityForAnimation = 0; // Make Player invisible
+
+            SoundEngine.PlaySound(SoundID.Research, player.position); // Play Research sound when mounting the mech
         }
 
+        // Function that applies the stats and textures of the equipped parts
         private void ApplyParts(Player player, MechModPlayer modPlayer, MechVisualPlayer visualPlayer, MechWeaponsPlayer weaponsPlayer)
         {
-            // Apply Part Stats (
+            // Apply Part Stats
             ApplyPartStats(player, modPlayer.equippedParts[MechMod.headIndex], modPlayer.equippedParts[MechMod.bodyIndex], modPlayer.equippedParts[MechMod.armsIndex], modPlayer.equippedParts[MechMod.legsIndex], modPlayer.equippedParts[MechMod.boosterIndex]);
 
             // Apply Weapon Stats (denotes a weapon's use type and damage class)
@@ -164,7 +183,7 @@ namespace MechMod.Content.Mounts
             }
 
             // For each Part texture:
-            // 1. Check if the part is not air (i.e. a part is equipped)
+            // 1. Check if the Part is not air (i.e. a part is equipped)
             // 2. If a Part is equipped, check if the power cell is active to determine which texture to use (powered or unpowered)
             // 3. Grab the texture's spritesheet using the Part's name and the appropriate path
             // 4. Set the texture variable to the grabbed texture
@@ -229,9 +248,10 @@ namespace MechMod.Content.Mounts
 
             SoundEngine.PlaySound(SoundID.Research, player.position); // Play Research sound when dismounting the mech
 
-            modPlayer.mechDebuffDuration = 900;
-            modPlayer.launchForce = -10;
+            modPlayer.mechDebuffDuration = 900; // Base debuff duration (15 seconds)
+            modPlayer.launchForce = -10; // Force to launch the player when dismounting
 
+            // Check for any OnDismount modules and apply their effects
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
             {
                 if (part.ModItem is IMechModule mechModule)
@@ -272,12 +292,14 @@ namespace MechMod.Content.Mounts
                 if (!modPlayer.allowDown)
                     player.controlDown = false;
 
+                // Use flight stats from Booster for speed
                 MountData.jumpSpeed = modPlayer.flightJumpSpeed;
                 MountData.runSpeed = modPlayer.flightHorizontalSpeed;
                 MountData.swimSpeed = modPlayer.flightHorizontalSpeed;
             }
             else
             {
+                // Use ground stats from Legs for speed
                 MountData.jumpSpeed = modPlayer.groundJumpSpeed;
                 MountData.runSpeed = modPlayer.groundHorizontalSpeed;
                 MountData.swimSpeed = modPlayer.groundHorizontalSpeed;
@@ -294,8 +316,9 @@ namespace MechMod.Content.Mounts
             // Grant armour bonus
             player.statDefense += modPlayer.armourBonus;
 
-            WeaponUseAnimationSetup(player, modPlayer, visualPlayer, weaponsPlayer);
+            WeaponUseAnimationSetup(player, modPlayer, visualPlayer, weaponsPlayer); // Setup weapon use animation and position
 
+            // Check for any Persistent modules and apply their effects
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
             {
                 if (part.ModItem is IMechModule mechModule)
@@ -307,41 +330,44 @@ namespace MechMod.Content.Mounts
                 }
             }
 
-            Effects(player, modPlayer, visualPlayer);
+            Effects(player, modPlayer, visualPlayer); // Apply visual and sound effects
         }
 
+        // Function for any visual or/and sound effects
         private static void Effects(Player player, MechModPlayer modPlayer, MechVisualPlayer visualPlayer)
         {
             #region Booster
 
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
-            int boosterDuration = 30;
+            int boosterDuration = 30; // Delay between booster sounds
 
-            if (!modPlayer.equippedParts[MechMod.boosterIndex].IsAir)
+            if (!modPlayer.equippedParts[MechMod.boosterIndex].IsAir) // If a Booster is equipped,
             {
-                if (dashPlayer.dashActive || player.mount._frameState == Mount.FrameInAir || player.mount._frameState == Mount.FrameFlying)
+                if (dashPlayer.dashActive || player.mount._frameState == Mount.FrameInAir || player.mount._frameState == Mount.FrameFlying) // If player is dashing, in air, or flying,
                 {
-                    if (visualPlayer.boosterTimer < boosterDuration)
+                    if (visualPlayer.boosterTimer < boosterDuration) // Increment the timer until it reaches the duration
                         visualPlayer.boosterTimer++;
-                    if (visualPlayer.boosterTimer >= boosterDuration)
+                    if (visualPlayer.boosterTimer >= boosterDuration) // Once the timer reaches the duration,
                     {
-                        if (dashPlayer.dashActive || player.mount._frameState == Mount.FrameFlying)
+                        if (dashPlayer.dashActive || player.mount._frameState == Mount.FrameFlying) // If dashing or flying,
                         {
                             SoundEngine.PlaySound(SoundID.Item13, player.position); // Play Rocket Boots/Jetpack sound for Booster use
                             visualPlayer.boosterTimer = 0; // Reset the timer
                         }
                     }
 
+                    // Change dust velocity and direction based on if dashing, in air, or flying
                     float dustSpeedX;
                     float dustSpeedY;
-
-                    if (dashPlayer.dashActive)
+                    if (dashPlayer.dashActive) // If dashing,
                     {
+                        // Create horizontal dust
                         dustSpeedX = 5;
                         dustSpeedY = 0;
                     }
-                    else if (player.mount._frameState == Mount.FrameInAir || player.mount._frameState == Mount.FrameFlying)
+                    else if (player.mount._frameState == Mount.FrameInAir || player.mount._frameState == Mount.FrameFlying) // If in air or flying,
                     {
+                        // Create vertical dust (more force if flying)
                         dustSpeedX = 0;
                         dustSpeedY = player.controlJump ? 14 : 8;
                     }
@@ -351,13 +377,14 @@ namespace MechMod.Content.Mounts
                         dustSpeedY = 0;
                     }
 
-                    float dustCenterXLeft = 2;
-                    float dustCenterXRight = 8;
+                    float dustCenterXLeft = 2; // X position while facing left
+                    float dustCenterXRight = 8; // X position while facing right
 
-                    float dustOffsetX = 0;
+                    float dustOffsetX = 0; // Offset to vary the X position of the dust
 
                     for (int i = 0; i < 20; i++)
                     {
+                        // Change dust position based on the index
                         switch (i)
                         {
                             case 0:
@@ -373,9 +400,9 @@ namespace MechMod.Content.Mounts
                                 dustOffsetX = 8;
                                 break;
                         }
+                        // Create the dust at the appropriate position based on the player's direction
                         float posX = player.direction == -1 ? player.position.X + dustCenterXLeft + dustOffsetX : player.position.X + dustCenterXRight + dustOffsetX;
                         float posY = (i < 10) ? player.position.Y - 5 : player.position.Y + 15;
-                        //int dust = Dust.NewDust(new Vector2(posX, posY), 1, 1, DustID.Flare, dustSpeedX, dustSpeedY);
                         int dust = Dust.NewDust(new Vector2(posX, posY), 1, 1, ModContent.DustType<BoosterDust>(), dustSpeedX, dustSpeedY);
                         Main.dust[dust].customData = player; // Use custom data to hide dust if behind Mech
                     }
@@ -383,24 +410,24 @@ namespace MechMod.Content.Mounts
             }
             else
             {
-                visualPlayer.boosterTimer = boosterDuration;
+                visualPlayer.boosterTimer = boosterDuration; // Reset the timer if no Booster is equipped
             }
 
             #endregion
 
             #region Step
 
-            float stepSpeed = 26 / (player.velocity.Length() / 3);
-            int directionOffset = player.direction == -1 ? -10 : 0;
+            float stepSpeed = 26 / (player.velocity.Length() / 3); // Speed of steps based on the player's velocity (faster velocity = faster steps)
+            int directionOffset = player.direction == -1 ? -10 : 0; // Offset to position the dust correctly based on the player's direction
 
-            if (visualPlayer.stepTimer < stepSpeed)
+            if (visualPlayer.stepTimer < stepSpeed) // Increment the timer until it reaches the step speed
                 visualPlayer.stepTimer++;
-            if (visualPlayer.stepTimer >= stepSpeed && player.mount._frameState == Mount.FrameRunning)
+            if (visualPlayer.stepTimer >= stepSpeed && player.mount._frameState == Mount.FrameRunning) // Once the timer reaches the step speed and the player is running,
             {
                 SoundEngine.PlaySound(SoundID.NPCHit3, player.position); // Play Dig sound for step use
                 for (int i = 0; i < 15; i++)
                     Dust.NewDust(new Vector2(player.position.X + directionOffset, player.position.Y + 80), 30, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when running
-                visualPlayer.stepTimer = 0;
+                visualPlayer.stepTimer = 0; // Reset the timer
             }
 
             #endregion
@@ -411,7 +438,6 @@ namespace MechMod.Content.Mounts
         {
             if (drawType == 0)
             {
-                //MechModPlayer modPlayer = drawPlayer.GetModPlayer<MechModPlayer>();
                 MechVisualPlayer visualPlayer = drawPlayer.GetModPlayer<MechVisualPlayer>();
 
                 // Get the default frame logic as a new rectangle
@@ -422,6 +448,7 @@ namespace MechMod.Content.Mounts
                     int frameHeight = visualPlayer.armsRTexture.Value.Height / visualPlayer.armRAnimationFrames; // Calculate the height of each frame based on the total height of the texture and the number of frames
                     setArmRFrame = new Rectangle(0, visualPlayer.armRFrame * frameHeight, visualPlayer.armsLTexture.Value.Width, frameHeight); // Change the set arm frame to a new rectangle based on the arm frame and the height of each frame
                 }
+                // Do the same as above for the left arm
                 if (visualPlayer.armLFrame >= 0)
                 {
                     int frameHeight = visualPlayer.armsLTexture.Value.Height / visualPlayer.armLAnimationFrames;
@@ -429,7 +456,7 @@ namespace MechMod.Content.Mounts
                 }
 
                 int visualDirection = visualPlayer.useDirection != 0 ? visualPlayer.useDirection : drawPlayer.direction; // Use the use direction if it is not 0, otherwise use the player's direction
-                spriteEffects = visualDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+                spriteEffects = visualDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None; // Flip the sprite based on the visual direction
 
                 Vector2 groundOffset = new(0, -13); // Offset to position the mech above the ground
 
@@ -475,58 +502,60 @@ namespace MechMod.Content.Mounts
             MechVisualPlayer visualPlayer = player.GetModPlayer<MechVisualPlayer>();
             MechWeaponsPlayer weaponsPlayer = player.GetModPlayer<MechWeaponsPlayer>();
 
-            if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon)
+            if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon) // If a weapon is equipped,
             {
-                if (player.whoAmI == Main.myPlayer && Main.mouseLeft && weaponsPlayer.timer >= weaponsPlayer.attackRate) // Attack when ready
+                if (player.whoAmI == Main.myPlayer && Main.mouseLeft && weaponsPlayer.timer >= weaponsPlayer.attackRate) // If player is the client player, holding left click, and the weapon timer has reached the attack rate,
                 {
-                    weapon.UseAbility(player, weaponsPlayer, visualPlayer, mousePosition, toggleOn);
-                    if (weaponsPlayer.canUse)
+                    weapon.UseAbility(player, weaponsPlayer, visualPlayer, mousePosition, toggleOn); // Create the weapon's projectile(s) and activate any visuals
+                    if (weaponsPlayer.canUse) // If the weapon can be used,
                     {
+                        // Set the last use direction based on the mouse position relative to the player
                         if (Main.MouseWorld.X > player.MountedCenter.X)
                             visualPlayer.useDirection = 1;
                         else
                             visualPlayer.useDirection = -1;
                         if (!player.controlLeft || !player.controlRight)
                             player.direction = visualPlayer.useDirection; // Set the player's direction to the last use direction if not controlling horizontal movement
-                        weaponsPlayer.timer = 0;
+                        weaponsPlayer.timer = 0; // Reset the weapon timer
                     }
                 }
                 if (weaponsPlayer.timer < weaponsPlayer.attackRate)
                     weaponsPlayer.timer++; // Increment the timer until it reaches the attack rate
             }
-            else
+            else // Otherwise,
             {
-                return;
+                return; // Do nothing
             }
         }
 
+        // Function that sets up the weapon use animation depending on the weapon's use type
         private static void WeaponUseAnimationSetup(Player player, MechModPlayer modPlayer, MechVisualPlayer visualPlayer, MechWeaponsPlayer weaponsPlayer)
         {
-            if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon)
+            if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon) // If a weapon is equipped,
             {
-                if (weaponsPlayer.canUse)
+                if (weaponsPlayer.canUse) // If the weapon can be used,
                 {
                     if (visualPlayer.animationTimer > 0 || visualPlayer.animationProgress > 0) // Only run animations if timer or progress is active
                     {
-                        if (weaponsPlayer.useType == MechWeaponsPlayer.UseType.Swing) // Constantly update animation
+                        if (weaponsPlayer.useType == MechWeaponsPlayer.UseType.Swing) // If the weapon is a swinging type,
                         {
-                            WeaponUseAnimation(player, visualPlayer, weaponsPlayer, MechWeaponsPlayer.UseType.Swing);
+                            WeaponUseAnimation(player, visualPlayer, weaponsPlayer, MechWeaponsPlayer.UseType.Swing); // Run the swing animation
                         }
-                        else if (weaponsPlayer.useType == MechWeaponsPlayer.UseType.Point) // Only animate for one frame
+                        else if (weaponsPlayer.useType == MechWeaponsPlayer.UseType.Point) // If the weapon is a pointing type,
                         {
-                            if (!visualPlayer.animateOnce)
+                            if (!visualPlayer.animateOnce) // Only run the animation once per use
                             {
-                                WeaponUseAnimation(player, visualPlayer, weaponsPlayer, MechWeaponsPlayer.UseType.Point);
+                                WeaponUseAnimation(player, visualPlayer, weaponsPlayer, MechWeaponsPlayer.UseType.Point); // Run the point animation
                                 visualPlayer.animateOnce = true;
                             }
                         }
                     }
-                    if (weaponsPlayer.timer >= weaponsPlayer.attackRate)
+                    if (weaponsPlayer.timer >= weaponsPlayer.attackRate) // If the weapon timer has reached the attack rate,
                     {
-                        visualPlayer.animateOnce = false; // Reset the animate once bool when the weapon is ready to attack again
+                        visualPlayer.animateOnce = false; // Reset the animation once tracker so animation can be run again
                     }
                 }
-                if (!Main.mouseLeft && visualPlayer.animationTimer <= 0 && visualPlayer.animationProgress <= 0)
+                if (!Main.mouseLeft && visualPlayer.animationTimer <= 0 && visualPlayer.animationProgress <= 0) // If the player is not using the weapon, and there is no animation timer or progress,
                 {
                     // Reset the arm frame to default
                     visualPlayer.armRFrame = -1;
@@ -546,19 +575,19 @@ namespace MechMod.Content.Mounts
             int weaponOriginOffsetX = 0; // X offset of the weapon origin
             int weaponOriginOffsetY = 0; // Y offset of the weapon origin
 
-            switch (useType)
+            switch (useType) // Switch between different use types
             {
-                case MechWeaponsPlayer.UseType.Point:
+                case MechWeaponsPlayer.UseType.Point: // For pointing weapons,
 
-                    visualPlayer.weaponScale = 1f;
+                    visualPlayer.weaponScale = 1f; // Make weapon visible
 
+                    // Set position and origin offsets
                     weaponPositionX = 0;
                     weaponPositionY = -22;
-
                     weaponOriginOffsetX = -38;
                     weaponOriginOffsetY = 0;
 
-                    if (Main.mouseLeft) // Only rotate on fire
+                    if (Main.mouseLeft) // Only run the animation if the player is holding left click
                     {
                         float pointAngle = (Main.MouseWorld - player.MountedCenter).ToRotation(); // Get the angle between the mouse position and the player mounted center
                         float pointAngleDeg = MathHelper.ToDegrees(pointAngle); // Convert the angle to degrees for easier calculations
@@ -585,13 +614,13 @@ namespace MechMod.Content.Mounts
                         }
                     }
                     break;
-                case MechWeaponsPlayer.UseType.Swing:
+                case MechWeaponsPlayer.UseType.Swing: // For swinging weapons,
 
-                    visualPlayer.weaponScale = 1f;
+                    visualPlayer.weaponScale = 1f; // Make weapon visible
 
+                    // Set position and origin offsets
                     weaponPositionX = -10;
                     weaponPositionY = -12;
-
                     weaponOriginOffsetX = -62;
                     weaponOriginOffsetY = 44 * visualPlayer.useDirection;
 
@@ -612,12 +641,13 @@ namespace MechMod.Content.Mounts
                     }
                     break;
             }
-            visualPlayer.weaponPosition = new Vector2(weaponPositionX * visualPlayer.useDirection, weaponPositionY); // Setting a new position lets a weapon be futher out or further up from the player
+            visualPlayer.weaponPosition = new Vector2(weaponPositionX * visualPlayer.useDirection, weaponPositionY); // Set the position of the weapon based on the weapon position values
             if (visualPlayer.weaponTexture != null)
-                visualPlayer.weaponOrigin = new Vector2(visualPlayer.weaponTexture.Value.Width / 2 + weaponOriginOffsetX, visualPlayer.weaponTexture.Value.Height / 2 + weaponOriginOffsetY); // Setting a new origin gives the weapon a different rotation point
+                visualPlayer.weaponOrigin = new Vector2(visualPlayer.weaponTexture.Value.Width / 2 + weaponOriginOffsetX, visualPlayer.weaponTexture.Value.Height / 2 + weaponOriginOffsetY); // Set the origin of the weapon based on the weapon origin offset values (point of rotation)
             visualPlayer.weaponSpriteEffects = visualPlayer.useDirection == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None; // Flip the weapon sprite based on the player's direction
         }
 
+        // Function that applies the stats of each equipped part
         public void ApplyPartStats(Player player, Item equippedHead, Item equippedBody, Item equippedArms, Item equippedLegs, Item equippedBooster)
         {
             MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
@@ -636,15 +666,16 @@ namespace MechMod.Content.Mounts
             // Apply body stats first as it increases and decreases the effectivness of other parts
             if (!equippedBody.IsAir)
                 if (modPlayer.equippedParts[MechMod.bodyIndex].ModItem is IMechParts body)
-                    body.ApplyStats(player, modPlayer, weaponsPlayer, this);
+                    body.ApplyStats(player, modPlayer, weaponsPlayer, this); // Apply Body stats
 
             if (!equippedArms.IsAir)
                 if (modPlayer.equippedParts[MechMod.armsIndex].ModItem is IMechParts arms)
-                    arms.ApplyStats(player, modPlayer, weaponsPlayer, this);
+                    arms.ApplyStats(player, modPlayer, weaponsPlayer, this); // Apply Arm stats
             if (!equippedLegs.IsAir)
                 if (modPlayer.equippedParts[MechMod.legsIndex].ModItem is IMechParts legs)
-                    legs.ApplyStats(player, modPlayer, weaponsPlayer, this);
+                    legs.ApplyStats(player, modPlayer, weaponsPlayer, this); // Apply Leg stats
 
+            // Reset flight stats before applying new ones
             MountData.flightTimeMax = 0;
             modPlayer.flightHorizontalSpeed = 0f;
             modPlayer.flightJumpSpeed = 0f;
@@ -652,16 +683,17 @@ namespace MechMod.Content.Mounts
             player.GetModPlayer<DashPlayer>().dashCoolDown = 0;
             player.GetModPlayer<DashPlayer>().dashDuration = 0;
             player.GetModPlayer<DashPlayer>().dashVelo = 0f;
-            if (!equippedBooster.IsAir)
+
+            if (!equippedBooster.IsAir) // If a Booster is equipped,
             {
                 if (modPlayer.equippedParts[MechMod.boosterIndex].ModItem is IMechParts booster)
-                    booster.ApplyStats(player, modPlayer, weaponsPlayer, this);
+                    booster.ApplyStats(player, modPlayer, weaponsPlayer, this); // Apply Booster stats
             }
             else
             {
                 // Unique as a player can go without a Booster, but the other Parts are required
                 if (modPlayer.powerCellActive)
-                    modPlayer.lifeBonus += 100;
+                    modPlayer.lifeBonus += 100; // Give extra life bonus if no Booster is equipped with power cell active
             }
 
             // Apply head stats last as it can have multiplicative effects
@@ -670,25 +702,29 @@ namespace MechMod.Content.Mounts
                     head.ApplyStats(player, modPlayer, weaponsPlayer, this);
         }
 
+        /// <summary>
+        /// Handles dashing ability when a Booster is equipped to the Mech.
+        /// </summary>
+
         public class DashPlayer : ModPlayer
         {
-            public bool ableToDash;
-            public bool dashActive; // Used to check if the player is currently dashing
+            public bool ableToDash; // Check if the player can dash at all
+            public float dashVelo; // Velocity of the dash
+            public int dashCoolDown; // Time between dashes
+            public int dashDuration; // Time the dash lasts
 
-            public int dashCoolDown;
-            public int dashDuration;
+            public bool dashActive; // Check if the player is currently dashing
 
-            public float dashVelo;
-
-            private int dashDelay = 0;
-            private int dashTimer = 0; // CAN BE USED LATER FOR EFFECTS MID-DASH (See ExampleMod's Shield Accessory)
+            private int dashDelay = 0; // Delay between dashes
+            private int dashTimer = 0; // Keeps track of how long the dash has been active
 
             public override void PreUpdateMovement()
             {
-                if (ableToDash && Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>())
+                if (ableToDash && Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>()) // If able to dash and the player is mounted on the mech,
                 {
-                    if (MechMod.MechDashKeybind.JustPressed && dashDelay == 0)
+                    if (MechMod.MechDashKeybind.JustPressed && dashDelay == 0) // If the player presses the dash keybind and the dash is not on cooldown,
                     {
+                        // Set the dash direction based on player input
                         int dashDir;
                         if (Player.controlRight)
                             dashDir = 1;
@@ -697,28 +733,30 @@ namespace MechMod.Content.Mounts
                         else
                             dashDir = Player.direction;
 
+                        // Get the dash velocity based on the dash direction and dash velocity stat
                         float newVelo;
                         newVelo = dashDir * dashVelo;
 
+                        // Set the dash cooldown and timer
                         dashDelay = dashCoolDown;
                         dashTimer = dashDuration;
-                        Player.velocity.X = newVelo;
-                        //Player.mount._frameState = Mount.FrameDashing;
+
+                        Player.velocity.X = newVelo; // Apply the dash velocity to the player
                     }
 
-                    if (dashDelay > 0)
-                        dashDelay--;
+                    if (dashDelay > 0) // If the dash is on cooldown,
+                        dashDelay--; // Decrement the delay
                 }
 
-                if (dashTimer > 0)
+                if (dashTimer > 0) // If dash is currently active,
                 {
-                    dashTimer--;
-                    dashActive = true;
-                    if (dashTimer <= 0)
+                    dashTimer--; // Decrement the dash timer
+                    dashActive = true; // Set dash active to true
+                    if (dashTimer <= 0) // If the dash timer has run out,
                     {
-                        dashActive = false;
+                        dashActive = false; // Set dash active to false
                         if (Player.direction == 1 ? Player.velocity.X > Player.mount.RunSpeed : Player.velocity.X < -Player.mount.RunSpeed)
-                            Player.velocity.X -= Player.mount.RunSpeed * Player.direction; // Stop the dash when the timer runs out
+                            Player.velocity.X -= Player.mount.RunSpeed * Player.direction; // Stop the dash velocity increase when the timer runs out
                     }
                 }
             }

@@ -232,8 +232,6 @@ namespace MechMod.Common.UI
 
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-
             // Let the game know when the player is mousing over the UI
             if (ContainsPoint(Main.MouseScreen))
                 Main.LocalPlayer.mouseInterface = true;

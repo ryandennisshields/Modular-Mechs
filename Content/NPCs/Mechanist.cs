@@ -1,39 +1,35 @@
-﻿using MechMod;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Events;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Terraria.Utilities;
-using static Terraria.GameContent.Bestiary.IL_BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions;
 
 namespace MechMod.Content.NPCs
 {
+    /// <summary>
+    /// NPC that sells everything related to Mechs, including parts, weapons, modules and more.
+    /// <para/> Also provides tips on how to use Mechs.
+    /// </summary>
+
     [AutoloadHead]
     public class Mechanist : ModNPC
     {
-        public const string shopName = "Shop";
-        public int numberOfTimesTalkedTo = 0;
+        public int numberOfTimesTalkedTo = 0; // Track number of times talked to for dialogue purposes
 
-        private static int shimmerHeadIndex;
-        private static Profiles.StackedNPCProfile NPCProfile;
+        private static int shimmerHeadIndex; // Index for shimmer head texture
+        private static Profiles.StackedNPCProfile NPCProfile; // Stores the NPC profiles for normal and shimmer variants for visuals
 
         public override void Load()
         {
-            shimmerHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
+            shimmerHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head"); // Register the shimmer head texture
         }
 
         public override void SetStaticDefaults()
@@ -53,7 +49,7 @@ namespace MechMod.Content.NPCs
 
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new()
             {
-                Velocity = 1f,
+                Velocity = 1f, // Make NPC walk to the right in bestiary
             };
 
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
@@ -70,6 +66,7 @@ namespace MechMod.Content.NPCs
                 .SetNPCAffection(NPCID.WitchDoctor, AffectionLevel.Hate)
                 ;
 
+            // Set up the NPC profiles for normal and shimmer variants for visuals
             NPCProfile = new Profiles.StackedNPCProfile(
                 new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture)),
                 new Profiles.DefaultNPCProfile(Texture + "_Shimmer", shimmerHeadIndex)
@@ -96,24 +93,25 @@ namespace MechMod.Content.NPCs
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange([
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface, // NPC spawns on surface
 
-				new FlavorTextBestiaryInfoElement("Having spent many years perfecting his craft, the Mechanitor provides his technology to others with a sense of pride."),
+				new FlavorTextBestiaryInfoElement("Having spent many years perfecting his craft, the Mechanitor provides his technology to others with a sense of pride."), // Bestiary flavor text
             ]);
         }
 
         public override void HitEffect(NPC.HitInfo hit)
         {
-            if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
+            if (Main.netMode != NetmodeID.Server && NPC.life <= 0) // If the NPC is killed,
             {
+                // Get gore pieces
                 string variant = "";
                 if (NPC.IsShimmerVariant) variant += "_Shimmer";
-                if (NPC.altTexture == 1) variant += "_Party";
                 int hatGore = NPC.GetPartyHatGore();
                 int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
                 int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
                 int legGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Leg").Type;
 
+                // Spawn gore pieces
                 if (hatGore > 0)
                 {
                     Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, hatGore);
@@ -130,15 +128,16 @@ namespace MechMod.Content.NPCs
         {
             for (int k = 0; k < Main.maxPlayers; k++)
             {
+                // Only spawn if there is an active player
                 Player player = Main.player[k];
                 if (!player.active)
                 {
                     continue;
                 }
 
-                if (NPC.downedBoss2)
+                if (NPC.downedBoss2) // If Brain of Cthulhu or Eater of Worlds has been defeated,
                 {
-                    return true;
+                    return true; // Allow the NPC to spawn
                 }
             }
             return false;
@@ -165,101 +164,93 @@ namespace MechMod.Content.NPCs
             ];
         }
 
-        public override void FindFrame(int frameHeight)
-        {
-            /*npc.frame.Width = 40;
-			if (((int)Main.time / 10) % 2 == 0)
-			{
-				npc.frame.X = 40;
-			}
-			else
-			{
-				npc.frame.X = 0;
-			}*/
-        }
-
         public override string GetChat()
         {
-            WeightedRandom<string> chat = new();
+            WeightedRandom<string> chat = new(); // Create a weighted random for chat options
 
-            int witchDoctor = NPC.FindFirstNPC(NPCID.WitchDoctor);
-            Condition golemCondition = Condition.DownedGolem;
-            if (witchDoctor >= 0)
+            // Proceed to go through dialogue options
+            // Each dialogue option, if the condition is met, is added to the weighted random
+            int witchDoctor = NPC.FindFirstNPC(NPCID.WitchDoctor); // Check and store the Witch Doctor's NPC index
+            Condition golemCondition = Condition.DownedGolem; // Condition for Golem being defeated
+            if (witchDoctor >= 0) // If the Witch Doctor is present,
             {
-                if (golemCondition.IsMet())
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.WitchDoctorAfterGolem", Main.npc[witchDoctor].GivenName));
-                if (NPC.GivenName == "Ryan" && Main.rand.NextBool(30))
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.TheFunny", Main.npc[witchDoctor].GivenName));
+                if (golemCondition.IsMet()) // If Golem has been defeated,
+                    chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.WitchDoctorAfterGolem", Main.npc[witchDoctor].GivenName)); // Add "Witch Doctor after Golem" dialogue
+                if (NPC.GivenName == "Ryan" && Main.rand.NextBool(30)) // If the Mechanist's name is Ryan and with a 1 in 30 chance,
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.TheFunny", Main.npc[witchDoctor].GivenName)); // Add "The Funny" dialogue
             }
-            Condition mechCondition = Condition.DownedMechBossAny;
-            if (mechCondition.IsMet())
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.AfterMechBoss"));
-            else
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.BeforeMechBoss"));
-            if (Main.raining)
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Raining"));
-            if (Main.IsItStorming)
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Storming"));
-            if (Main.bloodMoon)
+            Condition mechCondition = Condition.DownedMechBossAny; // Condition for any Mechanical Boss being defeated
+            if (mechCondition.IsMet()) // If any Mechanical Boss has been defeated,
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.AfterMechBoss")); // Add "After Mech Boss" dialogue
+            else // If no Mechanical Boss has been defeated,
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.BeforeMechBoss")); // Add "Before Mech Boss" dialogue
+            if (Main.raining) // If it is raining,
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Raining")); // Add "Raining" dialogue
+            if (Main.IsItStorming) // If it is storming,
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Storming")); // Add "Storming" dialogue
+            if (Main.bloodMoon) // If it is a Blood Moon,
             {
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.BloodMoon1"));
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.BloodMoon2"));
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.BloodMoon1")); // Add "Blood Moon 1" dialogue
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.BloodMoon2")); // Add "Blood Moon 2" dialogue
             }
-            if (BirthdayParty.PartyIsUp)
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Party"));
-            if (Main.LocalPlayer.ZoneGraveyard)
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Graveyard"));
-            Condition hardmodeCondition = Condition.Hardmode;
-            if (hardmodeCondition.IsMet())
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Hardmode"));
-            else
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.PreHardmode"));
-            numberOfTimesTalkedTo++;
-            if (numberOfTimesTalkedTo >= 10)
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.TalkALot"));
+            if (BirthdayParty.PartyIsUp) // If there is a party,
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Party")); // Add "Party" dialogue
+            if (Main.LocalPlayer.ZoneGraveyard) // If the player is in a graveyard,
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Graveyard")); // Add "Graveyard" dialogue
+            Condition hardmodeCondition = Condition.Hardmode; // Condition for Hardmode
+            if (hardmodeCondition.IsMet()) // If Hardmode has been reached,
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.Hardmode")); // Add "Hardmode" dialogue
+            else // If Hardmode has not been reached,
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.PreHardmode")); // Add "Pre-Hardmode" dialogue
+            numberOfTimesTalkedTo++; // Increment the number of times talked to
+            if (numberOfTimesTalkedTo >= 10) // If the player has talked to the NPC 10 or more times,
+                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.TalkALot")); // Add "Talk A Lot" dialogue
+            // Add standard dialogue
             chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.StandardDialogue1"));
             chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.StandardDialogue2"));
             chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.StandardDialogue3"));
 
-            string chosenChat = chat;
+            string chosenChat = chat; // Now that all possible options have been added to the weighted random, choose a random dialogue option from the weighted random
 
-            return chosenChat;
+            return chosenChat; // Return the chosen dialogue option
         }
 
         public override void SetChatButtons(ref string button, ref string button2)
         { 
-            button = Language.GetTextValue("LegacyInterface.28");
+            button = Language.GetTextValue("LegacyInterface.28"); // Shop button
             button2 = "Tips";
         }
 
-        private int tipIndex = 0;
-        private int tipCount = 6;
+        private int tipIndex = 0; // Current tip index
+        private int tipCount = 6; // Total number of tips available
 
         public override void OnChatButtonClicked(bool firstButton, ref string shop)
         {
             if (firstButton) // Shop button
             { 
-                shop = shopName;
+                shop = "Shop"; // Open the shop
             }
             if (!firstButton) // Tips button
             {
-                tipIndex++;
-                Main.npcChatText = Language.GetTextValue($"Mods.MechMod.NPCs.Mechanist.Dialogue.Tip{tipIndex}");
-                if (tipIndex >= tipCount)
+                tipIndex++; // Increment the tip index
+                Main.npcChatText = Language.GetTextValue($"Mods.MechMod.NPCs.Mechanist.Dialogue.Tip{tipIndex}"); // Show the tip corresponding to the current tip index
+                if (tipIndex >= tipCount) // If the tip index exceeds the total number of tips,
                 {
-                    tipIndex = 0;
+                    tipIndex = 0; // Reset the tip index to 0
                 }
             }
         }
 
         public override void AddShops()
         {
+            // Conditions for shop inventory
             Condition condition1 = Condition.DownedSkeletron;
             Condition condition2 = Condition.Hardmode;
             //Condition condition3 = Condition.DownedMechBossAny;
             Condition condition4 = Condition.DownedGolem;
 
-            var npcShop = new NPCShop(Type, shopName)
+            // Set up the shop inventory
+            var npcShop = new NPCShop(Type, "Shop")
                     // Base (Parts = 1 Gold, Weapons = 2 Gold, Passive Modules = 4 Gold, Active Modules = 8 Gold)
                     .Add<Items.MechMisc.MechSpawner>()
                     .Add<Items.MechMisc.MechBench>()
@@ -304,32 +295,7 @@ namespace MechMod.Content.NPCs
             npcShop.Register();
         }
 
-        //public override void ModifyActiveShop(string shopName, Item[] items)
-        //{
-        //    foreach (Item item in items)
-        //    {
-        //        // Skip 'air' items and null items.
-        //        if (item == null || item.type == ItemID.None)
-        //        {
-        //            continue;
-        //        }
-
-        //        // If NPC is shimmered then reduce all prices by 50%.
-        //        if (NPC.IsShimmerVariant)
-        //        {
-        //            int value = item.shopCustomPrice ?? item.value;
-        //            item.shopCustomPrice = value / 2;
-        //        }
-        //    }
-        //}
-
-        //public override void ModifyNPCLoot(NPCLoot npcLoot)
-        //{
-        //    npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleCostume>()));
-        //}
-
         public override bool CanGoToStatue(bool toKingStatue) => true;
-
 
         public override void TownNPCAttackStrength(ref int damage, ref float knockback)
         {
@@ -366,28 +332,11 @@ namespace MechMod.Content.NPCs
             Main.GetItemDrawFrame(ItemID.Minishark, out _, out itemFrame);
             horizontalHoldoutOffset = (int)Main.DrawPlayerItemPos(1f, ItemID.Minishark).X - 20;
         }
-
-        // Let the NPC "talk about" minion boss
-        //public override int? PickEmote(Player closestPlayer, List<int> emoteList, WorldUIAnchor otherAnchor)
-        //{
-        //    // By default this NPC will have a chance to use the Minion Boss Emote even if Minion Boss is not downed yet
-        //    int type = ModContent.EmoteBubbleType<MinionBossEmote>();
-        //    // If the NPC is talking to the Demolitionist, it will be more likely to react with angry emote
-        //    if (otherAnchor.entity is NPC { type: NPCID.Demolitionist })
-        //    {
-        //        type = EmoteID.EmotionAnger;
-        //    }
-
-        //    // Make the selection more likely by adding it to the list multiple times
-        //    for (int i = 0; i < 4; i++)
-        //    {
-        //        emoteList.Add(type);
-        //    }
-
-        //    // Use this or return null if you don't want to override the emote selection totally
-        //    return base.PickEmote(closestPlayer, emoteList, otherAnchor);
-        //}
     }
+
+    /// <summary>
+    /// Emote bubble for the Mechanist NPC.
+    /// </summary>
 
     public class MechanistEmote : ModEmoteBubble
     {

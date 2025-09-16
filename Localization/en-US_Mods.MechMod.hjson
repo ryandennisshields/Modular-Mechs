@@ -1,6 +1,6 @@
 Items: {
 	MechSpawner: {
-		DisplayName: Mech Spawner
+		DisplayName: Mech Designator
 		Tooltip:
 			'''
 			Enter your Mech
@@ -38,7 +38,7 @@ Items: {
 	// Base Parts
 	
 	BaseHead: {
-		DisplayName: Base Head
+		DisplayName: Soldier Head
 		Tooltip:
 			'''
 			Head Part
@@ -48,7 +48,7 @@ Items: {
 	}
 
 	BaseBody: {
-		DisplayName: Base Body
+		DisplayName: Soldier Body
 		Tooltip:
 			'''
 			Body Part
@@ -60,7 +60,7 @@ Items: {
 	}
 
 	BaseArms: {
-		DisplayName: Base Arms
+		DisplayName: Soldier Arms
 		Tooltip:
 			'''
 			Arms Part
@@ -69,7 +69,7 @@ Items: {
 	}
 
 	BaseLegs: {
-		DisplayName: Base Legs
+		DisplayName: Soldier Legs
 		Tooltip:
 			'''
 			Legs Part
@@ -84,7 +84,7 @@ Items: {
 	}
 
 	BaseBooster: {
-		DisplayName: Base Booster
+		DisplayName: Soldier Booster
 		Tooltip:
 			'''
 			Booster Part
@@ -98,7 +98,7 @@ Items: {
 	// Slow Parts
 	
 	SlowHead: {
-		DisplayName: Slow Head
+		DisplayName: Titan Head
 		Tooltip:
 			'''
 			Head Part
@@ -107,7 +107,7 @@ Items: {
 	}
 
 	SlowBody: {
-		DisplayName: Slow Body
+		DisplayName: Titan Body
 		Tooltip:
 			'''
 			Body Part
@@ -118,7 +118,7 @@ Items: {
 	}
 
 	SlowArms: {
-		DisplayName: Slow Arms
+		DisplayName: Titan Arms
 		Tooltip:
 			'''
 			Arms Part
@@ -129,7 +129,7 @@ Items: {
 	}
 
 	SlowLegs: {
-		DisplayName: Slow Legs
+		DisplayName: Titan Legs
 		Tooltip:
 			'''
 			Legs Part
@@ -144,7 +144,7 @@ Items: {
 	}
 
 	SlowBooster: {
-		DisplayName: Slow Booster
+		DisplayName: Titan Booster
 		Tooltip:
 			'''
 			Booster Part
@@ -159,7 +159,7 @@ Items: {
 	// Fast Parts
 	
 	FastHead: {
-		DisplayName: Fast Head
+		DisplayName: Agent Head
 		Tooltip:
 			'''
 			Head Part
@@ -168,7 +168,7 @@ Items: {
 	}
 
 	FastBody: {
-		DisplayName: Fast Body
+		DisplayName: Agent Body
 		Tooltip:
 			'''
 			Body Part
@@ -179,7 +179,7 @@ Items: {
 	}
 
 	FastArms: {
-		DisplayName: Fast Arms
+		DisplayName: Agent Arms
 		Tooltip:
 			'''
 			Arms Part
@@ -190,7 +190,7 @@ Items: {
 	}
 
 	FastLegs: {
-		DisplayName: Fast Legs
+		DisplayName: Agent Legs
 		Tooltip:
 			'''
 			Legs Part
@@ -205,7 +205,7 @@ Items: {
 	}
 
 	FastBooster: {
-		DisplayName: Fast Booster
+		DisplayName: Agent Booster
 		Tooltip:
 			'''
 			Booster Part
@@ -225,7 +225,7 @@ Items: {
 	// The values for the statistics act like "base values" for the weapon, unmodified by armour, accessories, Parts, etc.
 	
 	BaseGun: {
-		DisplayName: Base Gun
+		DisplayName: Auto Rifle
 		Tooltip:
 			'''
 			Weapon Part
@@ -238,7 +238,7 @@ Items: {
 	}
 
 	BaseSword: {
-		DisplayName: Base Sword
+		DisplayName: Breachsword
 		Tooltip:
 			'''
 			Weapon Part
@@ -251,7 +251,7 @@ Items: {
 	}
 
 	LaserGun: {
-		DisplayName: Laser Gun
+		DisplayName: Long Ray
 		Tooltip:
 			'''
 			Weapon Part
@@ -265,7 +265,7 @@ Items: {
 	}
 
 	ProjSword: {
-		DisplayName: Proj Sword
+		DisplayName: Laser Blade
 		Tooltip:
 			'''
 			Weapon Part
@@ -278,7 +278,7 @@ Items: {
 	}
 
 	BaseLauncher: {
-		DisplayName: Base Launcher
+		DisplayName: Bazooka
 		Tooltip:
 			'''
 			Weapon Part
@@ -367,16 +367,11 @@ Items: {
 			30s Cooldown
 			'''
 	}
-
-	HideVFX: {
-		DisplayName: Hide V F X
-		Tooltip: ""
-	}
 }
 
 Buffs: {
 	MechBuff: {
-		Description: You're inside your Mech!
+		Description: Armed and ready for combat
 		DisplayName: In Mech
 	}
 

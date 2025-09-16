@@ -1,11 +1,9 @@
 ﻿using MechMod.Common.Players;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
@@ -32,9 +30,15 @@ namespace MechMod.Common.UI
         {
             var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
 
+            // Store the old inventory scale and set a new scale for drawing the slot
+            float oldScale = Main.inventoryScale;
+            Main.inventoryScale = 0.6f;
+
             // Draw the slot with the appearance of a base game item slot
             base.DrawSelf(spriteBatch);
             ItemSlot.Draw(spriteBatch, ref slotItem, ItemSlot.Context.InventoryCoin, GetDimensions().Position());
+
+            Main.inventoryScale = oldScale; // Reset the inventory scale back to the old scale (keeps it pinned at a specific scale)
 
             // Display item information when hovering over the slot
             if (!slotItem.IsAir)
@@ -99,8 +103,8 @@ namespace MechMod.Common.UI
         // Function to get the index of the inventory slot currently being hovered over by the mouse
         public static int GetHoveredInventorySlot()
         {
-            float slotSize = 75f * Main.inventoryScale;
-            float slotGap = 4f * Main.inventoryScale;
+            float slotSize = 43.5f;
+            float slotGap = 4f;
             float startX = 20.5f;
             float startY = 20;
 

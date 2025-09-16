@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
@@ -83,7 +78,7 @@ namespace MechMod.Common.Players
         public void UpdateTextures(MechModPlayer modPlayer)
         {
             // For each Part texture:
-            // 1. Check if the part is not air (i.e. a part is equipped)
+            // 1. Check if the Part is not air (i.e. a part is equipped)
             // 2. If a Part is equipped, check if the power cell is active to determine which texture to use (powered or unpowered)
             // 3. Grab the texture's spritesheet using the Part's name and the appropriate path
             // 4. Set the texture variable to the grabbed texture

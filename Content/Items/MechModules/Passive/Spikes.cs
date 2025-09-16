@@ -1,5 +1,4 @@
 ﻿using MechMod.Common.Players;
-
 using MechMod.Content.Mounts;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,10 @@ using static MechMod.Content.Mounts.IMechModule;
 
 namespace MechMod.Content.Items.MechModules.Passive
 {
+    /// <summary>
+    /// Passive Module that gives the Mech contact damage.
+    /// </summary>
+
     public class Spikes : ModItem, IMechModule
     {
         public override void SetDefaults()
@@ -21,9 +24,10 @@ namespace MechMod.Content.Items.MechModules.Passive
         public ModuleSlot MSlot => ModuleSlot.Passive; // Passive slot
         public ModuleType MType => ModuleType.Persistent; // Persistent effect
 
-        private DamageClass contactClass = DamageClass.Default; // Damage class for contact damage
-        private int contactDamage = 10; // Damage dealt on contact with enemies
-        private int contactKnockback = 20; // Knockback applied on contact
+        // Contact damage properties
+        private DamageClass contactClass = DamageClass.Default;
+        private int contactDamage = 10;
+        private int contactKnockback = 20;
 
         private Dictionary<int, int> damageCooldown = []; // Cooldown for each NPC
 
@@ -31,6 +35,7 @@ namespace MechMod.Content.Items.MechModules.Passive
         {
             for (int i = 0; i < Main.maxNPCs; i++)
             {
+                // Get the NPC and prepare hit info
                 NPC npc = Main.npc[i];
                 NPC.HitInfo hitInfo = new()
                 {
@@ -38,20 +43,20 @@ namespace MechMod.Content.Items.MechModules.Passive
                     Knockback = weaponsPlayer.KnockbackCalc(contactKnockback, player, contactClass),
                     HitDirection = npc.Center.X < player.Center.X ? -1 : 1, // Determine hit direction based on NPC position relative to player
                 };
-                if (!damageCooldown.TryGetValue(npc.whoAmI, out _) && npc.active && !npc.friendly && !npc.dontTakeDamage && npc.Hitbox.Intersects(player.getRect()))
+                if (!damageCooldown.TryGetValue(npc.whoAmI, out _) && npc.active && !npc.friendly && !npc.dontTakeDamage && npc.Hitbox.Intersects(player.getRect())) // If the NPC is active, hostile, can take damage, is touching the player, and not on cooldown,
                 {
                     // Apply contact damage to the NPC
                     npc.StrikeNPC(hitInfo);
                     damageCooldown[npc.whoAmI] = 30; // Set a cooldown of 30 frames (0.5 seconds)
-                    // Optionally, you can add a sound effect or visual effect here
                 }
             }
 
-            foreach (var key in damageCooldown.Keys.ToList())
+            foreach (var key in damageCooldown.Keys.ToList()) // For each NPC in the cooldown dictionary,
             {
+                // Decrement the cooldown
                 damageCooldown[key]--;
-                if (damageCooldown[key] <= 0)
-                    damageCooldown.Remove(key); // Remove the cooldown if it has expired
+                if (damageCooldown[key] <= 0) // If the cooldown has expired,
+                    damageCooldown.Remove(key); // Remove the cooldown
             }
         }
     }

@@ -15,11 +15,20 @@ using System.IO;
 
 namespace MechMod
 {
+    /// <summary>
+    /// Struct representing a Mech Part, containing its item type and part type (e.g., head, body, arms, legs, booster, weapon, passive module, active module).
+    /// </summary>
+    /// <param name="itemType"></param>
+    /// <param name="partType"></param>
     public struct MechPart(int itemType, string partType)
     {
         public int ItemType = itemType;
         public string PartType = partType;
     }
+
+    /// <summary>
+    /// Mod class that initializes the MechMod, including mech parts, keybinds, and packet handling.
+    /// </summary>
 
     public class MechMod : Mod
     {
@@ -40,6 +49,8 @@ namespace MechMod
 
         public override void Load()
         {
+            // Dictionary mapping part types to their corresponding parts
+            // Required for the sake of being able to get a part's type from just its name
             MechParts = new Dictionary<string, MechPart>
             {
                 // Mech Parts
@@ -80,29 +91,32 @@ namespace MechMod
                 { "repair", new MechPart(ModContent.ItemType<Repair>(), "activemodule")},
             };
 
-            MechDashKeybind = KeybindLoader.RegisterKeybind(this, "MechDash", "V");
+            MechDashKeybind = KeybindLoader.RegisterKeybind(this, "MechDash", "V"); // Register keybind for dashing and set default key to V
 
-            MechActivateModule = KeybindLoader.RegisterKeybind(this, "MechActivateModule", "C");
+            MechActivateModule = KeybindLoader.RegisterKeybind(this, "MechActivateModule", "C"); // Register keybind for activating the active module and set default key to C
         }
 
         public override void Unload()
         {
+            // Clear static references to avoid memory leaks
             MechParts = null;
             MechDashKeybind = null;
+            MechActivateModule = null;
         }
 
+        // Message types for packet handling
         internal enum MessageType : byte
         {
-            PartsSync,
-            VisualSync
+            PartsSync, // Message type for syncing MechModPlayer data
+            VisualSync // Message type for syncing MechVisualPlayer data
         }
 
         // Function that handles incoming packets from SyncPlayer and sends them out to appropiate ModPlayers though ReceivePlayerSync and any other functions
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
-            MessageType msgType = (MessageType)reader.ReadByte();
+            MessageType msgType = (MessageType)reader.ReadByte(); // Read the incoming message type
+            byte playerNumber = reader.ReadByte(); // Read the player number the packet is for
 
-            byte playerNumber = reader.ReadByte();
             MechModPlayer modPlayer = Main.player[playerNumber].GetModPlayer<MechModPlayer>();
             MechVisualPlayer visualPlayer = Main.player[playerNumber].GetModPlayer<MechVisualPlayer>();
 

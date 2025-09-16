@@ -1,14 +1,9 @@
 ﻿using MechMod.Content.Buffs;
 using MechMod.Content.Items.MechMisc;
 using MechMod.Content.Mounts;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -277,15 +272,6 @@ namespace MechMod.Common.Players
             Player.frozen = false;
         }
 
-        public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
-        {
-            if (Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>())
-            {
-                //if (useDirection != 0)
-                //    Player.direction = useDirection; // Force player's direction to be the last use direction
-            }
-        }
-
         public override void PreUpdate()
         {
             // Disable spawning the mech in different cases, like having the Mech debuff or not having certain equipped Parts
@@ -305,12 +291,11 @@ namespace MechMod.Common.Players
             }
         }
 
-        // Disable the use of the Mech spawner if mounts are disabled
         public override bool CanUseItem(Item item)
         {
-            if (disableMounts)
+            if (disableMounts) // If mounts are disabled,
             {
-                return false;
+                return false; // Prevent the use of the item (Mech Spawner)
             }
             return true;
         }
@@ -328,9 +313,8 @@ namespace MechMod.Common.Players
         //                );
         //    DrawDebugRectangle(box, Color.Red);
 
-        //    /// Inventory Slot rectangles
-        //    float slotSize = 75f * Main.inventoryScale;
-        //    float slotGap = 4f * Main.inventoryScale;
+        //    float slotSize = 43.5f;
+        //    float slotGap = 4f;
         //    float startX = 20.5f;
         //    float startY = 20;
 
@@ -341,7 +325,7 @@ namespace MechMod.Common.Players
         //            int index = row * 10 + col;
         //            float x = startX + col * (slotSize + slotGap);
         //            float y = startY + row * (slotSize + slotGap);
-        //            Rectangle slotRect = new Rectangle((int)x, (int)y, (int)slotSize, (int)slotSize);
+        //            Rectangle slotRect = new((int)x, (int)y, (int)slotSize, (int)slotSize);
 
         //            Color color = slotRect.Contains(Main.mouseX, Main.mouseY) ? Color.Red : Color.White;
         //            Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, slotRect, color * 0.5f);

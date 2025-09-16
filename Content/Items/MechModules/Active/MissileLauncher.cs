@@ -34,6 +34,7 @@ namespace MechMod.Content.Items.MechModules.Active
         private int delayTimer; // Timer for delay
         private int fireDelay = 5; // Delay between individual missile launches in frames (0.5 seconds)
 
+        // Missile projectile properties
         private DamageClass missileClass = DamageClass.Default;
         private int missileDamage = 50;
         private int missileKnockback = 10;

@@ -2,7 +2,6 @@
 using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -12,6 +11,10 @@ using Terraria.ModLoader;
 
 namespace MechMod.Content.Items.MechWeapons
 {
+    /// <summary>
+    /// Weapon that swings a sword in an arc in front of the Mech.
+    /// </summary>
+
     public class BaseSword : ModItem, IMechWeapon
     {
         public override void SetDefaults()
@@ -22,27 +25,29 @@ namespace MechMod.Content.Items.MechWeapons
 
         public void SetStats(MechWeaponsPlayer weaponsPlayer)
         {
-            weaponsPlayer.DamageClass = DamageClass.Melee; // Set the damage class for ranged weapons
-            weaponsPlayer.useType = MechWeaponsPlayer.UseType.Swing; // Set the use type for point weapons
+            weaponsPlayer.DamageClass = DamageClass.Melee; // Set DamageClass to Melee
+            weaponsPlayer.useType = MechWeaponsPlayer.UseType.Swing; // Set use type to Swing
         }
 
         public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn)
         {
             weaponsPlayer.canUse = true; // Always allow use for this weapon
 
-            int projectileType = ModContent.ProjectileType<BaseSwordProj>();
+            int projectileType = ModContent.ProjectileType<BaseSwordProj>(); // Use a custom projectile for the sword swing
 
+            // Calculate projectile properties
             int damage = weaponsPlayer.DamageCalc(100, player);
             weaponsPlayer.CritChanceCalc(4, player);
             weaponsPlayer.attackRate = weaponsPlayer.AttackSpeedCalc(30, player);
             float knockback = weaponsPlayer.KnockbackCalc(7, player);
 
+            // Create projectile
             int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.Center, new Vector2(0, 0), projectileType, damage, knockback, player.whoAmI);
-            if (Main.projectile.IndexInRange(projID) && Main.projectile[projID].ModProjectile is BaseSwordProj proj)
+            if (Main.projectile.IndexInRange(projID) && Main.projectile[projID].ModProjectile is BaseSwordProj proj) // Grab the active projectile instance
             {
                 // Allow the swing speed to be modified by attack rate
-                proj.swingDuration = weaponsPlayer.attackRate; // Fixed number
-                Main.projectile[projID].timeLeft = (int)weaponsPlayer.attackRate; // Decreases each tick
+                proj.swingDuration = weaponsPlayer.attackRate;
+                Main.projectile[projID].timeLeft = (int)weaponsPlayer.attackRate;
             }
 
             SoundEngine.PlaySound(SoundID.Item1, player.position); // Play Swing sound when the weapon is used
@@ -54,7 +59,7 @@ namespace MechMod.Content.Items.MechWeapons
         Player player;
         MechVisualPlayer visualPlayer;
 
-        public float swingDuration = 0f;
+        public float swingDuration = 0f; // Duration of sword swing
 
         public override string Texture => "Terraria/Images/MagicPixel"; // Texture is not needed, visuals are handled in ModularMech code
 
@@ -73,15 +78,15 @@ namespace MechMod.Content.Items.MechWeapons
 
         public override void AI()
         {
+            // Grab player and visual player instances
             player = Main.player[Projectile.owner];
             visualPlayer = player.GetModPlayer<MechVisualPlayer>();
 
             visualPlayer.animationProgress = Projectile.timeLeft; // Set the animation progress to the time left of the projectile
             float progress = 1f - (Projectile.timeLeft / swingDuration); // Progress goes from 1 to 0 as the projectile time decreases
 
-            // Changed the position of the hitbox as it goes through the swing
+            // Change the position of the hitbox as it goes through the swing
             Vector2 position;
-
             if (progress <= 0.33)
                 position = new(-30 * visualPlayer.useDirection, -130);
             else if (progress <= 0.66)
@@ -89,8 +94,9 @@ namespace MechMod.Content.Items.MechWeapons
             else
                 position = new(70 * visualPlayer.useDirection, 0);
 
-            Projectile.Center = player.Center + position;
+            Projectile.Center = player.Center + position; // Set the position of the projectile relative to the player
 
+            // If the player is no longer mounted, kill the projectile
             if (!player.mount.Active)
                 Projectile.Kill();
         }
@@ -99,6 +105,7 @@ namespace MechMod.Content.Items.MechWeapons
         {
             Texture2D texture = TextureAssets.MagicPixel.Value; // Texture is not needed, visuals are handled in ModularMech code
 
+            // Override the draw code to prevent the default white pixel from being drawn
             Main.EntitySpriteDraw(
                 texture,
                 Projectile.Center,

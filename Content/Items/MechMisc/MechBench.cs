@@ -19,8 +19,7 @@ namespace MechMod.Content.Items.MechMisc
             Item.useTime = 15;
             Item.UseSound = SoundID.Research;
             Item.noMelee = true;
-
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Cyan;
             Item.value = Item.buyPrice(silver: 50);
         }
 
