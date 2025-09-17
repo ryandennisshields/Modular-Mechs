@@ -29,6 +29,8 @@ namespace MechMod.Common.Players
         /// Mech visual effects
         public int boosterTimer = 0; // Timer for booster visual effects
         public int stepTimer = 0; // Timer for mech step effects
+        public int airTime; // Times the amount of time the mech has been in the air
+        public float airVelocity; // Stores the vertical velocity of the mech while in the air
 
         /// Weapon animation variables
         public float animationTimer; // Timer for mech weapon animation logic (constantly ticks down)

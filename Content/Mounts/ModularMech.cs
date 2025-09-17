@@ -336,6 +336,33 @@ namespace MechMod.Content.Mounts
         // Function for any visual or/and sound effects
         private static void Effects(Player player, MechModPlayer modPlayer, MechVisualPlayer visualPlayer)
         {
+            #region Duration Warning
+
+            if (player.HasBuff(ModContent.BuffType<MechBuff>())) // If the player has the mech buff,
+            {
+                int buffTime = player.buffTime[player.FindBuffIndex(ModContent.BuffType<MechBuff>())]; // Get the remaining buff time
+                var warnSound = SoundID.MenuTick with // Sound to play for warning
+                {
+                    Volume = 2
+                };
+                if (buffTime <= 300 && buffTime % 60 == 0) // If the buff time is less than or equal to 5 seconds and is a multiple of 60 (1 second intervals),
+                {
+                    warnSound.Pitch = -0.5f + (buffTime / 300f); // Change pitch based on remaining time
+                    SoundEngine.PlaySound(warnSound, player.position); // Play warning sound
+                }
+            }
+
+            #endregion
+
+            #region Jumping
+
+            if ((player.mount._frameState == Mount.FrameRunning || player.mount._frameState == Mount.FrameStanding) && player.controlJump && player.velocity.Y == 0) // If the player is running and presses jump while on the ground,
+            {
+                SoundEngine.PlaySound(SoundID.NPCHit11, player.position); // Play jump sound
+            }
+
+            #endregion
+
             #region Booster
 
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
@@ -415,19 +442,41 @@ namespace MechMod.Content.Mounts
 
             #endregion
 
+            int directionOffset = player.direction == -1 ? -10 : 0; // Offset to position the dust correctly based on the player's direction
+
             #region Step
 
             float stepSpeed = 26 / (player.velocity.Length() / 3); // Speed of steps based on the player's velocity (faster velocity = faster steps)
-            int directionOffset = player.direction == -1 ? -10 : 0; // Offset to position the dust correctly based on the player's direction
 
             if (visualPlayer.stepTimer < stepSpeed) // Increment the timer until it reaches the step speed
                 visualPlayer.stepTimer++;
             if (visualPlayer.stepTimer >= stepSpeed && player.mount._frameState == Mount.FrameRunning) // Once the timer reaches the step speed and the player is running,
             {
-                SoundEngine.PlaySound(SoundID.NPCHit3, player.position); // Play Dig sound for step use
+                SoundEngine.PlaySound(SoundID.NPCHit3, player.position); // Play hit sound for step use
                 for (int i = 0; i < 15; i++)
                     Dust.NewDust(new Vector2(player.position.X + directionOffset, player.position.Y + 80), 30, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when running
                 visualPlayer.stepTimer = 0; // Reset the timer
+            }
+
+            #endregion
+
+            #region Landing
+
+            if (player.mount._frameState == Mount.FrameFlying || player.mount._frameState == Mount.FrameInAir) // If the player is in air,
+            {
+                visualPlayer.airTime++; // Increment the air time
+                visualPlayer.airVelocity = player.velocity.Y; // Store the Y velocity while in air
+            }
+
+            if ((player.mount._frameState == Mount.FrameRunning || player.mount._frameState == Mount.FrameStanding) && visualPlayer.airTime >= 45 && visualPlayer.airVelocity >= 8) // If the player is grounded, air time is greater than 45 frames (0.75 seconds), and the stored Y velocity is greater than or equal to 8,
+            {
+                // Play landing sounds
+                SoundEngine.PlaySound(SoundID.NPCHit3, player.position);
+                SoundEngine.PlaySound(SoundID.Dig, player.position);
+                for (int i = 0; i < 50; i++)
+                    Dust.NewDust(new Vector2(player.position.X - 20 + directionOffset , player.position.Y + 80), 80, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when landing
+                visualPlayer.airTime = 0; // Reset the air time
+                visualPlayer.airVelocity = 0; // Reset the stored Y velocity
             }
 
             #endregion
@@ -436,7 +485,7 @@ namespace MechMod.Content.Mounts
 
         public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)
         {
-            if (drawType == 0)
+            if (drawType == 0) 
             {
                 MechVisualPlayer visualPlayer = drawPlayer.GetModPlayer<MechVisualPlayer>();
 

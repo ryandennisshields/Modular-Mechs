@@ -1,4 +1,4 @@
-Modular Mechs is a content mod that adds customisable Mechs to the game!
+[b] Modular Mechs is a content mod that adds customisable Mechs to the game! [/b]
 
 - Combine different Head, Body, Arms and Legs to change the stats and appearance of your Mech
 - Add Boosters to give your Mech extra mobility like flight or dashing
@@ -17,7 +17,7 @@ Includes:
 - 1 town NPC
 - 1 mount
 
-NOTICE:
-Mod compability has not been fully tested. If you encounter any issues, please report them.
+[i] NOTICE: [/i]
+[i] Mod compability has not been fully tested. If you encounter any issues, please report them. [/i]
 
-Sprites by Sam Algohary
+Sprites by [url=https://www.fiverr.com/samiralgohary] Sam Algohary [/url]

@@ -225,7 +225,14 @@ namespace MechMod.Common.Players
         {
             if (Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>())
             {
-                SoundEngine.PlaySound(SoundID.NPCHit4, Player.position); // Play metal hit sound when the mech is hurt
+                SoundStyle MetalPipe = new("MechMod/Content/Assets/Sounds/MetalPipe", SoundType.Sound) // Get the custom metal pipe sound
+                {
+                    Volume = 0.25f, // Lower the volume (it's fucking loud)
+                };
+                if (Main.rand.NextBool(500)) // 1 in 500 chance
+                    SoundEngine.PlaySound(MetalPipe, Player.position); // Play metal pipe sound the mech is hurt
+                else
+                    SoundEngine.PlaySound(SoundID.NPCHit4, Player.position); // Play metal hit sound when the mech is hurt
                 // Save the player if they die in the mech
                 if (info.Damage >= Player.statLife || Player.statLife < 1) // If the player dies in the mech,
                 {
