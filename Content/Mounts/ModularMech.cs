@@ -9,6 +9,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 
 using Terraria.ModLoader;
@@ -236,6 +237,12 @@ namespace MechMod.Content.Mounts
             {
                 visualPlayer.weaponTexture = null;
             }
+
+            // Grab the equipped dyes and get their shader IDs for dyeing the mech
+            for (int i = 0; i < visualPlayer.dyes.Length; i++)
+            {
+                visualPlayer.dyeShaders[i] = GameShaders.Armor.GetShaderIdFromItemId(visualPlayer.dyes[i].type);
+            }
         }
 
         public override void Dismount(Player player, ref bool skipDust)
@@ -345,7 +352,7 @@ namespace MechMod.Content.Mounts
                 {
                     Volume = 2
                 };
-                if (buffTime <= 300 && buffTime % 60 == 0) // If the buff time is less than or equal to 5 seconds and is a multiple of 60 (1 second intervals),
+                if (buffTime <= 360 && buffTime % 60 == 0) // If the buff time is less than or equal to 6 seconds and is a multiple of 60 (1 second intervals),
                 {
                     warnSound.Pitch = -0.5f + (buffTime / 300f); // Change pitch based on remaining time
                     SoundEngine.PlaySound(warnSound, player.position); // Play warning sound
@@ -482,10 +489,9 @@ namespace MechMod.Content.Mounts
             #endregion
         }
 
-
         public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)
         {
-            if (drawType == 0) 
+            if (drawType == 0)
             {
                 MechVisualPlayer visualPlayer = drawPlayer.GetModPlayer<MechVisualPlayer>();
 
@@ -509,33 +515,81 @@ namespace MechMod.Content.Mounts
 
                 Vector2 groundOffset = new(0, -13); // Offset to position the mech above the ground
 
-                // Draw right arm first
+                // Get and store dyes
+                int headDye = visualPlayer.dyeShaders[0];
+                int bodyDye = visualPlayer.dyeShaders[1];
+                int armsDye = visualPlayer.dyeShaders[2];
+                int legsDye = visualPlayer.dyeShaders[3];
+
+                // Right arm
                 if (visualPlayer.armsRTexture != null)
-                    playerDrawData.Add(new DrawData(visualPlayer.armsRTexture.Value, drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[0].X * visualDirection, visualPlayer.bodyOffsets[0].Y), setArmRFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                {
+                    var drawData = new DrawData(
+                        visualPlayer.armsRTexture.Value,
+                        drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[0].X * visualDirection, visualPlayer.bodyOffsets[0].Y),
+                        setArmRFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                    if (armsDye > 0) drawData.shader = armsDye;
+                    playerDrawData.Add(drawData);
+                }
 
-                // Draw right leg
+                // Right leg
                 if (visualPlayer.legsRTexture != null)
-                    playerDrawData.Add(new DrawData(visualPlayer.legsRTexture.Value, drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[1].X * visualDirection, visualPlayer.bodyOffsets[1].Y), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                {
+                    var drawData = new DrawData(
+                        visualPlayer.legsRTexture.Value,
+                        drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[1].X * visualDirection, visualPlayer.bodyOffsets[1].Y),
+                        frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                    if (legsDye > 0) drawData.shader = legsDye;
+                    playerDrawData.Add(drawData);
+                }
 
-                // Draw body
+                // Body
                 if (visualPlayer.bodyTexture != null)
-                    playerDrawData.Add(new DrawData(visualPlayer.bodyTexture.Value, drawPosition + groundOffset, frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                {
+                    var drawData = new DrawData(
+                        visualPlayer.bodyTexture.Value,
+                        drawPosition + groundOffset,
+                        frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                    if (bodyDye > 0) drawData.shader = bodyDye;
+                    playerDrawData.Add(drawData);
+                }
 
-                // Draw left leg
+                // Left leg
                 if (visualPlayer.legsLTexture != null)
-                    playerDrawData.Add(new DrawData(visualPlayer.legsLTexture.Value, drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[2].X * visualDirection, visualPlayer.bodyOffsets[2].Y), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                {
+                    var drawData = new DrawData(
+                        visualPlayer.legsLTexture.Value,
+                        drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[2].X * visualDirection, visualPlayer.bodyOffsets[2].Y),
+                        frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                    if (legsDye > 0) drawData.shader = legsDye;
+                    playerDrawData.Add(drawData);
+                }
 
-                // Draw head
+                // Head
                 if (visualPlayer.headTexture != null)
-                    playerDrawData.Add(new DrawData(visualPlayer.headTexture.Value, drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[3].X * visualDirection, visualPlayer.bodyOffsets[3].Y), frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                {
+                    var drawData = new DrawData(
+                        visualPlayer.headTexture.Value,
+                        drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[3].X * visualDirection, visualPlayer.bodyOffsets[3].Y),
+                        frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                    if (headDye > 0) drawData.shader = headDye;
+                    playerDrawData.Add(drawData);
+                }
 
-                // Draw weapon
+                // Weapon
                 if (visualPlayer.weaponTexture != null)
                     playerDrawData.Add(new DrawData(visualPlayer.weaponTexture.Value, drawPosition + visualPlayer.weaponPosition + groundOffset, null, drawColor, visualPlayer.weaponRotation, visualPlayer.weaponOrigin, visualPlayer.weaponScale, visualPlayer.weaponSpriteEffects));
-
-                // Draw left arm last
+                
+                // Left arm
                 if (visualPlayer.armsLTexture != null)
-                    playerDrawData.Add(new DrawData(visualPlayer.armsLTexture.Value, drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[4].X * visualDirection, visualPlayer.bodyOffsets[4].Y), setArmLFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects));
+                {
+                    var drawData = new DrawData(
+                        visualPlayer.armsLTexture.Value,
+                        drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[4].X * visualDirection, visualPlayer.bodyOffsets[4].Y),
+                        setArmLFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                    if (armsDye > 0) drawData.shader = armsDye;
+                    playerDrawData.Add(drawData);
+                }
             }
 
             return false;

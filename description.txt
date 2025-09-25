@@ -17,7 +17,4 @@ Includes:
 - 1 town NPC
 - 1 mount
 
-NOTICE:
-Mod compability has not been fully tested. If you encounter any issues, please report them.
-
 Sprites by Sam Algohary

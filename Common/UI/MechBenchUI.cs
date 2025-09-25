@@ -14,13 +14,14 @@ namespace MechMod.Common.UI
 {
     /// <summary>
     /// Contains the information for the Mech Bench UI, which allows players to equip Parts to their mech and upgrade it.
-    /// <para/> Used with <see cref="MechBenchUISystem"/> to manage the UI state and existence, <see cref="PartSlot"/> to create the slots for Parts, and the <see cref="MechBench"/> item to access the UI in the game.
+    /// <para/> Used with <see cref="MechBenchUISystem"/> to manage the UI state and existence, <see cref="PartSlot"/> to create the slots for Parts (paired with <see cref="DyeSlot"/> for dye), and the <see cref="MechBench"/> item to access the UI in the game.
     /// </summary>
 
     public class MechBenchUI : UIState
     {
         private UIPanel mainPanel;
         private PartSlot[] slots;
+        private DyeSlot[] dyeSlots;
         private UIText[] slotNames;
 
         private UIText upgradeCostText;
@@ -35,32 +36,42 @@ namespace MechMod.Common.UI
 
             mainPanel = new UIPanel();
             slots = new PartSlot[9];
+            dyeSlots = new DyeSlot[5];
             slotNames = new UIText[9];
 
             slots =
             [
-            new PartSlot("head"),
-            new PartSlot("body"),
-            new PartSlot("arms"),
-            new PartSlot("legs"),
-            new PartSlot("booster"),
-            new PartSlot("weapon"),
-            new PartSlot("passivemodule1"),
-            new PartSlot("passivemodule2"),
-            new PartSlot("activemodule")
+                new PartSlot("head"),
+                new PartSlot("body"),
+                new PartSlot("arms"),
+                new PartSlot("legs"),
+                new PartSlot("booster"),
+                new PartSlot("weapon"),
+                new PartSlot("passivemodule1"),
+                new PartSlot("passivemodule2"),
+                new PartSlot("activemodule")
+            ];
+
+            dyeSlots =
+            [
+                new DyeSlot(),
+                new DyeSlot(),
+                new DyeSlot(),
+                new DyeSlot(),
+                new DyeSlot()
             ];
 
             slotNames =
             [
-            new UIText("Head"),
-            new UIText("Body"),
-            new UIText("Arms"),
-            new UIText("Legs"),
-            new UIText("Booster"),
-            new UIText("Weapon"),
-            new UIText("Modules"),
-            new UIText("Passive"),
-            new UIText("Active")
+                new UIText("Head"),
+                new UIText("Body"),
+                new UIText("Arms"),
+                new UIText("Legs"),
+                new UIText("Booster"),
+                new UIText("Weapon"),
+                new UIText("Modules"),
+                new UIText("Passive"),
+                new UIText("Active")
             ];
 
             mainPanel.Left.Set(600f, 0f);
@@ -79,7 +90,7 @@ namespace MechMod.Common.UI
             closeButton.OnLeftClick += OnCloseClick;
             mainPanel.Append(closeButton);
 
-            // Head, Body, Arms and Legs Slots
+            // Head, Body, Arms and Legs Slots (with dye slots)
             for (int i = 0; i < 4; i++)
             {
                 slots[i].Width.Set(32.5f, 0);
@@ -94,6 +105,13 @@ namespace MechMod.Common.UI
                 slotNames[i].HAlign = 0.025f;
                 slotNames[i].Top.Set(37.5f + (i * 40), 0);
                 mainPanel.Append(slotNames[i]);
+
+                dyeSlots[i].Width.Set(32.5f, 0);
+                dyeSlots[i].Height.Set(32.5f, 0);
+                dyeSlots[i].HAlign = 0.0f;
+                dyeSlots[i].Top.Set(30 + (i * 40), 0);
+                dyeSlots[i].OnLeftClick += dyeSlots[i].DropEquipDye;
+                mainPanel.Append(dyeSlots[i]);
             }
 
             // Booster Slot
@@ -162,9 +180,14 @@ namespace MechMod.Common.UI
             slotNames[8].Top.Set(270, 0);
             mainPanel.Append(slotNames[8]);
 
+            // Update stored ModPlayer information when interacting with slots
             for (int i = 0; i < slots.Length; i++)
             {
                 slots[i].OnLeftClick += OnPartSlotInteract; 
+            }
+            for (int i = 0; i < dyeSlots.Length; i++)
+            {
+                dyeSlots[i].OnLeftClick += OnDyeSlotInteract;
             }
 
             // Upgrade Section
@@ -214,6 +237,7 @@ namespace MechMod.Common.UI
         {
             var player = Main.LocalPlayer;
             var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
+            var visualPlayer = Main.LocalPlayer.GetModPlayer<MechVisualPlayer>();
 
             player.mount.Dismount(player); // Dismount to not cause any problems with editing the mech while it's active
             modPlayer.disableMounts = true; // Disable mounts
@@ -224,6 +248,15 @@ namespace MechMod.Common.UI
                 if (!modPlayer.equippedParts[i].IsAir)
                 {
                     slots[i].slotItem = modPlayer.equippedParts[i];
+                }
+            }
+
+            // Fill the dye slots with the player's equipped dyes
+            for (int i = 0; i < dyeSlots.Length; i++)
+            {
+                if (!visualPlayer.dyes[i].IsAir)
+                {
+                    dyeSlots[i].slotItem = visualPlayer.dyes[i];
                 }
             }
 
@@ -276,6 +309,25 @@ namespace MechMod.Common.UI
                 else
                 {
                     modPlayer.equippedParts[i] = slots[i].slotItem;
+                }
+            }
+        }
+
+        // Function for when the player interacts with a Dye slot
+        private void OnDyeSlotInteract(UIMouseEvent evt, UIElement listeningElement)
+        {
+            var visualPlayer = Main.LocalPlayer.GetModPlayer<MechVisualPlayer>();
+
+            // Verify if the slot is empty or if the slot has a dye
+            for (int i = 0; i < dyeSlots.Length; i++)
+            {
+                if (dyeSlots[i].slotItem.IsAir)
+                {
+                    visualPlayer.dyes[i].TurnToAir();
+                }
+                else
+                {
+                    visualPlayer.dyes[i] = dyeSlots[i].slotItem;
                 }
             }
         }

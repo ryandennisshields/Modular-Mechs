@@ -343,6 +343,22 @@ namespace MechMod
         //    Terraria.ID.BuffID.Sets.NurseCannotRemoveDebuff[mechDebuff] = true;
         //}
 
+        //public class ResetUpgradeLevelCommand : ModCommand
+        //{
+        //    public override CommandType Type => CommandType.Chat;
+        //    public override string Command => "resetUpgradeLevel";
+        //    public override string Usage => "/resetUpgradeLevel";
+        //    public override string Description => "Resets the mech upgrade level to 0.";
+        //    public override void Action(CommandCaller caller, string input, string[] args)
+        //    {
+        //        Player player = caller.Player;
+        //        MechModPlayer mechPlayer = player.GetModPlayer<MechModPlayer>();
+        //        mechPlayer.upgradeLevel = 0;
+        //        mechPlayer.upgradeDamageBonus = 0f;
+        //        caller.Reply("Mech upgrade level has been reset to 0.");
+        //    }
+        //}
+
         #endregion
     }
 }

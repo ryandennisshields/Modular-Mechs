@@ -5,6 +5,7 @@ using System.IO;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace MechMod.Common.Players
 {
@@ -25,6 +26,10 @@ namespace MechMod.Common.Players
         public Asset<Texture2D> weaponTexture;
 
         public Vector2[] bodyOffsets = new Vector2[5]; // Offsets for Parts (Head, Arms, Legs) to align them properly with the Body
+
+        /// Dyes
+        public Item[] dyes = new Item[5]; // Dyes applied to to mech (Head, Body, Arms, Legs, Lighs)
+        public int[] dyeShaders = new int[5]; // Actual shaders from the equipped dyes
 
         /// Mech visual effects
         public int boosterTimer = 0; // Timer for booster visual effects
@@ -50,6 +55,42 @@ namespace MechMod.Common.Players
         public Vector2 weaponOrigin = Vector2.Zero; // Used so a different origin can be set for rotation
         public float weaponScale = 1f; // Used so the weapon can be hidden when needed
         public SpriteEffects weaponSpriteEffects = SpriteEffects.None; // Used so the weapon's sprite can be flipped when needed
+
+        public override void Initialize()
+        {
+            // Fill dyes with empty items while intialising
+            dyes = new Item[5];
+            for (int i = 0; i < dyes.Length; i++)
+                dyes[i] = new Item();
+        }
+
+        #region Saving and Loading Data
+
+        public override void SaveData(TagCompound tag)
+        {
+            // Save the dyes applied to the mech
+            for (int i = 0; i < dyes.Length; i++)
+            {
+                if (!dyes[i].IsAir)
+                    tag[$"dye{i}"] = ItemIO.Save(dyes[i]);
+                else
+                    tag[$"dye{i}"] = new Item();
+            }
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            // Load the dyes applied to the mech
+            for (int i = 0; i < dyes.Length; i++)
+            {
+                if (tag.ContainsKey($"dye{i}"))
+                    dyes[i] = ItemIO.Load(tag.GetCompound($"dye{i}"));
+                else
+                    dyes[i] = new Item();
+            }
+        }
+
+        #endregion
 
         #region Syncing Player Data (Networking)
 

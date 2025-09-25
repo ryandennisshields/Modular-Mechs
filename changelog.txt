@@ -1,1 +1,6 @@
 Modular Mechs v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
+
+v1.1.0
+- Added dye support for Mech Parts
+ - Includes Head, Body, Arms and Legs
+ - Also includes Lights when the power cell is active as a seperate dyeable layer

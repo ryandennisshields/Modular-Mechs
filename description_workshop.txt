@@ -1,3 +1,5 @@
+[url=https://forums.terraria.org/index.php?threads/modular-mechs-mod.144835/] Forum Thread [/url]
+
 [b] Modular Mechs is a content mod that adds customisable Mechs to the game! [/b]
 
 - Combine different Head, Body, Arms and Legs to change the stats and appearance of your Mech
@@ -16,8 +18,5 @@ Includes:
 - 2 Active Modules
 - 1 town NPC
 - 1 mount
-
-[i] NOTICE: [/i]
-[i] Mod compability has not been fully tested. If you encounter any issues, please report them. [/i]
 
 Sprites by [url=https://www.fiverr.com/samiralgohary] Sam Algohary [/url]
