@@ -4,6 +4,7 @@ using ReLogic.Content;
 using System.IO;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -24,6 +25,13 @@ namespace MechMod.Common.Players
         public Asset<Texture2D> legsRTexture;
         public Asset<Texture2D> legsLTexture;
         public Asset<Texture2D> weaponTexture;
+
+        public Asset<Texture2D> headLightTexture;
+        public Asset<Texture2D> bodyLightTexture;
+        public Asset<Texture2D> armsRLightTexture;
+        public Asset<Texture2D> armsLLightTexture;
+        public Asset<Texture2D> legsRLightTexture;
+        public Asset<Texture2D> legsLLightTexture;
 
         public Vector2[] bodyOffsets = new Vector2[5]; // Offsets for Parts (Head, Arms, Legs) to align them properly with the Body
 
@@ -100,6 +108,8 @@ namespace MechMod.Common.Players
             ModPacket packet = Mod.GetPacket();
             packet.Write((byte)MechMod.MessageType.VisualSync);
             packet.Write((byte)Player.whoAmI);
+            for (int i = 0; i < dyes.Length; i++)
+                packet.Write(dyes[i].type);
             packet.Write(animationTimer);
             packet.Write(animationProgress);
             packet.Write(useDirection);
@@ -122,47 +132,62 @@ namespace MechMod.Common.Players
         {
             // For each Part texture:
             // 1. Check if the Part is not air (i.e. a part is equipped)
-            // 2. If a Part is equipped, check if the power cell is active to determine which texture to use (powered or unpowered)
-            // 3. Grab the texture's spritesheet using the Part's name and the appropriate path
-            // 4. Set the texture variable to the grabbed texture
+            // 2. Grab the texture's spritesheet using the Part's name and the appropriate path
+            // 3. If the power cell is active, also grab the light texture using the same method
+            // 4. Set the texture variable(s) to the grabbed texture(s)
             if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
             {
-                string headPath = modPlayer.powerCellActive
-                    ? $"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual"
-                    : $"Content/Items/MechHeads/Pre{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual";
+                string headPath = $"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual";
                 headTexture = Mod.Assets.Request<Texture2D>(headPath);
+                if (modPlayer.powerCellActive) 
+                {
+                    string headLightPath = $"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Light";
+                    headLightTexture = Mod.Assets.Request<Texture2D>(headLightPath);
+                }
             }
 
             if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
             {
-                string bodyPath = modPlayer.powerCellActive
-                    ? $"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual"
-                    : $"Content/Items/MechBodies/Pre{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual";
+                string bodyPath = $"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual";
                 bodyTexture = Mod.Assets.Request<Texture2D>(bodyPath);
+                if (modPlayer.powerCellActive)
+                {
+                    string bodyLightPath = $"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Light";
+                    if (ModContent.RequestIfExists<Texture2D>(Mod.Name + "/" + bodyLightPath, out _)) // Check if the light texture exists before trying to load it
+                        bodyLightTexture = Mod.Assets.Request<Texture2D>(bodyLightPath);
+                    else
+                        bodyLightTexture = null;
+                }
             }
 
             if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
             {
-                string armsR = modPlayer.powerCellActive
-                    ? $"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual"
-                    : $"Content/Items/MechArms/Pre{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual";
-                string armsL = modPlayer.powerCellActive
-                    ? $"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual"
-                    : $"Content/Items/MechArms/Pre{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual";
+                string armsR = $"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual";
+                string armsL = $"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual";
                 armsRTexture = Mod.Assets.Request<Texture2D>(armsR);
                 armsLTexture = Mod.Assets.Request<Texture2D>(armsL);
+                if (modPlayer.powerCellActive)
+                {
+                    string armsRLight = $"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RLight";
+                    string armsLLight = $"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LLight";
+                    armsRLightTexture = Mod.Assets.Request<Texture2D>(armsRLight);
+                    armsLLightTexture = Mod.Assets.Request<Texture2D>(armsLLight);
+                }
             }
 
             if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
             {
-                string legsR = modPlayer.powerCellActive
-                    ? $"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual"
-                    : $"Content/Items/MechLegs/Pre{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual";
-                string legsL = modPlayer.powerCellActive
-                    ? $"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}LVisual"
-                    : $"Content/Items/MechLegs/Pre{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}LVisual";
+                string legsR = $"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual";
+                string legsL = $"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}LVisual";
                 legsRTexture = Mod.Assets.Request<Texture2D>(legsR);
                 legsLTexture = Mod.Assets.Request<Texture2D>(legsL);
+                if (modPlayer.powerCellActive)
+                {
+                    string legsRLight = $"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RLight";
+                    string legsLLight = $"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}LLight";
+                    legsRLightTexture = Mod.Assets.Request<Texture2D>(legsRLight);
+                    legsLLightTexture = Mod.Assets.Request<Texture2D>(legsLLight);
+                }
             }
 
             // For weapons, grab the item texture directly from the item if the weapon Part is not air
@@ -174,11 +199,19 @@ namespace MechMod.Common.Players
             {
                 weaponTexture = null;
             }
+
+            // Grab the equipped dyes and get their shader IDs for dyeing the mech
+            for (int i = 0; i < dyes.Length; i++)
+            {
+                dyeShaders[i] = GameShaders.Armor.GetShaderIdFromItemId(dyes[i].type);
+            }
         }
 
         // Function that receives changes from server and other clients from packets that get received in MechMod.HandlePacket
         public void RecievePlayerSync(BinaryReader reader)
         {
+            for (int i = 0; i < dyes.Length; i++)
+                dyes[i].SetDefaults(reader.ReadInt32());
             animationTimer = reader.ReadSingle();
             animationProgress = reader.ReadInt32();
             useDirection = reader.ReadInt32();
@@ -201,6 +234,8 @@ namespace MechMod.Common.Players
         {
             var clone = (MechVisualPlayer)targetCopy;
 
+            for (int i = 0; i < dyes.Length; i++)
+                clone.dyes[i].type = dyes[i].type;
             clone.animationTimer = animationTimer;
             clone.animationProgress = animationProgress;
             clone.useDirection = useDirection;
@@ -217,6 +252,7 @@ namespace MechMod.Common.Players
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
             var clone = (MechVisualPlayer)clientPlayer;
+            bool syncPlayer = false;
             if  (animationTimer != clone.animationTimer ||
                 animationProgress != clone.animationProgress ||
                 useDirection != clone.useDirection ||
@@ -229,8 +265,19 @@ namespace MechMod.Common.Players
                 weaponSpriteEffects != clone.weaponSpriteEffects
                 )
             {
-                SyncPlayer(-1, Main.myPlayer, false);
+                syncPlayer = true;
             }
+            for (int i = 0; i < dyes.Length; i++)
+            {
+                if (dyes[i].type != clone.dyes[i].type)
+                {
+                    syncPlayer = true;
+                }
+            }
+
+            if (syncPlayer) // Only sync clients if needed
+                SyncPlayer(-1, Main.myPlayer, false);
+
         }
 
         #endregion

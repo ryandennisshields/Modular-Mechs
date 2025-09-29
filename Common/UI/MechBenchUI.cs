@@ -9,6 +9,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using MechMod.Content.Items.MechMisc;
 using Microsoft.Xna.Framework.Graphics;
+using System.Runtime.CompilerServices;
 
 namespace MechMod.Common.UI
 {
@@ -76,8 +77,8 @@ namespace MechMod.Common.UI
 
             mainPanel.Left.Set(600f, 0f);
             mainPanel.Top.Set(200f, 0f);
-            mainPanel.Width.Set(300f, 0f);
-            mainPanel.Height.Set(350f, 0f);
+            mainPanel.Width.Set(350f, 0f);
+            mainPanel.Height.Set(375f, 0f);
             mainPanel.OnLeftMouseDown += DragStart;
             mainPanel.OnLeftMouseUp += DragEnd;
             Append(mainPanel);
@@ -90,56 +91,71 @@ namespace MechMod.Common.UI
             closeButton.OnLeftClick += OnCloseClick;
             mainPanel.Append(closeButton);
 
-            // Head, Body, Arms and Legs Slots (with dye slots)
+            // Head, Body, Arms and Legs Slots (and Dye Slots)
             for (int i = 0; i < 4; i++)
             {
                 slots[i].Width.Set(32.5f, 0);
                 slots[i].Height.Set(32.5f, 0);
-                slots[i].HAlign = 0.25f;
-                slots[i].Top.Set(30 + (i * 40), 0);
+                slots[i].HAlign = 0.3125f;
+                slots[i].Top.Set(20 + (i * 40), 0);
                 slots[i].OnLeftClick += slots[i].DropEquipPart;
                 mainPanel.Append(slots[i]);
 
                 slotNames[i].Width.Set(50, 0);
                 slotNames[i].Height.Set(25, 0);
-                slotNames[i].HAlign = 0.025f;
-                slotNames[i].Top.Set(37.5f + (i * 40), 0);
+                slotNames[i].HAlign = 0.0f;
+                slotNames[i].Top.Set(27.5f + (i * 40), 0);
                 mainPanel.Append(slotNames[i]);
 
                 dyeSlots[i].Width.Set(32.5f, 0);
                 dyeSlots[i].Height.Set(32.5f, 0);
-                dyeSlots[i].HAlign = 0.0f;
-                dyeSlots[i].Top.Set(30 + (i * 40), 0);
+                dyeSlots[i].HAlign = 0.1875f;
+                dyeSlots[i].Top.Set(20 + (i * 40), 0);
                 dyeSlots[i].OnLeftClick += dyeSlots[i].DropEquipDye;
                 mainPanel.Append(dyeSlots[i]);
             }
+
+            // Lights Dye Slot
+            dyeSlots[4].Width.Set(32.5f, 0);
+            dyeSlots[4].Height.Set(32.5f, 0);
+            dyeSlots[4].HAlign = 0.25f;
+            dyeSlots[4].Top.Set(175, 0);
+            dyeSlots[4].OnLeftClick += dyeSlots[4].DropEquipDye;
+            mainPanel.Append(dyeSlots[4]);
+
+            UIText lightsText = new("Lights");
+            lightsText.Width.Set(50, 0);
+            lightsText.Height.Set(25, 0);
+            lightsText.HAlign = 0.065f;
+            lightsText.Top.Set(182.5f, 0);
+            mainPanel.Append(lightsText);
 
             // Booster Slot
             slots[4].Width.Set(32.5f, 0);
             slots[4].Height.Set(32.5f, 0);
             slots[4].HAlign = 0.25f;
-            slots[4].Top.Set(215, 0);
+            slots[4].Top.Set(235, 0);
             slots[4].OnLeftClick += slots[4].DropEquipPart;
             mainPanel.Append(slots[4]);
 
             slotNames[4].Width.Set(50, 0);
             slotNames[4].Height.Set(25, 0);
-            slotNames[4].HAlign = 0.205f;
-            slotNames[4].Top.Set(195, 0);
+            slotNames[4].HAlign = 0.215f;
+            slotNames[4].Top.Set(215, 0);
             mainPanel.Append(slotNames[4]);
 
             // Weapon Slot
             slots[5].Width.Set(32.5f, 0);
             slots[5].Height.Set(32.5f, 0);
             slots[5].HAlign = 0.75f;
-            slots[5].Top.Set(215, 0);
+            slots[5].Top.Set(235, 0);
             slots[5].OnLeftClick += slots[5].DropEquipPart;
             mainPanel.Append(slots[5]);
 
             slotNames[5].Width.Set(50, 0);
             slotNames[5].Height.Set(25, 0);
-            slotNames[5].HAlign = 0.7725f;
-            slotNames[5].Top.Set(195, 0);
+            slotNames[5].HAlign = 0.765f;
+            slotNames[5].Top.Set(215, 0);
             mainPanel.Append(slotNames[5]);
 
             // Passive Module Slots
@@ -147,8 +163,8 @@ namespace MechMod.Common.UI
             {
                 slots[i].Width.Set(32.5f, 0);
                 slots[i].Height.Set(32.5f, 0);
-                slots[i].HAlign = 0.175f + (i - 6) * 0.15f;
-                slots[i].Top.Set(290, 0);
+                slots[i].HAlign = 0.1875f + (i - 6) * 0.125f;
+                slots[i].Top.Set(310, 0);
                 slots[i].OnLeftClick += slots[i].DropEquipPart;
                 mainPanel.Append(slots[i]);
             }
@@ -157,7 +173,7 @@ namespace MechMod.Common.UI
             slots[8].Width.Set(32.5f, 0);
             slots[8].Height.Set(32.5f, 0);
             slots[8].HAlign = 0.75f;
-            slots[8].Top.Set(290, 0);
+            slots[8].Top.Set(310, 0);
             slots[8].OnLeftClick += slots[8].DropEquipPart;
             mainPanel.Append(slots[8]);
 
@@ -165,19 +181,19 @@ namespace MechMod.Common.UI
             slotNames[6].Width.Set(50, 0);
             slotNames[6].Height.Set(25, 0);
             slotNames[6].HAlign = 0.5f;
-            slotNames[6].Top.Set(250, 0);
+            slotNames[6].Top.Set(270, 0);
             mainPanel.Append(slotNames[6]);
 
             slotNames[7].Width.Set(50, 0);
             slotNames[7].Height.Set(25, 0);
-            slotNames[7].HAlign = 0.215f;
-            slotNames[7].Top.Set(270, 0);
+            slotNames[7].HAlign = 0.2225f;
+            slotNames[7].Top.Set(290, 0);
             mainPanel.Append(slotNames[7]);
 
             slotNames[8].Width.Set(50, 0);
             slotNames[8].Height.Set(25, 0);
             slotNames[8].HAlign = 0.76f;
-            slotNames[8].Top.Set(270, 0);
+            slotNames[8].Top.Set(290, 0);
             mainPanel.Append(slotNames[8]);
 
             // Update stored ModPlayer information when interacting with slots
@@ -194,21 +210,21 @@ namespace MechMod.Common.UI
             UIText upgradeText = new("Upgrade");
             upgradeText.Width.Set(50, 0);
             upgradeText.Height.Set(25, 0);
-            upgradeText.Left.Set(105, 0);
+            upgradeText.Left.Set(150, 0);
             upgradeText.Top.Set(40, 0);
             mainPanel.Append(upgradeText);
 
             upgradeCostText = new UIText("");
             upgradeCostText.Width.Set(150, 0);
             upgradeCostText.Height.Set(25, 0);
-            upgradeCostText.Left.Set(105, 0);
+            upgradeCostText.Left.Set(150, 0);
             upgradeCostText.Top.Set(80, 0);
             mainPanel.Append(upgradeCostText);
 
             upgradeButton = new UIText("Confirm");
             upgradeButton.Width.Set(25, 0);
             upgradeButton.Height.Set(25, 0);
-            upgradeButton.Left.Set(105, 0);
+            upgradeButton.Left.Set(150, 0);
             upgradeButton.Top.Set(140, 0);
             upgradeButton.OnLeftClick += OnUpgradeButtonClick;
             mainPanel.Append(upgradeButton);
@@ -216,7 +232,7 @@ namespace MechMod.Common.UI
             playerLevel = new UIText("");
             playerLevel.Width.Set(25, 0);
             playerLevel.Height.Set(25, 0);
-            playerLevel.Left.Set(105, 0);
+            playerLevel.Left.Set(150, 0);
             playerLevel.Top.Set(160, 0);
             mainPanel.Append(playerLevel);
 
@@ -228,6 +244,9 @@ namespace MechMod.Common.UI
             //resetButton.Top.Set(140, 0);
             //resetButton.OnLeftClick += OnResetButtonClick;
             //mainPanel.Append(resetButton);
+
+            if (ModLoader.TryGetMod("CalamityMod", out Mod calMod)) // If Calamity Mod is loaded,
+                AddCalamityUpgrades(calMod); // Add new upgrade levels that use Calamity Mod materials
         }
 
         #endregion
@@ -408,13 +427,37 @@ namespace MechMod.Common.UI
         // Damage increases for each upgrade level (as a percentage increase, for example 0.70f means 70% increase)
         private float[] upgradeDamageValues =
         [
-            0.20f,
+            0.2f,
             0.25f,
-            0.50f,
-            0.50f,
-            3.50f,
-            3.00f
+            0.5f,
+            0.5f,
+            3.5f,
+            6.75f
         ];
+
+        // Function to add Calamity Mod upgrade levels if the mod is loaded
+        private void AddCalamityUpgrades(Mod calamityMod)
+        {
+            // Attempt to find new materials from Calamity Mod
+            calamityMod.TryFind("UelibloomBar", out ModItem uelibloomBar);
+            calamityMod.TryFind("CosmiliteBar", out ModItem cosmiliteBar);
+            calamityMod.TryFind("AuricBar", out ModItem auricBar);
+
+            if (uelibloomBar == null || cosmiliteBar == null || auricBar == null) // If an item was not found, exit the function to prevent errors
+                return;
+            // If all items were found, proceed to add new upgrade levels
+
+            // Add new upgrade levels using Calamity Mod materials
+            Array.Resize(ref upgradeRequiredMaterial, upgradeRequiredMaterial.Length + 3);
+            upgradeRequiredMaterial[upgradeRequiredMaterial.Length - 3] = [uelibloomBar.Type];
+            upgradeRequiredMaterial[upgradeRequiredMaterial.Length - 2] = [cosmiliteBar.Type];
+            upgradeRequiredMaterial[upgradeRequiredMaterial.Length - 1] = [auricBar.Type];
+            // Add corresponding damage values for the new upgrade levels
+            Array.Resize(ref upgradeDamageValues, upgradeDamageValues.Length + 3);
+            upgradeDamageValues[upgradeDamageValues.Length - 3] = 2.75f;
+            upgradeDamageValues[upgradeDamageValues.Length - 2] = 22.5f;
+            upgradeDamageValues[upgradeDamageValues.Length - 1] = 15f;
+        }
 
         // Function for when the player clicks the upgrade button
         private void OnUpgradeButtonClick(UIMouseEvent evt, UIElement listeningElement)

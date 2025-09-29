@@ -6,6 +6,9 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Remove="Content\Items\MechArms\BaseArmsLLight.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Content\Items\MechBodies\BaseBody.png" />
     <None Remove="Content\Items\MechHeads\BaseHead.png" />
     <None Remove="Content\Items\MechLegs\BaseLegs.png" />
@@ -15,8 +18,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Items\MechWeapons\ProjSword.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Assets\Promotional\" />
   </ItemGroup>
 </Project>

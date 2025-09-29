@@ -337,12 +337,6 @@ namespace MechMod
         //    }
         //}
 
-        //public override void PostSetupContent()
-        //{
-        //    int mechDebuff = ModContent.BuffType<MechDebuff>();
-        //    Terraria.ID.BuffID.Sets.NurseCannotRemoveDebuff[mechDebuff] = true;
-        //}
-
         //public class ResetUpgradeLevelCommand : ModCommand
         //{
         //    public override CommandType Type => CommandType.Chat;

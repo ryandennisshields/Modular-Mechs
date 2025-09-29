@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\common\\players\\mechmodplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:common\\players\\mechmodplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\common\\players\\mechvisualplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:common\\players\\mechvisualplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -11,40 +15,44 @@
       "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:content\\mounts\\modularmech.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\common\\ui\\mechbenchui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:common\\ui\\mechbenchui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\mechmod.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:mechmod.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\build.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:build.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\changelog.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:changelog.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\description_workshop.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:description_workshop.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\description.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:description.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\changelog.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:changelog.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\common\\ui\\mechbenchui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:common\\ui\\mechbenchui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\build.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:build.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\common\\ui\\partslot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:common\\ui\\partslot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\content\\buffs\\mechdebuff.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:content\\buffs\\mechdebuff.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\common\\ui\\dyeslot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:common\\ui\\dyeslot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\common\\players\\mechmodplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:common\\players\\mechmodplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\content\\items\\mechmisc\\mechspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:content\\items\\mechmisc\\mechspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\description.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:description.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\common\\ui\\partslot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:common\\ui\\partslot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\common\\players\\mechweaponsplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -73,10 +81,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\content\\items\\mechmisc\\mechbench.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:content\\items\\mechmisc\\mechbench.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\content\\items\\mechmisc\\mechspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:content\\items\\mechmisc\\mechspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\localization\\en-us_mods.mechmod.hjson||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -195,10 +199,6 @@
       "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:content\\items\\mecharms\\basearms.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\content\\buffs\\mechdebuff.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:content\\buffs\\mechdebuff.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\content\\dusts\\boosterdust.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:content\\dusts\\boosterdust.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -209,14 +209,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\content\\npcs\\gores\\mechanist_gore_shimmer_leg.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
       "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:content\\npcs\\gores\\mechanist_gore_shimmer_leg.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\content\\assets\\placeholders\\weapons\\baselauncherph.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
-      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:content\\assets\\placeholders\\weapons\\baselauncherph.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\content\\assets\\placeholders\\weapons\\basegunph.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
-      "RelativeMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|solutionrelative:content\\assets\\placeholders\\weapons\\basegunph.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{689DC057-8797-431B-AC36-6AF9238C1417}|MechMod.csproj|c:\\users\\ryan0\\documents\\my games\\terraria\\tmodloader\\modsources\\mechmod\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -230,61 +222,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "DyeSlot.cs",
-              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\UI\\DyeSlot.cs",
-              "RelativeDocumentMoniker": "Common\\UI\\DyeSlot.cs",
-              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\UI\\DyeSlot.cs",
-              "RelativeToolTip": "Common\\UI\\DyeSlot.cs",
-              "ViewState": "AgIAAD0AAAAAAAAAAAAkwCIAAAA4AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-25T12:49:57.174Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 3,
               "Title": "MechBenchUI.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\UI\\MechBenchUI.cs",
               "RelativeDocumentMoniker": "Common\\UI\\MechBenchUI.cs",
               "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\UI\\MechBenchUI.cs",
               "RelativeToolTip": "Common\\UI\\MechBenchUI.cs",
-              "ViewState": "AgIAAE8BAAAAAAAAAAAswLYAAABOAAAAAAAAAA==",
+              "ViewState": "AgIAAPIBAAAAAAAAAAAcwF0AAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-27T12:04:57.4Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ModularMech.cs",
-              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Mounts\\ModularMech.cs",
-              "RelativeDocumentMoniker": "Content\\Mounts\\ModularMech.cs",
-              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Mounts\\ModularMech.cs",
-              "RelativeToolTip": "Content\\Mounts\\ModularMech.cs",
-              "ViewState": "AgIAAPEBAAAAAAAAAAAgwFYBAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-25T13:22:10.786Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MechVisualPlayer.cs",
-              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\Players\\MechVisualPlayer.cs",
-              "RelativeDocumentMoniker": "Common\\Players\\MechVisualPlayer.cs",
-              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\Players\\MechVisualPlayer.cs",
-              "RelativeToolTip": "Common\\Players\\MechVisualPlayer.cs",
-              "ViewState": "AgIAAMUAAAAAAAAAAAAswIgAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-10T13:01:38.865Z",
               "IsPinned": true,
               "EditorCaption": ""
             },
@@ -303,38 +253,12 @@
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "changelog.txt",
-              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\changelog.txt",
-              "RelativeDocumentMoniker": "changelog.txt",
-              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\changelog.txt",
-              "RelativeToolTip": "changelog.txt",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAABRAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2025-08-24T14:42:56.824Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "build.txt",
-              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\build.txt",
-              "RelativeDocumentMoniker": "build.txt",
-              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\build.txt",
-              "RelativeToolTip": "build.txt",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2025-08-14T10:36:57.584Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "MechMod.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\MechMod.cs",
               "RelativeDocumentMoniker": "MechMod.cs",
               "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\MechMod.cs",
               "RelativeToolTip": "MechMod.cs",
-              "ViewState": "AgIAAHgAAAAAAAAAAAAowJAAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAG0AAAAAAAAAAAAkwIwAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-15T13:51:35.358Z",
               "EditorCaption": ""
@@ -347,14 +271,118 @@
               "RelativeDocumentMoniker": "description_workshop.txt",
               "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\description_workshop.txt",
               "RelativeToolTip": "description_workshop.txt",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
               "WhenOpened": "2025-09-17T13:43:17.279Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ModularMech.cs",
+              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Mounts\\ModularMech.cs",
+              "RelativeDocumentMoniker": "Content\\Mounts\\ModularMech.cs",
+              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Mounts\\ModularMech.cs",
+              "RelativeToolTip": "Content\\Mounts\\ModularMech.cs",
+              "ViewState": "AgIAAO4AAAAAAAAAAAAAAP8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-25T13:22:10.786Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MechVisualPlayer.cs",
+              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\Players\\MechVisualPlayer.cs",
+              "RelativeDocumentMoniker": "Common\\Players\\MechVisualPlayer.cs",
+              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\Players\\MechVisualPlayer.cs",
+              "RelativeToolTip": "Common\\Players\\MechVisualPlayer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAM0AAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-10T13:01:38.865Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MechModPlayer.cs",
+              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\Players\\MechModPlayer.cs",
+              "RelativeDocumentMoniker": "Common\\Players\\MechModPlayer.cs",
+              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\Players\\MechModPlayer.cs",
+              "RelativeToolTip": "Common\\Players\\MechModPlayer.cs",
+              "ViewState": "AgIAAAIBAAAAAAAAAAAAABUBAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T15:18:26.258Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 6,
+              "Title": "changelog.txt",
+              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\changelog.txt",
+              "RelativeDocumentMoniker": "changelog.txt",
+              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\changelog.txt",
+              "RelativeToolTip": "changelog.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-08-24T14:42:56.824Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "build.txt",
+              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\build.txt",
+              "RelativeDocumentMoniker": "build.txt",
+              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\build.txt",
+              "RelativeToolTip": "build.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-08-14T10:36:57.584Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "MechDebuff.cs",
+              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Buffs\\MechDebuff.cs",
+              "RelativeDocumentMoniker": "Content\\Buffs\\MechDebuff.cs",
+              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Buffs\\MechDebuff.cs",
+              "RelativeToolTip": "Content\\Buffs\\MechDebuff.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-18T16:01:28.642Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "DyeSlot.cs",
+              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\UI\\DyeSlot.cs",
+              "RelativeDocumentMoniker": "Common\\UI\\DyeSlot.cs",
+              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\UI\\DyeSlot.cs",
+              "RelativeToolTip": "Common\\UI\\DyeSlot.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAzwDgAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-25T12:49:57.174Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "MechSpawner.cs",
+              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechMisc\\MechSpawner.cs",
+              "RelativeDocumentMoniker": "Content\\Items\\MechMisc\\MechSpawner.cs",
+              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechMisc\\MechSpawner.cs",
+              "RelativeToolTip": "Content\\Items\\MechMisc\\MechSpawner.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwCYAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-14T15:00:47.077Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "description.txt",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\description.txt",
               "RelativeDocumentMoniker": "description.txt",
@@ -362,12 +390,11 @@
               "RelativeToolTip": "description.txt",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2025-06-11T15:44:51.831Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-11T15:44:51.831Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 12,
               "Title": "PartSlot.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\UI\\PartSlot.cs",
               "RelativeDocumentMoniker": "Common\\UI\\PartSlot.cs",
@@ -375,25 +402,11 @@
               "RelativeToolTip": "Common\\UI\\PartSlot.cs",
               "ViewState": "AgIAADkAAAAAAAAAAAAYwBIAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T15:12:56.611Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-04T15:12:56.611Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "MechModPlayer.cs",
-              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\Players\\MechModPlayer.cs",
-              "RelativeDocumentMoniker": "Common\\Players\\MechModPlayer.cs",
-              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\Players\\MechModPlayer.cs",
-              "RelativeToolTip": "Common\\Players\\MechModPlayer.cs",
-              "ViewState": "AgIAAJgAAAAAAAAAAAAgwDoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-04T15:18:26.258Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "MechWeaponsPlayer.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\Players\\MechWeaponsPlayer.cs",
               "RelativeDocumentMoniker": "Common\\Players\\MechWeaponsPlayer.cs",
@@ -401,12 +414,11 @@
               "RelativeToolTip": "Common\\Players\\MechWeaponsPlayer.cs",
               "ViewState": "AgIAAI0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T14:41:03.704Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-17T14:41:03.704Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "Mechanist.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\NPCs\\Mechanist.cs",
               "RelativeDocumentMoniker": "Content\\NPCs\\Mechanist.cs",
@@ -418,7 +430,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 15,
               "Title": "MechBenchUISystem.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Common\\UI\\MechBenchUISystem.cs",
               "RelativeDocumentMoniker": "Common\\UI\\MechBenchUISystem.cs",
@@ -430,7 +442,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 16,
               "Title": "MechBuff.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Buffs\\MechBuff.cs",
               "RelativeDocumentMoniker": "Content\\Buffs\\MechBuff.cs",
@@ -442,7 +454,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 17,
               "Title": "Cooldown.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Buffs\\Cooldown.cs",
               "RelativeDocumentMoniker": "Content\\Buffs\\Cooldown.cs",
@@ -454,7 +466,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 18,
               "Title": "PowerCell.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechMisc\\PowerCell.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechMisc\\PowerCell.cs",
@@ -466,19 +478,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "MechSpawner.cs",
-              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechMisc\\MechSpawner.cs",
-              "RelativeDocumentMoniker": "Content\\Items\\MechMisc\\MechSpawner.cs",
-              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechMisc\\MechSpawner.cs",
-              "RelativeToolTip": "Content\\Items\\MechMisc\\MechSpawner.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-14T15:00:47.077Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 19,
               "Title": "MechBench.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechMisc\\MechBench.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechMisc\\MechBench.cs",
@@ -490,7 +490,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "en-US_Mods.MechMod.hjson",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Localization\\en-US_Mods.MechMod.hjson",
               "RelativeDocumentMoniker": "Localization\\en-US_Mods.MechMod.hjson",
@@ -502,7 +502,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "SlowBooster.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechBoosters\\SlowBooster.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechBoosters\\SlowBooster.cs",
@@ -514,7 +514,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "BaseSword.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechWeapons\\BaseSword.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechWeapons\\BaseSword.cs",
@@ -526,7 +526,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 23,
               "Title": "BaseGun.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechWeapons\\BaseGun.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechWeapons\\BaseGun.cs",
@@ -538,7 +538,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 24,
               "Title": "BaseLauncher.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechWeapons\\BaseLauncher.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechWeapons\\BaseLauncher.cs",
@@ -550,7 +550,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 25,
               "Title": "LaserGun.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechWeapons\\LaserGun.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechWeapons\\LaserGun.cs",
@@ -562,7 +562,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 26,
               "Title": "ProjSword.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechWeapons\\ProjSword.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechWeapons\\ProjSword.cs",
@@ -574,7 +574,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 27,
               "Title": "Spikes.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechModules\\Passive\\Spikes.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechModules\\Passive\\Spikes.cs",
@@ -586,7 +586,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 28,
               "Title": "NuclearEject.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechModules\\Passive\\NuclearEject.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechModules\\Passive\\NuclearEject.cs",
@@ -598,7 +598,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 29,
               "Title": "Repair.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechModules\\Active\\Repair.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechModules\\Active\\Repair.cs",
@@ -610,7 +610,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 30,
               "Title": "Brace.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechModules\\Passive\\Brace.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechModules\\Passive\\Brace.cs",
@@ -622,7 +622,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 31,
               "Title": "Hover.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechModules\\Passive\\Hover.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechModules\\Passive\\Hover.cs",
@@ -634,7 +634,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 32,
               "Title": "MissileLauncher.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechModules\\Active\\MissileLauncher.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechModules\\Active\\MissileLauncher.cs",
@@ -646,7 +646,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 33,
               "Title": "FastLegs.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechLegs\\FastLegs.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechLegs\\FastLegs.cs",
@@ -658,7 +658,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 34,
               "Title": "PartNotes.txt",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\PartNotes.txt",
               "RelativeDocumentMoniker": "Content\\Items\\PartNotes.txt",
@@ -670,7 +670,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 35,
               "Title": "SlowLegs.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechLegs\\SlowLegs.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechLegs\\SlowLegs.cs",
@@ -682,7 +682,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 36,
               "Title": "BaseLegs.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechLegs\\BaseLegs.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechLegs\\BaseLegs.cs",
@@ -694,7 +694,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 37,
               "Title": "FastBooster.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechBoosters\\FastBooster.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechBoosters\\FastBooster.cs",
@@ -706,7 +706,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 38,
               "Title": "FastHead.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechHeads\\FastHead.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechHeads\\FastHead.cs",
@@ -718,7 +718,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 39,
               "Title": "SlowHead.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechHeads\\SlowHead.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechHeads\\SlowHead.cs",
@@ -730,7 +730,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 40,
               "Title": "FastHead.png",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechHeads\\FastHead.png",
               "RelativeDocumentMoniker": "Content\\Items\\MechHeads\\FastHead.png",
@@ -741,7 +741,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 41,
               "Title": "BaseHead.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechHeads\\BaseHead.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechHeads\\BaseHead.cs",
@@ -753,7 +753,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 42,
               "Title": "BaseBooster.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechBoosters\\BaseBooster.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechBoosters\\BaseBooster.cs",
@@ -765,7 +765,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 43,
               "Title": "SlowBody.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechBodies\\SlowBody.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechBodies\\SlowBody.cs",
@@ -777,7 +777,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 44,
               "Title": "FastBody.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechBodies\\FastBody.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechBodies\\FastBody.cs",
@@ -789,7 +789,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 45,
               "Title": "BaseBody.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechBodies\\BaseBody.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechBodies\\BaseBody.cs",
@@ -801,7 +801,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 46,
               "Title": "SlowArms.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechArms\\SlowArms.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechArms\\SlowArms.cs",
@@ -813,7 +813,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 47,
               "Title": "FastArms.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechArms\\FastArms.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechArms\\FastArms.cs",
@@ -825,7 +825,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 48,
               "Title": "BaseArms.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechArms\\BaseArms.cs",
               "RelativeDocumentMoniker": "Content\\Items\\MechArms\\BaseArms.cs",
@@ -834,18 +834,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-22T14:08:11.149Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 48,
-              "Title": "MechDebuff.cs",
-              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Buffs\\MechDebuff.cs",
-              "RelativeDocumentMoniker": "Content\\Buffs\\MechDebuff.cs",
-              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Buffs\\MechDebuff.cs",
-              "RelativeToolTip": "Content\\Buffs\\MechDebuff.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-18T16:01:28.642Z"
             },
             {
               "$type": "Document",
@@ -884,28 +872,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 52,
-              "Title": "BaseLauncherPH.png",
-              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Assets\\Placeholders\\Weapons\\BaseLauncherPH.png",
-              "RelativeDocumentMoniker": "Content\\Assets\\Placeholders\\Weapons\\BaseLauncherPH.png",
-              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Assets\\Placeholders\\Weapons\\BaseLauncherPH.png",
-              "RelativeToolTip": "Content\\Assets\\Placeholders\\Weapons\\BaseLauncherPH.png",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
-              "WhenOpened": "2025-07-24T12:59:49.333Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 53,
-              "Title": "BaseGunPH.png",
-              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Assets\\Placeholders\\Weapons\\BaseGunPH.png",
-              "RelativeDocumentMoniker": "Content\\Assets\\Placeholders\\Weapons\\BaseGunPH.png",
-              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Assets\\Placeholders\\Weapons\\BaseGunPH.png",
-              "RelativeToolTip": "Content\\Assets\\Placeholders\\Weapons\\BaseGunPH.png",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
-              "WhenOpened": "2025-07-23T16:05:38.613Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 54,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "Properties\\launchSettings.json",

@@ -279,34 +279,6 @@ namespace MechMod.Common.Players
             Player.frozen = false;
         }
 
-        public override void PreUpdate()
-        {
-            // Disable spawning the mech in different cases, like having the Mech debuff or not having certain equipped Parts
-            MechSpawner mechSpawnerItem = ModContent.GetInstance<MechSpawner>();
-            if (Player.HasBuff(ModContent.BuffType<MechDebuff>()))
-            {
-                disableMounts = true;
-                CanUseItem(mechSpawnerItem.Item);
-            }
-            if (equippedParts[MechMod.headIndex].IsAir ||
-                equippedParts[MechMod.bodyIndex].IsAir ||
-                equippedParts[MechMod.armsIndex].IsAir ||
-                equippedParts[MechMod.legsIndex].IsAir)
-            {
-                disableMounts = true;
-                CanUseItem(mechSpawnerItem.Item);
-            }
-        }
-
-        public override bool CanUseItem(Item item)
-        {
-            if (disableMounts) // If mounts are disabled,
-            {
-                return false; // Prevent the use of the item (Mech Spawner)
-            }
-            return true;
-        }
-
         #region Debugging Drawing
 
         //public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)

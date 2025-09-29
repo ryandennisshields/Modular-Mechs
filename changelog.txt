@@ -1,6 +1,9 @@
 Modular Mechs v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 
-v1.1.0
-- Added dye support for Mech Parts
+v1.0.2
+- Added Dye support for Mech Parts
  - Includes Head, Body, Arms and Legs
- - Also includes Lights when the power cell is active as a seperate dyeable layer
+ - Also includes Lights when the power cell is active as a separate dyeable layer
+- Added new upgrade levels if Calamity Mod is installed and active to support Calamity Mod's post Moon Lord content
+- Adjusted upgrade level damage bonuses
+- Bug fixes and optimizations

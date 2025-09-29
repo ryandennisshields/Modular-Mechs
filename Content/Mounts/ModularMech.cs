@@ -185,47 +185,62 @@ namespace MechMod.Content.Mounts
 
             // For each Part texture:
             // 1. Check if the Part is not air (i.e. a part is equipped)
-            // 2. If a Part is equipped, check if the power cell is active to determine which texture to use (powered or unpowered)
-            // 3. Grab the texture's spritesheet using the Part's name and the appropriate path
-            // 4. Set the texture variable to the grabbed texture
+            // 2. Grab the texture's spritesheet using the Part's name and the appropriate path
+            // 3. If the power cell is active, also grab the light texture using the same method
+            // 4. Set the texture variable(s) to the grabbed texture(s)
             if (!modPlayer.equippedParts[MechMod.headIndex].IsAir)
             {
-                string headPath = modPlayer.powerCellActive
-                    ? $"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual"
-                    : $"Content/Items/MechHeads/Pre{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual";
+                string headPath = $"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual";
                 visualPlayer.headTexture = Mod.Assets.Request<Texture2D>(headPath);
+                if (modPlayer.powerCellActive)
+                {
+                    string headLightPath = $"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Light";
+                    visualPlayer.headLightTexture = Mod.Assets.Request<Texture2D>(headLightPath);
+                }
             }
 
             if (!modPlayer.equippedParts[MechMod.bodyIndex].IsAir)
             {
-                string bodyPath = modPlayer.powerCellActive
-                    ? $"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual"
-                    : $"Content/Items/MechBodies/Pre{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual";
+                string bodyPath = $"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Visual";
                 visualPlayer.bodyTexture = Mod.Assets.Request<Texture2D>(bodyPath);
+                if (modPlayer.powerCellActive)
+                {
+                    string bodyLightPath = $"Content/Items/MechBodies/{modPlayer.equippedParts[MechMod.bodyIndex].ModItem.GetType().Name}Light";
+                    if (ModContent.RequestIfExists<Texture2D>(Mod.Name + "/" + bodyLightPath, out _)) // Check if the light texture exists before trying to load it
+                        visualPlayer.bodyLightTexture = Mod.Assets.Request<Texture2D>(bodyLightPath);
+                    else
+                        visualPlayer.bodyLightTexture = null;
+                }
             }
 
             if (!modPlayer.equippedParts[MechMod.armsIndex].IsAir)
             {
-                string armsR = modPlayer.powerCellActive
-                    ? $"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual"
-                    : $"Content/Items/MechArms/Pre{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual";
-                string armsL = modPlayer.powerCellActive
-                    ? $"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual"
-                    : $"Content/Items/MechArms/Pre{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual";
+                string armsR = $"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RVisual";
+                string armsL = $"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LVisual";
                 visualPlayer.armsRTexture = Mod.Assets.Request<Texture2D>(armsR);
                 visualPlayer.armsLTexture = Mod.Assets.Request<Texture2D>(armsL);
+                if (modPlayer.powerCellActive)
+                {
+                    string armsRLight = $"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}RLight";
+                    string armsLLight = $"Content/Items/MechArms/{modPlayer.equippedParts[MechMod.armsIndex].ModItem.GetType().Name}LLight";
+                    visualPlayer.armsRLightTexture = Mod.Assets.Request<Texture2D>(armsRLight);
+                    visualPlayer.armsLLightTexture = Mod.Assets.Request<Texture2D>(armsLLight);
+                }
             }
 
             if (!modPlayer.equippedParts[MechMod.legsIndex].IsAir)
             {
-                string legsR = modPlayer.powerCellActive
-                    ? $"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual"
-                    : $"Content/Items/MechLegs/Pre{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual";
-                string legsL = modPlayer.powerCellActive
-                    ? $"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}LVisual"
-                    : $"Content/Items/MechLegs/Pre{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}LVisual";
+                string legsR = $"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RVisual";
+                string legsL = $"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}LVisual";
                 visualPlayer.legsRTexture = Mod.Assets.Request<Texture2D>(legsR);
                 visualPlayer.legsLTexture = Mod.Assets.Request<Texture2D>(legsL);
+                if (modPlayer.powerCellActive)
+                {
+                    string legsRLight = $"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}RLight";
+                    string legsLLight = $"Content/Items/MechLegs/{modPlayer.equippedParts[MechMod.legsIndex].ModItem.GetType().Name}LLight";
+                    visualPlayer.legsRLightTexture = Mod.Assets.Request<Texture2D>(legsRLight);
+                    visualPlayer.legsLLightTexture = Mod.Assets.Request<Texture2D>(legsLLight);
+                }
             }
 
             // For weapons, grab the item texture directly from the item if the weapon Part is not air
@@ -520,6 +535,7 @@ namespace MechMod.Content.Mounts
                 int bodyDye = visualPlayer.dyeShaders[1];
                 int armsDye = visualPlayer.dyeShaders[2];
                 int legsDye = visualPlayer.dyeShaders[3];
+                int lightsDye = visualPlayer.dyeShaders[4];
 
                 // Right arm
                 if (visualPlayer.armsRTexture != null)
@@ -530,6 +546,15 @@ namespace MechMod.Content.Mounts
                         setArmRFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
                     if (armsDye > 0) drawData.shader = armsDye;
                     playerDrawData.Add(drawData);
+                    if (visualPlayer.armsRLightTexture != null)
+                    {
+                        var lightDrawData = new DrawData(
+                            visualPlayer.armsRLightTexture.Value,
+                            drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[0].X * visualDirection, visualPlayer.bodyOffsets[0].Y),
+                            setArmRFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                        if (lightsDye > 0) lightDrawData.shader = lightsDye;
+                        playerDrawData.Add(lightDrawData);
+                    }
                 }
 
                 // Right leg
@@ -541,6 +566,15 @@ namespace MechMod.Content.Mounts
                         frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
                     if (legsDye > 0) drawData.shader = legsDye;
                     playerDrawData.Add(drawData);
+                    if (visualPlayer.legsRLightTexture != null)
+                    {
+                        var lightDrawData = new DrawData(
+                            visualPlayer.legsRLightTexture.Value,
+                            drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[1].X * visualDirection, visualPlayer.bodyOffsets[1].Y),
+                            frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                        if (lightsDye > 0) lightDrawData.shader = lightsDye;
+                        playerDrawData.Add(lightDrawData);
+                    }
                 }
 
                 // Body
@@ -552,6 +586,15 @@ namespace MechMod.Content.Mounts
                         frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
                     if (bodyDye > 0) drawData.shader = bodyDye;
                     playerDrawData.Add(drawData);
+                    if (visualPlayer.bodyLightTexture != null)
+                    {
+                        var lightDrawData = new DrawData(
+                            visualPlayer.bodyLightTexture.Value,
+                            drawPosition + groundOffset,
+                            frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                        if (lightsDye > 0) lightDrawData.shader = lightsDye;
+                        playerDrawData.Add(lightDrawData);
+                    }
                 }
 
                 // Left leg
@@ -563,6 +606,15 @@ namespace MechMod.Content.Mounts
                         frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
                     if (legsDye > 0) drawData.shader = legsDye;
                     playerDrawData.Add(drawData);
+                    if (visualPlayer.legsLLightTexture != null)
+                    {
+                        var lightDrawData = new DrawData(
+                            visualPlayer.legsLLightTexture.Value,
+                            drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[2].X * visualDirection, visualPlayer.bodyOffsets[2].Y),
+                            frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                        if (lightsDye > 0) lightDrawData.shader = lightsDye;
+                        playerDrawData.Add(lightDrawData);
+                    }
                 }
 
                 // Head
@@ -574,6 +626,15 @@ namespace MechMod.Content.Mounts
                         frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
                     if (headDye > 0) drawData.shader = headDye;
                     playerDrawData.Add(drawData);
+                    if (visualPlayer.headLightTexture != null)
+                    {
+                        var lightDrawData = new DrawData(
+                            visualPlayer.headLightTexture.Value,
+                            drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[3].X * visualDirection, visualPlayer.bodyOffsets[3].Y),
+                            frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                        if (lightsDye > 0) lightDrawData.shader = lightsDye;
+                        playerDrawData.Add(lightDrawData);
+                    }
                 }
 
                 // Weapon
@@ -589,6 +650,15 @@ namespace MechMod.Content.Mounts
                         setArmLFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
                     if (armsDye > 0) drawData.shader = armsDye;
                     playerDrawData.Add(drawData);
+                    if (visualPlayer.armsLLightTexture != null)
+                    {
+                        var lightDrawData = new DrawData(
+                            visualPlayer.armsLLightTexture.Value,
+                            drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[4].X * visualDirection, visualPlayer.bodyOffsets[4].Y),
+                            setArmLFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                        if (lightsDye > 0) lightDrawData.shader = lightsDye;
+                        playerDrawData.Add(lightDrawData);
+                    }
                 }
             }
 
