@@ -367,6 +367,11 @@ Items: {
 			30s Cooldown
 			'''
 	}
+
+	DroneSpawner: {
+		DisplayName: Drone Spawner
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -388,6 +393,11 @@ Buffs: {
 		DisplayName: Module Cooldown
 		Description: Your active Module is recharging
 	}
+
+	DroneBuff: {
+		DisplayName: Drone Buff
+		Description: Mods.MechMod.Buffs.DroneBuff.Description
+	}
 }
 
 Projectiles: {
@@ -395,6 +405,7 @@ Projectiles: {
 	MissileProjectile.DisplayName: Missile Projectile
 	NuclearEjectProjectile.DisplayName: Nuclear Eject Projectile
 	ProjSwordProj.DisplayName: Proj Sword Proj
+	DroneProjectile.DisplayName: Drone Projectile
 }
 
 Keybinds: {

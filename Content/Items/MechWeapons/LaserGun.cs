@@ -63,7 +63,7 @@ namespace MechMod.Content.Items.MechWeapons
                 player.CheckMana(manaCost, true);
                 player.manaRegenDelay = 120; // 2 seconds of mana regen delay
 
-                int holdTime = 50; // Amount of time player holds out the weapon after ceasing to fire
+                int holdTime = 50; // Amount of time player holds out the weapon after ceasing to use
                 visualPlayer.animationTimer = holdTime; // Set the animation timer to hold the weapon out
                 SoundEngine.PlaySound(SoundID.Item12, player.position); // Play Laser sound when the weapon is used
             }

@@ -1,3 +1,7 @@
+NEW:
+- Mech Dyeing (seperate slots for Head, Body, Arms, Legs, and Lights)
+- Calamity Mod support with new upgrade levels
+
 Modular Mechs is a content mod that adds customisable Mechs to the game!
 
 - Combine different Head, Body, Arms and Legs to change the stats and appearance of your Mech
@@ -17,4 +21,4 @@ Includes:
 - 1 town NPC
 - 1 mount
 
-Sprites by Sam Algohary
+Find Credits/Links on the Steam Workshop page!

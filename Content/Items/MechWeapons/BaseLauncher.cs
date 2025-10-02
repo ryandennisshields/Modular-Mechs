@@ -71,7 +71,7 @@ namespace MechMod.Content.Items.MechWeapons
             // Create projectile
             Projectile.NewProjectile(new EntitySource_Parent(player), player.Center + offset, velocity, projectileType, damage, knockback, player.whoAmI);
             
-            int holdTime = 50; // Amount of time player holds out the weapon after ceasing to fire
+            int holdTime = 50; // Amount of time player holds out the weapon after ceasing to use
             visualPlayer.animationTimer = holdTime; // Set the animation timer to hold the weapon out
             SoundEngine.PlaySound(SoundID.Item61, player.position); // Play Grenade Launcher sound when the weapon is used
         }

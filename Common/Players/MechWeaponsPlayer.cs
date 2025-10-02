@@ -18,7 +18,8 @@ namespace MechMod.Common.Players
         public enum UseType
         {
             Swing,
-            Point
+            Point,
+            HoldUp
         }
         public UseType useType;
 

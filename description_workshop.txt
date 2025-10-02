@@ -1,3 +1,7 @@
+NEW:
+- Mech Dyeing (seperate slots for Head, Body, Arms, Legs, and Lights)
+- Calamity Mod support with new upgrade levels
+
 [b] Modular Mechs is a content mod that adds customisable Mechs to the game! [/b]
 
 - Combine different Head, Body, Arms and Legs to change the stats and appearance of your Mech
@@ -17,6 +21,7 @@ Includes:
 - 1 town NPC
 - 1 mount
 
-Sprites by [url=https://www.fiverr.com/samiralgohary] Sam Algohary [/url]
-
+[b] Credits/Links: [/b]
+[url=https://forums.terraria.org/index.php?threads/modular-mechs-mod.144835/] Forum Thread [/url]
 [url=https://ko-fi.com/clemprime] If you enjoy the mod, you can leave a tip here! [/url]
+Sprites by [url=https://www.fiverr.com/samiralgohary] Sam Algohary [/url]

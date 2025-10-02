@@ -1,6 +1,7 @@
 ﻿using MechMod.Common.Players;
 using MechMod.Content.Buffs;
 using MechMod.Content.Dusts;
+using MechMod.Content.Items.MechWeapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -268,6 +269,9 @@ namespace MechMod.Content.Mounts
             player.ClearBuff(ModContent.BuffType<MechBuff>()); // Clear the mech buff
             player.ClearBuff(ModContent.BuffType<Cooldown>()); // Clear active module cooldown
 
+            // Clear Summon buffs
+            player.ClearBuff(ModContent.BuffType<DroneBuff>());
+
             SoundEngine.PlaySound(SoundID.Research, player.position); // Play Research sound when dismounting the mech
 
             modPlayer.mechDebuffDuration = 900; // Base debuff duration (15 seconds)
@@ -338,7 +342,43 @@ namespace MechMod.Content.Mounts
             // Grant armour bonus
             player.statDefense += modPlayer.armourBonus;
 
-            WeaponUseAnimationSetup(player, modPlayer, visualPlayer, weaponsPlayer); // Setup weapon use animation and position
+            // Logic for setting the minion target when right clicking with a summon weapon
+            if (Main.mouseRight && player.whoAmI == Main.myPlayer && !player.mouseInterface && weaponsPlayer.DamageClass == DamageClass.Summon) // If the player right clicks with a summon weapon,
+            {
+                NPC target = null;
+                float best = 999999f; // Used to track what the "best" NPC to target is depending on distance to cursor
+                Vector2 mouse = Main.MouseWorld;
+
+                for (int i = 0; i < Main.maxNPCs; i++) // Check all NPCs
+                {
+                    NPC npc = Main.npc[i];
+
+                    if (npc.CanBeChasedBy()) // If the NPC can be targeted,
+                    {
+                        bool underCursor = npc.Hitbox.Contains(mouse.ToPoint()); // Check if the NPC is under the cursor
+                        float dist = Vector2.Distance(mouse, npc.Hitbox.ClosestPointInRect(mouse)); // Get the distance from the cursor to the NPC
+
+                        if (underCursor || dist <= 80f) // If the NPC is under the cursor or within 80 pixels of it,
+                        {
+                            if (dist < best) // If this NPC is the closest one so far,
+                            {
+                                best = dist; // Update the best distance to new nearest distance
+                                target = npc; // Set the target to this NPC
+                            }
+                        }
+                    }
+                }
+
+                if (target != null) // If a target was found,
+                {
+                    player.MinionAttackTargetNPC = target.whoAmI; // Set the target
+                    //SoundEngine.PlaySound(SoundID.MenuTick, player.Center);
+                }
+                else // Otherwise,
+                {
+                    player.MinionAttackTargetNPC = -1; // Clear the target
+                }
+            }
 
             // Check for any Persistent modules and apply their effects
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
@@ -351,6 +391,8 @@ namespace MechMod.Content.Mounts
                     }
                 }
             }
+
+            WeaponUseAnimationSetup(player, modPlayer, visualPlayer, weaponsPlayer); // Setup weapon use animation and position
 
             Effects(player, modPlayer, visualPlayer); // Apply visual and sound effects
         }
@@ -468,16 +510,19 @@ namespace MechMod.Content.Mounts
 
             #region Step
 
-            float stepSpeed = 26 / (player.velocity.Length() / 3); // Speed of steps based on the player's velocity (faster velocity = faster steps)
-
-            if (visualPlayer.stepTimer < stepSpeed) // Increment the timer until it reaches the step speed
-                visualPlayer.stepTimer++;
-            if (visualPlayer.stepTimer >= stepSpeed && player.mount._frameState == Mount.FrameRunning) // Once the timer reaches the step speed and the player is running,
+            if (player.velocity.X != 0) // If the player is moving,
             {
-                SoundEngine.PlaySound(SoundID.NPCHit3, player.position); // Play hit sound for step use
-                for (int i = 0; i < 15; i++)
-                    Dust.NewDust(new Vector2(player.position.X + directionOffset, player.position.Y + 80), 30, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when running
-                visualPlayer.stepTimer = 0; // Reset the timer
+                float stepSpeed = 26 / (player.velocity.Length() / 3); // Speed of steps based on the player's velocity (faster velocity = faster steps)
+
+                if (visualPlayer.stepTimer < stepSpeed) // Increment the timer until it reaches the step speed
+                    visualPlayer.stepTimer++;
+                if (visualPlayer.stepTimer >= stepSpeed && player.mount._frameState == Mount.FrameRunning) // Once the timer reaches the step speed and the player is running,
+                {
+                    SoundEngine.PlaySound(SoundID.NPCHit3, player.position); // Play hit sound for step use
+                    for (int i = 0; i < 15; i++)
+                        Dust.NewDust(new Vector2(player.position.X + directionOffset, player.position.Y + 80), 30, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when running
+                    visualPlayer.stepTimer = 0; // Reset the timer
+                }
             }
 
             #endregion
@@ -536,6 +581,8 @@ namespace MechMod.Content.Mounts
                 int armsDye = visualPlayer.dyeShaders[2];
                 int legsDye = visualPlayer.dyeShaders[3];
                 int lightsDye = visualPlayer.dyeShaders[4];
+
+                #region Drawing Parts
 
                 // Right arm
                 if (visualPlayer.armsRTexture != null)
@@ -660,6 +707,8 @@ namespace MechMod.Content.Mounts
                         playerDrawData.Add(lightDrawData);
                     }
                 }
+
+                #endregion
             }
 
             return false;
@@ -714,11 +763,17 @@ namespace MechMod.Content.Mounts
                         {
                             WeaponUseAnimation(player, visualPlayer, weaponsPlayer, MechWeaponsPlayer.UseType.Swing); // Run the swing animation
                         }
-                        else if (weaponsPlayer.useType == MechWeaponsPlayer.UseType.Point) // If the weapon is a pointing type,
+                        else if (!visualPlayer.animateOnce) // If the animation relies on animating once per use,
                         {
-                            if (!visualPlayer.animateOnce) // Only run the animation once per use
+                            if (weaponsPlayer.useType == MechWeaponsPlayer.UseType.Point) // If the weapon is a pointing type,
                             {
                                 WeaponUseAnimation(player, visualPlayer, weaponsPlayer, MechWeaponsPlayer.UseType.Point); // Run the point animation
+                                visualPlayer.animateOnce = true;
+                            }
+                            if (weaponsPlayer.useType == MechWeaponsPlayer.UseType.HoldUp) // If the weapon is a hold up type,
+                            {
+                                Main.NewText("true");
+                                WeaponUseAnimation(player, visualPlayer, weaponsPlayer, MechWeaponsPlayer.UseType.HoldUp); // Run the hold up animation
                                 visualPlayer.animateOnce = true;
                             }
                         }
@@ -728,7 +783,7 @@ namespace MechMod.Content.Mounts
                         visualPlayer.animateOnce = false; // Reset the animation once tracker so animation can be run again
                     }
                 }
-                if (!Main.mouseLeft && visualPlayer.animationTimer <= 0 && visualPlayer.animationProgress <= 0) // If the player is not using the weapon, and there is no animation timer or progress,
+                if ((!Main.mouseLeft || visualPlayer.animateOnce == true) && visualPlayer.animationTimer <= 0 && visualPlayer.animationProgress <= 0) // If the player is not using the weapon or the animation should not be occuring, and there is no animation timer or progress,
                 {
                     // Reset the arm frame to default
                     visualPlayer.armRFrame = -1;
@@ -812,6 +867,20 @@ namespace MechMod.Content.Mounts
 
                         visualPlayer.weaponRotation = swingAngle + (visualPlayer.useDirection == -1 ? MathHelper.Pi : 0f); // Set the weapon rotation to the swing angle (that also changes depending on last use direction)
                     }
+                    break;
+                case MechWeaponsPlayer.UseType.HoldUp: // For hold up weapons,
+
+                    visualPlayer.weaponScale = 1f; // Make weapon visible
+
+                    // Set position and origin offsets
+                    weaponPositionX = 10;
+                    weaponPositionY = -30;
+                    weaponOriginOffsetX = 0;
+                    weaponOriginOffsetY = 0;
+                    visualPlayer.weaponRotation = visualPlayer.useDirection == -1 ? MathHelper.Pi : 0; // Set the weapon rotation to be straight up
+
+                    visualPlayer.armRFrame = 9; // Set the right arm frame to be by side
+                    visualPlayer.armLFrame = 12; // Set the left arm frame to be holding up
                     break;
             }
             visualPlayer.weaponPosition = new Vector2(weaponPositionX * visualPlayer.useDirection, weaponPositionY); // Set the position of the weapon based on the weapon position values
