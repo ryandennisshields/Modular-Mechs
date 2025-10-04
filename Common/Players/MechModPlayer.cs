@@ -225,7 +225,7 @@ namespace MechMod.Common.Players
         {
             if (Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>())
             {
-                SoundStyle MetalPipe = new("MechMod/Content/Assets/Sounds/MetalPipe", SoundType.Sound) // Get the custom metal pipe sound
+                SoundStyle MetalPipe = new("MechMod/Content/Assets/Sounds/MetalPipe") // Get the custom metal pipe sound
                 {
                     Volume = 0.25f, // Lower the volume (it's fucking loud)
                 };

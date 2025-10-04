@@ -772,7 +772,6 @@ namespace MechMod.Content.Mounts
                             }
                             if (weaponsPlayer.useType == MechWeaponsPlayer.UseType.HoldUp) // If the weapon is a hold up type,
                             {
-                                Main.NewText("true");
                                 WeaponUseAnimation(player, visualPlayer, weaponsPlayer, MechWeaponsPlayer.UseType.HoldUp); // Run the hold up animation
                                 visualPlayer.animateOnce = true;
                             }

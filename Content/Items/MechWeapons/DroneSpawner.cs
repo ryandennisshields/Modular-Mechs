@@ -1,6 +1,8 @@
 ﻿using MechMod.Common.Players;
 using MechMod.Content.Mounts;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -34,39 +36,31 @@ namespace MechMod.Content.Items.MechWeapons
 
         public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn)
         {
-            //player.PickAmmo(Item, out int projectileType, out float _, out int _, out float _, out int usedAmmo); // Set the projectile type to use corresponding ammo and get the ammo item ID
-            //Item ammoItem = new();
-            //ammoItem.SetDefaults(usedAmmo);
-            //// Consume ammo, disable weapon use if out of ammo
-            //if (player.CountItem(usedAmmo) > 0)
-            //{
-            //    weaponsPlayer.canUse = true;
-            //    if (ammoItem.maxStack > 1) // Only consume if the item isn't an "endless" ammo type
-            //        player.ConsumeItem(usedAmmo);
-            //}
-            //else
-            //{
-            //    weaponsPlayer.canUse = false;
-            //    return;
-            //}
             weaponsPlayer.canUse = true; // Always allow use for this weapon
 
             int projectileType = ModContent.ProjectileType<DroneProjectile>(); // Use a custom projectile for the drone
-            weaponsPlayer.attackRate = 30; // Set a fixed attack rate for the weapon
 
-            // Create the projectile
+            // Calculate stat properties
+            weaponsPlayer.CritChanceCalc(6, player);
+            if (player.ownedProjectileCounts[ModContent.ProjectileType<DroneProjectile>()] == player.maxMinions) // If the player is at max minions,
+                weaponsPlayer.attackRate = 90; // Set a slower attack rate if the player is at max minions for the missile attack
+            else
+                weaponsPlayer.attackRate = 30; // Set a fixed attack rate for the weapon
+
+            // Create projectile
             Projectile.NewProjectile(new EntitySource_Parent(player), player.Center, new Vector2(0, 0), projectileType, 0, 0, player.whoAmI);
             
             player.AddBuff(ModContent.BuffType<DroneBuff>(), 2); // Apply the buff that signifies the minion is active
 
             int holdTime = 20; // Amount of time player holds out the weapon after ceasing to use
             visualPlayer.animationTimer = holdTime; // Set the animation timer to hold the weapon out
-            //SoundEngine.PlaySound(SoundID.Item11, player.position); // Play Gun sound when the weapon is used
+            SoundEngine.PlaySound(SoundID.NPCHit4, player.position); // Play metal sound when the weapon is used
         }
     }
 
     public class DroneProjectile : ModProjectile
     {
+
         public override void SetStaticDefaults()
         {
             // Set up logic behind the minion
@@ -94,7 +88,6 @@ namespace MechMod.Content.Items.MechWeapons
             return true;
         }
 
-        // The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
         public override void AI()
         {
             Player owner = Main.player[Projectile.owner];
@@ -106,8 +99,10 @@ namespace MechMod.Content.Items.MechWeapons
 
             GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition); // Behaviour that always applies like keeping track of idle position, teleporting to player if the minion is too far, and preventing minion overlap
             SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter); // Behavior to find a target within range and line of sight of the minion
-            Attack(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition); // Behavior for attacking enemies or idling near the player
-            Visuals();
+            MechWeaponsPlayer weaponsOwner = owner.GetModPlayer<MechWeaponsPlayer>();
+            Attack(owner, weaponsOwner, foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition); // Behavior for attacking enemies or idling near the player
+            ManualAttack(owner, weaponsOwner, foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition); // Behavior for manually attacking under certain circumstances
+            Visuals(); // Handle visual effects and animation
         }
 
         // Function to check if the minion should remain active, and despawns it if not
@@ -155,8 +150,8 @@ namespace MechMod.Content.Items.MechWeapons
                 Projectile.tileCollide = true; // Enable tile collision
             }
 
-                // Prevent overlap with other minions
-                float overlapVelocity = 0.04f;
+            // Prevent overlap with other minions
+            float overlapVelocity = 0.04f;
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
                 Projectile other = Main.projectile[i];
@@ -231,8 +226,10 @@ namespace MechMod.Content.Items.MechWeapons
             }
         }
 
+        private int bulletTimer = 0; // Timer to determine when the minion can shoot bullets again
+
         // Function for the minion's attack behavior
-        private void Attack(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition)
+        private void Attack(Player owner, MechWeaponsPlayer weaponsOwner, bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition)
         {
             // Default movement parameters
             float speed = 8f;
@@ -252,6 +249,43 @@ namespace MechMod.Content.Items.MechWeapons
                 if (distanceFromTarget < 100f) // If the target is very close,
                 {
                     Projectile.velocity = (Projectile.velocity * (inertia - 1) - direction) / inertia; // Move away from the target
+                }
+
+                Item droneItem = new();
+                droneItem.SetDefaults(ModContent.ItemType<DroneSpawner>()); // Create an instance of the item that spawned the minion to access its ammo type
+                owner.PickAmmo(droneItem, out int projectileType, out float _, out int _, out float _, out int usedAmmo); // Set the projectile type to use corresponding ammo and get the ammo item ID
+                Item ammoItem = new();
+                ammoItem.SetDefaults(usedAmmo); // Create an instance of the ammo item to be able to be consumed
+                if (owner.CountItem(usedAmmo) > 0) // If the player has ammo,
+                {
+                    // Bullet properties
+                    int bulletDamage = weaponsOwner.DamageCalc(50, owner);
+                    int bulletKnockback = weaponsOwner.KnockbackCalc(2, owner);
+                    int bulletRate = 30;
+                    int bulletProjSpeed = 10;
+
+                    if (bulletTimer < bulletRate)
+                        bulletTimer++;
+
+                    if (bulletTimer >= bulletRate) // If the minion is able to shoot,
+                    {
+                        // Get the direction and velocity towards the target
+                        Vector2 bulletVelocity = targetCenter - Projectile.Center;
+                        bulletVelocity.Normalize();
+                        bulletVelocity *= bulletProjSpeed;
+
+                        // Create the bullet projectile
+                        Projectile.NewProjectile(new EntitySource_Parent(Projectile), Projectile.Center, bulletVelocity, projectileType, bulletDamage, bulletKnockback, Projectile.owner);
+                        SoundStyle gun = new("Terraria/Sounds/Item_11")
+                        {
+                            Volume = 0.5f // Lower volume for the gun sound (many drones = loud)
+                        };
+                        SoundEngine.PlaySound(gun, Projectile.position); // Play gun sound when shooting
+
+                        bulletTimer = 0; // Reset shoot timer
+                        if (ammoItem.maxStack > 1) // Only consume if the item isn't an "endless" ammo type
+                            owner.ConsumeItem(usedAmmo); // Consume ammo
+                    }
                 }
             }
             else // Otherwise,
@@ -287,6 +321,54 @@ namespace MechMod.Content.Items.MechWeapons
             }
         }
 
+        private int missileTimer = 0; // Timer to determine when the minion can shoot missiles again
+
+        // Function for the minion's manual attack behavior
+        private void ManualAttack(Player owner, MechWeaponsPlayer weaponsOwner, bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition)
+        {
+            int projectileType = ModContent.ProjectileType<DroneMissileProjectile>();
+
+            // Missile properties
+            int missileDamage = weaponsOwner.DamageCalc(80, owner);
+            int missileKnockback = weaponsOwner.KnockbackCalc(4, owner);
+            int missileRate = 90;
+            int missileProjSpeed = 12;
+
+            if (missileTimer < missileRate)
+                missileTimer++;
+
+            if (owner.slotsMinions == owner.maxMinions && Main.mouseLeft && !owner.mouseInterface && missileTimer >= missileRate) // If the player is at max minions, is holding left click (not on an interface), and the minion is able to shoot,
+            {
+                // Get the direction and velocity towards the mouse cursor (for the initial velocity of the missile)
+                Vector2 missileVelocity = Main.MouseWorld - Projectile.Center;
+                missileVelocity.Normalize();
+                missileVelocity *= missileProjSpeed;
+
+                // Limit the number of missiles to the number of drones (failsafe to not spawn too many missiles)
+                int missileCount = 0;
+                int maxMissileCount = owner.ownedProjectileCounts[ModContent.ProjectileType<DroneProjectile>()];
+
+                // Create missile projectiles for each drone
+                foreach (Projectile drone in Main.ActiveProjectiles) // For each active projectile,
+                {
+                    if (drone.owner == Projectile.owner && drone.type == Projectile.type && missileCount < maxMissileCount) // If the projectile is a drone owned by the player and the missile count is less than the max,
+                    {
+                        // Create the missile projectile at each drone's position
+                        Projectile.NewProjectile(new EntitySource_Parent(Projectile), drone.Center, missileVelocity, projectileType, missileDamage, missileKnockback, Projectile.owner);
+                        missileCount++; // Increment the missile count
+                        SoundStyle launch = new("Terraria/Sounds/Item_10") 
+                        {
+                            Volume = 0.5f // Lower volume for the launch sound (many drones = loud)
+                        };
+                        SoundEngine.PlaySound(launch, Projectile.position); // Play launch sound when created
+                    }
+                }
+
+                missileTimer = 0; // Reset shoot timer
+            }
+
+        }
+
         // Function for handling the minion's visuals
         private void Visuals()
         {
@@ -307,6 +389,52 @@ namespace MechMod.Content.Items.MechWeapons
                     Projectile.frame = 0;
                 }
             }
+        }
+    }
+
+    public class DroneMissileProjectile : ModProjectile
+    {
+        public override string Texture => "Terraria/Images/Projectile_350"; // Use Missile texture
+
+        private float speed = 10f; // Speed of the missile
+        private float rotateSpeed = 0.2f; // Rotation speed of the missile
+
+        public override void SetDefaults()
+        {
+            Projectile.width = 14;
+            Projectile.height = 14;
+            Projectile.friendly = true; // Can hit enemies
+            Projectile.ignoreWater = true; // Ignore water
+            Projectile.light = 0.5f; // Produce light
+            Projectile.timeLeft = 100;
+        }
+
+        public override void AI()
+        {
+            // Create trailing dust behind missiles
+            float offset = -10f; // How far behind the missile to spawn the dust
+            Vector2 behind = Projectile.Center - Vector2.UnitY.RotatedBy(Projectile.rotation) * offset;
+            // Trail dust
+            Dust.NewDust(behind - new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, default, 1f);
+            Dust.NewDust(behind - new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 0.5f);
+
+            // Tracking logic
+            Vector2 direction = Main.MouseWorld - Projectile.Center; // Get the direction the missile needs to head
+            direction.Normalize(); // Normalise the direction
+            Projectile.velocity.X = MathHelper.SmoothStep(Projectile.velocity.X, direction.X * speed, rotateSpeed); // Smoothly adjust the X velocity
+            Projectile.velocity.Y = MathHelper.SmoothStep(Projectile.velocity.Y, direction.Y * speed, rotateSpeed); // Smoothly adjust the Y velocity
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; // Rotate to face the mouse
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            // Create an explosion effect when the missile is destroyed
+            for (int i = 0; i < 20; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, default, 1f);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 1f);
+            }
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position); // Play explosion sound when destroyed
         }
     }
 

@@ -199,7 +199,7 @@ namespace MechMod.Common.UI
             // Update stored ModPlayer information when interacting with slots
             for (int i = 0; i < slots.Length; i++)
             {
-                slots[i].OnLeftClick += OnPartSlotInteract; 
+                slots[i].OnLeftClick += OnPartSlotInteract;
             }
             for (int i = 0; i < dyeSlots.Length; i++)
             {
@@ -284,6 +284,9 @@ namespace MechMod.Common.UI
 
         public override void Update(GameTime gameTime)
         {
+            var player = Main.LocalPlayer;
+            var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
+
             // Let the game know when the player is mousing over the UI
             if (ContainsPoint(Main.MouseScreen))
                 Main.LocalPlayer.mouseInterface = true;
@@ -301,6 +304,18 @@ namespace MechMod.Common.UI
                 upgradeButton.TextColor = Color.Red;
             else
                 upgradeButton.TextColor = Color.Yellow;
+
+            if (modPlayer.upgradeLevel > upgradeRequiredMaterial.Length) // If the player's upgrade level is greater than the max level (for example, Calamity Mod was disabled after upgrading to Calamity exclusive levels),
+            {
+                modPlayer.upgradeLevel = upgradeRequiredMaterial.Length; // Set back to the max level
+                float totalDamageIncrease = 0f;
+                foreach (float damageUpgrade in upgradeDamageValues) // For each damage upgrade value,
+                {
+                    totalDamageIncrease += damageUpgrade; // Add it to the total damage increase
+                }
+                modPlayer.upgradeDamageBonus = totalDamageIncrease; // Set the player's damage bonus back to the total damage increase
+                UpdateUpgradeRequirements(); // Update the upgrade requirements
+            }
         }
 
         // Function for when the player clicks the exit/close button

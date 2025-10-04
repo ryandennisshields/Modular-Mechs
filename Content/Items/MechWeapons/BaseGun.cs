@@ -33,7 +33,7 @@ namespace MechMod.Content.Items.MechWeapons
         {
             player.PickAmmo(Item, out int projectileType, out float _, out int _, out float _, out int usedAmmo); // Set the projectile type to use corresponding ammo and get the ammo item ID
             Item ammoItem = new();
-            ammoItem.SetDefaults(usedAmmo);
+            ammoItem.SetDefaults(usedAmmo); // Create an instance of the ammo item to be able to be consumed
             // Consume ammo, disable weapon use if out of ammo
             if (player.CountItem(usedAmmo) > 0)
             {
@@ -67,7 +67,7 @@ namespace MechMod.Content.Items.MechWeapons
                 offset += muzzleOffset;
             }
 
-            // Create the projectile
+            // Create projectile
             Projectile.NewProjectile(new EntitySource_Parent(player), player.Center + offset, velocity, projectileType, damage, knockback, player.whoAmI);
 
             int holdTime = 50; // Amount of time player holds out the weapon after ceasing to use

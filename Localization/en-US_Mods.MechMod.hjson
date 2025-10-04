@@ -406,6 +406,7 @@ Projectiles: {
 	NuclearEjectProjectile.DisplayName: Nuclear Eject Projectile
 	ProjSwordProj.DisplayName: Proj Sword Proj
 	DroneProjectile.DisplayName: Drone Projectile
+	DroneMissileProjectile.DisplayName: Drone Missile Projectile
 }
 
 Keybinds: {
