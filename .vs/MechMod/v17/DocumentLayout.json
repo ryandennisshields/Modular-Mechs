@@ -244,23 +244,10 @@
               "RelativeDocumentMoniker": "Content\\Items\\MechWeapons\\DroneSpawner.cs",
               "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechWeapons\\DroneSpawner.cs",
               "RelativeToolTip": "Content\\Items\\MechWeapons\\DroneSpawner.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAALQAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAJ4BAAAAAAAAAADwv1oAAABWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-02T13:13:52.436Z",
               "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "MissileLauncher.cs",
-              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechModules\\Active\\MissileLauncher.cs",
-              "RelativeDocumentMoniker": "Content\\Items\\MechModules\\Active\\MissileLauncher.cs",
-              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechModules\\Active\\MissileLauncher.cs",
-              "RelativeToolTip": "Content\\Items\\MechModules\\Active\\MissileLauncher.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAAcwI0AAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-16T14:00:45.067Z",
               "EditorCaption": ""
             },
             {
@@ -277,6 +264,18 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MissileLauncher.cs",
+              "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechModules\\Active\\MissileLauncher.cs",
+              "RelativeDocumentMoniker": "Content\\Items\\MechModules\\Active\\MissileLauncher.cs",
+              "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechModules\\Active\\MissileLauncher.cs",
+              "RelativeToolTip": "Content\\Items\\MechModules\\Active\\MissileLauncher.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAcwI0AAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-16T14:00:45.067Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 3,
               "Title": "ModularMech.cs",
               "DocumentMoniker": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Mounts\\ModularMech.cs",
@@ -285,8 +284,7 @@
               "RelativeToolTip": "Content\\Mounts\\ModularMech.cs",
               "ViewState": "AgIAAD8DAAAAAAAAAAAcwM4CAABEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-25T13:22:10.786Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-25T13:22:10.786Z"
             },
             {
               "$type": "Document",
@@ -298,8 +296,7 @@
               "RelativeToolTip": "Common\\Players\\MechModPlayer.cs",
               "ViewState": "AgIAANAAAAAAAAAAAAAwwN4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-04T15:18:26.258Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-04T15:18:26.258Z"
             },
             {
               "$type": "Document",
@@ -311,8 +308,7 @@
               "RelativeToolTip": "Common\\UI\\MechBenchUI.cs",
               "ViewState": "AgIAACUCAAAAAAAAAAAwwDMBAADcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-27T12:04:57.4Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-27T12:04:57.4Z"
             },
             {
               "$type": "Document",
@@ -322,7 +318,7 @@
               "RelativeDocumentMoniker": "Content\\Items\\MechWeapons\\BaseSword.cs",
               "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechWeapons\\BaseSword.cs",
               "RelativeToolTip": "Content\\Items\\MechWeapons\\BaseSword.cs",
-              "ViewState": "AgIAACMAAAAAAAAAAAAgwCsAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAABsAAAAAAAAAAAAYwCsAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-01T12:21:34.851Z",
               "EditorCaption": ""
@@ -337,8 +333,7 @@
               "RelativeToolTip": "Content\\Items\\MechWeapons\\LaserGun.cs",
               "ViewState": "AgIAABEAAAAAAAAAAAAxwDoAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T14:42:36.592Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-14T14:42:36.592Z"
             },
             {
               "$type": "Document",
@@ -350,8 +345,7 @@
               "RelativeToolTip": "Content\\Items\\MechWeapons\\BaseGun.cs",
               "ViewState": "AgIAACYAAAAAAAAAAAAgwCMAAABsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T14:40:44.771Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-04T14:40:44.771Z"
             },
             {
               "$type": "Document",
@@ -363,8 +357,7 @@
               "RelativeToolTip": "MechMod.cs",
               "ViewState": "AgIAAB0BAAAAAAAAAAAAACkBAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T13:51:35.358Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-15T13:51:35.358Z"
             },
             {
               "$type": "Document",
@@ -376,8 +369,7 @@
               "RelativeToolTip": "Content\\Items\\MechWeapons\\BaseLauncher.cs",
               "ViewState": "AgIAABAAAAAAAAAAAAAswCQAAABsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T14:07:27.787Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-15T14:07:27.787Z"
             },
             {
               "$type": "Document",
@@ -389,8 +381,7 @@
               "RelativeToolTip": "Content\\Items\\MechWeapons\\ProjSword.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T13:48:20.429Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-15T13:48:20.429Z"
             },
             {
               "$type": "Document",
