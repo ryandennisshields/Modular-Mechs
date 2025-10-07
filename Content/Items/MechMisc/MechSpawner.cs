@@ -1,5 +1,5 @@
 using MechMod.Common.Players;
-using MechMod.Content.Buffs;
+using MechMod.Content.Debuffs;
 using MechMod.Content.Mounts;
 using Terraria;
 using Terraria.ID;

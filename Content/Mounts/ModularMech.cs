@@ -1,5 +1,6 @@
 ﻿using MechMod.Common.Players;
 using MechMod.Content.Buffs;
+using MechMod.Content.Debuffs;
 using MechMod.Content.Dusts;
 using MechMod.Content.Items.MechWeapons;
 using Microsoft.Xna.Framework;
@@ -728,8 +729,9 @@ namespace MechMod.Content.Mounts
             {
                 if (player.whoAmI == Main.myPlayer && Main.mouseLeft && weaponsPlayer.timer >= weaponsPlayer.attackRate) // If player is the client player, holding left click, and the weapon timer has reached the attack rate,
                 {
+                    weaponsPlayer.canUse = true; // Set the weapon to be usable
                     weapon.UseAbility(player, weaponsPlayer, visualPlayer, mousePosition, toggleOn); // Create the weapon's projectile(s) and activate any visuals
-                    if (weaponsPlayer.canUse) // If the weapon can be used,
+                    if (weaponsPlayer.canUse) // If the weapon can be used (found out after the weapon has had a chance to run it's functionality),
                     {
                         // Set the last use direction based on the mouse position relative to the player
                         if (Main.MouseWorld.X > player.MountedCenter.X)
@@ -872,8 +874,8 @@ namespace MechMod.Content.Mounts
                     visualPlayer.weaponScale = 1f; // Make weapon visible
 
                     // Set position and origin offsets
-                    weaponPositionX = 10;
-                    weaponPositionY = -30;
+                    weaponPositionX = 16;
+                    weaponPositionY = -44;
                     weaponOriginOffsetX = 0;
                     weaponOriginOffsetY = 0;
                     visualPlayer.weaponRotation = visualPlayer.useDirection == -1 ? MathHelper.Pi : 0; // Set the weapon rotation to be straight up

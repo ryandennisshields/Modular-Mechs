@@ -27,8 +27,6 @@ namespace MechMod.Content.Items.MechWeapons
 
         public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn)
         {
-            weaponsPlayer.canUse = true; // Always allow use for this weapon
-
             int projectileType = ModContent.ProjectileType<ProjSwordProj>(); // Use a custom projectile for the sword swing
 
             // Calculate projectile properties

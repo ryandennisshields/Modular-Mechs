@@ -290,6 +290,22 @@ Items: {
 			'''
 	}
 
+	DroneSpawner: {
+		DisplayName: Drone Controller
+		Tooltip:
+			'''
+			Weapon Part
+			[c/969696:Base Stats]
+			20 summon damage
+			4% critcal strike chance
+			Very fast speed
+			Weak knockback
+			Summoning uses 10 mana
+			Summons drones to fight for you
+			At maximum summons, attacking causes drones to fire missiles that home in on the cursor
+			'''
+	}
+
 	// Modules
 	// Passive
 	
@@ -368,8 +384,8 @@ Items: {
 			'''
 	}
 
-	DroneSpawner: {
-		DisplayName: Drone Spawner
+	Arbalest: {
+		DisplayName: Arbalest
 		Tooltip: ""
 	}
 }
@@ -395,8 +411,13 @@ Buffs: {
 	}
 
 	DroneBuff: {
-		DisplayName: Drone Buff
-		Description: Mods.MechMod.Buffs.DroneBuff.Description
+		DisplayName: Drones
+		Description: Drones are supporting you
+	}
+
+	ArbalestDebuff: {
+		DisplayName: Arbalest Debuff
+		Description: Mods.MechMod.Buffs.ArbalestDebuff.Description
 	}
 }
 

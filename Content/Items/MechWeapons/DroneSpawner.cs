@@ -36,8 +36,6 @@ namespace MechMod.Content.Items.MechWeapons
 
         public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn)
         {
-            weaponsPlayer.canUse = true; // Always allow use for this weapon
-
             int currentMinions = 0; // Count of current minions
             foreach (Projectile proj in Main.ActiveProjectiles) // For each active projectile,
             {
@@ -48,18 +46,28 @@ namespace MechMod.Content.Items.MechWeapons
             }
 
             weaponsPlayer.CritChanceCalc(6, player); // Crit chance is shared between bullets and missiles
-            if (currentMinions < player.maxMinions) // If the player is not at max minions,
+
+            int manaCost = 10; // Mana cost for use
+            if (currentMinions < player.maxMinions && player.statMana > manaCost) // If the player is not at max minions,
             {
+                weaponsPlayer.canUse = true; // Allow use for this weapon
+
                 // Create drones
                 int projectileType = ModContent.ProjectileType<DroneProjectile>(); // Use a custom projectile for the drone
                 weaponsPlayer.attackRate = 30;
                 Projectile.NewProjectile(new EntitySource_Parent(player), player.Center, new Vector2(0, 0), projectileType, 0, 0, player.whoAmI);
                 player.AddBuff(ModContent.BuffType<DroneBuff>(), 2); // Apply the buff that signifies the minion is active
 
+                // Consume mana and apply mana regen delay
+                player.CheckMana(manaCost, true);
+                player.manaRegenDelay = 120; // 2 seconds of mana regen delay
+
                 SoundEngine.PlaySound(SoundID.NPCHit4, player.position); // Play metal sound when spawning drones
             }
             else if (player.ownedProjectileCounts[ModContent.ProjectileType<DroneProjectile>()] > 0) // Otherwise, as long as the player has at least one drone,
             {
+                weaponsPlayer.canUse = true; // Allow use for this weapon
+
                 // Fire missiles from drones
                 int projectileType = ModContent.ProjectileType<DroneMissileProjectile>(); // Use a custom projectile for the missile
 
@@ -90,6 +98,8 @@ namespace MechMod.Content.Items.MechWeapons
 
                 SoundEngine.PlaySound(SoundID.Item44, player.position); // Play summon sound when firing missiles
             }
+            else // If not enough mana,
+                weaponsPlayer.canUse = false; // Disable weapon use
 
             int holdTime = 20; // Amount of time player holds out the weapon after ceasing to use
             visualPlayer.animationTimer = holdTime; // Set the animation timer to hold the weapon out

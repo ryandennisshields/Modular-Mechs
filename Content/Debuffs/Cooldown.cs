@@ -2,7 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace MechMod.Content.Buffs
+namespace MechMod.Content.Debuffs
 {
     /// <summary>
     /// Debuff that acts as a cooldown for using active modules, preventing them from being used again until the debuff expires.

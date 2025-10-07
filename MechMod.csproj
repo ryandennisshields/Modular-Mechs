@@ -17,6 +17,7 @@
     <None Remove="Content\Mounts\ModularMech_Front.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Items\MechWeapons\Arbalest.cs" />
     <None Include="Content\Items\MechWeapons\ProjSword.cs" />
   </ItemGroup>
 </Project>

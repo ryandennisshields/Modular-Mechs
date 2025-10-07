@@ -2,7 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace MechMod.Content.Buffs
+namespace MechMod.Content.Debuffs
 {
     /// <summary>
     /// Debuff that applies after dismounting the mech, disabling mounts (mech), reducing max health and damage for a short duration to simulate the player needing to recover from being in the mech.
