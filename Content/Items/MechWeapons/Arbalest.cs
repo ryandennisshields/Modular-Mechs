@@ -52,12 +52,12 @@ namespace MechMod.Content.Items.MechWeapons
             // Calculate projectile properties
             int damage = weaponsPlayer.DamageCalc(40, player);
             weaponsPlayer.CritChanceCalc(7, player);
-            weaponsPlayer.attackRate = weaponsPlayer.AttackSpeedCalc(13, player);
+            weaponsPlayer.attackRate = weaponsPlayer.AttackSpeedCalc(24, player);
             float knockback = weaponsPlayer.KnockbackCalc(4, player);
-            float projSpeed = 10;
+            float projSpeed = 30;
 
             // Get the direction and velocity towards the mouse cursor, adjusting for the offset
-            Vector2 offset = new(0, -44); // Offset to adjust the projectile's spawn position relative to the mech's center
+            Vector2 offset = new(0, -38); // Offset to adjust the projectile's spawn position relative to the mech's center
             Vector2 direction = (Main.MouseWorld - player.Center) - offset;
             direction.Normalize();
             Vector2 velocity = direction * projSpeed;

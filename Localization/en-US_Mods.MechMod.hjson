@@ -306,6 +306,21 @@ Items: {
 			'''
 	}
 
+	Arbalest: {
+		DisplayName: Arbalest
+		Tooltip:
+			'''
+			Weapon Part
+			[c/969696:Base Stats]
+			150 ranged damage
+			15% critcal strike chance
+			Slow speed
+			Strong knockback
+			Successive hits on an enemy marks them
+			Hit them four times to detonate the mark, causing an explosion
+			'''
+	}
+
 	// Modules
 	// Passive
 	
@@ -383,11 +398,6 @@ Items: {
 			30s Cooldown
 			'''
 	}
-
-	Arbalest: {
-		DisplayName: Arbalest
-		Tooltip: ""
-	}
 }
 
 Buffs: {
@@ -416,8 +426,8 @@ Buffs: {
 	}
 
 	ArbalestDebuff: {
-		DisplayName: Arbalest Debuff
-		Description: Mods.MechMod.Buffs.ArbalestDebuff.Description
+		DisplayName: Arbalest Mark
+		Description: Don't get hit too many times...
 	}
 }
 

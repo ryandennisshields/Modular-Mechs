@@ -14,7 +14,9 @@ namespace MechMod.Content.Debuffs
     {
         public override void SetStaticDefaults()
         {
+            Main.debuff[Type] = true; // Mark as a debuff
             Main.pvpBuff[Type] = true; // Allow the debuff to be applied in PvP
+            BuffID.Sets.NurseCannotRemoveDebuff[Type] = true; // Prevent nurse from removing the debuff
         }
 
         public override bool ReApply(NPC npc, int time, int buffIndex)

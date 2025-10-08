@@ -24,15 +24,20 @@ namespace MechMod.Common.Global
 
         public override void AI(NPC npc)
         {
-            if (npc.HasBuff(ModContent.BuffType<ArbalestDebuff>()) && arbalestFrame == arbalestMaxFrame) // If the NPC has the Arbalest debuff and is on the last texture frame,
+            if (npc.HasBuff(ModContent.BuffType<ArbalestDebuff>())) // If the NPC has the Arbalest debuff,
             {
-                // Create explosion effect and delete debuff
-                int projectileType = ProjectileID.GrenadeIII; // Use grenade explosion for the explosion effect
-                Projectile.NewProjectile(new EntitySource_Parent(npc), npc.Center, Vector2.Zero, projectileType, 50, 10f, Main.myPlayer);
+                if (arbalestFrame == arbalestMaxFrame) // If on the last frame,
+                {                
+                    // Create explosion effect and delete debuff
+                    int projectileType = ProjectileID.GrenadeIII; // Use grenade explosion for the explosion effect
+                    Projectile.NewProjectile(new EntitySource_Parent(npc), npc.Center, Vector2.Zero, projectileType, 50, 10f, Main.myPlayer);
 
-                arbalestFrame = 0; // Reset frame counter
-                npc.DelBuff(npc.FindBuffIndex(ModContent.BuffType<ArbalestDebuff>())); // Remove the debuff
+                    arbalestFrame = 0; // Reset frame counter
+                    npc.DelBuff(npc.FindBuffIndex(ModContent.BuffType<ArbalestDebuff>())); // Remove the debuff
+                }
             }
+            else if (arbalestFrame > 0) // If the NPC no longer has the debuff but the frame counter is above 0,
+                arbalestFrame = 0; // Reset frame counter
         }
 
         public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
