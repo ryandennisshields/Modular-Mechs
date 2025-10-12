@@ -36,7 +36,7 @@ namespace MechMod.Content.Items.MechWeapons
             // Calculate projectile properties
             int damage = weaponsPlayer.DamageCalc(100, player);
             weaponsPlayer.CritChanceCalc(4, player);
-            weaponsPlayer.attackRate = weaponsPlayer.AttackSpeedCalc(30, player);
+            weaponsPlayer.useRate = weaponsPlayer.AttackSpeedCalc(30, player);
             float knockback = weaponsPlayer.KnockbackCalc(7, player);
 
             // Create projectile
@@ -44,12 +44,14 @@ namespace MechMod.Content.Items.MechWeapons
             if (Main.projectile.IndexInRange(projID) && Main.projectile[projID].ModProjectile is BaseSwordProj proj) // Grab the active projectile instance
             {
                 // Allow the swing speed to be modified by attack rate
-                proj.swingDuration = weaponsPlayer.attackRate;
-                Main.projectile[projID].timeLeft = (int)weaponsPlayer.attackRate;
+                proj.swingDuration = weaponsPlayer.useRate;
+                Main.projectile[projID].timeLeft = (int)weaponsPlayer.useRate;
             }
 
             SoundEngine.PlaySound(SoundID.Item1, player.position); // Play Swing sound when the weapon is used
         }
+
+        public void UpdateAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer) { }
     }
 
     public class BaseSwordProj : ModProjectile

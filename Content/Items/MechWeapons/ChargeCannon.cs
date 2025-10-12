@@ -1,24 +1,29 @@
-﻿using Terraria.ModLoader;
-using Terraria;
+﻿using MechMod.Common.Players;
 using MechMod.Content.Mounts;
-using Terraria.ID;
-using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using MechMod.Common.Players;
+using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MechMod.Content.Items.MechWeapons
 {
     /// <summary>
-    /// Weapon that fires a laser beam towards the cursor consuming mana.
+    /// Weapon that charges up, and on charge release it fires a powerful laser for a short duration towards the cursor.
+    /// <para>If the player charges for too long, lasers will start firing in random directions and the player will be damaged for as long as they continue overcharging.</para>
+    /// <para>Releasing the charge perfectly (just before overcharge) does more damage.</para>
     /// </summary>
 
-    public class LaserGun : ModItem, IMechWeapon
+    public class ChargeCannon : ModItem, IMechWeapon
     {
         public override void SetDefaults()
         {
-            Item.value = Item.buyPrice(gold: 4);
+            Item.value = Item.buyPrice(gold: 2);
             Item.rare = ItemRarityID.Orange;
+
+            Item.useAmmo = AmmoID.Bullet; // Make the weapon use Bullet ammo
         }
 
         public void SetStats(MechWeaponsPlayer weaponsPlayer)
@@ -26,6 +31,8 @@ namespace MechMod.Content.Items.MechWeapons
             weaponsPlayer.DamageClass = DamageClass.Magic; // Set DamageClass to Magic
             weaponsPlayer.useType = MechWeaponsPlayer.UseType.Point; // Set use type to Point
         }
+
+        private bool fireReady;
 
         public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn)
         {
@@ -57,7 +64,7 @@ namespace MechMod.Content.Items.MechWeapons
                 }
 
                 // Create projectile
-                Projectile.NewProjectile(new EntitySource_Parent(player), player.Center + offset, velocity, projectileType, damage, knockback, player.whoAmI);
+                fireReady = true;
 
                 // Consume mana and apply mana regen delay
                 player.CheckMana(manaCost, true);
@@ -71,6 +78,14 @@ namespace MechMod.Content.Items.MechWeapons
                 weaponsPlayer.canUse = false; // Disable weapon use
         }
 
-        public void UpdateAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer) { }
+        public void UpdateAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer) 
+        {
+            if (Main.mouseLeftRelease && fireReady)
+            {
+                for (int i = 0; i < 50; i++)
+                    Projectile.NewProjectile(new EntitySource_Parent(player), player.Center, new Vector2(99999.0f, 0.0f), ProjectileID.DD2BetsyFireball, 10, 4, player.whoAmI);
+                fireReady = false;
+            }
+        }
     }
 }

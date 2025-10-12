@@ -23,8 +23,10 @@ namespace MechMod.Common.Players
         }
         public UseType useType;
 
-        public float timer; // Timer for weapon attack rate
-        public float attackRate; // Used to determine how fast the weapon can be swung/fired/cast/used
+        public float useTimer; // Timer for weapon use rate
+        public float useRate; // Used to determine how fast the weapon can be swung/fired/cast/used
+        public float updateTimer; // Timer for weapon update rate
+        public float updateRate; // Used to determine how fast the weapon updates
         public bool canUse; // Determines if a weapon can be used, for example, disabling use if weapon is out of mana or ammo
 
         // Part bonuses that are added to the player's bonuses when calculating the final values for the weapon

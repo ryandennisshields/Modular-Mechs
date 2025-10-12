@@ -1,12 +1,11 @@
 ﻿using MechMod.Common.Players;
 using MechMod.Content.Mounts;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
-using Steamworks;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,8 +13,8 @@ namespace MechMod.Content.Items.MechWeapons
 {
     /// <summary>
     /// Weapon that summons drones to fight for the player.
-    /// Drones automatically target and attack enemies firing bullets.
-    /// If the player has used all their summon slots, attacking as the player will make the drones fire missiles that track the player's cursor.
+    /// <para>Drones automatically target and attack enemies firing bullets as ammo.</para>
+    /// <para>If the player has used all their summon slots, attacking as the player will make the drones fire missiles that track the player's cursor.</para>
     /// </summary>
 
     public class DroneSpawner : ModItem, IMechWeapon
@@ -54,7 +53,7 @@ namespace MechMod.Content.Items.MechWeapons
 
                 // Create drones
                 int projectileType = ModContent.ProjectileType<DroneProjectile>(); // Use a custom projectile for the drone
-                weaponsPlayer.attackRate = 30;
+                weaponsPlayer.useRate = 30;
                 Projectile.NewProjectile(new EntitySource_Parent(player), player.Center, new Vector2(0, 0), projectileType, 0, 0, player.whoAmI);
                 player.AddBuff(ModContent.BuffType<DroneBuff>(), 2); // Apply the buff that signifies the minion is active
 
@@ -73,7 +72,7 @@ namespace MechMod.Content.Items.MechWeapons
 
                 // Missile properties
                 int missileDamage = weaponsPlayer.DamageCalc(80, player);
-                weaponsPlayer.attackRate = 90;
+                weaponsPlayer.useRate = 90;
                 int missileKnockback = weaponsPlayer.KnockbackCalc(4, player);
 
                 // Limit the number of missiles to the number of drones (failsafe to not spawn too many missiles)
@@ -103,6 +102,68 @@ namespace MechMod.Content.Items.MechWeapons
 
             int holdTime = 20; // Amount of time player holds out the weapon after ceasing to use
             visualPlayer.animationTimer = holdTime; // Set the animation timer to hold the weapon out
+        }
+
+        public void UpdateAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer)
+        {
+            weaponsPlayer.updateRate = 30; // Target rate
+
+            // Logic for setting the minion target
+            if (Main.mouseRight && !player.mouseInterface && weaponsPlayer.updateTimer >= weaponsPlayer.updateRate && weaponsPlayer.useTimer >= weaponsPlayer.useRate) // If the player right clicks (not over a UI element),
+            {
+                Main.NewText("true");
+
+                NPC target = null;
+                float best = 999999f; // Used to track what the "best" NPC to target is depending on distance to cursor
+                Vector2 mouse = Main.MouseWorld;
+
+                for (int i = 0; i < Main.maxNPCs; i++) // Check all NPCs
+                {
+                    NPC npc = Main.npc[i];
+
+                    if (npc.CanBeChasedBy()) // If the NPC can be targeted,
+                    {
+                        bool underCursor = npc.Hitbox.Contains(mouse.ToPoint()); // Check if the NPC is under the cursor
+                        float dist = Vector2.Distance(mouse, npc.Hitbox.ClosestPointInRect(mouse)); // Get the distance from the cursor to the NPC
+
+                        if (underCursor || dist <= 80f) // If the NPC is under the cursor or within 80 pixels of it,
+                        {
+                            if (dist < best) // If this NPC is the closest one so far,
+                            {
+                                best = dist; // Update the best distance to new nearest distance
+                                target = npc; // Set the target to this NPC
+                            }
+                        }
+                    }
+                }
+
+                if (target != null) // If a target was found,
+                {
+                    if (player.MinionAttackTargetNPC == target.whoAmI) // If the target is already the current target,
+                        player.MinionAttackTargetNPC = -1; // Clear the target
+                    else // Otherwise,
+                        player.MinionAttackTargetNPC = target.whoAmI; // Set the target
+                }
+                else // Otherwise,
+                {
+                    player.MinionAttackTargetNPC = -1; // Clear the target
+                }
+
+                SoundEngine.PlaySound(SoundID.Item44, player.position); // Play summon sound
+
+                int holdTime = 20;
+                visualPlayer.animationTimer = holdTime; // Set the animation timer to hold the weapon out
+
+                // Set the last use direction based on the mouse position relative to the player
+                if (Main.MouseWorld.X > player.MountedCenter.X)
+                    visualPlayer.useDirection = 1;
+                else
+                    visualPlayer.useDirection = -1;
+                if (!player.controlLeft || !player.controlRight)
+                    player.direction = visualPlayer.useDirection; // Set the player's direction to the last use direction if not controlling horizontal movement
+
+                weaponsPlayer.updateTimer = 0; // Reset the update timer
+            }
         }
     }
 

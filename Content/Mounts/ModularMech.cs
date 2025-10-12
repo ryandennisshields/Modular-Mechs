@@ -38,7 +38,9 @@ namespace MechMod.Content.Mounts
     {
         void SetStats(MechWeaponsPlayer weaponsPlayer); // Apply the weapon's stats (mainly DamageClass and use type)
 
-        void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn); // Activate the weapon's projectile(s) and visuals
+        void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn); // Activates on attempting to use the weapon
+
+        void UpdateAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer); // Activates every tick while the mech is active
     }
 
     /// <summary>
@@ -343,43 +345,16 @@ namespace MechMod.Content.Mounts
             // Grant armour bonus
             player.statDefense += modPlayer.armourBonus;
 
-            // Logic for setting the minion target when right clicking with a summon weapon
-            if (Main.mouseRight && player.whoAmI == Main.myPlayer && !player.mouseInterface && weaponsPlayer.DamageClass == DamageClass.Summon) // If the player right clicks with a summon weapon,
+            if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon) // If a weapon is equipped,
             {
-                NPC target = null;
-                float best = 999999f; // Used to track what the "best" NPC to target is depending on distance to cursor
-                Vector2 mouse = Main.MouseWorld;
-
-                for (int i = 0; i < Main.maxNPCs; i++) // Check all NPCs
+                if (player.whoAmI == Main.myPlayer)
                 {
-                    NPC npc = Main.npc[i];
-
-                    if (npc.CanBeChasedBy()) // If the NPC can be targeted,
-                    {
-                        bool underCursor = npc.Hitbox.Contains(mouse.ToPoint()); // Check if the NPC is under the cursor
-                        float dist = Vector2.Distance(mouse, npc.Hitbox.ClosestPointInRect(mouse)); // Get the distance from the cursor to the NPC
-
-                        if (underCursor || dist <= 80f) // If the NPC is under the cursor or within 80 pixels of it,
-                        {
-                            if (dist < best) // If this NPC is the closest one so far,
-                            {
-                                best = dist; // Update the best distance to new nearest distance
-                                target = npc; // Set the target to this NPC
-                            }
-                        }
-                    }
-                }
-
-                if (target != null) // If a target was found,
-                {
-                    player.MinionAttackTargetNPC = target.whoAmI; // Set the target
-                    //SoundEngine.PlaySound(SoundID.MenuTick, player.Center);
-                }
-                else // Otherwise,
-                {
-                    player.MinionAttackTargetNPC = -1; // Clear the target
+                    weapon.UpdateAbility(player, weaponsPlayer, visualPlayer); // Update the weapon's ability
                 }
             }
+
+            if (weaponsPlayer.updateTimer < weaponsPlayer.updateRate)
+                weaponsPlayer.updateTimer++; // Increment the update timer until it reaches the update rate
 
             // Check for any Persistent modules and apply their effects
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
@@ -727,7 +702,7 @@ namespace MechMod.Content.Mounts
 
             if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon) // If a weapon is equipped,
             {
-                if (player.whoAmI == Main.myPlayer && Main.mouseLeft && weaponsPlayer.timer >= weaponsPlayer.attackRate) // If player is the client player, holding left click, and the weapon timer has reached the attack rate,
+                if (player.whoAmI == Main.myPlayer && Main.mouseLeft && weaponsPlayer.useTimer >= weaponsPlayer.useRate && weaponsPlayer.updateTimer >= weaponsPlayer.updateRate) // If player is the client player, holding left click, and the use and update timer has reached the use and update rate,
                 {
                     weaponsPlayer.canUse = true; // Set the weapon to be usable
                     weapon.UseAbility(player, weaponsPlayer, visualPlayer, mousePosition, toggleOn); // Create the weapon's projectile(s) and activate any visuals
@@ -740,11 +715,11 @@ namespace MechMod.Content.Mounts
                             visualPlayer.useDirection = -1;
                         if (!player.controlLeft || !player.controlRight)
                             player.direction = visualPlayer.useDirection; // Set the player's direction to the last use direction if not controlling horizontal movement
-                        weaponsPlayer.timer = 0; // Reset the weapon timer
+                        weaponsPlayer.useTimer = 0; // Reset the use timer
                     }
                 }
-                if (weaponsPlayer.timer < weaponsPlayer.attackRate)
-                    weaponsPlayer.timer++; // Increment the timer until it reaches the attack rate
+                if (weaponsPlayer.useTimer < weaponsPlayer.useRate)
+                    weaponsPlayer.useTimer++; // Increment the use timer until it reaches the use rate
             }
             else // Otherwise,
             {
@@ -779,7 +754,7 @@ namespace MechMod.Content.Mounts
                             }
                         }
                     }
-                    if (weaponsPlayer.timer >= weaponsPlayer.attackRate) // If the weapon timer has reached the attack rate,
+                    if (weaponsPlayer.useTimer >= weaponsPlayer.useRate || weaponsPlayer.useTimer >= weaponsPlayer.useRate) // If the use or update timer has reached the use or update rate,
                     {
                         visualPlayer.animateOnce = false; // Reset the animation once tracker so animation can be run again
                     }
@@ -855,7 +830,7 @@ namespace MechMod.Content.Mounts
 
                     if (player.whoAmI == Main.myPlayer) // Progress calculation should only be done on the client player
                     {
-                        float progress = 1f - (visualPlayer.animationProgress / weaponsPlayer.attackRate); // Calculate the progress of the animation based on the animation progress (equal to projectile's life time) and attack rate
+                        float progress = 1f - (visualPlayer.animationProgress / weaponsPlayer.useRate); // Calculate the progress of the animation based on the animation progress (equal to projectile's life time) and attack rate
 
                         visualPlayer.armRFrame = 9; // Set the right arm frame to be by side
 

@@ -398,6 +398,11 @@ Items: {
 			30s Cooldown
 			'''
 	}
+
+	ChargeCannon: {
+		DisplayName: Charge Cannon
+		Tooltip: ""
+	}
 }
 
 Buffs: {

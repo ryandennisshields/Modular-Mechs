@@ -12,7 +12,7 @@ namespace MechMod.Content.Items.MechWeapons
 {
     /// <summary>
     /// Weapon that uses arrows as ammo and fires them towards the cursor.
-    /// If the player hits the same enemy four times in succession, an explosion occurs on the enemy.
+    /// <para>If the player hits the same enemy four times in succession, an explosion occurs on the enemy.</para>
     /// </summary>
 
     public class Arbalest : ModItem, IMechWeapon
@@ -52,7 +52,7 @@ namespace MechMod.Content.Items.MechWeapons
             // Calculate projectile properties
             int damage = weaponsPlayer.DamageCalc(40, player);
             weaponsPlayer.CritChanceCalc(7, player);
-            weaponsPlayer.attackRate = weaponsPlayer.AttackSpeedCalc(24, player);
+            weaponsPlayer.useRate = weaponsPlayer.AttackSpeedCalc(24, player);
             float knockback = weaponsPlayer.KnockbackCalc(4, player);
             float projSpeed = 30;
 
@@ -78,6 +78,8 @@ namespace MechMod.Content.Items.MechWeapons
             visualPlayer.animationTimer = holdTime; // Set the animation timer to hold the weapon out
             SoundEngine.PlaySound(SoundID.Item11, player.position); // Play Gun sound when the weapon is used
         }
+
+        public void UpdateAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer) { }
     }
 
     public class ArbalestProj : GlobalProjectile

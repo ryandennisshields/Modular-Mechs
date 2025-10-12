@@ -51,7 +51,7 @@ namespace MechMod.Content.Items.MechWeapons
             // Calculate projectile properties
             int damage = weaponsPlayer.DamageCalc(102, player);
             weaponsPlayer.CritChanceCalc(10, player);
-            weaponsPlayer.attackRate = weaponsPlayer.AttackSpeedCalc(55, player);
+            weaponsPlayer.useRate = weaponsPlayer.AttackSpeedCalc(55, player);
             float knockback = weaponsPlayer.KnockbackCalc(6, player);
             float projSpeed = 8;
 
@@ -75,5 +75,7 @@ namespace MechMod.Content.Items.MechWeapons
             visualPlayer.animationTimer = holdTime; // Set the animation timer to hold the weapon out
             SoundEngine.PlaySound(SoundID.Item61, player.position); // Play Grenade Launcher sound when the weapon is used
         }
+
+        public void UpdateAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer) { }
     }
 }
