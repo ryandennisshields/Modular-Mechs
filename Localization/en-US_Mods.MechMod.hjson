@@ -443,6 +443,7 @@ Projectiles: {
 	ProjSwordProj.DisplayName: Proj Sword Proj
 	DroneProjectile.DisplayName: Drone Projectile
 	DroneMissileProjectile.DisplayName: Drone Missile Projectile
+	ChargeProjectile.DisplayName: Charge Projectile
 }
 
 Keybinds: {

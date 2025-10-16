@@ -59,6 +59,7 @@ namespace MechMod.Common.Players
 
         /// Weapon drawing variables
         public Vector2 weaponPosition = Vector2.Zero; // Used for positioning the weapon when it is drawn
+        public Color weaponColour = Color.White; // Used for changing the weapon's colour when it is drawn
         public float weaponRotation = 0f; // Used for rotating the weapon when it is drawn
         public Vector2 weaponOrigin = Vector2.Zero; // Used so a different origin can be set for rotation
         public float weaponScale = 1f; // Used so the weapon can be hidden when needed

@@ -662,7 +662,7 @@ namespace MechMod.Content.Mounts
 
                 // Weapon
                 if (visualPlayer.weaponTexture != null)
-                    playerDrawData.Add(new DrawData(visualPlayer.weaponTexture.Value, drawPosition + visualPlayer.weaponPosition + groundOffset, null, drawColor, visualPlayer.weaponRotation, visualPlayer.weaponOrigin, visualPlayer.weaponScale, visualPlayer.weaponSpriteEffects));
+                    playerDrawData.Add(new DrawData(visualPlayer.weaponTexture.Value, drawPosition + visualPlayer.weaponPosition + groundOffset, null, visualPlayer.weaponColour, visualPlayer.weaponRotation, visualPlayer.weaponOrigin, visualPlayer.weaponScale, visualPlayer.weaponSpriteEffects));
                 
                 // Left arm
                 if (visualPlayer.armsLTexture != null)
