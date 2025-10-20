@@ -1,9 +1,10 @@
-﻿using MechMod.Content.Mounts;
+﻿using MechMod.Common.Players;
+using MechMod.Content.Mounts;
+using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using static MechMod.Content.Mounts.IMechModule;
-using Terraria.ID;
-using MechMod.Common.Players;
 
 namespace MechMod.Content.Items.MechModules.Passive
 {
@@ -29,11 +30,11 @@ namespace MechMod.Content.Items.MechModules.Passive
 
         public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
         {
-            if (Main.mouseRight && weaponsPlayer.DamageClass == DamageClass.Ranged) // If player is holding right-click and the weapon is ranged,
+            if (weaponsPlayer.activateRightClick && weaponsPlayer.DamageClass == DamageClass.Ranged) // If player is holding right-click and the weapon is ranged,
             {
-                player.scope = true; // Scope out
                 if (!changed) // If stats haven't been changed yet,
                 {
+                    ModContent.GetInstance<CameraPan>().active = true; // Activate camera pan
                     // Apply stat changes
                     weaponsPlayer.partDamageBonus += damageBonus;
                     modPlayer.groundHorizontalSpeed *= speedReduction;
@@ -44,7 +45,8 @@ namespace MechMod.Content.Items.MechModules.Passive
                 }
             }
             else if (changed) // If player is not holding right-click and stats have been changed,
-            { 
+            {
+                ModContent.GetInstance<CameraPan>().active = false; // Deactivate camera pan
                 // Reset stat changes
                 weaponsPlayer.partDamageBonus -= damageBonus;
                 modPlayer.groundJumpSpeed /= speedReduction;
@@ -52,6 +54,23 @@ namespace MechMod.Content.Items.MechModules.Passive
                 modPlayer.flightJumpSpeed /= speedReduction;
                 modPlayer.flightHorizontalSpeed /= speedReduction;
                 changed = false;
+            }
+        }
+    }
+
+    public class CameraPan : ModSystem
+    {
+        public bool active = false; // Tracker for if camera pan is active
+
+        public override void ModifyScreenPosition()
+        {
+            Player player = Main.LocalPlayer; // Get local player
+            if (player.active && active) // If player is active and camera pan is active,
+            {
+                Vector2 mouseWorld = Main.MouseWorld; // Get mouse world position
+                Vector2 screenCenter = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2); // Get screen center position
+                Vector2 offset = (mouseWorld - screenCenter) * 0.75f; // Calculate offset (75% of the distance from screen center to mouse position)
+                Main.screenPosition += offset; // Apply offset to screen position
             }
         }
     }

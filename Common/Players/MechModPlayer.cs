@@ -1,9 +1,8 @@
-﻿using MechMod.Content.Buffs;
-using MechMod.Content.Items.MechMisc;
-using MechMod.Content.Mounts;
+﻿using MechMod.Content.Mounts;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -277,6 +276,14 @@ namespace MechMod.Common.Players
             Player.cursed = false;
             Player.tongued = false;
             Player.frozen = false;
+        }
+
+        public override void ProcessTriggers(TriggersSet triggersSet)
+        {
+            if (Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>())
+            {
+                triggersSet.QuickHeal = false; // Disable Quick Heal when in Mech
+            }
         }
 
         #region Debugging Drawing

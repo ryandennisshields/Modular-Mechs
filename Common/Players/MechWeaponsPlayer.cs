@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using MechMod.Content.Mounts;
+using Terraria;
+using Terraria.GameInput;
 using Terraria.ModLoader;
 
 namespace MechMod.Common.Players
@@ -28,6 +30,22 @@ namespace MechMod.Common.Players
         public float updateTimer; // Timer for weapon update rate
         public float updateRate; // Used to determine how fast the weapon updates
         public bool canUse; // Determines if a weapon can be used, for example, disabling use if weapon is out of mana or ammo
+
+        public bool activateRightClick; // Tracks if the player is holding right-click to activate right-click functions
+
+        public override void ProcessTriggers(TriggersSet triggersSet)
+        {
+            if (Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>()) 
+            {
+                if (Main.mouseRight && !Player.mouseInterface) // If player is right-clicking and not interacting with the UI,
+                {
+                    activateRightClick = true; // Activate right-click functions
+                    Main.mouseRight = false; // Prevents normal right-click actions
+                }
+                else if (Main.mouseLeftRelease) // If player has released right-click,
+                    activateRightClick = false; // Deactivate right-click functions
+            }
+        }
 
         // Part bonuses that are added to the player's bonuses when calculating the final values for the weapon
         public float partDamageBonus;

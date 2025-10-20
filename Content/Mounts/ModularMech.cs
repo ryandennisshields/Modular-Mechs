@@ -175,6 +175,7 @@ namespace MechMod.Content.Mounts
             ApplyPartStats(player, modPlayer.equippedParts[MechMod.headIndex], modPlayer.equippedParts[MechMod.bodyIndex], modPlayer.equippedParts[MechMod.armsIndex], modPlayer.equippedParts[MechMod.legsIndex], modPlayer.equippedParts[MechMod.boosterIndex]);
 
             // Apply Weapon Stats (denotes a weapon's use type and damage class)
+            weaponsPlayer.DamageClass = DamageClass.Default; // Reset the damage class to default before applying the weapon's stats
             if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon)
                 weapon.SetStats(weaponsPlayer);
 

@@ -24,8 +24,6 @@ namespace MechMod.Content.Items.MechWeapons
         {
             Item.value = Item.buyPrice(gold: 2);
             Item.rare = ItemRarityID.Orange;
-
-            Item.useAmmo = AmmoID.Bullet; // Make the weapon use Bullet ammo
         }
 
         public void SetStats(MechWeaponsPlayer weaponsPlayer)
@@ -60,7 +58,7 @@ namespace MechMod.Content.Items.MechWeapons
 
                 damage = weaponsPlayer.DamageCalc(damageValue, player);
                 knockback = weaponsPlayer.KnockbackCalc(4, player);
-                projSpeed = 12;
+                projSpeed = 25;
                 weaponsPlayer.CritChanceCalc(4, player);
 
                 // Consume mana and apply mana regen delay
@@ -70,8 +68,6 @@ namespace MechMod.Content.Items.MechWeapons
                 chargeTime++;
 
                 fireReady = true;
-
-                Main.NewText(scale);
 
                 if (chargeTime <= 50)
                 {
@@ -107,7 +103,7 @@ namespace MechMod.Content.Items.MechWeapons
 
                     // Get a random direction to fire lasers in
                     Vector2 offset = new(0, -38); // Offset to adjust the projectile's
-                    Vector2 direction = Main.rand.NextVector2Unit() * new Vector2((float)Main.time, (float)Main.time) * projSpeed; // Get a random direction and multiply it by time to get a more varied spread
+                    Vector2 direction = Main.rand.NextVector2Unit() * new Vector2((float)Main.time, (float)Main.time); // Get a random direction and multiply it by time to get a more varied spread
                     direction.Normalize();
                     Vector2 velocity = direction * projSpeed;
 
@@ -197,19 +193,16 @@ namespace MechMod.Content.Items.MechWeapons
     {
         public override void SetDefaults()
         {
-            Projectile.width = 80; // The width of projectile hitbox
-            Projectile.height = 40; // The height of projectile hitbox
-            Projectile.aiStyle = 1; // The ai style of the projectile, please reference the source code of Terraria
-            Projectile.friendly = true; // Can the projectile deal damage to enemies?
-            Projectile.hostile = false; // Can the projectile deal damage to the player?
-            Projectile.DamageType = DamageClass.Magic; // Is the projectile shoot by a ranged weapon?
-            Projectile.penetrate = 5; // How many monsters the projectile can penetrate. (OnTileCollide below also decrements penetrate for bounces as well)
-            Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
-            //Projectile.alpha = 255; // The transparency of the projectile, 255 for completely transparent. (aiStyle 1 quickly fades the projectile in) Make sure to delete this if you aren't using an aiStyle that fades in. You'll wonder why your projectile is invisible.
-            Projectile.light = 0.5f; // How much light emit around the projectile
-            Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-            Projectile.tileCollide = true; // Can the projectile collide with tiles?
-            Projectile.extraUpdates = 1; // Set to above 0 if you want the projectile to update multiple time in a frame
+            Projectile.width = (int)(80 * Projectile.scale);
+            Projectile.height = (int)(40 * Projectile.scale);
+            Projectile.aiStyle = 1;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.DamageType = DamageClass.Magic;
+            Projectile.timeLeft = 600;
+            Projectile.light = 0.5f;
+            Projectile.ignoreWater = true;
+            Projectile.extraUpdates = 2;
             Projectile.penetrate = -1; // Infinite penetration
 
             AIType = ProjectileID.ZapinatorLaser; // Act exactly like default Bullet
@@ -217,7 +210,16 @@ namespace MechMod.Content.Items.MechWeapons
 
         public override void AI()
         {
-            Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.PinkTorch, -Projectile.velocity.X * 0.5f, newColor: Color.Pink, Scale: Projectile.scale * 1.5f);
+            for (int i = 0; i < 3; i++)
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.PinkTorch, -Projectile.velocity.X * 0.5f, newColor: Color.Pink, Scale: Projectile.scale * 1.5f);
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            for (int i = 0; i < 50; i++)
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.PinkTorch, newColor: Color.Pink, Scale: Projectile.scale * 1.5f);
+
+            SoundEngine.PlaySound(SoundID.Item10, Projectile.position); // Play a sound when the projectile is killed
         }
     }
 }

@@ -87,11 +87,7 @@ namespace MechMod.Content.Items.MechWeapons
                         // Create the missile projectile at each drone's position
                         Projectile.NewProjectile(new EntitySource_Parent(drone), drone.Center, new Vector2(0, 0), projectileType, missileDamage, missileKnockback, player.whoAmI);
                         missileCount++; // Increment the missile count
-                        SoundStyle launch = new("Terraria/Sounds/Item_10")
-                        {
-                            Volume = 0.5f // Lower volume for the launch sound (many drones = loud)
-                        };
-                        SoundEngine.PlaySound(launch, drone.position); // Play launch sound when created
+                        SoundEngine.PlaySound(SoundID.Item10 with { Volume = 0.5f }, drone.position); // Play launch sound when created
                     }
                 }
 
@@ -109,7 +105,7 @@ namespace MechMod.Content.Items.MechWeapons
             weaponsPlayer.updateRate = 30; // Target rate
 
             // Logic for setting the minion target
-            if (Main.mouseRight && !player.mouseInterface && weaponsPlayer.updateTimer >= weaponsPlayer.updateRate && weaponsPlayer.useTimer >= weaponsPlayer.useRate) // If the player right clicks (not over a UI element),
+            if (weaponsPlayer.activateRightClick && !player.mouseInterface && weaponsPlayer.updateTimer >= weaponsPlayer.updateRate && weaponsPlayer.useTimer >= weaponsPlayer.useRate) // If the player right clicks (not over a UI element),
             {
                 Main.NewText("true");
 
@@ -384,11 +380,7 @@ namespace MechMod.Content.Items.MechWeapons
 
                         // Create the bullet projectile
                         Projectile.NewProjectile(new EntitySource_Parent(Projectile), Projectile.Center, bulletVelocity, projectileType, bulletDamage, bulletKnockback, Projectile.owner);
-                        SoundStyle gun = new("Terraria/Sounds/Item_11")
-                        {
-                            Volume = 0.5f // Lower volume for the gun sound (many drones = loud)
-                        };
-                        SoundEngine.PlaySound(gun, Projectile.position); // Play gun sound when shooting
+                        SoundEngine.PlaySound(SoundID.Item11 with { Volume = 0.5f }, Projectile.position); // Play gun sound when shooting
 
                         bulletTimer = 0; // Reset shoot timer
                         if (ammoItem.maxStack > 1) // Only consume if the item isn't an "endless" ammo type
