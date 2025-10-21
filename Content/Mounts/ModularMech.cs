@@ -278,8 +278,8 @@ namespace MechMod.Content.Mounts
 
             SoundEngine.PlaySound(SoundID.Research, player.position); // Play Research sound when dismounting the mech
 
-            modPlayer.mechDebuffDuration = 900; // Base debuff duration (15 seconds)
-            modPlayer.launchForce = -10; // Force to launch the player when dismounting
+            modPlayer.mechDebuffDuration = 900; // Reset to base debuff duration
+            modPlayer.launchForce = -10; // Reset to base launch force
 
             // Check for any OnDismount modules and apply their effects
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
@@ -306,8 +306,8 @@ namespace MechMod.Content.Mounts
             player.velocity.Y = modPlayer.launchForce; // Launch the Player upwards
 
             // Reset stat values
-            modPlayer.lifeBonus = 0;
-            modPlayer.armourBonus = 0;
+            modPlayer.lifeBonus = 100;
+            modPlayer.armourBonus = default;
         }
 
         public override void UpdateEffects(Player player)
@@ -382,10 +382,7 @@ namespace MechMod.Content.Mounts
             if (player.HasBuff(ModContent.BuffType<MechBuff>())) // If the player has the mech buff,
             {
                 int buffTime = player.buffTime[player.FindBuffIndex(ModContent.BuffType<MechBuff>())]; // Get the remaining buff time
-                var warnSound = SoundID.MenuTick with // Sound to play for warning
-                {
-                    Volume = 2
-                };
+                var warnSound = SoundID.MenuTick with { Volume = 2 }; // Sound to play for warning
                 if (buffTime <= 360 && buffTime % 60 == 0) // If the buff time is less than or equal to 6 seconds and is a multiple of 60 (1 second intervals),
                 {
                     warnSound.Pitch = -0.5f + (buffTime / 300f); // Change pitch based on remaining time
@@ -420,7 +417,7 @@ namespace MechMod.Content.Mounts
                         if (dashPlayer.dashActive || player.mount._frameState == Mount.FrameFlying) // If dashing or flying,
                         {
                             SoundEngine.PlaySound(SoundID.Item13, player.position); // Play Rocket Boots/Jetpack sound for Booster use
-                            visualPlayer.boosterTimer = 0; // Reset the timer
+                            visualPlayer.boosterTimer = default; // Reset the timer
                         }
                     }
 
@@ -498,7 +495,7 @@ namespace MechMod.Content.Mounts
                     SoundEngine.PlaySound(SoundID.NPCHit3, player.position); // Play hit sound for step use
                     for (int i = 0; i < 15; i++)
                         Dust.NewDust(new Vector2(player.position.X + directionOffset, player.position.Y + 80), 30, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when running
-                    visualPlayer.stepTimer = 0; // Reset the timer
+                    visualPlayer.stepTimer = default; // Reset the timer
                 }
             }
 
@@ -519,8 +516,8 @@ namespace MechMod.Content.Mounts
                 SoundEngine.PlaySound(SoundID.Dig, player.position);
                 for (int i = 0; i < 50; i++)
                     Dust.NewDust(new Vector2(player.position.X - 20 + directionOffset , player.position.Y + 80), 80, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when landing
-                visualPlayer.airTime = 0; // Reset the air time
-                visualPlayer.airVelocity = 0; // Reset the stored Y velocity
+                visualPlayer.airTime = default; // Reset the air time
+                visualPlayer.airVelocity = default; // Reset the stored Y velocity
             }
 
             #endregion
@@ -765,8 +762,8 @@ namespace MechMod.Content.Mounts
                     // Reset the arm frame to default
                     visualPlayer.armRFrame = -1;
                     visualPlayer.armLFrame = -1;
-                    visualPlayer.weaponScale = 0f; // Hide the weapon when not in use
-                    visualPlayer.useDirection = 0; // Reset last use direction
+                    visualPlayer.weaponScale = default; // Hide the weapon when not in use
+                    visualPlayer.useDirection = default; // Reset last use direction
                 }
             }
         }
@@ -873,10 +870,10 @@ namespace MechMod.Content.Mounts
             MechWeaponsPlayer weaponsPlayer = player.GetModPlayer<MechWeaponsPlayer>();
 
             // Reset weapon stats that are added/multiplied before applying new ones
-            weaponsPlayer.partDamageBonus = 0f;
-            weaponsPlayer.partCritChanceBonus = 0f;
-            weaponsPlayer.partAttackSpeedBonus = 0f;
-            weaponsPlayer.partKnockbackBonus = 0f;
+            weaponsPlayer.partDamageBonus = default;
+            weaponsPlayer.partCritChanceBonus = default;
+            weaponsPlayer.partAttackSpeedBonus = default;
+            weaponsPlayer.partKnockbackBonus = default;
 
             for (int i = 0; i < modPlayer.partEffectiveness.Length; i++)
             {
@@ -895,13 +892,13 @@ namespace MechMod.Content.Mounts
                     legs.ApplyStats(player, modPlayer, weaponsPlayer, this); // Apply Leg stats
 
             // Reset flight stats before applying new ones
-            MountData.flightTimeMax = 0;
-            modPlayer.flightHorizontalSpeed = 0f;
-            modPlayer.flightJumpSpeed = 0f;
+            MountData.flightTimeMax = default;
+            modPlayer.flightHorizontalSpeed = default;
+            modPlayer.flightJumpSpeed = default;
             player.GetModPlayer<DashPlayer>().ableToDash = false;
-            player.GetModPlayer<DashPlayer>().dashCoolDown = 0;
-            player.GetModPlayer<DashPlayer>().dashDuration = 0;
-            player.GetModPlayer<DashPlayer>().dashVelo = 0f;
+            player.GetModPlayer<DashPlayer>().dashCoolDown = default;
+            player.GetModPlayer<DashPlayer>().dashDuration = default;
+            player.GetModPlayer<DashPlayer>().dashVelo = default;
 
             if (!equippedBooster.IsAir) // If a Booster is equipped,
             {

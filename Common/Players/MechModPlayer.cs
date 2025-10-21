@@ -26,7 +26,7 @@ namespace MechMod.Common.Players
         public bool powerCellActive;
 
         /// Part effects
-        public int lifeBonus;
+        public int lifeBonus = 100; // Default 100 life bonus
         public int armourBonus;
 
         public float[] partEffectiveness = new float[9]; // Array to store the effectiveness of each Part (changed by Body Parts)
@@ -255,9 +255,9 @@ namespace MechMod.Common.Players
         public void DisablePlayerEffects()
         {
             // Armor Set Bonuses
-            Player.head = 0;
-            Player.body = 0;
-            Player.legs = 0;
+            Player.head = default;
+            Player.body = default;
+            Player.legs = default;
 
             // Debuffs
             // Removed to make the Mech more realistic and disabling effects that dismount the Player

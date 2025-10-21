@@ -24,53 +24,62 @@ namespace MechMod.Content.Items.MechModules.Passive
         public ModuleType MType => ModuleType.Persistent; // Persistent effect
 
         private bool changed = false; // Tracker for if stats have been changed
+        private CameraPan cameraPanInstance = ModContent.GetInstance<CameraPan>();
 
         private const float damageBonus = 0.1f; // 10% damage bonus
         private const float speedReduction = 0.9f; // 10% speed reduction
 
         public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
         {
-            if (weaponsPlayer.activateRightClick && weaponsPlayer.DamageClass == DamageClass.Ranged) // If player is holding right-click and the weapon is ranged,
+            if (weaponsPlayer.DamageClass == DamageClass.Ranged) // If the player's weapon is ranged,
             {
-                if (!changed) // If stats haven't been changed yet,
+                if (weaponsPlayer.activateRightClick) // If player is holding right-click,
                 {
-                    ModContent.GetInstance<CameraPan>().active = true; // Activate camera pan
-                    // Apply stat changes
-                    weaponsPlayer.partDamageBonus += damageBonus;
-                    modPlayer.groundHorizontalSpeed *= speedReduction;
-                    modPlayer.groundJumpSpeed *= speedReduction;
-                    modPlayer.flightHorizontalSpeed *= speedReduction;
-                    modPlayer.flightJumpSpeed *= speedReduction;
-                    changed = true;
+                    if (cameraPanInstance.lerp < 1f) // If camera pan lerp is less than 1,
+                        cameraPanInstance.lerp += 0.075f; // Increase lerp value to pan camera out
+                    if (!changed) // If stats haven't been changed yet,
+                    {
+                        // Apply stat changes
+                        weaponsPlayer.partDamageBonus += damageBonus;
+                        modPlayer.groundHorizontalSpeed *= speedReduction;
+                        modPlayer.groundJumpSpeed *= speedReduction;
+                        modPlayer.flightHorizontalSpeed *= speedReduction;
+                        modPlayer.flightJumpSpeed *= speedReduction;
+                        changed = true;
+                    }
                 }
-            }
-            else if (changed) // If player is not holding right-click and stats have been changed,
-            {
-                ModContent.GetInstance<CameraPan>().active = false; // Deactivate camera pan
-                // Reset stat changes
-                weaponsPlayer.partDamageBonus -= damageBonus;
-                modPlayer.groundJumpSpeed /= speedReduction;
-                modPlayer.groundHorizontalSpeed /= speedReduction;
-                modPlayer.flightJumpSpeed /= speedReduction;
-                modPlayer.flightHorizontalSpeed /= speedReduction;
-                changed = false;
+                else // Otherwise,
+                {
+                    if (cameraPanInstance.lerp > 0f) // If camera pan lerp is greater than 0,
+                        cameraPanInstance.lerp -= 0.075f; // Decrease lerp value to pan camera back in
+                    if (changed) // If stats have been changed,
+                    {
+                        // Reset stat changes
+                        weaponsPlayer.partDamageBonus -= damageBonus;
+                        modPlayer.groundJumpSpeed /= speedReduction;
+                        modPlayer.groundHorizontalSpeed /= speedReduction;
+                        modPlayer.flightJumpSpeed /= speedReduction;
+                        modPlayer.flightHorizontalSpeed /= speedReduction;
+                        changed = false;
+                    }
+                }
             }
         }
     }
 
     public class CameraPan : ModSystem
     {
-        public bool active = false; // Tracker for if camera pan is active
+        public float lerp; // Lerp value for camera panning
 
         public override void ModifyScreenPosition()
         {
             Player player = Main.LocalPlayer; // Get local player
-            if (player.active && active) // If player is active and camera pan is active,
+            if (player.active && lerp > 0f) // If player is active and camera pan is active,
             {
                 Vector2 mouseWorld = Main.MouseWorld; // Get mouse world position
                 Vector2 screenCenter = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2); // Get screen center position
                 Vector2 offset = (mouseWorld - screenCenter) * 0.75f; // Calculate offset (75% of the distance from screen center to mouse position)
-                Main.screenPosition += offset; // Apply offset to screen position
+                Main.screenPosition = Vector2.Lerp(Main.screenPosition, Main.screenPosition + offset, lerp); // Lerp screen position towards the offset position
             }
         }
     }

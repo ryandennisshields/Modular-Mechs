@@ -102,9 +102,9 @@ namespace MechMod
         public override void Unload()
         {
             // Clear static references to avoid memory leaks
-            MechParts = null;
-            MechDashKeybind = null;
-            MechActivateModule = null;
+            MechParts = default;
+            MechDashKeybind = default;
+            MechActivateModule = default;
         }
 
         // Message types for packet handling

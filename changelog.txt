@@ -1,4 +1,14 @@
 Modular Mechs v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 
-v1.0.2.1
-- Updated mod descriptions
+v1.1.0
+- 3 new weapons
+- 2 new passive modules
+- 1 new active module
+- Bug fixes and improvements
+
+- Notable Changes
+> Right-click functionality of hotbar items is now disabled while in Mech
+> !!!Quick Heal binding is now disabled inside the Mech!!!
+> To compensate for the above change, Mech now always has a base +100 life bonus regardless of parts
+
+/ The reason behind disabling the Quick Heal bind is to further push the Mech as a "temporary power-up with unique downsides", to make the usage of the Mech more strategic instead of just being free to utilise as extra health/damage (remember the Mech will save you from death!)

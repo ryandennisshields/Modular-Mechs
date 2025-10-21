@@ -37,7 +37,7 @@ namespace MechMod.Common.Global
                 }
             }
             else if (arbalestFrame > 0) // If the NPC no longer has the debuff but the frame counter is above 0,
-                arbalestFrame = 0; // Reset frame counter
+                arbalestFrame = default; // Reset frame counter
         }
 
         public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
