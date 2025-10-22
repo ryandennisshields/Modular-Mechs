@@ -38,12 +38,13 @@ namespace MechMod.Common.Players
         public float flightHorizontalSpeed = 0f;
 
         /// General Mech variables
-        public bool allowDown; // Controls whether the player can hold down to hover with Booster Parts
+        public int mechBuffDuration; // Duration of the Mech Buff applied when mounting the Mech
         public int mechDebuffDuration; // Duration of the Mech Debuff applied when dismounting the Mech
+        public bool allowDown; // Controls whether the player can hold down to hover with Booster Parts
         public int launchForce; // Force applied to the player when dismounting the Mech
 
         /// Trackers
-        public bool grantedLifeBonus; // Tracks if the player has received the life bonus given from Parts
+        public bool grantedBonuses; // Tracks if the player has been granted initial mount bonuses
         public float maxLife; // Saves the maximum life of players for the debuff duration calculation
 
         public override void Initialize()

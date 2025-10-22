@@ -89,6 +89,8 @@ namespace MechMod
                 { "nucleareject", new MechPart(ModContent.ItemType<NuclearEject>(), "passivemodule")},
                 { "hover", new MechPart(ModContent.ItemType<Hover>(), "passivemodule")},
                 { "brace", new MechPart(ModContent.ItemType<Brace>(), "passivemodule")},
+                { "energyextension", new MechPart(ModContent.ItemType<EnergyExtension>(), "passivemodule")},
+                { "momentum", new MechPart(ModContent.ItemType<Momentum>(), "passivemodule")},
                 // Active
                 { "missilelauncher", new MechPart(ModContent.ItemType<MissileLauncher>(), "activemodule")},
                 { "repair", new MechPart(ModContent.ItemType<Repair>(), "activemodule")},

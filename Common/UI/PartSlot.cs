@@ -1,6 +1,7 @@
 ﻿using MechMod.Common.Players;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -176,12 +177,12 @@ namespace MechMod.Common.UI
             }
             else // If the Mech Part is invalid for the slot,
             {
-                Main.NewText("Invalid Mech Part!", Color.Red); // Notify the player that the Part is invalid
+                Main.NewText("Invalid Mech Part!", Color.Red); // Notify the player that the Part is invalid 
             }
         }
 
         // Function to equip a Part to the slot when right-clicked
-        public void RightClickEquipPart()
+        public bool RightClickEquipPart()
         {
             int hoveredSlot = GetHoveredInventorySlot(); // Get the index of the inventory slot currently being hovered over by the mouse
             if (hoveredSlot >= 0 && hoveredSlot < Main.LocalPlayer.inventory.Length) // If the hovered slot index is valid,
@@ -190,13 +191,13 @@ namespace MechMod.Common.UI
 
                 Item item = Main.LocalPlayer.inventory[hoveredSlot]; // Get the item in the hovered inventory slot
 
-                if (!item.IsAir)
+                if (!item.IsAir) // If the hovered inventory slot has an item,
                 {
-                    if (IsMechPart(item))
+                    if (IsMechPart(item)) // If the item is a valid Mech Part for the slot,
                     {
                         if (!DupeCheckPassiveModule(modPlayer, item))
                         {
-                            return; // Prevent equipping the same passive module in both slots
+                            return true; // Don't warn about an invalid Mech Part
                         }
                         else if (slotItem.IsAir) // If the corresponding part slot is empty,
                         {
@@ -204,18 +205,21 @@ namespace MechMod.Common.UI
                             slotItem = item.Clone();
                             Main.LocalPlayer.inventory[hoveredSlot].TurnToAir();
                             SoundEngine.PlaySound(SoundID.Grab);
-                            return;
+                            return true; // Don't warn about an invalid Mech Part
                         }
                         else
                         {
                             // Swap the Parts from the inventory and the corresponding part slot
                             Utils.Swap(ref slotItem, ref Main.LocalPlayer.inventory[hoveredSlot]);
                             SoundEngine.PlaySound(SoundID.Grab);
-                            return;
+                            return true; // Don't warn about an invalid Mech Part
                         }
                     }
+                    else // Otherwise,
+                        return false; // Warn about an invalid Mech Part
                 }
             }
+            return true; // Don't warn about an invalid Mech Part by default
         }
 
         #endregion

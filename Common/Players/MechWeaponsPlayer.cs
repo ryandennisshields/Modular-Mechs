@@ -53,6 +53,8 @@ namespace MechMod.Common.Players
         public float partAttackSpeedBonus;
         public float partKnockbackBonus;
 
+        public float finalDamageModifier = 1f; // Final damage modifier applied after all other calculations
+
         // Functions for calculating the final values for the weapon, taking into account the player's bonuses and the part bonuses
         // Parameters can be input to use a custom DamageClass instead of the one set for the weapon, and same can choose which types of modifying values to include in the calculation
 
@@ -89,7 +91,7 @@ namespace MechMod.Common.Players
             }
 
             // Collect the other damage bonuses to create the final damage value
-            baseDamage = (int)(baseDamage * totalDamageBonus * multDamageBonus + flatDamageBonus);
+            baseDamage = (int)((baseDamage * totalDamageBonus * multDamageBonus + flatDamageBonus) * finalDamageModifier);
 
             return baseDamage;
         }

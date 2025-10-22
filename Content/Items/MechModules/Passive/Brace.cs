@@ -24,7 +24,7 @@ namespace MechMod.Content.Items.MechModules.Passive
         public ModuleType MType => ModuleType.Persistent; // Persistent effect
 
         private bool changed = false; // Tracker for if stats have been changed
-        private CameraPan cameraPanInstance = ModContent.GetInstance<CameraPan>();
+        private CameraPan cameraPanInstance = ModContent.GetInstance<CameraPan>(); // Reference to CameraPan instance
 
         private const float damageBonus = 0.1f; // 10% damage bonus
         private const float speedReduction = 0.9f; // 10% speed reduction

@@ -403,6 +403,16 @@ Items: {
 		DisplayName: Charge Cannon
 		Tooltip: ""
 	}
+
+	EnergyExtension: {
+		DisplayName: Energy Extension
+		Tooltip: ""
+	}
+
+	Momentum: {
+		DisplayName: Momentum
+		Tooltip: ""
+	}
 }
 
 Buffs: {

@@ -371,10 +371,12 @@ namespace MechMod.Common.UI
         {
             var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
 
+            bool partEquipped = false; // Tracker to see if a part was equipped/changed
+
             // Verify if the slot is empty or if the slot has a Part
             for (int i = 0; i < slots.Length; i++)
             {
-                slots[i].RightClickEquipPart(); // Call the right-click equip function for each slot
+                partEquipped |= slots[i].RightClickEquipPart(); // Call the right-click equip function for each slot (and check if a part was equipped/changed at all)
                 if (slots[i].slotItem.IsAir)
                 {
                     modPlayer.equippedParts[i].TurnToAir();
@@ -383,6 +385,10 @@ namespace MechMod.Common.UI
                 {
                     modPlayer.equippedParts[i] = slots[i].slotItem;
                 }
+            }
+            if (!partEquipped) // If no part was equipped/changed,
+            {
+                Main.NewText("Invalid Mech Part!", Color.Red); // Notify the player that the Part is invalid
             }
         }
 

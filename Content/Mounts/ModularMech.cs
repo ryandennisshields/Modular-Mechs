@@ -140,16 +140,12 @@ namespace MechMod.Content.Mounts
             MechVisualPlayer visualPlayer = player.GetModPlayer<MechVisualPlayer>();
             MechWeaponsPlayer weaponsPlayer = player.GetModPlayer<MechWeaponsPlayer>();
 
-            if (modPlayer.powerCellActive) // Give the player the mech buff for a set duration (longer if the player has a power cell active)
-                player.AddBuff(ModContent.BuffType<MechBuff>(), 5400);
-            else
-                player.AddBuff(ModContent.BuffType<MechBuff>(), 2700);
-
+            modPlayer.mechBuffDuration = modPlayer.powerCellActive ? 5400 : 2700; // Set mech buff duration based on if power cell is active
             modPlayer.allowDown = false; // Disable hovering with Boosters
 
             ApplyParts(player, modPlayer, visualPlayer, weaponsPlayer); // Apply the stats and textures of the equipped parts
 
-            modPlayer.grantedLifeBonus = false; // Reset the life bonus tracker so the life bonus can be applied again
+            modPlayer.grantedBonuses = false; // Reset the bonuses tracker
 
             // Check for any OnMount modules and apply their effects
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
@@ -162,6 +158,8 @@ namespace MechMod.Content.Mounts
                     }
                 }
             }
+
+            player.AddBuff(ModContent.BuffType<MechBuff>(), modPlayer.mechBuffDuration);
 
             player.opacityForAnimation = 0; // Make Player invisible
 
@@ -316,6 +314,18 @@ namespace MechMod.Content.Mounts
             MechVisualPlayer visualPlayer = player.GetModPlayer<MechVisualPlayer>();
             MechWeaponsPlayer weaponsPlayer = player.GetModPlayer<MechWeaponsPlayer>();
 
+            // Check for any Persistent modules and apply their effects
+            foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
+            {
+                if (part.ModItem is IMechModule mechModule)
+                {
+                    if (mechModule.MType == IMechModule.ModuleType.Persistent)
+                    {
+                        mechModule.ModuleEffect(this, player, modPlayer, weaponsPlayer); // Apply the module effect while mech is active
+                    }
+                }
+            }
+
             if (player.mount._frameState == Mount.FrameFlying)
             {
                 // Disable player's ability to hover while flying
@@ -337,14 +347,13 @@ namespace MechMod.Content.Mounts
 
             // Grant life bonus
             player.statLifeMax2 += modPlayer.lifeBonus;
-            if (modPlayer.grantedLifeBonus == false)
+            if (modPlayer.grantedBonuses == false)
             {
                 player.statLife += modPlayer.lifeBonus; // Increase player's health to match new max health
                 modPlayer.maxLife = player.statLifeMax2;
-                modPlayer.grantedLifeBonus = true;
+                modPlayer.grantedBonuses = true;
             }
-            // Grant armour bonus
-            player.statDefense += modPlayer.armourBonus;
+            player.statDefense += modPlayer.armourBonus; // Grant armour bonus
 
             if (modPlayer.equippedParts[MechMod.weaponIndex].ModItem is IMechWeapon weapon) // If a weapon is equipped,
             {
@@ -356,18 +365,6 @@ namespace MechMod.Content.Mounts
 
             if (weaponsPlayer.updateTimer < weaponsPlayer.updateRate)
                 weaponsPlayer.updateTimer++; // Increment the update timer until it reaches the update rate
-
-            // Check for any Persistent modules and apply their effects
-            foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
-            {
-                if (part.ModItem is IMechModule mechModule)
-                {
-                    if (mechModule.MType == IMechModule.ModuleType.Persistent)
-                    {
-                        mechModule.ModuleEffect(this, player, modPlayer, weaponsPlayer); // Apply the module effect while mech is active
-                    }
-                }
-            }
 
             WeaponUseAnimationSetup(player, modPlayer, visualPlayer, weaponsPlayer); // Setup weapon use animation and position
 
@@ -874,6 +871,7 @@ namespace MechMod.Content.Mounts
             weaponsPlayer.partCritChanceBonus = default;
             weaponsPlayer.partAttackSpeedBonus = default;
             weaponsPlayer.partKnockbackBonus = default;
+            weaponsPlayer.finalDamageModifier = 1f;
 
             for (int i = 0; i < modPlayer.partEffectiveness.Length; i++)
             {
