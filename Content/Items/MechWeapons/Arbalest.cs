@@ -1,12 +1,13 @@
-﻿using Terraria.ModLoader;
-using Terraria;
-using MechMod.Content.Mounts;
-using Terraria.ID;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
+﻿using MechMod.Common.Global;
 using MechMod.Common.Players;
-using Terraria.Audio;
 using MechMod.Content.Debuffs;
+using MechMod.Content.Mounts;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace MechMod.Content.Items.MechWeapons
 {
@@ -96,6 +97,22 @@ namespace MechMod.Content.Items.MechWeapons
                 return; // Do nothing
 
             target.AddBuff(ModContent.BuffType<ArbalestDebuff>(), duration); // Apply the debuff to the target for the specified duration
+        }
+    }
+
+    public class ArbalestDebuff : ModBuff
+    {
+        public override void SetStaticDefaults()
+        {
+            Main.debuff[Type] = true; // Mark as a debuff
+            Main.pvpBuff[Type] = true; // Allow the debuff to be applied in PvP
+            BuffID.Sets.NurseCannotRemoveDebuff[Type] = true; // Prevent nurse from removing the debuff
+        }
+
+        public override bool ReApply(NPC npc, int time, int buffIndex)
+        {
+            npc.GetGlobalNPC<GlobalDebuffEffect>().arbalestFrame++; // Increment the frame counter each time the debuff is reapplied
+            return true;
         }
     }
 }

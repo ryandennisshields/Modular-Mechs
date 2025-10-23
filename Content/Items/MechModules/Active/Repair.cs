@@ -26,9 +26,9 @@ namespace MechMod.Content.Items.MechModules.Active
 
         private int cooldown = 1800; // Cooldown in frames (30 seconds)
 
-        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
+        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer)
         {
-            if (MechMod.MechActivateModule.JustPressed && !player.HasBuff(ModContent.BuffType<Cooldown>())) // If the player presses the "MechActivateModule" binding and the player is not on cooldown,
+            if (player.whoAmI == Main.myPlayer && MechMod.MechActivateModule.JustPressed && !player.HasBuff(ModContent.BuffType<Cooldown>())) // If the player presses the "MechActivateModule" binding and the player is not on cooldown,
             {
                 player.AddBuff(ModContent.BuffType<Cooldown>(), cooldown); // Add cooldown
                 player.Heal(player.statLifeMax2 / 2); // Heal the player by half of their max health

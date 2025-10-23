@@ -35,6 +35,8 @@ namespace MechMod.Common.Players
 
         public Vector2[] bodyOffsets = new Vector2[5]; // Offsets for Parts (Head, Arms, Legs) to align them properly with the Body
 
+        public Color mechColour = Color.White; // Base colour of the mech
+
         /// Dyes
         public Item[] dyes = new Item[5]; // Dyes applied to to mech (Head, Body, Arms, Legs, Lighs)
         public int[] dyeShaders = new int[5]; // Actual shaders from the equipped dyes
@@ -111,6 +113,7 @@ namespace MechMod.Common.Players
             packet.Write((byte)Player.whoAmI);
             for (int i = 0; i < dyes.Length; i++)
                 packet.Write(dyes[i].type);
+            packet.Write(mechColour.PackedValue);
             packet.Write(animationTimer);
             packet.Write(animationProgress);
             packet.Write(useDirection);
@@ -213,6 +216,7 @@ namespace MechMod.Common.Players
         {
             for (int i = 0; i < dyes.Length; i++)
                 dyes[i].SetDefaults(reader.ReadInt32());
+            mechColour.PackedValue = reader.ReadUInt32();
             animationTimer = reader.ReadSingle();
             animationProgress = reader.ReadInt32();
             useDirection = reader.ReadInt32();
@@ -237,6 +241,7 @@ namespace MechMod.Common.Players
 
             for (int i = 0; i < dyes.Length; i++)
                 clone.dyes[i].type = dyes[i].type;
+            clone.mechColour = mechColour;
             clone.animationTimer = animationTimer;
             clone.animationProgress = animationProgress;
             clone.useDirection = useDirection;
@@ -254,7 +259,8 @@ namespace MechMod.Common.Players
         {
             var clone = (MechVisualPlayer)clientPlayer;
             bool syncPlayer = false;
-            if  (animationTimer != clone.animationTimer ||
+            if  (mechColour != clone.mechColour ||
+                animationTimer != clone.animationTimer ||
                 animationProgress != clone.animationProgress ||
                 useDirection != clone.useDirection ||
                 armRFrame != clone.armRFrame ||

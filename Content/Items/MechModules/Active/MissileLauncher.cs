@@ -41,9 +41,9 @@ namespace MechMod.Content.Items.MechModules.Active
         private int missileCount = 5;
         private int missileType = ModContent.ProjectileType<MissileProjectile>();
 
-        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
+        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer)
         {
-            if (MechMod.MechActivateModule.JustPressed && !player.HasBuff(ModContent.BuffType<Cooldown>()) && Main.myPlayer == player.whoAmI) // If the player presses the "MechActivateModule" binding and the player is not on cooldown,
+            if (player.whoAmI == Main.myPlayer && MechMod.MechActivateModule.JustPressed && !player.HasBuff(ModContent.BuffType<Cooldown>())) // If the player presses the "MechActivateModule" binding and the player is not on cooldown,
             {
                 player.AddBuff(ModContent.BuffType<Cooldown>(), cooldown); // Add cooldown
                 fireMissiles = true; // Begin firing missiles

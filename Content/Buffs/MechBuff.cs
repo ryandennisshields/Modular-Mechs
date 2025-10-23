@@ -22,13 +22,10 @@ namespace MechMod.Content.Buffs
 
         public override void Update(Player player, ref int buffIndex)
         {
-            if (player.buffTime[buffIndex] <= 0)
-            {
-                buffIndex--;
-                player.mount.Dismount(player); // Dismount the mech
-            }
-            player.mount.SetMount(ModContent.MountType<ModularMech>(), player);
-            player.controlUseItem = false; // Disable item use
+            player.mount.SetMount(ModContent.MountType<ModularMech>(), player); // Apply the Modular Mech mount to the player
+            // Disable item usage
+            player.noItems = true;
+            player.controlUseItem = false;
             player.SetTalkNPC(-1); // Disable NPC interaction
         }    
     }

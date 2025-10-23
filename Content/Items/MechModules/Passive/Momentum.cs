@@ -25,7 +25,7 @@ namespace MechMod.Content.Items.MechModules.Passive
         private float speedIncrease = 1.2f; // 20% speed increase
         private float damageIncreaseForVelocity = 0.04f; // Damage increase per unit of speed
 
-        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
+        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer)
         {
             if (weaponsPlayer.DamageClass == DamageClass.Melee)
             {

@@ -413,6 +413,11 @@ Items: {
 		DisplayName: Momentum
 		Tooltip: ""
 	}
+
+	Overclock: {
+		DisplayName: Overclock
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -443,6 +448,11 @@ Buffs: {
 	ArbalestDebuff: {
 		DisplayName: Arbalest Mark
 		Description: Don't get hit too many times...
+	}
+
+	OverclockBuff: {
+		DisplayName: Overclock Buff
+		Description: Mods.MechMod.Buffs.OverclockBuff.Description
 	}
 }
 

@@ -63,7 +63,7 @@ namespace MechMod.Content.Mounts
         }
         public ModuleType MType { get; }
 
-        void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer); // Execute effect of the module
+        void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer); // Execute effect of the module
     }
 
     /// <summary>
@@ -154,7 +154,7 @@ namespace MechMod.Content.Mounts
                 {
                     if (mechModule.MType == IMechModule.ModuleType.OnMount)
                     {
-                        mechModule.ModuleEffect(this, player, modPlayer, weaponsPlayer); // Apply the module effect on mount
+                        mechModule.ModuleEffect(this, player, modPlayer, weaponsPlayer, visualPlayer); // Apply the module effect on mount
                     }
                 }
             }
@@ -256,6 +256,7 @@ namespace MechMod.Content.Mounts
                 visualPlayer.weaponTexture = null;
             }
 
+            visualPlayer.mechColour = Color.White; // Reset mech colour to white
             // Grab the equipped dyes and get their shader IDs for dyeing the mech
             for (int i = 0; i < visualPlayer.dyes.Length; i++)
             {
@@ -267,6 +268,7 @@ namespace MechMod.Content.Mounts
         {
             MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
             MechWeaponsPlayer weaponsPlayer = player.GetModPlayer<MechWeaponsPlayer>();
+            MechVisualPlayer visualPlayer = player.GetModPlayer<MechVisualPlayer>();
 
             player.ClearBuff(ModContent.BuffType<MechBuff>()); // Clear the mech buff
             player.ClearBuff(ModContent.BuffType<Cooldown>()); // Clear active module cooldown
@@ -286,7 +288,7 @@ namespace MechMod.Content.Mounts
                 {
                     if (mechModule.MType == IMechModule.ModuleType.OnDismount)
                     {
-                        mechModule.ModuleEffect(this, player, modPlayer, weaponsPlayer); // Apply the module effect on dismount
+                        mechModule.ModuleEffect(this, player, modPlayer, weaponsPlayer, visualPlayer); // Apply the module effect on dismount
                     }
                 }
             }
@@ -321,7 +323,7 @@ namespace MechMod.Content.Mounts
                 {
                     if (mechModule.MType == IMechModule.ModuleType.Persistent)
                     {
-                        mechModule.ModuleEffect(this, player, modPlayer, weaponsPlayer); // Apply the module effect while mech is active
+                        mechModule.ModuleEffect(this, player, modPlayer, weaponsPlayer, visualPlayer); // Apply the module effect while mech is active
                     }
                 }
             }
@@ -369,6 +371,11 @@ namespace MechMod.Content.Mounts
             WeaponUseAnimationSetup(player, modPlayer, visualPlayer, weaponsPlayer); // Setup weapon use animation and position
 
             Effects(player, modPlayer, visualPlayer); // Apply visual and sound effects
+
+            if (!player.HasBuff(ModContent.BuffType<MechBuff>())) // If the player does not have the Mech buff,
+            {
+                player.mount.Dismount(player); // Dismount the mech
+            }
         }
 
         // Function for any visual or/and sound effects
@@ -561,7 +568,7 @@ namespace MechMod.Content.Mounts
                     var drawData = new DrawData(
                         visualPlayer.armsRTexture.Value,
                         drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[0].X * visualDirection, visualPlayer.bodyOffsets[0].Y),
-                        setArmRFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                        setArmRFrame, visualPlayer.mechColour, rotation, drawOrigin, drawScale, spriteEffects);
                     if (armsDye > 0) drawData.shader = armsDye;
                     playerDrawData.Add(drawData);
                     if (visualPlayer.armsRLightTexture != null)
@@ -569,7 +576,7 @@ namespace MechMod.Content.Mounts
                         var lightDrawData = new DrawData(
                             visualPlayer.armsRLightTexture.Value,
                             drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[0].X * visualDirection, visualPlayer.bodyOffsets[0].Y),
-                            setArmRFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                            setArmRFrame, visualPlayer.mechColour, rotation, drawOrigin, drawScale, spriteEffects);
                         if (lightsDye > 0) lightDrawData.shader = lightsDye;
                         playerDrawData.Add(lightDrawData);
                     }
@@ -581,7 +588,7 @@ namespace MechMod.Content.Mounts
                     var drawData = new DrawData(
                         visualPlayer.legsRTexture.Value,
                         drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[1].X * visualDirection, visualPlayer.bodyOffsets[1].Y),
-                        frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                        frame, visualPlayer.mechColour, rotation, drawOrigin, drawScale, spriteEffects);
                     if (legsDye > 0) drawData.shader = legsDye;
                     playerDrawData.Add(drawData);
                     if (visualPlayer.legsRLightTexture != null)
@@ -589,7 +596,7 @@ namespace MechMod.Content.Mounts
                         var lightDrawData = new DrawData(
                             visualPlayer.legsRLightTexture.Value,
                             drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[1].X * visualDirection, visualPlayer.bodyOffsets[1].Y),
-                            frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                            frame, visualPlayer.mechColour, rotation, drawOrigin, drawScale, spriteEffects);
                         if (lightsDye > 0) lightDrawData.shader = lightsDye;
                         playerDrawData.Add(lightDrawData);
                     }
@@ -601,7 +608,7 @@ namespace MechMod.Content.Mounts
                     var drawData = new DrawData(
                         visualPlayer.bodyTexture.Value,
                         drawPosition + groundOffset,
-                        frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                        frame, visualPlayer.mechColour, rotation, drawOrigin, drawScale, spriteEffects);
                     if (bodyDye > 0) drawData.shader = bodyDye;
                     playerDrawData.Add(drawData);
                     if (visualPlayer.bodyLightTexture != null)
@@ -609,7 +616,7 @@ namespace MechMod.Content.Mounts
                         var lightDrawData = new DrawData(
                             visualPlayer.bodyLightTexture.Value,
                             drawPosition + groundOffset,
-                            frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                            frame, visualPlayer.mechColour, rotation, drawOrigin, drawScale, spriteEffects);
                         if (lightsDye > 0) lightDrawData.shader = lightsDye;
                         playerDrawData.Add(lightDrawData);
                     }
@@ -621,7 +628,7 @@ namespace MechMod.Content.Mounts
                     var drawData = new DrawData(
                         visualPlayer.legsLTexture.Value,
                         drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[2].X * visualDirection, visualPlayer.bodyOffsets[2].Y),
-                        frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                        frame, visualPlayer.mechColour, rotation, drawOrigin, drawScale, spriteEffects);
                     if (legsDye > 0) drawData.shader = legsDye;
                     playerDrawData.Add(drawData);
                     if (visualPlayer.legsLLightTexture != null)
@@ -629,7 +636,7 @@ namespace MechMod.Content.Mounts
                         var lightDrawData = new DrawData(
                             visualPlayer.legsLLightTexture.Value,
                             drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[2].X * visualDirection, visualPlayer.bodyOffsets[2].Y),
-                            frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                            frame, visualPlayer.mechColour, rotation, drawOrigin, drawScale, spriteEffects);
                         if (lightsDye > 0) lightDrawData.shader = lightsDye;
                         playerDrawData.Add(lightDrawData);
                     }
@@ -641,7 +648,7 @@ namespace MechMod.Content.Mounts
                     var drawData = new DrawData(
                         visualPlayer.headTexture.Value,
                         drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[3].X * visualDirection, visualPlayer.bodyOffsets[3].Y),
-                        frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                        frame, visualPlayer.mechColour, rotation, drawOrigin, drawScale, spriteEffects);
                     if (headDye > 0) drawData.shader = headDye;
                     playerDrawData.Add(drawData);
                     if (visualPlayer.headLightTexture != null)
@@ -649,7 +656,7 @@ namespace MechMod.Content.Mounts
                         var lightDrawData = new DrawData(
                             visualPlayer.headLightTexture.Value,
                             drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[3].X * visualDirection, visualPlayer.bodyOffsets[3].Y),
-                            frame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                            frame, visualPlayer.mechColour, rotation, drawOrigin, drawScale, spriteEffects);
                         if (lightsDye > 0) lightDrawData.shader = lightsDye;
                         playerDrawData.Add(lightDrawData);
                     }
@@ -665,7 +672,7 @@ namespace MechMod.Content.Mounts
                     var drawData = new DrawData(
                         visualPlayer.armsLTexture.Value,
                         drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[4].X * visualDirection, visualPlayer.bodyOffsets[4].Y),
-                        setArmLFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                        setArmLFrame, visualPlayer.mechColour, rotation, drawOrigin, drawScale, spriteEffects);
                     if (armsDye > 0) drawData.shader = armsDye;
                     playerDrawData.Add(drawData);
                     if (visualPlayer.armsLLightTexture != null)
@@ -673,7 +680,7 @@ namespace MechMod.Content.Mounts
                         var lightDrawData = new DrawData(
                             visualPlayer.armsLLightTexture.Value,
                             drawPosition + groundOffset + new Vector2(visualPlayer.bodyOffsets[4].X * visualDirection, visualPlayer.bodyOffsets[4].Y),
-                            setArmLFrame, drawColor, rotation, drawOrigin, drawScale, spriteEffects);
+                            setArmLFrame, visualPlayer.mechColour, rotation, drawOrigin, drawScale, spriteEffects);
                         if (lightsDye > 0) lightDrawData.shader = lightsDye;
                         playerDrawData.Add(lightDrawData);
                     }

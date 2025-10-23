@@ -31,7 +31,7 @@ namespace MechMod.Content.Items.MechModules.Passive
         private int explosionKnockback = 30;
         private int explosionType = ModContent.ProjectileType<NuclearEjectProjectile>();
 
-        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
+        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer)
         {
             if (Main.myPlayer == player.whoAmI)
             {

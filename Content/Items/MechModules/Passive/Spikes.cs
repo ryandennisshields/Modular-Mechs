@@ -31,7 +31,7 @@ namespace MechMod.Content.Items.MechModules.Passive
 
         private Dictionary<int, int> damageCooldown = []; // Cooldown for each NPC
 
-        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
+        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer)
         {
             for (int i = 0; i < Main.maxNPCs; i++)
             {

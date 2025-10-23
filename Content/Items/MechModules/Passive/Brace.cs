@@ -29,7 +29,7 @@ namespace MechMod.Content.Items.MechModules.Passive
         private const float damageBonus = 0.1f; // 10% damage bonus
         private const float speedReduction = 0.9f; // 10% speed reduction
 
-        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
+        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer)
         {
             if (weaponsPlayer.DamageClass == DamageClass.Ranged) // If the player's weapon is ranged,
             {

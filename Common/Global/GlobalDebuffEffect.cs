@@ -1,4 +1,4 @@
-﻿using MechMod.Content.Debuffs;
+﻿using MechMod.Content.Items.MechWeapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -20,7 +20,7 @@ namespace MechMod.Common.Global
         // Arbalest debuff effect variables
         public int arbalestFrame = 0; // Current frame of the texture
         private int arbalestMaxFrame = 3; // Max frames in the texture
-        private static Asset<Texture2D> arbalestDebuffTexture = ModContent.Request<Texture2D>("MechMod/Content/Debuffs/ArbalestDebuffEffect");
+        private static Asset<Texture2D> arbalestDebuffTexture = ModContent.Request<Texture2D>("MechMod/Content/Items/MechWeapons/ArbalestDebuffEffect");
 
         public override void AI(NPC npc)
         {

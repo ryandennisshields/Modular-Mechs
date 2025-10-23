@@ -94,6 +94,7 @@ namespace MechMod
                 // Active
                 { "missilelauncher", new MechPart(ModContent.ItemType<MissileLauncher>(), "activemodule")},
                 { "repair", new MechPart(ModContent.ItemType<Repair>(), "activemodule")},
+                { "overclock", new MechPart(ModContent.ItemType<Overclock>(), "activemodule")},
             };
 
             MechDashKeybind = KeybindLoader.RegisterKeybind(this, "MechDash", "V"); // Register keybind for dashing and set default key to V

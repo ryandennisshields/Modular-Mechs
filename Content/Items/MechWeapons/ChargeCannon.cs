@@ -120,7 +120,7 @@ namespace MechMod.Content.Items.MechWeapons
                         proj.Projectile.scale = scale;
                     }
 
-                    player.Hurt(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"{player.name} lived life to the fullest as a disco ball.")), 20, 0, armorPenetration: 999); // Damage the player for overcharging
+                    player.Hurt(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"{player.name} lived life to the fullest as a disco ball.")), (int)(player.statLifeMax2 * 0.05f), 0, armorPenetration: 999); // Hurt the player for 10% of their max health
 
                     SoundEngine.PlaySound(SoundID.Item33, player.position); // Play a sound when the weapon is overcharging
                 }

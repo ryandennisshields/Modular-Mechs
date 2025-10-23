@@ -22,7 +22,7 @@ namespace MechMod.Content.Items.MechModules.Passive
         public ModuleSlot MSlot => ModuleSlot.Passive; // Passive slot
         public ModuleType MType => ModuleType.OnMount; // Mount effect
 
-        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer)
+        public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer)
         {
             modPlayer.mechBuffDuration *= 2; // Double the mech buff duration
             weaponsPlayer.finalDamageModifier = 0.75f; // 25% final damage reduction
