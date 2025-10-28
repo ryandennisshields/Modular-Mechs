@@ -30,7 +30,9 @@ namespace MechMod.Content.Items.MechWeapons
         public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn)
         {
             int manaCost = 6; // Mana cost for use
-            if (player.statMana > manaCost) // If the player has enough mana,
+            bool manaCheck = player.CheckMana(manaCost, true); // Check and consume mana
+            player.manaRegenDelay = 120; // 2 seconds of mana regen delay
+            if (manaCheck) // If the player has enough mana,
             {
                 weaponsPlayer.canUse = true; // Allow weapon use
 
@@ -58,10 +60,6 @@ namespace MechMod.Content.Items.MechWeapons
 
                 // Create projectile
                 Projectile.NewProjectile(new EntitySource_Parent(player), player.Center + offset, velocity, projectileType, damage, knockback, player.whoAmI);
-
-                // Consume mana and apply mana regen delay
-                player.CheckMana(manaCost, true);
-                player.manaRegenDelay = 120; // 2 seconds of mana regen delay
 
                 int holdTime = 50; // Amount of time player holds out the weapon after ceasing to use
                 visualPlayer.animationTimer = holdTime; // Set the animation timer to hold the weapon out

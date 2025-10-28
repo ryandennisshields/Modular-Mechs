@@ -141,12 +141,15 @@ namespace MechMod.Content.Mounts
             MechWeaponsPlayer weaponsPlayer = player.GetModPlayer<MechWeaponsPlayer>();
 
             modPlayer.mechBuffDuration = modPlayer.powerCellActive ? 5400 : 2700; // Set mech buff duration based on if power cell is active
-            modPlayer.allowDown = false; // Disable hovering with Boosters
 
             ApplyParts(player, modPlayer, visualPlayer, weaponsPlayer); // Apply the stats and textures of the equipped parts
 
             modPlayer.grantedBonuses = false; // Reset the bonuses tracker
 
+            // Reset Module variables
+            modPlayer.allowHover = false;
+            modPlayer.manaShield = false;
+            modPlayer.relocatorPosition = default;
             // Check for any OnMount modules and apply their effects
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
             {
@@ -292,6 +295,10 @@ namespace MechMod.Content.Mounts
                     }
                 }
             }
+            if (modPlayer.relocatorPosition != default) // If Relocator position is set,
+            {
+                player.Teleport(modPlayer.relocatorPosition, TeleportationStyleID.TeleporterTile); // Teleport the player to the set position
+            }
 
             // Debuff the Player
             int mechDebuff = ModContent.BuffType<MechDebuff>();
@@ -331,7 +338,7 @@ namespace MechMod.Content.Mounts
             if (player.mount._frameState == Mount.FrameFlying)
             {
                 // Disable player's ability to hover while flying
-                if (!modPlayer.allowDown)
+                if (!modPlayer.allowHover)
                     player.controlDown = false;
 
                 // Use flight stats from Booster for speed

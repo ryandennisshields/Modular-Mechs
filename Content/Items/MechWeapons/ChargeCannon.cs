@@ -48,8 +48,10 @@ namespace MechMod.Content.Items.MechWeapons
 
         public void UseAbility(Player player, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer, Vector2 mousePosition, bool toggleOn)
         {
-            int manaCost = 1; // Mana cost for use
-            if (player.statMana > manaCost) // If the player has enough mana,
+            int manaCost = 2; // Mana cost for use
+            bool manaCheck = player.CheckMana(manaCost, true); // Check and consume mana
+            player.manaRegenDelay = 120; // 2 seconds of mana regen delay
+            if (manaCheck) // If the player has enough mana,
             {
                 weaponsPlayer.canUse = true; // Allow weapon use
                 weaponsPlayer.useRate = 3;
@@ -60,10 +62,6 @@ namespace MechMod.Content.Items.MechWeapons
                 knockback = weaponsPlayer.KnockbackCalc(4, player);
                 projSpeed = 25;
                 weaponsPlayer.CritChanceCalc(4, player);
-
-                // Consume mana and apply mana regen delay
-                player.CheckMana(manaCost, true);
-                player.manaRegenDelay = 120; // 2 seconds of mana regen delay
 
                 chargeTime++;
 

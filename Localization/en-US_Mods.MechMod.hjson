@@ -6,7 +6,7 @@ Items: {
 			Enter your Mech
 			Limited duration
 			Leaving the Mech by any means will incur a Debuff that also disables re-entry for a duration
-			Disables Set Bonuses
+			Disables Set Bonuses and Quick Heal
 			Use a Mech Bench to equip Parts
 			Head, Body, Arms and Legs must be equipped!
 			'''
@@ -416,6 +416,16 @@ Items: {
 
 	Overclock: {
 		DisplayName: Overclock
+		Tooltip: ""
+	}
+
+	ManaShield: {
+		DisplayName: Mana Shield
+		Tooltip: ""
+	}
+
+	Relocator: {
+		DisplayName: Relocator
 		Tooltip: ""
 	}
 }

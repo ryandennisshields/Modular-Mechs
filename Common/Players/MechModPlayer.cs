@@ -1,4 +1,5 @@
 ﻿using MechMod.Content.Mounts;
+using Microsoft.Xna.Framework;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -37,10 +38,14 @@ namespace MechMod.Common.Players
         public float flightJumpSpeed = 0f;
         public float flightHorizontalSpeed = 0f;
 
+        /// Module effects
+        public bool allowHover; // Tracks if the Hover module effect is active
+        public bool manaShield; // Tracks if the Mana Shield module effect is active
+        public Vector2 relocatorPosition; // Stores the position set by the Relocator module
+
         /// General Mech variables
         public int mechBuffDuration; // Duration of the Mech Buff applied when mounting the Mech
         public int mechDebuffDuration; // Duration of the Mech Debuff applied when dismounting the Mech
-        public bool allowDown; // Controls whether the player can hold down to hover with Booster Parts
         public int launchForce; // Force applied to the player when dismounting the Mech
 
         /// Trackers
@@ -236,10 +241,24 @@ namespace MechMod.Common.Players
                 // Save the player if they die in the mech
                 if (info.Damage >= Player.statLife || Player.statLife < 1) // If the player dies in the mech,
                 {
-                    Player.mount.Dismount(Player); // Dismount the player
+                    info.Cancelled = true; // Attempt to cancel the damage
                     float PlayerHealth = Player.statLifeMax; // Get the player's max health
                     Player.statLife = (int)(PlayerHealth *= 0.5f); // Set the player's health to 50% of their max health
-                    Player.immuneTime = 80; // Give the player 1.33 seconds of invincibility
+                    Player.mount.Dismount(Player); // Dismount the player
+                }
+
+                if (manaShield && !Player.HasBuff(BuffID.ManaSickness)) // If the Mana Shield module effect is active and the player does not have the Mana Sickness debuff,
+                {
+                    MechWeaponsPlayer weaponsPlayer = Player.GetModPlayer<MechWeaponsPlayer>();
+
+                    int manaCost = weaponsPlayer.DamageClass == DamageClass.Magic ? (int)(info.Damage * 0.25f) : (int)(info.Damage * 0.5f); // Mana cost for negating damage (25% for magic weapons, 50% for others)
+                    bool manaCheck = Player.CheckMana(manaCost, true); // Check and consume mana
+                    Player.manaRegenDelay = 120; // 2 seconds of mana regen delay
+                    if (manaCheck) // If the player has enough mana,
+                    {
+                        Player.statLife += (int)(info.Damage * 0.33f); // Reduce damage taken
+                        SoundEngine.PlaySound(SoundID.Item29 with { Volume = 0.5f }, Player.position); // Play mana shield hit sound
+                    }
                 }
             }
         }

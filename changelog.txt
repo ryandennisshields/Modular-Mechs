@@ -8,6 +8,7 @@ v1.1.0
 
 - Notable Changes
 > Right-click functionality of hotbar items is now disabled while in Mech
+> Magic Mech Weapons will now work with automatic Mana restoration accessories (e.g. Mana Flower)
 > !!!Quick Heal binding is now disabled inside the Mech!!!
 > To compensate for the above change, Mech now always has a base +100 life bonus regardless of parts
 

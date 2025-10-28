@@ -26,7 +26,7 @@ namespace MechMod.Content.Items.MechModules.Passive
         {
             if (player.mount._frameState == Mount.FrameFlying) // If player is flying,
             {
-                modPlayer.allowDown = true; // Allow hovering
+                modPlayer.allowHover = true; // Allow hovering
                 if (player.controlDown) // If player is hovering,
                 {
                     weaponsPlayer.partDamageBonus += 0.1f; // 10% damage bonus
