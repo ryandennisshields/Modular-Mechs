@@ -428,6 +428,11 @@ Items: {
 		DisplayName: Relocator
 		Tooltip: ""
 	}
+
+	Blast: {
+		DisplayName: Blast
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -474,6 +479,7 @@ Projectiles: {
 	DroneProjectile.DisplayName: Drone Projectile
 	DroneMissileProjectile.DisplayName: Drone Missile Projectile
 	ChargeProjectile.DisplayName: Charge Projectile
+	BlastProjectile.DisplayName: Blast Projectile
 }
 
 Keybinds: {
