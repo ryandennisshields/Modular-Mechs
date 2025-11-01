@@ -155,13 +155,13 @@ namespace MechMod.Content.Items.MechWeapons
                 visualPlayer.weaponColour = Color.White;
 
                 // Get the direction and velocity towards the mouse cursor, adjusting for the offset
-                Vector2 offset = new(0, -38); // Offset to adjust the projectile's spawn position relative to the mech's center
+                Vector2 offset = new(0, -40); // Offset to adjust the projectile's spawn position relative to the mech's center
                 Vector2 direction = (Main.MouseWorld - player.Center) - offset;
                 direction.Normalize();
                 Vector2 velocity = direction * projSpeed;
 
                 // Adjust the spawn position to be at the end of the muzzle
-                Vector2 muzzleOffset = Vector2.Normalize(velocity) * 70f;
+                Vector2 muzzleOffset = Vector2.Normalize(velocity) * 65f;
                 if (Collision.CanHit(player.Center + offset, 0, 0, player.Center + offset + muzzleOffset, 0, 0))
                 {
                     offset += muzzleOffset;
