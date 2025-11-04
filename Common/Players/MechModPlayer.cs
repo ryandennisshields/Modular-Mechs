@@ -39,6 +39,7 @@ namespace MechMod.Common.Players
         public float flightHorizontalSpeed = 0f;
 
         /// Module effects
+        public int chargeTimer; // Timer for any modules that have charging effects (allows syncing of charge effects between clients)
         public bool allowHover; // Tracks if the Hover module effect is active
         public bool manaShield; // Tracks if the Mana Shield module effect is active
         public Vector2 relocatorPosition; // Stores the position set by the Relocator module
@@ -168,6 +169,11 @@ namespace MechMod.Common.Players
             packet.Write(powerCellActive);
             for (int i = 0; i < equippedParts.Length; i++)
                 packet.Write(equippedParts[i].type);
+            packet.Write(groundJumpSpeed);
+            packet.Write(groundHorizontalSpeed);
+            packet.Write(flightJumpSpeed);
+            packet.Write(flightHorizontalSpeed);
+            packet.Write(chargeTimer);
 
             packet.Send(toWho, fromWho);
         }
@@ -178,6 +184,11 @@ namespace MechMod.Common.Players
             powerCellActive = reader.ReadBoolean();
             for (int i = 0; i < equippedParts.Length; i++)
                 equippedParts[i].SetDefaults(reader.ReadInt32());
+            groundJumpSpeed = reader.ReadSingle();
+            groundHorizontalSpeed = reader.ReadSingle();
+            flightJumpSpeed = reader.ReadSingle();
+            flightHorizontalSpeed = reader.ReadSingle();
+            chargeTimer = reader.ReadInt32();
         }
 
         // These functions work together to detect changes in the player data and sync them between clients,
@@ -191,6 +202,11 @@ namespace MechMod.Common.Players
             clone.powerCellActive = powerCellActive;
             for (int i = 0; i < equippedParts.Length; i++)
                 clone.equippedParts[i].type = equippedParts[i].type;
+            clone.groundJumpSpeed = groundJumpSpeed;
+            clone.groundHorizontalSpeed = groundHorizontalSpeed;
+            clone.flightJumpSpeed = flightJumpSpeed;
+            clone.flightHorizontalSpeed = flightHorizontalSpeed;
+            clone.chargeTimer = chargeTimer;
         }
 
         // Function that runs if CopyClientState detects a change, syncing the changes between clients
@@ -198,7 +214,13 @@ namespace MechMod.Common.Players
         {
             var clone = (MechModPlayer)clientPlayer;
             bool syncPlayer = false;
-            if (powerCellActive != clone.powerCellActive)
+            if (powerCellActive != clone.powerCellActive ||
+                chargeTimer != clone.chargeTimer ||
+                groundJumpSpeed != clone.groundJumpSpeed ||
+                groundHorizontalSpeed != clone.groundHorizontalSpeed ||
+                flightJumpSpeed != clone.flightJumpSpeed ||
+                flightHorizontalSpeed != clone.flightHorizontalSpeed
+                )
             {
                 syncPlayer = true;
             }

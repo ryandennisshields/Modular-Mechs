@@ -121,6 +121,7 @@ namespace MechMod.Common.Players
             packet.Write(armLFrame);
             packet.Write(weaponPosition.X);
             packet.Write(weaponPosition.Y);
+            packet.Write(weaponColour.PackedValue);
             packet.Write(weaponRotation);
             packet.Write(weaponOrigin.X);
             packet.Write(weaponOrigin.Y);
@@ -224,6 +225,7 @@ namespace MechMod.Common.Players
             armLFrame = reader.ReadInt32();
             weaponPosition.X = reader.ReadSingle();
             weaponPosition.Y = reader.ReadSingle();
+            weaponColour.PackedValue = reader.ReadUInt32();
             weaponRotation = reader.ReadSingle();
             weaponOrigin.X = reader.ReadSingle();
             weaponOrigin.Y = reader.ReadSingle();
@@ -248,6 +250,7 @@ namespace MechMod.Common.Players
             clone.armRFrame = armRFrame;
             clone.armLFrame = armLFrame;
             clone.weaponPosition = weaponPosition;
+            clone.weaponColour = weaponColour;
             clone.weaponRotation = weaponRotation;
             clone.weaponOrigin = weaponOrigin;
             clone.weaponScale = weaponScale;
@@ -266,6 +269,7 @@ namespace MechMod.Common.Players
                 armRFrame != clone.armRFrame ||
                 armLFrame != clone.armLFrame ||
                 weaponPosition != clone.weaponPosition ||
+                weaponColour != clone.weaponColour ||
                 weaponRotation != clone.weaponRotation ||
                 weaponOrigin != clone.weaponOrigin ||
                 weaponScale != clone.weaponScale ||

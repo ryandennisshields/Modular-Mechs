@@ -100,9 +100,9 @@ namespace MechMod
                 { "blast", new MechPart(ModContent.ItemType<Blast>(), "activemodule")},
             };
 
-            MechDashKeybind = KeybindLoader.RegisterKeybind(this, "MechDash", "V"); // Register keybind for dashing and set default key to V
+            MechDashKeybind = KeybindLoader.RegisterKeybind(this, "MechDash", "C"); // Register keybind for dashing and set default key to C
 
-            MechActivateModule = KeybindLoader.RegisterKeybind(this, "MechActivateModule", "C"); // Register keybind for activating the active module and set default key to C
+            MechActivateModule = KeybindLoader.RegisterKeybind(this, "MechActivateModule", "V"); // Register keybind for activating the active module and set default key to V
         }
 
         public override void Unload()

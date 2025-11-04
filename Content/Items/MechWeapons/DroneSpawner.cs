@@ -473,11 +473,15 @@ namespace MechMod.Content.Items.MechWeapons
             Dust.NewDust(behind - new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 0.5f);
 
             // Tracking logic
-            Vector2 direction = Main.MouseWorld - Projectile.Center; // Get the direction the missile needs to head
-            direction.Normalize(); // Normalise the direction
-            Projectile.velocity.X = MathHelper.SmoothStep(Projectile.velocity.X, direction.X * speed, rotateSpeed); // Smoothly adjust the X velocity
-            Projectile.velocity.Y = MathHelper.SmoothStep(Projectile.velocity.Y, direction.Y * speed, rotateSpeed); // Smoothly adjust the Y velocity
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; // Rotate to face the mouse
+            if (Projectile.owner == Main.myPlayer) // If the projectile is owned by the local player,
+            {
+                Projectile.netUpdate = true; // Sync the projectile's position with the server (Main.MouseWorld would take the client's mouse position, not tracking the actual projectile owner's mouse position, so syncing is necessary)
+                Vector2 direction = Main.MouseWorld - Projectile.Center; // Get the direction the missile needs to head
+                direction.Normalize(); // Normalise the direction
+                Projectile.velocity.X = MathHelper.SmoothStep(Projectile.velocity.X, direction.X * speed, rotateSpeed); // Smoothly adjust the X velocity
+                Projectile.velocity.Y = MathHelper.SmoothStep(Projectile.velocity.Y, direction.Y * speed, rotateSpeed); // Smoothly adjust the Y velocity
+            }
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; // Rotate to face the headed direction
         }
 
         public override void OnKill(int timeLeft)

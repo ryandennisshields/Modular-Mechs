@@ -29,7 +29,6 @@ namespace MechMod.Content.Items.MechModules.Active
 
         private int cooldown = 1800; // Cooldown in frames (30 seconds)
 
-        private int chargeTimer = 120; // Timer for charge-up
         private bool activate; // Tracker for when the blast happens
 
         private int chargeTime = 120; // Charge time in frames (2 seconds)
@@ -50,12 +49,12 @@ namespace MechMod.Content.Items.MechModules.Active
             if (player.whoAmI == Main.myPlayer && MechMod.MechActivateModule.JustPressed && !player.HasBuff(ModContent.BuffType<Cooldown>())) // If the player presses the "MechActivateModule" binding and the player is not on cooldown,
             {
                 player.AddBuff(ModContent.BuffType<Cooldown>(), cooldown); // Add cooldown
-                chargeTimer = 0; // Reset charge timer
+                modPlayer.chargeTimer = chargeTime; // Reset charge timer
             }
 
-            if (chargeTimer < chargeTime) // If the charge timer is less than the charge time,
+            if (modPlayer.chargeTimer > 0) // If the charge timer is less than the charge time,
             {
-                chargeTimer++; // Increment charge timer
+                modPlayer.chargeTimer--; // Increment charge timer
 
                 Dust.NewDust(new Vector2(player.position.X - 20, player.position.Y), player.width * 3, player.height, DustID.Electric, Alpha: 100); // Create charging dust effect
 
@@ -75,7 +74,7 @@ namespace MechMod.Content.Items.MechModules.Active
                     activate = true;
                 }
             }
-            else if (chargeTimer >= chargeTime && activate) // If the charge timer has reached the charge time and the blast ready to be activated,
+            else if (modPlayer.chargeTimer <= 0 && activate) // If the charge timer has reached the charge time and the blast ready to be activated,
             {
                 // Create blast projectile
                 Projectile.NewProjectile(

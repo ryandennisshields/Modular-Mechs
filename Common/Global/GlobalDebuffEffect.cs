@@ -32,7 +32,7 @@ namespace MechMod.Common.Global
                     int projectileType = ProjectileID.GrenadeIII; // Use grenade explosion for the explosion effect
                     Projectile.NewProjectile(new EntitySource_Parent(npc), npc.Center, Vector2.Zero, projectileType, 50, 10f, Main.myPlayer);
 
-                    arbalestFrame = 0; // Reset frame counter
+                    arbalestFrame = default; // Reset frame counter
                     npc.DelBuff(npc.FindBuffIndex(ModContent.BuffType<ArbalestDebuff>())); // Remove the debuff
                 }
             }
