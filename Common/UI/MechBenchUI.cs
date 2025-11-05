@@ -1,5 +1,7 @@
 ﻿using MechMod.Common.Players;
+using MechMod.Content.Items.MechMisc;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -7,9 +9,6 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
-using MechMod.Content.Items.MechMisc;
-using Microsoft.Xna.Framework.Graphics;
-using System.Runtime.CompilerServices;
 
 namespace MechMod.Common.UI
 {
@@ -493,11 +492,11 @@ namespace MechMod.Common.UI
                 DeductResources(player);
 
                 // Increase the upgrade damage bonus, notify the player of the increase, increase the upgrade level, and play a sound
-                modPlayer.upgradeDamageBonus += upgradeDamageValues[modPlayer.upgradeLevel]; 
+                modPlayer.upgradeDamageBonus += upgradeDamageValues[modPlayer.upgradeLevel];
                 Main.NewText($"Upgrade Successful! Damage increased by {Math.Round(upgradeDamageValues[modPlayer.upgradeLevel] * 100)}%");
                 modPlayer.upgradeLevel++;
                 SoundEngine.PlaySound(SoundID.Research);
-                
+
                 // Update requirements for next upgrade
                 UpdateUpgradeRequirements();
             }
@@ -509,7 +508,7 @@ namespace MechMod.Common.UI
             {
                 Main.NewText($"Not enough resources for upgrade.");
             }
-            
+
         }
 
         // Function to check if the player has enough resources to upgrade their level
@@ -541,7 +540,7 @@ namespace MechMod.Common.UI
                 if (player.CountItem(materialID) >= upgradeCost)
                 {
                     for (int i = 0; i < upgradeCost; i++)
-                    player.ConsumeItem(materialID);
+                        player.ConsumeItem(materialID);
 
                     Main.NewText($"{upgradeCost} {Lang.GetItemNameValue(materialID)} consumed for upgrade.");
                     break;

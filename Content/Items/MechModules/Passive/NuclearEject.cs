@@ -1,12 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MechMod.Common.Players;
 using MechMod.Content.Mounts;
+using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ModLoader;
-using static MechMod.Content.Mounts.IMechModule;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
-using MechMod.Common.Players;
-using Terraria.Audio;
+using Terraria.ModLoader;
+using static MechMod.Content.Mounts.IMechModule;
 
 namespace MechMod.Content.Items.MechModules.Passive
 {

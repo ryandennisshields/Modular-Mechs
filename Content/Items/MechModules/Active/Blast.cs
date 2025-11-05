@@ -2,7 +2,6 @@
 using MechMod.Content.Debuffs;
 using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
-using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;

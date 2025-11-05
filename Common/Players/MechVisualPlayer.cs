@@ -144,7 +144,7 @@ namespace MechMod.Common.Players
             {
                 string headPath = $"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Visual";
                 headTexture = Mod.Assets.Request<Texture2D>(headPath);
-                if (modPlayer.powerCellActive) 
+                if (modPlayer.powerCellActive)
                 {
                     string headLightPath = $"Content/Items/MechHeads/{modPlayer.equippedParts[MechMod.headIndex].ModItem.GetType().Name}Light";
                     headLightTexture = Mod.Assets.Request<Texture2D>(headLightPath);
@@ -262,7 +262,7 @@ namespace MechMod.Common.Players
         {
             var clone = (MechVisualPlayer)clientPlayer;
             bool syncPlayer = false;
-            if  (mechColour != clone.mechColour ||
+            if (mechColour != clone.mechColour ||
                 animationTimer != clone.animationTimer ||
                 animationProgress != clone.animationProgress ||
                 useDirection != clone.useDirection ||

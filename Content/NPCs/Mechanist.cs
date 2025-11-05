@@ -62,7 +62,7 @@ namespace MechMod.Content.NPCs
                 .SetNPCAffection(NPCID.Steampunker, AffectionLevel.Love)
                 .SetNPCAffection(NPCID.GoblinTinkerer, AffectionLevel.Like)
                 .SetNPCAffection(NPCID.Mechanic, AffectionLevel.Like)
-                .SetNPCAffection(NPCID.Dryad , AffectionLevel.Dislike)
+                .SetNPCAffection(NPCID.Dryad, AffectionLevel.Dislike)
                 .SetNPCAffection(NPCID.WitchDoctor, AffectionLevel.Hate)
                 ;
 
@@ -79,7 +79,7 @@ namespace MechMod.Content.NPCs
             NPC.friendly = true;
             NPC.width = 18;
             NPC.height = 40;
-            NPC.aiStyle = 7;
+            NPC.aiStyle = NPCAIStyleID.Passive;
             NPC.damage = 10;
             NPC.defense = 15;
             NPC.lifeMax = 250;
@@ -93,7 +93,7 @@ namespace MechMod.Content.NPCs
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange([
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface, // NPC spawns on surface
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface, // NPC spawns on surface
 
 				new FlavorTextBestiaryInfoElement("Having spent many years perfecting his craft, the Mechanitor provides his technology to others with a sense of pride."), // Bestiary flavor text
             ]);
@@ -177,7 +177,7 @@ namespace MechMod.Content.NPCs
                 if (golemCondition.IsMet()) // If Golem has been defeated,
                     chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.WitchDoctorAfterGolem", Main.npc[witchDoctor].GivenName)); // Add "Witch Doctor after Golem" dialogue
                 if (NPC.GivenName == "Ryan" && Main.rand.NextBool(30)) // If the Mechanist's name is Ryan and with a 1 in 30 chance,
-                chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.TheFunny", Main.npc[witchDoctor].GivenName)); // Add "The Funny" dialogue
+                    chat.Add(Language.GetTextValue("Mods.MechMod.NPCs.Mechanist.Dialogue.TheFunny", Main.npc[witchDoctor].GivenName)); // Add "The Funny" dialogue
             }
             Condition mechCondition = Condition.DownedMechBossAny; // Condition for any Mechanical Boss being defeated
             if (mechCondition.IsMet()) // If any Mechanical Boss has been defeated,
@@ -216,7 +216,7 @@ namespace MechMod.Content.NPCs
         }
 
         public override void SetChatButtons(ref string button, ref string button2)
-        { 
+        {
             button = Language.GetTextValue("LegacyInterface.28"); // Shop button
             button2 = "Tips";
         }
@@ -227,7 +227,7 @@ namespace MechMod.Content.NPCs
         public override void OnChatButtonClicked(bool firstButton, ref string shop)
         {
             if (firstButton) // Shop button
-            { 
+            {
                 shop = "Shop"; // Open the shop
             }
             if (!firstButton) // Tips button

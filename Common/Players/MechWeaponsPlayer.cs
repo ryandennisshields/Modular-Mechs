@@ -35,7 +35,7 @@ namespace MechMod.Common.Players
 
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
-            if (Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>()) 
+            if (Player.mount.Active && Player.mount.Type == ModContent.MountType<ModularMech>())
             {
                 if (Main.mouseRight && !Player.mouseInterface) // If player is right-clicking and not interacting with the UI,
                 {

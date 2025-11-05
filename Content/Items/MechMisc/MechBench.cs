@@ -1,7 +1,7 @@
-﻿using Terraria.ID;
+﻿using MechMod.Common.UI;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
-using MechMod.Common.UI;
 
 namespace MechMod.Content.Items.MechMisc
 {

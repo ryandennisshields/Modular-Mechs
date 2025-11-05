@@ -25,6 +25,6 @@ namespace MechMod.Content.Buffs
             player.mount.SetMount(ModContent.MountType<ModularMech>(), player); // Apply the Modular Mech mount to the player
             player.controlUseItem = false; // Disable item usage (but not automatic usage)
             player.SetTalkNPC(-1); // Disable NPC interaction
-        }    
+        }
     }
 }

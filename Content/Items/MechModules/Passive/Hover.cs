@@ -1,9 +1,9 @@
-﻿using MechMod.Content.Mounts;
+﻿using MechMod.Common.Players;
+using MechMod.Content.Mounts;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using static MechMod.Content.Mounts.IMechModule;
-using Terraria.ID;
-using MechMod.Common.Players;
 
 namespace MechMod.Content.Items.MechModules.Passive
 {

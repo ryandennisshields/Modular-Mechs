@@ -27,7 +27,7 @@ namespace MechMod.Common.Global
             if (npc.HasBuff(ModContent.BuffType<ArbalestDebuff>())) // If the NPC has the Arbalest debuff,
             {
                 if (arbalestFrame == arbalestMaxFrame) // If on the last frame,
-                {                
+                {
                     // Create explosion effect and delete debuff
                     int projectileType = ProjectileID.GrenadeIII; // Use grenade explosion for the explosion effect
                     Projectile.NewProjectile(new EntitySource_Parent(npc), npc.Center, Vector2.Zero, projectileType, 50, 10f, Main.myPlayer);

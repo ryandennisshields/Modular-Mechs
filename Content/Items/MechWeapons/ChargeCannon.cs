@@ -7,8 +7,6 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using XPT.Core.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace MechMod.Content.Items.MechWeapons
 {
@@ -193,7 +191,7 @@ namespace MechMod.Content.Items.MechWeapons
         {
             Projectile.width = (int)(80 * Projectile.scale);
             Projectile.height = (int)(40 * Projectile.scale);
-            Projectile.aiStyle = 1;
+            Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Magic;

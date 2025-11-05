@@ -47,7 +47,7 @@ namespace MechMod.Content.Items.MechModules.Active
                     weaponsPlayer.finalDamageModifier *= 2f; // Double all damage
                     SoundEngine.PlaySound(SoundID.NPCHit57, player.position); // Play aggressive sound
                 }
-            }   
+            }
         }
     }
 

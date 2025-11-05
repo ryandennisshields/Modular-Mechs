@@ -112,7 +112,7 @@ namespace MechMod.Content.Items.MechWeapons
                 null,
                 lightColor,
                 Projectile.rotation,
-                new Vector2(0,0),
+                new Vector2(0, 0),
                 0,
                 SpriteEffects.None,
                 0

@@ -1,6 +1,5 @@
 ﻿using MechMod.Common.Global;
 using MechMod.Common.Players;
-using MechMod.Content.Debuffs;
 using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
 using Terraria;

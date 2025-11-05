@@ -112,7 +112,7 @@ namespace MechMod.Content.Mounts
             // Swim
             MountData.swimFrameCount = MountData.inAirFrameCount;
             MountData.swimFrameDelay = MountData.inAirFrameDelay;
-            MountData.swimFrameStart= MountData.inAirFrameStart;
+            MountData.swimFrameStart = MountData.inAirFrameStart;
 
             // Set movement stats to 0, as they will be modified in code based on the equipped parts
             MountData.acceleration = 0f;
@@ -526,7 +526,7 @@ namespace MechMod.Content.Mounts
                 SoundEngine.PlaySound(SoundID.NPCHit3, player.position);
                 SoundEngine.PlaySound(SoundID.Dig, player.position);
                 for (int i = 0; i < 50; i++)
-                    Dust.NewDust(new Vector2(player.position.X - 20 + directionOffset , player.position.Y + 80), 80, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when landing
+                    Dust.NewDust(new Vector2(player.position.X - 20 + directionOffset, player.position.Y + 80), 80, 1, DustID.Smoke, player.velocity.X * 0.2f, player.velocity.Y * 0.2f); // Create dust when landing
                 visualPlayer.airTime = default; // Reset the air time
                 visualPlayer.airVelocity = default; // Reset the stored Y velocity
             }

@@ -1,17 +1,17 @@
 using MechMod.Common.Players;
-using MechMod.Content.Items.MechHeads;
-using MechMod.Content.Items.MechBodies;
 using MechMod.Content.Items.MechArms;
-using MechMod.Content.Items.MechLegs;
+using MechMod.Content.Items.MechBodies;
 using MechMod.Content.Items.MechBoosters;
-using MechMod.Content.Items.MechWeapons;
-using MechMod.Content.Items.MechModules.Passive;
+using MechMod.Content.Items.MechHeads;
+using MechMod.Content.Items.MechLegs;
 using MechMod.Content.Items.MechModules.Active;
+using MechMod.Content.Items.MechModules.Passive;
+using MechMod.Content.Items.MechWeapons;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System.IO;
 
 namespace MechMod
 {

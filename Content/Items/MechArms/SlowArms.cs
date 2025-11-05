@@ -15,7 +15,7 @@ namespace MechMod.Content.Items.MechArms
             Item.rare = ItemRarityID.Green;
         }
 
-        public void ApplyStats(Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer,  ModularMech mech)
+        public void ApplyStats(Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, ModularMech mech)
         {
             weaponsPlayer.partDamageBonus += 0.3f * modPlayer.partEffectiveness[MechMod.armsIndex]; // 30% damage bonus
             weaponsPlayer.partAttackSpeedBonus -= 0.1f / modPlayer.partEffectiveness[MechMod.armsIndex]; // 10% slower attack speed
