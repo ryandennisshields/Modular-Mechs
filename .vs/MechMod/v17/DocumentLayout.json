@@ -270,7 +270,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 382,
-          "SelectedChildIndex": 16,
+          "SelectedChildIndex": 15,
           "Children": [
             {
               "$type": "Bookmark",
@@ -295,10 +295,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:134:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
               "$type": "Bookmark",
@@ -344,7 +340,7 @@
               "RelativeDocumentMoniker": "Content\\Items\\MechWeapons\\ChargeCannon.cs",
               "ToolTip": "C:\\Users\\ryan0\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MechMod\\Content\\Items\\MechWeapons\\ChargeCannon.cs",
               "RelativeToolTip": "Content\\Items\\MechWeapons\\ChargeCannon.cs",
-              "ViewState": "AgIAAKgAAAAAAAAAAAAnwMEAAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAKUAAAAAAAAAAAAnwLUAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-12T13:12:14.635Z",
               "EditorCaption": ""
@@ -359,8 +355,7 @@
               "RelativeToolTip": "Common\\Global\\GlobalDebuffEffect.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-07T14:38:50.321Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-07T14:38:50.321Z"
             },
             {
               "$type": "Document",
