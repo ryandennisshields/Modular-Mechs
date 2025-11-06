@@ -16,7 +16,7 @@ namespace MechMod.Common.Players
         public DamageClass DamageClass { get; set; } = DamageClass.Default;
 
         // UseType sets the kind of action the Mech executes to use the weapon
-        // e.g. Swing weapons will swing the weapon (for something like a sword), Point weapons will point the weapon (for something like a gun)
+        // e.g. Swing weapons will swing the weapon (for something like a sword), Point weapons will point the weapon (for something like a gun), HoldUp weapons will hold the weapon up (for something like a magic tome)
         public enum UseType
         {
             Swing,

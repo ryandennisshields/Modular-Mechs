@@ -22,7 +22,7 @@ namespace MechMod.Content.Items.MechWeapons
             Item.value = Item.buyPrice(gold: 2);
             Item.rare = ItemRarityID.Orange;
 
-            Item.useAmmo = AmmoID.Arrow; // Make the weapon use Bullet ammo
+            Item.useAmmo = AmmoID.Arrow; // Make the weapon use Arrow ammo
         }
 
         public void SetStats(MechWeaponsPlayer weaponsPlayer)
@@ -92,10 +92,8 @@ namespace MechMod.Content.Items.MechWeapons
 
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (!isArbalestProj) // If the projectile isn't the correct projectile,
-                return; // Do nothing
-
-            target.AddBuff(ModContent.BuffType<ArbalestDebuff>(), duration); // Apply the debuff to the target for the specified duration
+            if (isArbalestProj) // If the projectile is the correct projectile (fired from the Arbalest),
+                target.AddBuff(ModContent.BuffType<ArbalestDebuff>(), duration); // Apply the debuff to the target for the specified duration
         }
     }
 
@@ -103,9 +101,9 @@ namespace MechMod.Content.Items.MechWeapons
     {
         public override void SetStaticDefaults()
         {
-            Main.debuff[Type] = true; // Mark as a debuff
-            Main.pvpBuff[Type] = true; // Allow the debuff to be applied in PvP
-            BuffID.Sets.NurseCannotRemoveDebuff[Type] = true; // Prevent nurse from removing the debuff
+            Main.debuff[Type] = true;
+            Main.pvpBuff[Type] = true;
+            BuffID.Sets.NurseCannotRemoveDebuff[Type] = true;
         }
 
         public override bool ReApply(NPC npc, int time, int buffIndex)

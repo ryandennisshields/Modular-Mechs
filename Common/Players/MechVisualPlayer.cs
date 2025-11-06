@@ -35,7 +35,7 @@ namespace MechMod.Common.Players
 
         public Vector2[] bodyOffsets = new Vector2[5]; // Offsets for Parts (Head, Arms, Legs) to align them properly with the Body
 
-        public Color mechColour = Color.White; // Base colour of the mech
+        public Color mechColour = Color.White; // Used to modify the colour of the Mech when needed
 
         /// Dyes
         public Item[] dyes = new Item[5]; // Dyes applied to to mech (Head, Body, Arms, Legs, Lighs)
@@ -61,7 +61,7 @@ namespace MechMod.Common.Players
 
         /// Weapon drawing variables
         public Vector2 weaponPosition = Vector2.Zero; // Used for positioning the weapon when it is drawn
-        public Color weaponColour = Color.White; // Used for changing the weapon's colour when it is drawn
+        public Color weaponColour = Color.White; // Used for changing the weapon's colour when needed
         public float weaponRotation = 0f; // Used for rotating the weapon when it is drawn
         public Vector2 weaponOrigin = Vector2.Zero; // Used so a different origin can be set for rotation
         public float weaponScale = 1f; // Used so the weapon can be hidden when needed

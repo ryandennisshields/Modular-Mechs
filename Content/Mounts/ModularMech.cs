@@ -162,7 +162,7 @@ namespace MechMod.Content.Mounts
                 }
             }
 
-            player.AddBuff(ModContent.BuffType<MechBuff>(), modPlayer.mechBuffDuration);
+            player.AddBuff(ModContent.BuffType<MechBuff>(), modPlayer.mechBuffDuration); // Add the Mech buff
 
             player.opacityForAnimation = 0; // Make Player invisible
 

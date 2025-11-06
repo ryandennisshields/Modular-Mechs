@@ -25,7 +25,7 @@ namespace MechMod.Content.Items.MechModules.Passive
         public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer)
         {
             modPlayer.mechBuffDuration *= 2; // Double the mech buff duration
-            weaponsPlayer.finalDamageModifier = 0.75f; // 25% final damage reduction
+            weaponsPlayer.finalDamageModifier -= 0.25f; // 25% final damage reduction
         }
     }
 }

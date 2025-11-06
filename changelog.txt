@@ -2,14 +2,19 @@ Modular Mechs v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVer
 
 v1.1.0
 - 3 new weapons
-- 2 new passive modules
-- 1 new active module
-- Bug fixes and improvements
+- 4 new passive modules
+- 2 new active modules
 
 - Notable Changes
-> Right-click functionality of hotbar items is now disabled while in Mech
-> Magic Mech Weapons will now work with automatic Mana restoration accessories (e.g. Mana Flower)
 > !!!Quick Heal binding is now disabled inside the Mech!!!
-> To compensate for the above change, Mech now always has a base +100 life bonus regardless of parts
-
+> To compensate for the change, Mech now always has a base +100 life bonus regardless of parts
 / The reason behind disabling the Quick Heal bind is to further push the Mech as a "temporary power-up with unique downsides", to make the usage of the Mech more strategic instead of just being free to utilise as extra health/damage (remember the Mech will save you from death!)
+
+- Changes, fixes and improvements
+> Right-click functionality of hotbar items is now disabled while in Mech
+> Magic Mech weapons will now work with automatic Mana restoration accessories (e.g. Mana Flower)
+> Fixed upgrade damage bonuses staying if Calamity Mod is disabled after already upgrading the Mech
+> Right-click equipping Mech Parts now warns for invalid Mech Parts
+> Metal pipe sound fixed :)
+> Brace Module zooms out a bit further
+> Mech duration warning sound is louder

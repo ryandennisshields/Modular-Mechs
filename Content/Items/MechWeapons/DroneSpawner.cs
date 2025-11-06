@@ -456,8 +456,8 @@ namespace MechMod.Content.Items.MechWeapons
         {
             Projectile.width = 14;
             Projectile.height = 14;
-            Projectile.friendly = true; // Can hit enemies
-            Projectile.ignoreWater = true; // Ignore water
+            Projectile.friendly = true;
+            Projectile.ignoreWater = true;
             Projectile.light = 0.5f; // Produce light
             Projectile.timeLeft = 100;
         }

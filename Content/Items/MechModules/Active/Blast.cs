@@ -39,9 +39,8 @@ namespace MechMod.Content.Items.MechModules.Active
         private int blastKnockback = 30;
         private int blastType = ModContent.ProjectileType<BlastProjectile>();
 
-        // Charge sound properties
-        private int chargeSoundTimer;
-        private int chargeSoundRate = 25;
+        private int chargeSoundTimer; // Timer to control charge sound playback
+        private int chargeSoundRate = 25; // Rate at which charge sound plays
 
         public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer)
         {
@@ -59,7 +58,7 @@ namespace MechMod.Content.Items.MechModules.Active
 
                 if (chargeSoundTimer >= chargeSoundRate) // If the sound timer is equal to or greater than the sound rate,
                 {
-                    SoundEngine.PlaySound(SoundID.Item15, player.position); // Play Laser sound when the charging
+                    SoundEngine.PlaySound(SoundID.Item15, player.position); // Play charging sound while charging
                     chargeSoundTimer = 0; // Reset sound timer
                 }
 
@@ -105,8 +104,8 @@ namespace MechMod.Content.Items.MechModules.Active
 
         public override void SetDefaults()
         {
-            Projectile.width = 800; // Hitbox width
-            Projectile.height = 800; // Hitbox height
+            Projectile.width = 800;
+            Projectile.height = 800;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 30; // 0.5 second duration

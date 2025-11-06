@@ -40,7 +40,7 @@ namespace MechMod.Content.Items.MechModules.Passive
                 float speedX = player.velocity.X > 0 ? player.velocity.X : -player.velocity.X;
                 float speedY = player.velocity.Y > 0 ? player.velocity.Y : -player.velocity.Y;
 
-                weaponsPlayer.finalDamageModifier = 1f + (speedX > speedY ? speedX * damageIncreaseForVelocity : speedY * damageIncreaseForVelocity); // Increase damage based on the greater of X or Y velocity, modified to not be as high
+                weaponsPlayer.finalDamageModifier += speedX > speedY ? speedX * damageIncreaseForVelocity : speedY * damageIncreaseForVelocity; // Increase final damage based on the greater of X or Y velocity
             }
         }
     }

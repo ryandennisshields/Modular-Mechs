@@ -269,11 +269,14 @@ namespace MechMod.Common.Players
                     Player.mount.Dismount(Player); // Dismount the player
                 }
 
-                if (manaShield && !Player.HasBuff(BuffID.ManaSickness)) // If the Mana Shield module effect is active and the player does not have the Mana Sickness debuff,
+                if (manaShield && !Player.HasBuff(BuffID.ManaSickness)) // If the Mana Shield module effect is active,
                 {
                     MechWeaponsPlayer weaponsPlayer = Player.GetModPlayer<MechWeaponsPlayer>();
 
-                    int manaCost = weaponsPlayer.DamageClass == DamageClass.Magic ? (int)(info.Damage * 0.25f) : (int)(info.Damage * 0.5f); // Mana cost for negating damage (25% for magic weapons, 50% for others)
+                    float costMultiplier = weaponsPlayer.DamageClass == DamageClass.Magic ? 0.25f : 0.5f; // Cost multiplier based on damage class (25% for magic weapons, 50% for others)
+                    if (Player.HasBuff(BuffID.ManaSickness)) // If player has Mana Sickness,
+                        costMultiplier += 0.30f; // Increase cost multiplier by 30%
+                    int manaCost = (int)(info.Damage * costMultiplier); // Mana cost for negating damage
                     bool manaCheck = Player.CheckMana(manaCost, true); // Check and consume mana
                     Player.manaRegenDelay = 120; // 2 seconds of mana regen delay
                     if (manaCheck) // If the player has enough mana,
