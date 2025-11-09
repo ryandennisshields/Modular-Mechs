@@ -65,7 +65,7 @@ namespace MechMod.Content.Items.MechModules.Active
 
             if (player.mount.Active) // If the player is mounted,
             {
-                for (int i = 0; i < 10; i++) // Create heat particles around the player
+                for (int i = 0; i < 10; i++) // Create heat dust around the player
                 {
                     int dustIndex = Dust.NewDust(new Vector2(player.position.X - 20, player.position.Y), player.width * 3, player.height, DustID.Torch, Scale: 1.5f);
                     Main.dust[dustIndex].velocity *= 2f;

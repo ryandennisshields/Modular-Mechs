@@ -26,7 +26,7 @@ namespace MechMod.Content.Items.MechModules.Active
         public ModuleSlot MSlot => ModuleSlot.Active; // Active slot
         public ModuleType MType => ModuleType.Persistent; // Persistent effect
 
-        private int cooldown = 1800; // Cooldown in frames (30 seconds)
+        private int cooldown = 1200; // Cooldown in frames (20 seconds)
 
         private bool activate; // Tracker for when the blast happens
 

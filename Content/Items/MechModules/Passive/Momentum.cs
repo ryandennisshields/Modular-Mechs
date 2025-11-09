@@ -1,5 +1,7 @@
 ﻿using MechMod.Common.Players;
 using MechMod.Content.Mounts;
+using Microsoft.Xna.Framework;
+using Steamworks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -23,7 +25,10 @@ namespace MechMod.Content.Items.MechModules.Passive
         public ModuleType MType => ModuleType.Persistent; // Persistent effect
 
         private float speedIncrease = 1.2f; // 20% speed increase
-        private float damageIncreaseForVelocity = 0.04f; // Damage increase per unit of speed
+        private float damageIncreaseForVelocity = 0.015f; // Damage increase per unit of speed
+
+        private float baseFinalDamageModifier; // Base final damage modifier to build upon
+        private float bonusDamage; // Current bonus damage being applied
 
         public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer)
         {
@@ -34,13 +39,19 @@ namespace MechMod.Content.Items.MechModules.Passive
                     // Increase horizontal speed
                     modPlayer.groundHorizontalSpeed *= speedIncrease;
                     modPlayer.flightHorizontalSpeed *= speedIncrease;
+
+                    baseFinalDamageModifier = weaponsPlayer.finalDamageModifier; // Store the base final damage modifier
                 }
 
                 // Get the player's X and Y velocity magnitudes
                 float speedX = player.velocity.X > 0 ? player.velocity.X : -player.velocity.X;
                 float speedY = player.velocity.Y > 0 ? player.velocity.Y : -player.velocity.Y;
 
-                weaponsPlayer.finalDamageModifier += speedX > speedY ? speedX * damageIncreaseForVelocity : speedY * damageIncreaseForVelocity; // Increase final damage based on the greater of X or Y velocity
+                float targetBonus = speedX > speedY ? speedX * damageIncreaseForVelocity : speedY * damageIncreaseForVelocity; // Increase target damage based on the greater of X or Y velocity
+
+                bonusDamage = MathHelper.Lerp(bonusDamage, targetBonus, 1f); // Interpolate to the new bonus damage
+
+                weaponsPlayer.finalDamageModifier = baseFinalDamageModifier + bonusDamage; // Apply the bonus damage to the final damage modifier
             }
         }
     }

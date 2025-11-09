@@ -22,7 +22,7 @@ namespace MechMod.Content.Mounts
     /// Interfaces create a contract, the other class provides implemention for the methods, and then that method is ran somewhere in ModularMech.
 
     /// <summary>
-    /// Interface for Mech Parts (head, body, arms, legs, booster).
+    /// Interface for Mech Parts (head, body, arms, legs, Booster).
     /// </summary>
     public interface IMechParts
     {
@@ -61,6 +61,7 @@ namespace MechMod.Content.Mounts
             OnMount,
             OnDismount
         }
+
         public ModuleType MType { get; }
 
         void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer); // Execute effect of the module
@@ -144,6 +145,7 @@ namespace MechMod.Content.Mounts
 
             ApplyParts(player, modPlayer, visualPlayer, weaponsPlayer); // Apply the stats and textures of the equipped parts
 
+            modPlayer.flightTime = MountData.flightTimeMax; // Set the current flight time to max
             modPlayer.grantedBonuses = false; // Reset the bonuses tracker
 
             // Reset Module variables
@@ -335,8 +337,29 @@ namespace MechMod.Content.Mounts
                 }
             }
 
-            if (player.mount._frameState == Mount.FrameFlying)
+            bool grounded = Collision.SolidCollision(new Vector2(player.position.X, player.position.Y + player.height), player.width, 4); // Check if the player is on the ground
+
+            if (!grounded && modPlayer.flightTime <= 0) // If the player is not grounded and has no flight time left,
             {
+                if (player.controlJump) // If the player is jumping,
+                {
+                    player.controlJump = false; // Disable jump (to prevent flying)
+                    modPlayer.activateSlowFall = true; // Activate slow fall
+                }
+                else if (player.releaseJump) // If the player releases jump,
+                    modPlayer.activateSlowFall = false; // Deactivate slow fall
+
+                if (modPlayer.activateSlowFall) // If slow fall is activated,
+                {
+                    player.slowFall = true; // Enable slow fall
+                }
+            }
+
+            if (player.mount._frameState == Mount.FrameFlying) // If the player is flying,
+            {
+                if (modPlayer.flightTime > 0)
+                    modPlayer.flightTime--; // Decrease flight time
+
                 // Disable player's ability to hover while flying
                 if (!modPlayer.allowHover)
                     player.controlDown = false;
@@ -346,13 +369,16 @@ namespace MechMod.Content.Mounts
                 MountData.runSpeed = modPlayer.flightHorizontalSpeed;
                 MountData.swimSpeed = modPlayer.flightHorizontalSpeed;
             }
-            else
+            else // Otherwise,
             {
                 // Use ground stats from Legs for speed
                 MountData.jumpSpeed = modPlayer.groundJumpSpeed;
                 MountData.runSpeed = modPlayer.groundHorizontalSpeed;
                 MountData.swimSpeed = modPlayer.groundHorizontalSpeed;
             }
+
+            if (grounded && modPlayer.flightTime != MountData.flightTimeMax) // If the player is on the ground and flight time is not max,
+                modPlayer.flightTime = MountData.flightTimeMax; // Replenish flight time while on the ground
 
             // Grant life bonus
             player.statLifeMax2 += modPlayer.lifeBonus;
@@ -377,7 +403,7 @@ namespace MechMod.Content.Mounts
 
             WeaponUseAnimationSetup(player, modPlayer, visualPlayer, weaponsPlayer); // Setup weapon use animation and position
 
-            Effects(player, modPlayer, visualPlayer); // Apply visual and sound effects
+            Effects(player, modPlayer, visualPlayer, grounded); // Apply visual and sound effects
 
             if (!player.HasBuff(ModContent.BuffType<MechBuff>())) // If the player does not have the Mech buff,
             {
@@ -386,7 +412,7 @@ namespace MechMod.Content.Mounts
         }
 
         // Function for any visual or/and sound effects
-        private static void Effects(Player player, MechModPlayer modPlayer, MechVisualPlayer visualPlayer)
+        private static void Effects(Player player, MechModPlayer modPlayer, MechVisualPlayer visualPlayer, bool grounded)
         {
             #region Duration Warning
 
@@ -415,7 +441,7 @@ namespace MechMod.Content.Mounts
             #region Booster
 
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
-            int boosterDuration = 30; // Delay between booster sounds
+            int boosterDuration = 30; // Delay between Booster sounds
 
             if (!modPlayer.equippedParts[MechMod.boosterIndex].IsAir) // If a Booster is equipped,
             {
@@ -437,9 +463,9 @@ namespace MechMod.Content.Mounts
                     float dustSpeedY;
                     if (dashPlayer.dashActive) // If dashing,
                     {
-                        // Create horizontal dust
-                        dustSpeedX = 5;
-                        dustSpeedY = 0;
+                        // Increase dust speed in the dash direction
+                        dustSpeedX = 12 * -dashPlayer.dashDirX;
+                        dustSpeedY = 12 * -dashPlayer.dashDirY;
                     }
                     else if (player.mount._frameState == Mount.FrameInAir || player.mount._frameState == Mount.FrameFlying) // If in air or flying,
                     {
@@ -458,7 +484,7 @@ namespace MechMod.Content.Mounts
 
                     float dustOffsetX = 0; // Offset to vary the X position of the dust
 
-                    for (int i = 0; i < 20; i++)
+                    for (int i = 0; i < 30; i++)
                     {
                         // Change dust position based on the index
                         switch (i)
@@ -478,7 +504,7 @@ namespace MechMod.Content.Mounts
                         }
                         // Create the dust at the appropriate position based on the player's direction
                         float posX = player.direction == -1 ? player.position.X + dustCenterXLeft + dustOffsetX : player.position.X + dustCenterXRight + dustOffsetX;
-                        float posY = (i < 10) ? player.position.Y - 5 : player.position.Y + 15;
+                        float posY = (i < 10) ? player.position.Y + 5 : player.position.Y + 25;
                         int dust = Dust.NewDust(new Vector2(posX, posY), 1, 1, ModContent.DustType<BoosterDust>(), dustSpeedX, dustSpeedY);
                         Main.dust[dust].customData = player; // Use custom data to hide dust if behind Mech
                     }
@@ -501,7 +527,7 @@ namespace MechMod.Content.Mounts
 
                 if (visualPlayer.stepTimer < stepSpeed) // Increment the timer until it reaches the step speed
                     visualPlayer.stepTimer++;
-                if (visualPlayer.stepTimer >= stepSpeed && player.mount._frameState == Mount.FrameRunning) // Once the timer reaches the step speed and the player is running,
+                if (visualPlayer.stepTimer >= stepSpeed && player.mount._frameState == Mount.FrameRunning && grounded) // Once the timer reaches the step speed and the player is running and grounded,
                 {
                     SoundEngine.PlaySound(SoundID.NPCHit3, player.position); // Play hit sound for step use
                     for (int i = 0; i < 15; i++)
@@ -520,7 +546,7 @@ namespace MechMod.Content.Mounts
                 visualPlayer.airVelocity = player.velocity.Y; // Store the Y velocity while in air
             }
 
-            if ((player.mount._frameState == Mount.FrameRunning || player.mount._frameState == Mount.FrameStanding) && visualPlayer.airTime >= 45 && visualPlayer.airVelocity >= 8) // If the player is grounded, air time is greater than 45 frames (0.75 seconds), and the stored Y velocity is greater than or equal to 8,
+            if (grounded && visualPlayer.airTime >= 45 && visualPlayer.airVelocity >= 8) // If the player is grounded, air time is greater than 45 frames (0.75 seconds), and the stored Y velocity is greater than or equal to 8,
             {
                 // Play landing sounds
                 SoundEngine.PlaySound(SoundID.NPCHit3, player.position);
@@ -941,6 +967,8 @@ namespace MechMod.Content.Mounts
             public int dashCoolDown; // Time between dashes
             public int dashDuration; // Time the dash lasts
 
+            public float dashDirX; // X direction of the dash
+            public float dashDirY; // Y direction of the dash
             public bool dashActive; // Check if the player is currently dashing
 
             private int dashDelay = 0; // Delay between dashes
@@ -952,24 +980,42 @@ namespace MechMod.Content.Mounts
                 {
                     if (MechMod.MechDashKeybind.JustPressed && dashDelay == 0) // If the player presses the dash keybind and the dash is not on cooldown,
                     {
+                        MechModPlayer modPlayer = Player.GetModPlayer<MechModPlayer>();
+
                         // Set the dash direction based on player input
-                        int dashDir;
-                        if (Player.controlRight)
-                            dashDir = 1;
-                        else if (Player.controlLeft)
-                            dashDir = -1;
-                        else
-                            dashDir = Player.direction;
+                        dashDirX = Player.controlRight ? 1 : Player.controlLeft ? -1 : 0;
+                        dashDirY = Player.controlDown ? 1 : (Player.controlUp && modPlayer.flightTime > 0) ? -1 : 0;
+
+                        if (dashDirX == 0 && dashDirY == 0) // If no direction is pressed,
+                            dashDirX = Player.direction; // Dash in the direction the player is facing
 
                         // Get the dash velocity based on the dash direction and dash velocity stat
-                        float newVelo;
-                        newVelo = dashDir * dashVelo;
+                        Vector2 newVelo;
+                        newVelo = new(dashDirX * dashVelo, dashDirY * dashVelo);
 
                         // Set the dash cooldown and timer
                         dashDelay = dashCoolDown;
                         dashTimer = dashDuration;
 
-                        Player.velocity.X = newVelo; // Apply the dash velocity to the player
+                        if (dashDirY < 0) // If doing an upward dash,
+                        {
+                            // Consume flight time for upward dash
+                            if (modPlayer.flightTime > 0)
+                            modPlayer.flightTime -= 20;
+                        }
+
+                        SoundEngine.PlaySound(SoundID.NPCHit11, Player.position); // Play dash sound
+                        for (int i = 0; i < 50; i++)
+                        {
+                            Dust.NewDust(new Vector2(Player.position.X - 20, Player.position.Y), Player.width * 3, Player.height, DustID.Smoke); // Create dash dust
+                        }
+
+                        if ((Player.controlUp || Player.controlJump) && modPlayer.flightTime <= 1)
+                        {
+                            return; // Prevent upward dash if no flight time is available
+                        }
+                        else
+                            Player.velocity = newVelo; // Apply the dash velocity to the player
                     }
 
                     if (dashDelay > 0) // If the dash is on cooldown,

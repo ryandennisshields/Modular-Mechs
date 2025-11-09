@@ -1,5 +1,6 @@
 ﻿using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
+using Steamworks;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -52,6 +53,8 @@ namespace MechMod.Common.Players
         /// Trackers
         public bool grantedBonuses; // Tracks if the player has been granted initial mount bonuses
         public float maxLife; // Saves the maximum life of players for the debuff duration calculation
+        public int flightTime; // Manually tracks the flight time of the Mech (vanilla flight time variable can't be tracked)
+        public bool activateSlowFall; // Tracks if the player should be able to slow fall (after running out of flight time)
 
         public override void Initialize()
         {

@@ -39,8 +39,8 @@ namespace MechMod.Common.Players
             {
                 if (Main.mouseRight && !Player.mouseInterface) // If player is right-clicking and not interacting with the UI,
                 {
-                    activateRightClick = true; // Activate right-click functions
                     Main.mouseRight = false; // Prevents normal right-click actions
+                    activateRightClick = true; // Activate right-click functions
                 }
                 else if (Main.mouseLeftRelease) // If player has released right-click,
                     activateRightClick = false; // Deactivate right-click functions

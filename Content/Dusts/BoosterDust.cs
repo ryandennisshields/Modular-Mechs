@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 namespace MechMod.Content.Dusts
 {
     /// <summary>
-    /// Custom dust effect for the Mech's booster, with code to make it look like the dust comes from behind the Mech, covering it until it goes past the Mech.
+    /// Custom dust effect for the Mech's Booster, with code to make it look like the dust comes from behind the Mech, covering it until it goes past the Mech.
     /// </summary>
 
     public class BoosterDust : ModDust

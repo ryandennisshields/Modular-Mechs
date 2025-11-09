@@ -222,7 +222,7 @@ namespace MechMod.Content.NPCs
         }
 
         private int tipIndex = 0; // Current tip index
-        private int tipCount = 6; // Total number of tips available
+        private int tipCount = 7; // Total number of tips available
 
         public override void OnChatButtonClicked(bool firstButton, ref string shop)
         {

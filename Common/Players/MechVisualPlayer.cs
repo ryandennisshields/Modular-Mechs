@@ -38,12 +38,12 @@ namespace MechMod.Common.Players
         public Color mechColour = Color.White; // Used to modify the colour of the Mech when needed
 
         /// Dyes
-        public Item[] dyes = new Item[5]; // Dyes applied to to mech (Head, Body, Arms, Legs, Lighs)
+        public Item[] dyes = new Item[5]; // Dyes applied to to mech (Head, Body, Arms, Legs, Lights)
         public int[] dyeShaders = new int[5]; // Actual shaders from the equipped dyes
 
         /// Mech visual effects
-        public int boosterTimer = 0; // Timer for booster visual effects
-        public int stepTimer = 0; // Timer for mech step effects
+        public int boosterTimer = 0; // Timer for Booster visual effects
+        public int stepTimer = 0; // Timer for Mech step effects
         public int airTime; // Times the amount of time the mech has been in the air
         public float airVelocity; // Stores the vertical velocity of the mech while in the air
 

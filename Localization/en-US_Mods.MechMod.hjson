@@ -6,7 +6,7 @@ Items: {
 			Enter your Mech
 			Limited duration
 			Leaving the Mech by any means will incur a Debuff that also disables re-entry for a duration
-			Disables Set Bonuses and Quick Heal
+			Disables Set Bonuses and Quick Heal binding
 			Use a Mech Bench to equip Parts
 			Head, Body, Arms and Legs must be equipped!
 			'''
@@ -24,7 +24,7 @@ Items: {
 			One-Time Use
 			Increases Mech duration from 45 seconds to 90 seconds
 			Unlocks Booster empty slot health bonus
-			Mechs gain a powered-up appearance
+			Mechs gain Lights added to their appearance
 			'''
 	}
 
@@ -531,7 +531,8 @@ NPCs: {
 			Tip3: Mechs will eject you and save you from death if you die inside it, but you will be left with little health and a long Mech Fatigue debuff!
 			Tip4: The duration of Mech Fatigue is affected by the amount of health you have when you leave your Mech, the lower health, the longer the duration.
 			Tip5: Boosters are a Mech Part that allows you to fly, dash (using the Mech Dash binding), or even both. You unlock them after entering Hardmode.
-			Tip6: Part Effectiveness on Body Parts makes the effects of other Parts stronger, but it also makes negative effects weaker too. This applies vice versa if Part Effectiveness is lower than 1!
+			Tip6: You are able to dash in any direction with a compatible Booster equipped, but dashing upwards will consume your flight time!
+			Tip7: Part Effectiveness on Body Parts makes the effects of other Parts stronger, and it makes negative effects weaker too. Do mind this works both ways!
 		}
 
 		Census.SpawnCondition: Defeat Eater of Worlds or Brain of Cthulhu
