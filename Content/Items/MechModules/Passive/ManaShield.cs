@@ -8,14 +8,14 @@ using static MechMod.Content.Mounts.IMechModule;
 namespace MechMod.Content.Items.MechModules.Passive
 {
     /// <summary>
-    /// Passive Module that will allow Mana to absorb some damage taken. Having a magic weapon equipped makes the shield more effective. Having Mana Sickness temporarily disables the shield.
+    /// Passive Module that will allow Mana to absorb some damage taken. Having a magic weapon equipped makes the shield more effective. Having Mana Sickness temporarily makes the shield weaker.
     /// </summary>
 
     public class ManaShield : ModItem, IMechModule
     {
         public override void SetDefaults()
         {
-            Item.value = Item.buyPrice(gold: 4);
+            Item.value = Item.buyPrice(gold: 8);
             Item.rare = ItemRarityID.Orange;
         }
 

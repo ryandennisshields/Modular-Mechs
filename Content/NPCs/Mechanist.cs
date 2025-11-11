@@ -246,7 +246,7 @@ namespace MechMod.Content.NPCs
             // Conditions for shop inventory
             Condition condition1 = Condition.DownedSkeletron;
             Condition condition2 = Condition.Hardmode;
-            //Condition condition3 = Condition.DownedMechBossAny;
+            Condition condition3 = Condition.DownedMechBossAny;
             Condition condition4 = Condition.DownedGolem;
 
             // Set up the shop inventory
@@ -263,6 +263,7 @@ namespace MechMod.Content.NPCs
                     .Add<Items.MechModules.Passive.Brace>()
                     .Add<Items.MechModules.Passive.NuclearEject>()
                     .Add<Items.MechModules.Passive.Spikes>()
+                    .Add<Items.MechModules.Passive.Momentum>()
                     .Add<Items.MechModules.Active.MissileLauncher>()
                     .Add<Items.MechModules.Active.Repair>()
                     // Condition 1 (Parts = 2 Gold, Weapons = 4 Gold)
@@ -271,7 +272,8 @@ namespace MechMod.Content.NPCs
                     .Add<Items.MechArms.FastArms>(condition1)
                     .Add<Items.MechLegs.FastLegs>(condition1)
                     .Add<Items.MechWeapons.LaserGun>(condition1)
-                    // Condition 2 (Parts = 4 Gold, Boosters = 10 Gold, Weapons = 8 Gold, Passive Modules = 10 Gold)
+                    .Add<Items.MechWeapons.DroneSpawner>(condition1)
+                    // Condition 2 (Parts = 4 Gold, Boosters = 10 Gold, Weapons = 8 Gold, Passive Modules = 8 Gold, Active Modules = 16 Gold)
                     .Add<Items.MechMisc.PowerCell>(condition2)
                     .Add<Items.MechHeads.SlowHead>(condition2)
                     .Add<Items.MechBodies.SlowBody>(condition2)
@@ -280,17 +282,18 @@ namespace MechMod.Content.NPCs
                     .Add<Items.MechBoosters.BaseBooster>(condition2)
                     .Add<Items.MechBoosters.FastBooster>(condition2)
                     .Add<Items.MechBoosters.SlowBooster>(condition2)
+                    .Add<Items.MechWeapons.Arbalest>(condition2)
                     .Add<Items.MechWeapons.ProjSword>(condition2)
                     .Add<Items.MechModules.Passive.Hover>(condition2)
-                                        // Condition 3
-                                        //.Add<Items.MechModules.Passive.Brace>(condition3)
-                                        //.Add<Items.MechModules.Passive.Hover>(condition3)
-                                        //.Add<Items.MechModules.Passive.NuclearEject>(condition3)
-                                        //.Add<Items.MechModules.Passive.Spikes>(condition3)
-                                        // Condition 4
-                                        .Add<Items.MechWeapons.BaseLauncher>(condition4)
-                    //.Add<Items.MechModules.Active.MissileLauncher>(condition4)
-                    //.Add<Items.MechModules.Active.Repair>(condition4)
+                    .Add<Items.MechModules.Passive.ManaShield>(condition2)
+                    .Add<Items.MechModules.Passive.EnergyExtension>(condition2)
+                    .Add<Items.MechModules.Passive.Relocator>(condition2)
+                    .Add<Items.MechModules.Active.Blast>(condition2)
+                    .Add<Items.MechModules.Active.Overclock>(condition2)
+                    // Condition 3 (Weapons = 16 Gold)
+                    .Add<Items.MechWeapons.ChargeCannon>(condition3)
+                    // Condition 4 (Weapons = 32 Gold)
+                    .Add<Items.MechWeapons.BaseLauncher>(condition4)
                     ;
             npcShop.Register();
         }

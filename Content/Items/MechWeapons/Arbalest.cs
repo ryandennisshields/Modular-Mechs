@@ -19,7 +19,7 @@ namespace MechMod.Content.Items.MechWeapons
     {
         public override void SetDefaults()
         {
-            Item.value = Item.buyPrice(gold: 2);
+            Item.value = Item.buyPrice(gold: 8);
             Item.rare = ItemRarityID.Orange;
 
             Item.useAmmo = AmmoID.Arrow; // Make the weapon use Arrow ammo
@@ -50,8 +50,8 @@ namespace MechMod.Content.Items.MechWeapons
             }
 
             // Calculate projectile properties
-            int damage = weaponsPlayer.DamageCalc(40, player);
-            weaponsPlayer.CritChanceCalc(7, player);
+            int damage = weaponsPlayer.DamageCalc(58, player);
+            weaponsPlayer.CritChanceCalc(8, player);
             weaponsPlayer.useRate = weaponsPlayer.AttackSpeedCalc(24, player);
             float knockback = weaponsPlayer.KnockbackCalc(4, player);
             float projSpeed = 30;

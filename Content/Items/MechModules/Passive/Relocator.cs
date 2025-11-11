@@ -15,12 +15,12 @@ namespace MechMod.Content.Items.MechModules.Passive
     {
         public override void SetDefaults()
         {
-            Item.value = Item.buyPrice(gold: 4);
+            Item.value = Item.buyPrice(gold: 8);
             Item.rare = ItemRarityID.Orange;
         }
 
         public ModuleSlot MSlot => ModuleSlot.Passive; // Passive slot
-        public ModuleType MType => ModuleType.OnMount; // Mount effect (BUT has visuals of dismount Module, as the actual effect happens when dismounting)
+        public ModuleType MType => ModuleType.OnMount; // Mount effect (although actual effects happen on dismount)
 
         public void ModuleEffect(ModularMech mech, Player player, MechModPlayer modPlayer, MechWeaponsPlayer weaponsPlayer, MechVisualPlayer visualPlayer)
         {

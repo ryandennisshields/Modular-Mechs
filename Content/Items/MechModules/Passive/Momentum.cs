@@ -1,7 +1,6 @@
 ﻿using MechMod.Common.Players;
 using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,7 +16,7 @@ namespace MechMod.Content.Items.MechModules.Passive
     {
         public override void SetDefaults()
         {
-            Item.value = Item.buyPrice(gold: 10);
+            Item.value = Item.buyPrice(gold: 4);
             Item.rare = ItemRarityID.Orange;
         }
 

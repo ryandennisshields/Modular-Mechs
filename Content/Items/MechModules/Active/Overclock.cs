@@ -21,7 +21,7 @@ namespace MechMod.Content.Items.MechModules.Active
     {
         public override void SetDefaults()
         {
-            Item.value = Item.buyPrice(gold: 8);
+            Item.value = Item.buyPrice(gold: 16);
             Item.rare = ItemRarityID.Orange;
         }
 

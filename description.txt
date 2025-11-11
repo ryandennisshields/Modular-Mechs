@@ -1,6 +1,8 @@
 NEW:
-- Mech Dyeing (seperate slots for Head, Body, Arms, Legs, and Lights)
-- Calamity Mod support with new upgrade levels
+- 3 weapons!
+- 4 passive modules!
+- 2 active modules!
+- Various changes, fixes and improvements! See the Change Notes for details!
 
 Modular Mechs is a content mod that adds customisable Mechs to the game!
 
@@ -15,10 +17,10 @@ Upgrade your Mech with materials you gather to keep it relevant against any oppo
 Includes:
 - 3 sets of 4 (12 total) Head, Body, Arm and Leg parts
 - 3 Boosters
-- 5 Weapons
-- 4 Passive Modules
-- 2 Active Modules
+- 8 Weapons
+- 8 Passive Modules
+- 4 Active Modules
 - 1 town NPC
 - 1 mount
 
-Find Credits/Links on the Steam Workshop page!
+Find Credits/Links and the Change Notes on the Steam Workshop page!

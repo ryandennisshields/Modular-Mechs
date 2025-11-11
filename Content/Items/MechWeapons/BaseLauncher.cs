@@ -17,7 +17,7 @@ namespace MechMod.Content.Items.MechWeapons
     {
         public override void SetDefaults()
         {
-            Item.value = Item.buyPrice(gold: 8);
+            Item.value = Item.buyPrice(gold: 32);
             Item.rare = ItemRarityID.Orange;
 
             Item.useAmmo = AmmoID.Rocket; // Make the weapon use ammo

@@ -20,7 +20,7 @@ namespace MechMod.Content.Items.MechWeapons
     {
         public override void SetDefaults()
         {
-            Item.value = Item.buyPrice(gold: 2);
+            Item.value = Item.buyPrice(gold: 4);
             Item.rare = ItemRarityID.Orange;
 
             Item.useAmmo = AmmoID.Bullet; // Make the drones use Bullet ammo
@@ -46,7 +46,9 @@ namespace MechMod.Content.Items.MechWeapons
             weaponsPlayer.CritChanceCalc(6, player); // Crit chance is shared between bullets and missiles
 
             int manaCost = 10; // Mana cost for use
-            if (currentMinions < player.maxMinions && player.statMana > manaCost) // If the player is not at max minions,
+            bool manaCheck = player.CheckMana(manaCost, true); // Check and consume mana
+            player.manaRegenDelay = 120; // 2 seconds of mana regen delay
+            if (currentMinions < player.maxMinions && manaCheck) // If the player is not at max minions and has enough mana,
             {
                 weaponsPlayer.canUse = true; // Allow use for this weapon
 
@@ -55,10 +57,6 @@ namespace MechMod.Content.Items.MechWeapons
                 weaponsPlayer.useRate = 30;
                 Projectile.NewProjectile(new EntitySource_Parent(player), player.Center, new Vector2(0, 0), projectileType, 0, 0, player.whoAmI);
                 player.AddBuff(ModContent.BuffType<DroneBuff>(), 2); // Apply the buff that signifies the minion is active
-
-                // Consume mana and apply mana regen delay
-                player.CheckMana(manaCost, true);
-                player.manaRegenDelay = 120; // 2 seconds of mana regen delay
 
                 SoundEngine.PlaySound(SoundID.NPCHit4, player.position); // Play metal sound when spawning drones
             }

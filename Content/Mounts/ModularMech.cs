@@ -1001,7 +1001,7 @@ namespace MechMod.Content.Mounts
                         {
                             // Consume flight time for upward dash
                             if (modPlayer.flightTime > 0)
-                            modPlayer.flightTime -= 20;
+                                modPlayer.flightTime -= 20;
                         }
 
                         SoundEngine.PlaySound(SoundID.NPCHit11, Player.position); // Play dash sound

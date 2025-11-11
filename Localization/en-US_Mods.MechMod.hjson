@@ -296,10 +296,10 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			20 summon damage
-			4% critcal strike chance
-			Very fast speed
-			Weak knockback
+			50 summon damage
+			6% critcal strike chance
+			Average speed
+			Very weak knockback
 			Summoning uses 10 mana
 			Summons drones to fight for you
 			At maximum summons, attacking causes drones to fire missiles that home in on the cursor
@@ -312,12 +312,29 @@ Items: {
 			'''
 			Weapon Part
 			[c/969696:Base Stats]
-			150 ranged damage
-			15% critcal strike chance
-			Slow speed
-			Strong knockback
-			Successive hits on an enemy marks them
-			Hit them four times to detonate the mark, causing an explosion
+			58 ranged damage
+			8% critcal strike chance
+			Fast speed
+			Weak knockback
+			Hitting an enemy marks them
+			Hit the marked enemy four times to detonate the mark, causing an explosion
+			'''
+	}
+
+	ChargeCannon: {
+		DisplayName: Charge Cannon
+		Tooltip:
+			'''
+			Weapon Part
+			[c/969696:Base Stats]
+			62 magic damage
+			7% critcal strike chance
+			Insanely fast speed
+			Weak knockback
+			Uses 2 mana
+			Can be charged
+			Release at the perfect charge to fire a more powerful shot
+			Overcharging will fire shots in random directions rapidly, constantly damaging the user
 			'''
 	}
 
@@ -344,7 +361,7 @@ Items: {
 			'''
 			Module
 			[c/30FFFF:Passive]
-			When you leave your Mech manually or automatically, your Mech will explode, dealing damage in a large area
+			When you leave your Mech, your Mech will explode, dealing damage in a large area
 			Increases the duration of Mech Fatigue
 			'''
 	}
@@ -368,6 +385,49 @@ Items: {
 			[c/FF30FF:Passive]
 			If using a Ranged Weapon, you can scope/zoom out
 			Scoping/Zooming out increases damage, but reduces movement speed
+			'''
+	}
+
+	EnergyExtension: {
+		DisplayName: Energy Extension
+		Tooltip:
+			'''
+			Module
+			[c/FFFF30:Passive]
+			Increases Mech duration
+			Decreases damage
+			'''
+	}
+
+	Momentum: {
+		DisplayName: Momentum
+		Tooltip:
+			'''
+			Module
+			[c/FF30FF:Passive]
+			If using a Melee weapon, increase horizontal speed, and deal more damage depending on speed
+			'''
+	}
+
+	ManaShield: {
+		DisplayName: Mana Shield
+		Tooltip:
+			'''
+			Module
+			[c/FFFF30:Passive]
+			Uses Mana to absorb damage taken
+			If using a Magic weapon, less Mana is consumed
+			Mana Sickness weakens the shield
+			'''
+	}
+
+	Relocator: {
+		DisplayName: Relocator
+		Tooltip:
+			'''
+			Module
+			[c/30FFFF:Passive]
+			When you leave your Mech, teleport to the location you initially entered it from
 			'''
 	}
 
@@ -399,39 +459,26 @@ Items: {
 			'''
 	}
 
-	ChargeCannon: {
-		DisplayName: Charge Cannon
-		Tooltip: ""
-	}
-
-	EnergyExtension: {
-		DisplayName: Energy Extension
-		Tooltip: ""
-	}
-
-	Momentum: {
-		DisplayName: Momentum
-		Tooltip: ""
-	}
-
 	Overclock: {
 		DisplayName: Overclock
-		Tooltip: ""
-	}
-
-	ManaShield: {
-		DisplayName: Mana Shield
-		Tooltip: ""
-	}
-
-	Relocator: {
-		DisplayName: Relocator
-		Tooltip: ""
+		Tooltip:
+			'''
+			Module
+			[c/FF3030:Active]
+			Doubles damage for a duration, at the cost of Mech duration and your health
+			5s Cooldown
+			'''
 	}
 
 	Blast: {
 		DisplayName: Blast
-		Tooltip: ""
+		Tooltip:
+			'''
+			Module
+			[c/FF3030:Active]
+			Charge up, slowing movement for a duration, before unleashing a powerful blast that damages and knocks back enemies
+			20s cooldown
+			'''
 	}
 }
 
@@ -467,7 +514,7 @@ Buffs: {
 
 	OverclockBuff: {
 		DisplayName: Overclock Buff
-		Description: Mods.MechMod.Buffs.OverclockBuff.Description
+		Description: Double damage!
 	}
 }
 

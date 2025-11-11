@@ -20,7 +20,7 @@ namespace MechMod.Content.Items.MechWeapons
     {
         public override void SetDefaults()
         {
-            Item.value = Item.buyPrice(gold: 2);
+            Item.value = Item.buyPrice(gold: 16);
             Item.rare = ItemRarityID.Orange;
         }
 
@@ -33,9 +33,10 @@ namespace MechMod.Content.Items.MechWeapons
         private int projectileType; // Type of projectile to be fired
 
         // Projectile properties
-        private int damage;
-        private int damageValue = 66;
+        private float damage;
+        private int damageValue = 62;
         private float knockback;
+        private int knockbackValue = 4;
         private float projSpeed;
 
         private int chargeTime; // Time the player has been charging the weapon
@@ -59,9 +60,9 @@ namespace MechMod.Content.Items.MechWeapons
 
                 // Calculate projectile properties
                 damage = weaponsPlayer.DamageCalc(damageValue, player);
-                knockback = weaponsPlayer.KnockbackCalc(4, player);
+                knockback = weaponsPlayer.KnockbackCalc(knockbackValue, player);
                 projSpeed = 25;
-                weaponsPlayer.CritChanceCalc(4, player);
+                weaponsPlayer.CritChanceCalc(7, player);
 
                 chargeTime++; // Increment charge time (frames weapon has been charging)
 
@@ -71,20 +72,23 @@ namespace MechMod.Content.Items.MechWeapons
                 {
                     damageValue++; // Increase damage as charge increases
                     scale += 0.01f; // Increase scale as charge increases
+                    damage /= 2f; // Reduce damage to discourage spamming
                 }
                 if (chargeTime == 50) // If the charge time is 50 (perfect timing window notifier),
                     SoundEngine.PlaySound(SoundID.Item4, player.position); // Play a sound for the perfect timing window
                 else if (chargeTime > 50 && chargeTime < 55) // If the charge time is within 50 to 55 (perfect charge window),
                 {
                     visualPlayer.weaponColour = Color.Green; // Change weapon colour to green
-                    damage *= 2; // Double the damage
+                    damage *= 8f; // Quadruple the damage
                     scale = 2f; // Double the scale
+                    knockback *= 2f; // Increase knockback
                 }
                 else if (chargeTime >= 55 && chargeTime < 65) // If the charge time is within 55 to 65 (overcharge starting),
                 {
                     visualPlayer.weaponColour = Color.Yellow; // Change weapon colour to yellow
-                    damage /= 2; // Reset damage increase
+                    damage /= 4f; // Reset damage increase
                     scale = 1f; // Reset scale
+                    knockback /= 2f; // Reset knockback increase
                 }
                 else if (chargeTime >= 65 && chargeTime < 75) // If the charge time is within 65 to 75 (further overcharge),
                     visualPlayer.weaponColour = Color.Orange; // Change weapon colour to orange
@@ -163,7 +167,7 @@ namespace MechMod.Content.Items.MechWeapons
             }
 
             // Create projectile
-            int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.Center + offset, velocity, projectileType, damage, knockback, player.whoAmI);
+            int projID = Projectile.NewProjectile(new EntitySource_Parent(player), player.Center + offset, velocity, projectileType, (int)damage, knockback, player.whoAmI);
             if (Main.projectile.IndexInRange(projID) && Main.projectile[projID].ModProjectile is ChargeProjectile proj) // Grab the active projectile instance
             {
                 proj.Projectile.scale = scale; // Set the projectile scale

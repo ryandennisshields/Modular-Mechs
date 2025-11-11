@@ -1,4 +1,5 @@
-﻿using MechMod.Content.Items.MechWeapons;
+﻿using MechMod.Common.Players;
+using MechMod.Content.Items.MechWeapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -28,9 +29,16 @@ namespace MechMod.Common.Global
             {
                 if (arbalestFrame == arbalestMaxFrame) // If on the last frame,
                 {
+                    Player player = Main.player[npc.lastInteraction];
+                    MechWeaponsPlayer weaponsPlayer = Main.player[npc.lastInteraction].GetModPlayer<MechWeaponsPlayer>();
+
+                    // Calculate explosion damage and knockback
+                    int damage = weaponsPlayer.DamageCalc(70, player);
+                    float knockback = weaponsPlayer.KnockbackCalc(7, player);
+
                     // Create explosion effect and delete debuff
                     int projectileType = ProjectileID.GrenadeIII; // Use grenade explosion for the explosion effect
-                    Projectile.NewProjectile(new EntitySource_Parent(npc), npc.Center, Vector2.Zero, projectileType, 50, 10f, Main.myPlayer);
+                    Projectile.NewProjectile(new EntitySource_Parent(npc), npc.Center, Vector2.Zero, projectileType, damage, knockback, Main.myPlayer);
 
                     arbalestFrame = default; // Reset frame counter
                     npc.DelBuff(npc.FindBuffIndex(ModContent.BuffType<ArbalestDebuff>())); // Remove the debuff

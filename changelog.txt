@@ -13,8 +13,9 @@ v1.1.0
 > A tip has been added to the Mechanist to notify players of the above dash change
 
 - Changes, fixes and improvements
+> Swapped around the default "Mech Dash" and "Mech Activate Module" bindings
 > Right-click functionality of hotbar items is now disabled while in Mech
-> Magic Mech weapons will now work with automatic Mana restoration accessories (e.g. Mana Flower)
+> Mana cost Mech weapons will now work with automatic Mana restoration accessories (e.g. Mana Flower)
 > Fixed upgrade damage bonuses staying if Calamity Mod is disabled after already upgrading the Mech
 > Right-click equipping Mech Parts now warns for invalid Mech Parts
 > Metal pipe sound fixed :)

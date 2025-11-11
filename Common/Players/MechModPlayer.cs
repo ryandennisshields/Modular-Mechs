@@ -1,6 +1,5 @@
 ﻿using MechMod.Content.Mounts;
 using Microsoft.Xna.Framework;
-using Steamworks;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
