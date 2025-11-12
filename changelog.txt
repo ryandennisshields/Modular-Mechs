@@ -1,23 +1,5 @@
 Modular Mechs v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 
-v1.1.0
-- 3 new weapons
-- 4 new passive modules
-- 2 new active modules
-
-- Notable Changes
-> !!!Quick Heal binding is now disabled inside the Mech!!!
-> To compensate for the change, Mech now always has a base +100 life bonus regardless of parts
-/ The reason behind disabling the Quick Heal bind is to further push the Mech as a "temporary power-up with unique downsides", to make the usage of the Mech more strategic instead of just being free to utilise as extra health/damage (remember the Mech will save you from death!)
-> Mechs (with a compatible Booster) can now dash in any direction instead of just left or right (however, dashing upwards eats into your flight time!)
-> A tip has been added to the Mechanist to notify players of the above dash change
-
-- Changes, fixes and improvements
-> Swapped around the default "Mech Dash" and "Mech Activate Module" bindings
-> Right-click functionality of hotbar items is now disabled while in Mech
-> Mana cost Mech weapons will now work with automatic Mana restoration accessories (e.g. Mana Flower)
-> Fixed upgrade damage bonuses staying if Calamity Mod is disabled after already upgrading the Mech
-> Right-click equipping Mech Parts now warns for invalid Mech Parts
-> Metal pipe sound fixed :)
-> Brace Module zooms out a bit further
-> Mech duration warning sound is louder
+v1.1.0.1
+- Lights dye slot will no longer show until the player has the power cell activated (your dye is saved and will be there once activated!)
+- Updated mod descriptions

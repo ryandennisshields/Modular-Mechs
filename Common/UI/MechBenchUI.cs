@@ -8,6 +8,7 @@ using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.UI;
 using Terraria.UI;
 
 namespace MechMod.Common.UI
@@ -27,13 +28,12 @@ namespace MechMod.Common.UI
         private UIText upgradeCostText;
         private UIText upgradeButton;
         private UIText playerLevel;
+        private UIText lightsText;
 
         #region UI Intialisation
 
         public override void OnInitialize()
         {
-            base.OnInitialize();
-
             mainPanel = new UIPanel();
             slots = new PartSlot[9];
             dyeSlots = new DyeSlot[5];
@@ -114,20 +114,18 @@ namespace MechMod.Common.UI
                 mainPanel.Append(dyeSlots[i]);
             }
 
-            // Lights Dye Slot
+            // Lights Dye Slot (Appended only if power cell is active)
             dyeSlots[4].Width.Set(32.5f, 0);
             dyeSlots[4].Height.Set(32.5f, 0);
             dyeSlots[4].HAlign = 0.25f;
             dyeSlots[4].Top.Set(175, 0);
             dyeSlots[4].OnLeftClick += dyeSlots[4].DropEquipDye;
-            mainPanel.Append(dyeSlots[4]);
 
-            UIText lightsText = new("Lights");
+            lightsText = new("Lights");
             lightsText.Width.Set(50, 0);
             lightsText.Height.Set(25, 0);
             lightsText.HAlign = 0.065f;
             lightsText.Top.Set(182.5f, 0);
-            mainPanel.Append(lightsText);
 
             // Booster Slot
             slots[4].Width.Set(32.5f, 0);
@@ -269,21 +267,32 @@ namespace MechMod.Common.UI
                 }
             }
 
-            // Fill the dye slots with the player's equipped dyes
-            for (int i = 0; i < dyeSlots.Length; i++)
+            // Add the Lights dye slot if the power cell is active
+            if (modPlayer.powerCellActive && !mainPanel.HasChild(dyeSlots[4]))
             {
-                if (!visualPlayer.dyes[i].IsAir)
-                {
-                    dyeSlots[i].slotItem = visualPlayer.dyes[i];
-                }
+                mainPanel.Append(dyeSlots[4]);
+                mainPanel.Append(lightsText);
             }
+            else if (!modPlayer.powerCellActive && mainPanel.HasChild(dyeSlots[4])) // Remove the Lights dye slot if the power cell is not active
+            {
+                mainPanel.RemoveChild(dyeSlots[4]);
+                mainPanel.RemoveChild(lightsText);
+            }
+
+                // Fill the dye slots with the player's equipped dyes
+                for (int i = 0; i < dyeSlots.Length; i++)
+                {
+                    if (!visualPlayer.dyes[i].IsAir)
+                    {
+                        dyeSlots[i].slotItem = visualPlayer.dyes[i];
+                    }
+                }
 
             UpdateUpgradeRequirements();
         }
 
         public override void Update(GameTime gameTime)
         {
-            var player = Main.LocalPlayer;
             var modPlayer = Main.LocalPlayer.GetModPlayer<MechModPlayer>();
 
             // Let the game know when the player is mousing over the UI

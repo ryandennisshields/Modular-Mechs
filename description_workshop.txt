@@ -12,7 +12,8 @@ NEW:
 - Install different Modules to give your Mech special passive and active abilities
 
 Choose between many different Parts unlocked throughout progression, mix and match them however way you like!
-Upgrade your Mech with materials you gather to keep it relevant against any opponent!
+Upgrade your Mech with materials you gather to keep it relevant against any opponent (Including Calamity support to add further upgrades)!
+Dye support to personalise your Mech's look!
 
 Includes:
 - 3 sets of 4 (12 total) Head, Body, Arm and Leg parts
@@ -22,6 +23,11 @@ Includes:
 - 4 Active Modules
 - 1 town NPC
 - 1 mount
+
+Help:
+- Defeat Eater of Worlds or Brain of Cthulhu to get the Mechanist NPC to spawn!
+- Be sure to check the Mechanist's shop as you progress!
+- Check your Controls Settings for Mech-specific keybinds!
 
 [b] Credits/Links: [/b]
 [url=https://forums.terraria.org/index.php?threads/modular-mechs-mod.144835/] Forum Thread [/url]
