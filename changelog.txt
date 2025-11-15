@@ -1,5 +1,4 @@
 Modular Mechs v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 
-v1.1.0.1
-- Lights dye slot will no longer show until the player has the power cell activated (your dye is saved and will be there once activated!)
-- Updated mod descriptions
+v1.1.0.2
+- Fixed issues with jumping and dashing

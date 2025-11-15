@@ -339,20 +339,26 @@ namespace MechMod.Content.Mounts
 
             bool grounded = Collision.SolidCollision(new Vector2(player.position.X, player.position.Y + player.height), player.width, 4); // Check if the player is on the ground
 
-            if (!grounded && modPlayer.flightTime <= 0) // If the player is not grounded and has no flight time left,
+            if (MountData.flightTimeMax > 0) // If the player has the ability to fly,
             {
-                if (player.controlJump) // If the player is jumping,
+                if (!grounded && modPlayer.flightTime <= 0) // If the player is not grounded and has no flight time left,
                 {
-                    player.controlJump = false; // Disable jump (to prevent flying)
-                    modPlayer.activateSlowFall = true; // Activate slow fall
-                }
-                else if (player.releaseJump) // If the player releases jump,
-                    modPlayer.activateSlowFall = false; // Deactivate slow fall
+                    if (player.controlJump) // If the player is jumping,
+                    {
+                        player.controlJump = false; // Disable jump (to prevent flying)
+                        modPlayer.activateSlowFall = true; // Activate slow fall
+                    }
+                    else if (player.releaseJump) // If the player releases jump,
+                        modPlayer.activateSlowFall = false; // Deactivate slow fall
 
-                if (modPlayer.activateSlowFall) // If slow fall is activated,
-                {
-                    player.slowFall = true; // Enable slow fall
+                    if (modPlayer.activateSlowFall) // If slow fall is activated,
+                    {
+                        player.slowFall = true; // Enable slow fall
+                    }
                 }
+
+                if (grounded && modPlayer.flightTime != MountData.flightTimeMax) // If the player is on the ground and flight time is not max,
+                    modPlayer.flightTime = MountData.flightTimeMax; // Replenish flight time while on the ground
             }
 
             if (player.mount._frameState == Mount.FrameFlying) // If the player is flying,
@@ -376,9 +382,6 @@ namespace MechMod.Content.Mounts
                 MountData.runSpeed = modPlayer.groundHorizontalSpeed;
                 MountData.swimSpeed = modPlayer.groundHorizontalSpeed;
             }
-
-            if (grounded && modPlayer.flightTime != MountData.flightTimeMax) // If the player is on the ground and flight time is not max,
-                modPlayer.flightTime = MountData.flightTimeMax; // Replenish flight time while on the ground
 
             // Grant life bonus
             player.statLifeMax2 += modPlayer.lifeBonus;
@@ -980,6 +983,7 @@ namespace MechMod.Content.Mounts
                 {
                     if (MechMod.MechDashKeybind.JustPressed && dashDelay == 0) // If the player presses the dash keybind and the dash is not on cooldown,
                     {
+                        var mech = ModContent.GetModMount(ModContent.MountType<ModularMech>());
                         MechModPlayer modPlayer = Player.GetModPlayer<MechModPlayer>();
 
                         // Set the dash direction based on player input
@@ -1010,7 +1014,7 @@ namespace MechMod.Content.Mounts
                             Dust.NewDust(new Vector2(Player.position.X - 20, Player.position.Y), Player.width * 3, Player.height, DustID.Smoke); // Create dash dust
                         }
 
-                        if ((Player.controlUp || Player.controlJump) && modPlayer.flightTime <= 1)
+                        if (mech.MountData.flightTimeMax > 0 && (Player.controlUp || Player.controlJump) && modPlayer.flightTime <= 1)
                         {
                             return; // Prevent upward dash if no flight time is available
                         }
