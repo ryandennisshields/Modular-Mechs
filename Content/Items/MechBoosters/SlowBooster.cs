@@ -19,11 +19,14 @@ namespace MechMod.Content.Items.MechBoosters
         {
             modPlayer.lifeBonus += 50; // 50 health bonus
 
+            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+
             // Dashing stats
-            player.GetModPlayer<DashPlayer>().ableToDash = true; // Allow dashing
-            player.GetModPlayer<DashPlayer>().dashVelo = 15f * modPlayer.partEffectiveness[MechMod.boosterIndex]; // 15 velocity
-            player.GetModPlayer<DashPlayer>().dashCoolDown = 90; // 1.5 seconds of cooldown
-            player.GetModPlayer<DashPlayer>().dashDuration = 60; // 1 second of dash duration
+            dashPlayer.ableToDash = true; // Allow dashing
+            dashPlayer.dashVelo = 15f * modPlayer.partEffectiveness[MechMod.boosterIndex]; // 15 velocity
+            dashPlayer.dashCoolDown = 90; // 1.5 seconds of cooldown
+            dashPlayer.dashDuration = 60; // 1 second of dash duration
+            dashPlayer.upwardDashes = 1; // 1 upward dash
         }
 
         public void BodyOffsets(MechVisualPlayer visualPlayer, string body) { }

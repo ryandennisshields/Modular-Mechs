@@ -145,7 +145,6 @@ namespace MechMod.Content.Mounts
 
             ApplyParts(player, modPlayer, visualPlayer, weaponsPlayer); // Apply the stats and textures of the equipped parts
 
-            modPlayer.flightTime = MountData.flightTimeMax; // Set the current flight time to max
             modPlayer.grantedBonuses = false; // Reset the bonuses tracker
 
             // Reset Module variables
@@ -324,6 +323,7 @@ namespace MechMod.Content.Mounts
             MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
             MechVisualPlayer visualPlayer = player.GetModPlayer<MechVisualPlayer>();
             MechWeaponsPlayer weaponsPlayer = player.GetModPlayer<MechWeaponsPlayer>();
+            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
 
             // Check for any Persistent modules and apply their effects
             foreach (var part in player.GetModPlayer<MechModPlayer>().equippedParts)
@@ -339,33 +339,8 @@ namespace MechMod.Content.Mounts
 
             bool grounded = Collision.SolidCollision(new Vector2(player.position.X, player.position.Y + player.height), player.width, 4); // Check if the player is on the ground
 
-            if (MountData.flightTimeMax > 0) // If the player has the ability to fly,
-            {
-                if (!grounded && modPlayer.flightTime <= 0) // If the player is not grounded and has no flight time left,
-                {
-                    if (player.controlJump) // If the player is jumping,
-                    {
-                        player.controlJump = false; // Disable jump (to prevent flying)
-                        modPlayer.activateSlowFall = true; // Activate slow fall
-                    }
-                    else if (player.releaseJump) // If the player releases jump,
-                        modPlayer.activateSlowFall = false; // Deactivate slow fall
-
-                    if (modPlayer.activateSlowFall) // If slow fall is activated,
-                    {
-                        player.slowFall = true; // Enable slow fall
-                    }
-                }
-
-                if (grounded && modPlayer.flightTime != MountData.flightTimeMax) // If the player is on the ground and flight time is not max,
-                    modPlayer.flightTime = MountData.flightTimeMax; // Replenish flight time while on the ground
-            }
-
             if (player.mount._frameState == Mount.FrameFlying) // If the player is flying,
             {
-                if (modPlayer.flightTime > 0)
-                    modPlayer.flightTime--; // Decrease flight time
-
                 // Disable player's ability to hover while flying
                 if (!modPlayer.allowHover)
                     player.controlDown = false;
@@ -382,6 +357,9 @@ namespace MechMod.Content.Mounts
                 MountData.runSpeed = modPlayer.groundHorizontalSpeed;
                 MountData.swimSpeed = modPlayer.groundHorizontalSpeed;
             }
+
+            if (grounded && dashPlayer.upwardCount != dashPlayer.upwardDashes) // If the player is on the ground,
+                dashPlayer.upwardCount = dashPlayer.upwardDashes; // Replenish upward dashes
 
             // Grant life bonus
             player.statLifeMax2 += modPlayer.lifeBonus;
@@ -908,6 +886,7 @@ namespace MechMod.Content.Mounts
         {
             MechModPlayer modPlayer = player.GetModPlayer<MechModPlayer>();
             MechWeaponsPlayer weaponsPlayer = player.GetModPlayer<MechWeaponsPlayer>();
+            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
 
             // Reset weapon stats that are added/multiplied before applying new ones
             weaponsPlayer.partDamageBonus = default;
@@ -932,14 +911,15 @@ namespace MechMod.Content.Mounts
                 if (modPlayer.equippedParts[MechMod.legsIndex].ModItem is IMechParts legs)
                     legs.ApplyStats(player, modPlayer, weaponsPlayer, this); // Apply Leg stats
 
-            // Reset flight stats before applying new ones
+            // Reset flight and dash stats before applying new ones
             MountData.flightTimeMax = default;
             modPlayer.flightHorizontalSpeed = default;
             modPlayer.flightJumpSpeed = default;
-            player.GetModPlayer<DashPlayer>().ableToDash = false;
-            player.GetModPlayer<DashPlayer>().dashCoolDown = default;
-            player.GetModPlayer<DashPlayer>().dashDuration = default;
-            player.GetModPlayer<DashPlayer>().dashVelo = default;
+            dashPlayer.ableToDash = false;
+            dashPlayer.dashVelo = default;
+            dashPlayer.dashCoolDown = default;
+            dashPlayer.dashDuration = default;
+            dashPlayer.upwardDashes = default;
 
             if (!equippedBooster.IsAir) // If a Booster is equipped,
             {
@@ -969,13 +949,17 @@ namespace MechMod.Content.Mounts
             public float dashVelo; // Velocity of the dash
             public int dashCoolDown; // Time between dashes
             public int dashDuration; // Time the dash lasts
+            public int upwardDashes; // The amount of dashes that can be done upwards
 
             public float dashDirX; // X direction of the dash
             public float dashDirY; // Y direction of the dash
             public bool dashActive; // Check if the player is currently dashing
 
-            private int dashDelay = 0; // Delay between dashes
-            private int dashTimer = 0; // Keeps track of how long the dash has been active
+            private int dashDelay; // Delay between dashes
+            private int dashTimer; // Keeps track of how long the dash has been active
+            public int upwardCount; // Count of upward dashes available
+
+            public Vector2 newVelo;
 
             public override void PreUpdateMovement()
             {
@@ -988,38 +972,29 @@ namespace MechMod.Content.Mounts
 
                         // Set the dash direction based on player input
                         dashDirX = Player.controlRight ? 1 : Player.controlLeft ? -1 : 0;
-                        dashDirY = Player.controlDown ? 1 : (Player.controlUp && modPlayer.flightTime > 0) ? -1 : 0;
+                        dashDirY = Player.controlDown ? 1 : (Player.controlUp && upwardCount > 0) ? -1 : 0;
 
                         if (dashDirX == 0 && dashDirY == 0) // If no direction is pressed,
                             dashDirX = Player.direction; // Dash in the direction the player is facing
 
                         // Get the dash velocity based on the dash direction and dash velocity stat
-                        Vector2 newVelo;
                         newVelo = new(dashDirX * dashVelo, dashDirY * dashVelo);
+
+                        SoundEngine.PlaySound(SoundID.NPCHit11, Player.position); // Play dash sound
+                        for (int i = 0; i < 50; i++)
+                            Dust.NewDust(new Vector2(Player.position.X - 20, Player.position.Y), Player.width * 3, Player.height, DustID.Smoke); // Create dash dust
+
+                        if (upwardCount <= 0 && Player.controlUp) // If trying to do an upward dash with no upward dashes left,
+                            return; // Do not apply the dash
+                        else // Otherwise,
+                            Player.velocity = newVelo; // Apply the dash velocity to the player
+
+                        if (dashDirY < 0 && upwardCount > 0) // If doing an upward dash,
+                            upwardCount--; // Consume an upward dash
 
                         // Set the dash cooldown and timer
                         dashDelay = dashCoolDown;
                         dashTimer = dashDuration;
-
-                        if (dashDirY < 0) // If doing an upward dash,
-                        {
-                            // Consume flight time for upward dash
-                            if (modPlayer.flightTime > 0)
-                                modPlayer.flightTime -= 20;
-                        }
-
-                        SoundEngine.PlaySound(SoundID.NPCHit11, Player.position); // Play dash sound
-                        for (int i = 0; i < 50; i++)
-                        {
-                            Dust.NewDust(new Vector2(Player.position.X - 20, Player.position.Y), Player.width * 3, Player.height, DustID.Smoke); // Create dash dust
-                        }
-
-                        if (mech.MountData.flightTimeMax > 0 && (Player.controlUp || Player.controlJump) && modPlayer.flightTime <= 1)
-                        {
-                            return; // Prevent upward dash if no flight time is available
-                        }
-                        else
-                            Player.velocity = newVelo; // Apply the dash velocity to the player
                     }
 
                     if (dashDelay > 0) // If the dash is on cooldown,

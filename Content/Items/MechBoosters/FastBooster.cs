@@ -24,11 +24,14 @@ namespace MechMod.Content.Items.MechBoosters
             modPlayer.flightHorizontalSpeed = 8f * modPlayer.partEffectiveness[MechMod.boosterIndex]; // 8 horizontal speed
             modPlayer.flightJumpSpeed = 8f * modPlayer.partEffectiveness[MechMod.boosterIndex]; // 8 jump speed
 
+            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+
             // Dashing stats
-            player.GetModPlayer<DashPlayer>().ableToDash = true; // Allow dashing
-            player.GetModPlayer<DashPlayer>().dashVelo = 15f * modPlayer.partEffectiveness[MechMod.boosterIndex]; // 15 velocity
-            player.GetModPlayer<DashPlayer>().dashCoolDown = 60; // 1 second of cooldown
-            player.GetModPlayer<DashPlayer>().dashDuration = 30; // 0.5 seconds of dash duration
+            dashPlayer.ableToDash = true; // Allow dashing
+            dashPlayer.dashVelo = 15f * modPlayer.partEffectiveness[MechMod.boosterIndex]; // 15 velocity
+            dashPlayer.dashCoolDown = 60; // 1 second of cooldown
+            dashPlayer.dashDuration = 30; // 0.5 seconds of dash duration
+            dashPlayer.upwardDashes = 3; // 3 upward dashes
         }
 
         public void BodyOffsets(MechVisualPlayer visualPlayer, string body) { }

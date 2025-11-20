@@ -1,4 +1,7 @@
 Modular Mechs v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 
-v1.1.0.2
-- Fixed issues with jumping and dashing
+v1.1.1
+- Reworked how upward dashes work with compatible Boosters
+> Instead of eating into flight time, each Booster now has a "Upward Dashes" stat
+> The stat dictates the amount of times you can dash upwards and resets upon landing
+> Agent Booster has 3 upward dashes, while Titan Booster has 1 (big buff!)
